@@ -1,0 +1,16 @@
+name: ptsa-dev
+channels:
+  - defaults
+dependencies:
+  - python
+  - cython
+  - numpy
+  - scipy
+  - pytest
+  - pytest-cov
+  - sphinx
+  - numpydoc
+  - flake8
+  - pylint
+  - black
+  - conda-build

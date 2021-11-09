@@ -1,0 +1,16 @@
+numpy
+scipy
+
+## build
+cython
+
+## docs
+sphinx
+
+## test and lint
+# pytest
+# radon
+# black
+# flake8
+# pylint
+# isort
