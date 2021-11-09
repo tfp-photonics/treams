@@ -1,3 +1,5 @@
+import warnings
+
 import numpy as np
 
 import ptsa.lattice as la
@@ -261,15 +263,18 @@ class TMatrix(TMatrixBase):
             raise NotImplementedError
         p = self.t @ illu
         rs = sc.car2sph(self.positions[:, None, :] - self.positions)
-        m = sw.translate(
-            *(m[:, None] for m in self.modes),
-            *self.modes,
-            self.ks[self.pol] * rs[self.pidx[:, None], self.pidx, 0],
-            rs[self.pidx[:, None], self.pidx, 1],
-            rs[self.pidx[:, None], self.pidx, 2],
-            self.helicity,
-            singular=False,
-        ) / (np.power(self.ks[self.pol], 2) * flux)
+        m = (
+            sw.translate(
+                *(m[:, None] for m in self.modes),
+                *self.modes,
+                self.ks[self.pol] * rs[self.pidx[:, None], self.pidx, 0],
+                rs[self.pidx[:, None], self.pidx, 1],
+                rs[self.pidx[:, None], self.pidx, 2],
+                self.helicity,
+                singular=False,
+            )
+            / (np.power(self.ks[self.pol], 2) * flux)
+        )
         return (
             np.real(np.diag(p.conjugate().T @ m @ p)),
             -np.real(np.diag(illu.conjugate().T @ m @ p)),
@@ -706,3 +711,92 @@ class TMatrix(TMatrixBase):
         if lmax < 0 or nmax < 0:
             raise ValueError("maximal order must be positive")
         return 2 * lmax * (lmax + 2) * nmax
+
+    def to_clsT(self):
+        """
+        Convert T-matrix to an object of class clsT (Xavi's code)
+
+        Returns:
+            object of class clsCluster
+        """
+
+        from clsT import clsT
+
+        if self.positions.shape[0] > 1:
+            warnings.warn(
+                """
+                    This T-matrix can not be converted into an object of class clsT as
+                    it contains more than one scatterer. An object of class clsCluster
+                    will be returned instead
+                """
+            )
+            return self.to_clsCluster()
+        if self.helicity:
+            basis = "helicity"
+        else:
+            basis = "electric-magnetic"
+        n_max = np.max(self.modes[0])
+        modes = (
+            *np.array(
+                [
+                    [n, m, p]
+                    for p in range(1, -1, -1)
+                    for n in range(1, n_max + 1)
+                    for m in range(-n, n + 1)
+                ]
+            ).T,
+        )
+        mat = misc.pickmodes(self.modes, modes)
+        tmatrix = mat.T @ self.t @ mat
+        return clsT(
+            tmatrix,
+            basis,
+            wavelength=2 * np.pi / self.k0,
+            refr_index=np.sqrt(self.epsilon * self.mu),
+        )
+
+    def to_clsCluster(self):
+        """
+        Convert T-matrix to an object of class clsCluster (Xavi's code)
+
+        Returns:
+            object of class clsCluster
+        """
+
+        from clsCluster import clsCluster
+        from clsT import clsT
+
+        if self.helicity:
+            basis = "helicity"
+        else:
+            basis = "electric-magnetic"
+        number_particles = self.positions.shape[0]
+        max_n = np.zeros((number_particles,), int)
+        for i_particle in range(number_particles):
+            max_n[i_particle] = np.max(self.l[self.pidx == i_particle])
+        modes = (
+            *np.array(
+                [
+                    [np, n, m, p]
+                    for np in range(number_particles)
+                    for p in range(1, -1, -1)
+                    for n in range(1, max_n[np] + 1)
+                    for m in range(-n, n + 1)
+                ]
+            ).T,
+        )
+        mat = misc.pickmodes(self.fullmodes, modes)
+        tmatrix = mat.T @ self.t @ mat
+        ts = []
+        for i_particle in range(number_particles):
+            entries = modes[0] == i_particle
+            ts.append(
+                clsT(
+                    tmatrix[entries, :][:, entries],
+                    basis,
+                    wavelength=2 * np.pi / self.k0,
+                    refr_index=np.sqrt(self.epsilon * self.mu),
+                )
+            )
+        cluster = clsCluster(self.positions, ts)
+        return cluster
