@@ -164,7 +164,7 @@ cdef long _next_diff_or(double b[2][2], double rmax, long *mn) nogil:
     return 0
 
 
-cpdef diffr_orders_circle(real_t[:,:] b, double rmax):
+cpdef diffr_orders_circle(real_t[:, :] b, double rmax):
     """
     Diffraction orders in a circle
 
@@ -178,13 +178,13 @@ cpdef diffr_orders_circle(real_t[:,:] b, double rmax):
     Returns:
         float array
     """
-    if not b.shape == [2, 2, 0, 0, 0, 0, 0, 0]: # this is: if not b.shape = (2, 2)
+    if not b.shape == [2, 2, 0, 0, 0, 0, 0, 0]:  # this is: if not b.shape = (2, 2)
         raise ValueError("Wrong shape")
     cdef double arr[2][2]
-    arr[0][0] = b[0,0]
-    arr[0][1] = b[0,1]
-    arr[1][0] = b[1,0]
-    arr[1][1] = b[1,1]
+    arr[0][0] = b[0, 0]
+    arr[0][1] = b[0, 1]
+    arr[1][0] = b[1, 0]
+    arr[1][1] = b[1, 1]
     cdef long mn[2]
     mn[:] = [0, 0]
     cdef np.ndarray res = np.empty((0, 2), np.int64)

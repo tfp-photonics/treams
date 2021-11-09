@@ -1,6 +1,5 @@
 import numpy as np
 
-import ptsa.lattice as la
 import ptsa.special as sc
 from ptsa import cw, misc, pw
 from ptsa._tmatrix_base import TMatrixBase
@@ -382,7 +381,7 @@ class TMatrixC(TMatrixBase):
         return sc.vcyl2car(res, r_cyl[..., self.pidx, :])
 
     def latticecoupling(self, kpar, a, eta=0):
-        """
+        r"""
         The coupling of the T-matrix in a lattice
 
         Returns
@@ -510,10 +509,10 @@ class TMatrixC(TMatrixBase):
             int
         """
         if dim % (2 * nkz * nmax) != 0:
-            raise ValueError(f"cannot estimate the default mmax")
+            raise ValueError("cannot estimate the default mmax")
         dim = dim // (2 * nkz * nmax)
         if (dim - 1) % 2 != 0:
-            raise ValueError(f"cannot estimate the default mmax")
+            raise ValueError("cannot estimate the default mmax")
         return (dim - 1) // 2
 
     @staticmethod

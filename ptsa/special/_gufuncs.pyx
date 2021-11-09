@@ -486,11 +486,11 @@ car2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_car2cyl_loops,
     gufunc_car2cyl_data,
     gufunc_car2cyl_types,
-    1, # number of supported input types
-    1, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'car2cyl', # function name
+    1,  # number of supported input types
+    1,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'car2cyl',  # function name
     r"""
     car2cyl(r)
 
@@ -505,9 +505,9 @@ car2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         float, 3-array
-    """, # docstring
-    0, # unused
-    '(3)->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(3)->(3)',  # signature
     )
 
 
@@ -524,11 +524,11 @@ car2sph = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_car2sph_loops,
     gufunc_car2sph_data,
     gufunc_car2sph_types,
-    1, # number of supported input types
-    1, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'car2sph', # function name
+    1,  # number of supported input types
+    1,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'car2sph',  # function name
     r"""
     car2sph(r)
 
@@ -543,9 +543,9 @@ car2sph = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         float, 3-array
-    """, # docstring
-    0, # unused
-    '(3)->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(3)->(3)',  # signature
     )
 
 
@@ -562,11 +562,11 @@ cyl2car = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_cyl2car_loops,
     gufunc_cyl2car_data,
     gufunc_cyl2car_types,
-    1, # number of supported input types
-    1, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'cyl2car', # function name
+    1,  # number of supported input types
+    1,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'cyl2car',  # function name
     r"""
     cyl2car(r)
 
@@ -581,9 +581,9 @@ cyl2car = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         float, 3-array
-    """, # docstring
-    0, # unused
-    '(3)->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(3)->(3)',  # signature
     )
 
 
@@ -600,11 +600,11 @@ cyl2sph = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_cyl2sph_loops,
     gufunc_cyl2sph_data,
     gufunc_cyl2sph_types,
-    1, # number of supported input types
-    1, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'cyl2sph', # function name
+    1,  # number of supported input types
+    1,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'cyl2sph',  # function name
     r"""
     cyl2sph(r)
 
@@ -619,9 +619,9 @@ cyl2sph = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         float, 3-array
-    """, # docstring
-    0, # unused
-    '(3)->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(3)->(3)',  # signature
     )
 
 
@@ -638,11 +638,11 @@ sph2car = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_sph2car_loops,
     gufunc_sph2car_data,
     gufunc_sph2car_types,
-    1, # number of supported input types
-    1, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'sph2car', # function name
+    1,  # number of supported input types
+    1,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'sph2car',  # function name
     r"""
     sph2car(r)
 
@@ -657,9 +657,9 @@ sph2car = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         float, 3-array
-    """, # docstring
-    0, # unused
-    '(3)->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(3)->(3)',  # signature
     )
 
 
@@ -676,11 +676,11 @@ sph2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_sph2cyl_loops,
     gufunc_sph2cyl_data,
     gufunc_sph2cyl_types,
-    1, # number of supported input types
-    1, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'sph2cyl', # function name
+    1,  # number of supported input types
+    1,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'sph2cyl',  # function name
     r"""
     sph2cylr(r)
 
@@ -695,9 +695,9 @@ sph2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         float, 3-array
-    """, # docstring
-    0, # unused
-    '(3)->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(3)->(3)',  # signature
     )
 
 
@@ -714,11 +714,11 @@ car2pol = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_car2pol_loops,
     gufunc_car2pol_data,
     gufunc_car2pol_types,
-    1, # number of supported input types
-    1, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'car2pol', # function name
+    1,  # number of supported input types
+    1,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'car2pol',  # function name
     r"""
     car2pol(r)
 
@@ -733,9 +733,9 @@ car2pol = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         float, 2-array
-    """, # docstring
-    0, # unused
-    '(2)->(2)' # signature
+    """,  # docstring
+    0,  # unused
+    '(2)->(2)',  # signature
     )
 
 
@@ -752,11 +752,11 @@ pol2car = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_pol2car_loops,
     gufunc_pol2car_data,
     gufunc_pol2car_types,
-    1, # number of supported input types
-    1, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'pol2car', # function name
+    1,  # number of supported input types
+    1,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'pol2car',  # function name
     r"""
     pol2car(r)
 
@@ -771,9 +771,9 @@ pol2car = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         float, 2-array
-    """, # docstring
-    0, # unused
-    '(2)->(2)' # signature
+    """,  # docstring
+    0,  # unused
+    '(2)->(2)',  # signature
     )
 
 
@@ -796,11 +796,11 @@ vcar2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vcoord_loops,
     gufunc_vcar2cyl_data,
     gufunc_vcoord_types,
-    2, # number of supported input types
-    2, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vcar2cyl', # function name
+    2,  # number of supported input types
+    2,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vcar2cyl',  # function name
     r"""
     vcar2cyl(v, r)
 
@@ -826,9 +826,9 @@ vcar2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         float or complex, 3-array
-    """, # docstring
-    0, # unused
-    '(3),(3)->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(3),(3)->(3)',  # signature
     )
 
 
@@ -841,11 +841,11 @@ vcar2sph = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vcoord_loops,
     gufunc_vcar2sph_data,
     gufunc_vcoord_types,
-    2, # number of supported input types
-    2, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vcar2sph', # function name
+    2,  # number of supported input types
+    2,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vcar2sph',  # function name
     r"""
     vcar2cyl(v, r)
 
@@ -871,9 +871,9 @@ vcar2sph = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         float or complex, 3-array
-    """, # docstring
-    0, # unused
-    '(3),(3)->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(3),(3)->(3)',  # signature
     )
 
 
@@ -885,11 +885,11 @@ vcyl2car = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vcoord_loops,
     gufunc_vcyl2car_data,
     gufunc_vcoord_types,
-    2, # number of supported input types
-    2, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vcyl2car', # function name
+    2,  # number of supported input types
+    2,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vcyl2car',  # function name
     r"""
     vcyl2car(v, r)
 
@@ -915,9 +915,9 @@ vcyl2car = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         float or complex, 3-array
-    """, # docstring
-    0, # unused
-    '(3),(3)->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(3),(3)->(3)',  # signature
     )
 
 
@@ -929,11 +929,11 @@ vcyl2sph = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vcoord_loops,
     gufunc_vcyl2sph_data,
     gufunc_vcoord_types,
-    2, # number of supported input types
-    2, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vcyl2sph', # function name
+    2,  # number of supported input types
+    2,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vcyl2sph',  # function name
     r"""
     vcyl2sph(v, r)
 
@@ -959,9 +959,9 @@ vcyl2sph = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         float or complex, 3-array
-    """, # docstring
-    0, # unused
-    '(3),(3)->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(3),(3)->(3)',  # signature
     )
 
 
@@ -973,11 +973,11 @@ vsph2car = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vcoord_loops,
     gufunc_vsph2car_data,
     gufunc_vcoord_types,
-    2, # number of supported input types
-    2, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vsph2car', # function name
+    2,  # number of supported input types
+    2,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vsph2car',  # function name
     r"""
     vsph2car(v, r)
 
@@ -1003,9 +1003,9 @@ vsph2car = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         float or complex, 3-array
-    """, # docstring
-    0, # unused
-    '(3),(3)->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(3),(3)->(3)',  # signature
     )
 
 
@@ -1017,11 +1017,11 @@ vsph2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vcoord_loops,
     gufunc_vsph2cyl_data,
     gufunc_vcoord_types,
-    2, # number of supported input types
-    2, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vsph2cyl', # function name
+    2,  # number of supported input types
+    2,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vsph2cyl',  # function name
     r"""
     vsph2cyl(v, r)
 
@@ -1047,9 +1047,9 @@ vsph2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         float or complex, 3-array
-    """, # docstring
-    0, # unused
-    '(3),(3)->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(3),(3)->(3)',  # signature
     )
 
 
@@ -1061,11 +1061,11 @@ vcar2pol = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vcoord_loops,
     gufunc_vcar2pol_data,
     gufunc_vcoord_types,
-    2, # number of supported input types
-    2, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vcar2pol', # function name
+    2,  # number of supported input types
+    2,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vcar2pol',  # function name
     r"""
     vcar2pol(v, r)
 
@@ -1090,9 +1090,9 @@ vcar2pol = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         float or complex, 2-array
-    """, # docstring
-    0, # unused
-    '(2),(2)->(2)' # signature
+    """,  # docstring
+    0,  # unused
+    '(2),(2)->(2)',  # signature
     )
 
 
@@ -1104,11 +1104,11 @@ vpol2car = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vcoord_loops,
     gufunc_vpol2car_data,
     gufunc_vcoord_types,
-    2, # number of supported input types
-    2, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vpol2car', # function name
+    2,  # number of supported input types
+    2,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vpol2car',  # function name
     r"""
     vpol2car(v, r)
 
@@ -1133,9 +1133,9 @@ vpol2car = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         float or complex, 3-array
-    """, # docstring
-    0, # unused
-    '(2),(2)->(2)' # signature
+    """,  # docstring
+    0,  # unused
+    '(2),(2)->(2)',  # signature
     )
 
 
@@ -1162,11 +1162,11 @@ vsh_X = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vsh_X_loops,
     gufunc_vsh_X_data,
     gufunc_vsh_X_types,
-    2, # number of supported input types
-    4, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vsh_X', # function name
+    2,  # number of supported input types
+    4,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vsh_X',  # function name
     r"""
     vsh_X(l, m, theta, phi)
 
@@ -1199,9 +1199,9 @@ vsh_X = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex, 3-array
-    """, # docstring
-    0, # unused
-    '(),(),(),()->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),()->(3)',  # signature
     )
 
 
@@ -1228,11 +1228,11 @@ vsh_Y = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vsh_Y_loops,
     gufunc_vsh_Y_data,
     gufunc_vsh_Y_types,
-    2, # number of supported input types
-    4, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vsh_Y', # function name
+    2,  # number of supported input types
+    4,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vsh_Y',  # function name
     r"""
     vsh_Y(l, m, theta, phi)
 
@@ -1259,9 +1259,9 @@ vsh_Y = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex, 3-array
-    """, # docstring
-    0, # unused
-    '(),(),(),()->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),()->(3)',  # signature
     )
 
 
@@ -1288,11 +1288,11 @@ vsh_Z = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vsh_Z_loops,
     gufunc_vsh_Z_data,
     gufunc_vsh_Z_types,
-    2, # number of supported input types
-    4, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vsh_Z', # function name
+    2,  # number of supported input types
+    4,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vsh_Z',  # function name
     r"""
     vsh_Z(l, m, theta, phi)
 
@@ -1310,9 +1310,9 @@ vsh_Z = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex, 3-array
-    """, # docstring
-    0, # unused
-    '(),(),(),()->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),()->(3)',  # signature
     )
 
 
@@ -1341,11 +1341,11 @@ vsw_M = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vsw_M_loops,
     gufunc_vsw_M_data,
     gufunc_vsw_M_types,
-    2, # number of supported input types
-    5, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vsw_M', # function name
+    2,  # number of supported input types
+    5,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vsw_M',  # function name
     r"""
     vsw_M(l, m, x, theta, phi)
 
@@ -1369,9 +1369,9 @@ vsw_M = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex, 3-array
-    """, # docstring
-    0, # unused
-    '(),(),(),(),()->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),()->(3)',  # signature
     )
 
 
@@ -1400,11 +1400,11 @@ vsw_N = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vsw_N_loops,
     gufunc_vsw_N_data,
     gufunc_vsw_N_types,
-    2, # number of supported input types
-    5, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vsw_N', # function name
+    2,  # number of supported input types
+    5,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vsw_N',  # function name
     r"""
     vsw_N(l, m, x, theta, phi)
 
@@ -1436,9 +1436,9 @@ vsw_N = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
        complex, 3-array
-    """, # docstring
-    0, # unused
-    '(),(),(),(),()->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),()->(3)',  # signature
     )
 
 
@@ -1467,11 +1467,11 @@ vsw_rM = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vsw_rM_loops,
     gufunc_vsw_rM_data,
     gufunc_vsw_rM_types,
-    2, # number of supported input types
-    5, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vsw_rM', # function name
+    2,  # number of supported input types
+    5,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vsw_rM',  # function name
     r"""
     vsw_rM(l, m, x, theta, phi)
 
@@ -1495,9 +1495,9 @@ vsw_rM = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex, 3-array
-    """, # docstring
-    0, # unused
-    '(),(),(),(),()->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),()->(3)',  # signature
     )
 
 
@@ -1526,11 +1526,11 @@ vsw_rN = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vsw_rN_loops,
     gufunc_vsw_rN_data,
     gufunc_vsw_rN_types,
-    2, # number of supported input types
-    5, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vsw_rN', # function name
+    2,  # number of supported input types
+    5,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vsw_rN',  # function name
     r"""
     vsw_rN(l, m, x, theta, phi)
 
@@ -1562,9 +1562,9 @@ vsw_rN = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
        complex, 3-array
-    """, # docstring
-    0, # unused
-    '(),(),(),(),()->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),()->(3)',  # signature
     )
 
 
@@ -1595,11 +1595,11 @@ vsw_rA = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vsw_rA_loops,
     gufunc_vsw_rA_data,
     gufunc_vsw_rA_types,
-    2, # number of supported input types
-    6, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vsw_rA', # function name
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vsw_rA',  # function name
     r"""
     vsw_rA(l, m, x, theta, phi, p)
 
@@ -1628,9 +1628,9 @@ vsw_rA = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
        complex, 3-array
-    """, # docstring
-    0, # unused
-    '(),(),(),(),(),()->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),(),()->(3)',  # signature
     )
 
 
@@ -1661,11 +1661,11 @@ vsw_A = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vsw_A_loops,
     gufunc_vsw_A_data,
     gufunc_vsw_A_types,
-    2, # number of supported input types
-    6, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vsw_A', # function name
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vsw_A',  # function name
     r"""
     vsw_A(l, m, x, theta, phi, p)
 
@@ -1694,9 +1694,9 @@ vsw_A = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
        complex, 3-array
-    """, # docstring
-    0, # unused
-    '(),(),(),(),(),()->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),(),()->(3)',  # signature
     )
 
 
@@ -1717,11 +1717,11 @@ vcw_M = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vcw_M_loops,
     gufunc_vcw_M_data,
     gufunc_vcw_M_types,
-    1, # number of supported input types
-    5, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vcw_M', # function name
+    1,  # number of supported input types
+    5,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vcw_M',  # function name
     r"""
     vcw_M(kz, m, xrho, phi, z)
 
@@ -1750,9 +1750,9 @@ vcw_M = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex, 3-array
-    """, # docstring
-    0, # unused
-    '(),(),(),(),()->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),()->(3)',  # signature
     )
 
 
@@ -1781,11 +1781,11 @@ vcw_rM = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vcw_rM_loops,
     gufunc_vcw_rM_data,
     gufunc_vcw_rM_types,
-    2, # number of supported input types
-    5, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vcw_rM', # function name
+    2,  # number of supported input types
+    5,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vcw_rM',  # function name
     r"""
     vcw_rM(kz, m, xrho, phi, z)
 
@@ -1814,9 +1814,9 @@ vcw_rM = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex, 3-array
-    """, # docstring
-    0, # unused
-    '(),(),(),(),()->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),()->(3)',  # signature
     )
 
 
@@ -1838,11 +1838,11 @@ vcw_N = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vcw_N_loops,
     gufunc_vcw_N_data,
     gufunc_vcw_N_types,
-    1, # number of supported input types
-    6, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vcw_N', # function name
+    1,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vcw_N',  # function name
     r"""
     vcw_N(kz, m, xrho, phi, z, k)
 
@@ -1872,9 +1872,9 @@ vcw_N = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex, 3-array
-    """, # docstring
-    0, # unused
-    '(),(),(),(),(),()->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),(),()->(3)',  # signature
     )
 
 
@@ -1905,11 +1905,11 @@ vcw_rN = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vcw_rN_loops,
     gufunc_vcw_rN_data,
     gufunc_vcw_rN_types,
-    2, # number of supported input types
-    6, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vcw_rN', # function name
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vcw_rN',  # function name
     r"""
     vcw_N(kz, m, xrho, phi, z, k)
 
@@ -1939,9 +1939,9 @@ vcw_rN = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex, 3-array
-    """, # docstring
-    0, # unused
-    '(),(),(),(),(),()->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),(),()->(3)',  # signature
     )
 
 
@@ -1964,11 +1964,11 @@ vcw_A = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vcw_A_loops,
     gufunc_vcw_A_data,
     gufunc_vcw_A_types,
-    1, # number of supported input types
-    7, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vcw_A', # function name
+    1,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vcw_A',  # function name
     r"""
     vcw_A(kz, m, xrho, phi, z, k, pol)
 
@@ -1998,9 +1998,9 @@ vcw_A = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex, 3-array
-    """, # docstring
-    0, # unused
-    '(),(),(),(),(),(),()->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),(),(),()->(3)',  # signature
     )
 
 
@@ -2033,11 +2033,11 @@ vcw_rA = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vcw_rA_loops,
     gufunc_vcw_rA_data,
     gufunc_vcw_rA_types,
-    2, # number of supported input types
-    7, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vcw_rA', # function name
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vcw_rA',  # function name
     r"""
     vcw_rA(kz, m, xrho, phi, z, k)
 
@@ -2067,9 +2067,9 @@ vcw_rA = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex, 3-array
-    """, # docstring
-    0, # unused
-    '(),(),(),(),(),(),()->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),(),(),()->(3)',  # signature
     )
 
 
@@ -2100,11 +2100,11 @@ vpw_M = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vpw_M_loops,
     gufunc_vpw_M_data,
     gufunc_vpw_M_types,
-    2, # number of supported input types
-    6, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vpw_M', # function name
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vpw_M',  # function name
     r"""
     vpw_M(kx, ky, kz, x, y, z)
 
@@ -2131,9 +2131,9 @@ vpw_M = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex, 3-array
-    """, # docstring
-    0, # unused
-    '(),(),(),(),(),()->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),(),()->(3)',  # signature
     )
 
 
@@ -2164,11 +2164,11 @@ vpw_N = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vpw_N_loops,
     gufunc_vpw_N_data,
     gufunc_vpw_N_types,
-    2, # number of supported input types
-    6, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vpw_N', # function name
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vpw_N',  # function name
     r"""
     vpw_N(kx, ky, kz, x, y, z)
 
@@ -2194,9 +2194,9 @@ vpw_N = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex, 3-array
-    """, # docstring
-    0, # unused
-    '(),(),(),(),(),()->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),(),()->(3)',  # signature
     )
 
 
@@ -2229,11 +2229,11 @@ vpw_A = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_vpw_A_loops,
     gufunc_vpw_A_data,
     gufunc_vpw_A_types,
-    2, # number of supported input types
-    7, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'vpw_A', # function name
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'vpw_A',  # function name
     r"""
     vpw_A(kx, ky, kz, x, y, z, p)
 
@@ -2263,7 +2263,7 @@ vpw_A = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex, 3-array
-    """, # docstring
-    0, # unused
-    '(),(),(),(),(),(),()->(3)' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),(),(),()->(3)',  # signature
     )

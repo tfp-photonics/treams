@@ -119,6 +119,7 @@ from ptsa.lattice._gufuncs import *
 from ptsa.lattice._misc import cube, cubeedge
 from ptsa.lattice import _misc
 
+
 def diffr_orders_circle(b, rmax):
     """
     Diffraction orders in a circle

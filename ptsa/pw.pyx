@@ -140,22 +140,22 @@ np.import_ufunc()
 
 
 def translate(kx, ky, kz, x, y, z):
-  """
-  translate(kx, ky, kz, x, y, z)
+    r"""
+    translate(kx, ky, kz, x, y, z)
 
-  Translation coefficient for plane wave modes
+    Translation coefficient for plane wave modes
 
-  The translation coefficient is the phase factor
-  :math:`\mathrm e^{\mathrm i \boldsymbol k \boldsymbol r}`.
+    The translation coefficient is the phase factor
+    :math:`\mathrm e^{\mathrm i \boldsymbol k \boldsymbol r}`.
 
-  Args:
-      kx, ky, kz (float or complex, array_like): Wave vector components
-      x, y, z (float, array_like): Translation vector components
+    Args:
+        kx, ky, kz (float or complex, array_like): Wave vector components
+        x, y, z (float, array_like): Translation vector components
 
-  Returns:
-      complex
-  """
-  return np.exp(1j * (kx * x + ky * y + kz * z))
+    Returns:
+        complex
+    """
+    return np.exp(1j * (kx * x + ky * y + kz * z))
 
 
 cdef double complex _cto_sw_h(long l, long m, long polvsw, double kx, double ky, number_t kz, long polpw) nogil:

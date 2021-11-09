@@ -511,7 +511,7 @@ class TMatrix(TMatrixBase):
         return sc.vsph2car(res, r_sph[..., self.pidx, :])
 
     def latticecoupling(self, kpar, a, eta=0):
-        """
+        r"""
         The coupling of the T-matrix in a lattice
 
         Returns

@@ -85,7 +85,7 @@ cdef double complex _redintkambe(double n, double complex val, double complex kr
     """
     if krzeta == 0 or val == 0:
         return _redincgamma(n, val)
-    if creal(krzeta) < 0: # todo: necessary?
+    if creal(krzeta) < 0:  # todo: necessary?
         krzeta = -krzeta
     cdef double complex x = sqrt(-2 * val * krzeta * krzeta)
     if cimag(x) == 0:
@@ -244,7 +244,7 @@ cdef double complex _recsw2d(long l, long m, number_t beta, double phi, number_t
     if beta == 0:
         if m == 0:
             return (
-                M_SQRT2 * sc.incgamma(0.5 - l // 2, val) / expd(lgamma(l // 2 + 1)) # l is an even number
+                M_SQRT2 * sc.incgamma(0.5 - l // 2, val) / expd(lgamma(l // 2 + 1))  # l is an even number
             )
         return 0
     cdef double complex res = 0
@@ -491,9 +491,9 @@ cdef double complex lsumcw2d(long l, number_t k, double *kpar, double *a, double
     cdef double coord[2]
     cdef double pointf[2]
     cdef long point[2]
-    cdef double mone = -1, one = 1, zero = 0 # It's as dumb as it looks
+    cdef double mone = -1, one = 1, zero = 0  # It's as dumb as it looks
     cdef int dim = 2, inc = 1
-    cdef char c = b'N' # By magic
+    cdef char c = b'N'  # By magic
     for i in range(start, 50):
         pprev = prev
         prev = realsum
@@ -502,9 +502,9 @@ cdef double complex lsumcw2d(long l, number_t k, double *kpar, double *a, double
         while True:
             pointf[0] = <double>point[0]
             pointf[1] = <double>point[1]
-            dgemv(&c, &dim, &dim, &mone, a, &dim, pointf, &inc, &zero, vec, &inc) # vec = -1 * a @ point + 0 * vec
-            memcpy(coord, vec, dim * sizeof(double)) # coord = vec
-            daxpy(&dim, &mone, r, &inc, coord, &inc) # coord = coord - r
+            dgemv(&c, &dim, &dim, &mone, a, &dim, pointf, &inc, &zero, vec, &inc)  # vec = -1 * a @ point + 0 * vec
+            memcpy(coord, vec, dim * sizeof(double))  # coord = vec
+            daxpy(&dim, &mone, r, &inc, coord, &inc)  # coord = coord - r
             sc.car2pol(coord, coord)
             realsum += _realcw(l, k * coord[0], coord[1], eta) * cexp(
                 -1j * ddot(&dim, kpar, &inc, vec, &inc)
@@ -528,7 +528,7 @@ cdef double complex lsumcw2d(long l, number_t k, double *kpar, double *a, double
             pointf[0] = <double>point[0]
             pointf[1] = <double>point[1]
             memcpy(vec, kpar, dim * sizeof(double))
-            dgemv(&c, &dim, &dim, &one, b, &dim, pointf, &inc, &one, vec, &inc) # vec = 1 * b @ point + 1 * vec
+            dgemv(&c, &dim, &dim, &one, b, &dim, pointf, &inc, &one, vec, &inc)  # vec = 1 * b @ point + 1 * vec
             sc.car2pol(vec, coord)
             recsum += _reccw2d(l, coord[0] / k, coord[1], eta) * cexp(
                 -1j * ddot(&dim, vec, &inc, r, &inc)
@@ -570,9 +570,9 @@ cdef double complex lsumsw2d(long l, long m, number_t k, double *kpar, double *a
         while True:
             pointf[0] = <double>point[0]
             pointf[1] = <double>point[1]
-            dgemv(&c, &dim, &dim, &mone, a, &dim, pointf, &inc, &zero, vec, &inc) # vec = -1 * a @ point + 0 * vec
-            memcpy(coord, vec, dim * sizeof(double)) # coord = vec
-            daxpy(&dim, &mone, r, &inc, coord, &inc) # coord = coord - r
+            dgemv(&c, &dim, &dim, &mone, a, &dim, pointf, &inc, &zero, vec, &inc)  # vec = -1 * a @ point + 0 * vec
+            memcpy(coord, vec, dim * sizeof(double))  # coord = vec
+            daxpy(&dim, &mone, r, &inc, coord, &inc)  # coord = coord - r
             sc.car2pol(coord, coord)
             realsum += _realsw2d(l, m, k * coord[0], coord[1], eta) * cexp(
                 -1j * ddot(&dim, kpar, &inc, vec, &inc)
@@ -603,7 +603,7 @@ cdef double complex lsumsw2d(long l, long m, number_t k, double *kpar, double *a
             pointf[0] = <double>point[0]
             pointf[1] = <double>point[1]
             memcpy(vec, kpar, dim * sizeof(double))
-            dgemv(&c, &dim, &dim, &one, b, &dim, pointf, &inc, &one, vec, &inc) # vec = 1 * b @ point + 1 * vec
+            dgemv(&c, &dim, &dim, &one, b, &dim, pointf, &inc, &one, vec, &inc)  # vec = 1 * b @ point + 1 * vec
             sc.car2pol(vec, coord)
             recsum += _recsw2d(l, m, coord[0] / k, coord[1], eta) * cexp(
                 -1j * ddot(&dim, vec, &inc, r, &inc)
@@ -750,9 +750,9 @@ cdef double complex lsumsw3d(long l, long m, number_t k, double *kpar, double *a
             pointf[0] = <double>point[0]
             pointf[1] = <double>point[1]
             pointf[2] = <double>point[2]
-            dgemv(&c, &dim, &dim, &mone, a, &dim, pointf, &inc, &zero, vec, &inc) # vec = -1 * a @ point + 0 * vec
-            memcpy(coord, vec, dim * sizeof(double)) # coord = vec
-            daxpy(&dim, &mone, r, &inc, coord, &inc) # coord = coord - r
+            dgemv(&c, &dim, &dim, &mone, a, &dim, pointf, &inc, &zero, vec, &inc)  # vec = -1 * a @ point + 0 * vec
+            memcpy(coord, vec, dim * sizeof(double))  # coord = vec
+            daxpy(&dim, &mone, r, &inc, coord, &inc)  # coord = coord - r
             sc.car2sph(coord, coord)
             realsum += _realsw(
                 l, m, k * coord[0], coord[1], coord[2], eta
@@ -774,7 +774,7 @@ cdef double complex lsumsw3d(long l, long m, number_t k, double *kpar, double *a
             pointf[1] = <double>point[1]
             pointf[2] = <double>point[2]
             memcpy(vec, kpar, dim * sizeof(double))
-            dgemv(&c, &dim, &dim, &one, b, &dim, pointf, &inc, &one, vec, &inc) # vec = 1 * b @ point + 1 * vec
+            dgemv(&c, &dim, &dim, &one, b, &dim, pointf, &inc, &one, vec, &inc)  # vec = 1 * b @ point + 1 * vec
             sc.car2sph(vec, coord)
             recsum += _recsw3d(l, m, coord[0] / k, coord[1], coord[2], eta) * cexp(
                 -1j * ddot(&dim, vec, &inc, r, &inc)
@@ -957,7 +957,7 @@ cdef double complex _recsw2d_shift(long l, long m, number_t k, double *kpar, dou
             pointf[0] = <double>point[0]
             pointf[1] = <double>point[1]
             memcpy(vec, kpar, dim * sizeof(double))
-            dgemv(&c, &dim, &dim, &one, b, &dim, pointf, &inc, &one, vec, &inc) # vec = 1 * b @ point + 1 * vec
+            dgemv(&c, &dim, &dim, &one, b, &dim, pointf, &inc, &one, vec, &inc)  # vec = 1 * b @ point + 1 * vec
             sc.car2pol(vec, coord)
             recsum += _n_sum_sw2d(
                 l, m, coord[0] / k, krz, coord[1], eta
@@ -978,7 +978,7 @@ cdef double complex lsumsw2d_shift(long l, long m, number_t k, double *kpar, dou
     cdef double b[4]
     _misc.recvec2(a, a + 2, b, b + 2)
     cdef double complex realsum = 0, prev = INFINITY, pprev
-    cdef long i, start = 1 if array_zero(r, 3) else 0 #todo: always start = 0 ?
+    cdef long i, start = 1 if array_zero(r, 3) else 0  # todo: always start = 0 ?
     cdef double mone = -1, one = 1, zero = 0
     cdef double vec[2]
     cdef double coord[3]
@@ -994,10 +994,10 @@ cdef double complex lsumsw2d_shift(long l, long m, number_t k, double *kpar, dou
         while True:
             pointf[0] = <double>point[0]
             pointf[1] = <double>point[1]
-            dgemv(&c, &dim, &dim, &mone, a, &dim, pointf, &inc, &zero, vec, &inc) # vec = -1 * a @ point + 0 * vec
+            dgemv(&c, &dim, &dim, &mone, a, &dim, pointf, &inc, &zero, vec, &inc)  # vec = -1 * a @ point + 0 * vec
             memcpy(coord, vec, dim * sizeof(double))
             coord[2] = -r[2]
-            daxpy(&dim, &mone, r, &inc, coord, &inc) # coord = coord - r
+            daxpy(&dim, &mone, r, &inc, coord, &inc)  # coord = coord - r
             sc.car2sph(coord, coord)
             realsum += _realsw(
                 l, m, k * coord[0], coord[1], coord[2], eta
@@ -1008,11 +1008,12 @@ cdef double complex lsumsw2d_shift(long l, long m, number_t k, double *kpar, dou
             break
     realsum *= -1j * sqrt(2 / pi)
     cdef double complex recsum = _recsw2d_shift(l, m, k, kpar, b, r, eta)
-    recsum *= (sqrtd(2 * l + 1) * cpow(-1j, m)
+    recsum *= (
+        sqrtd(2 * l + 1) * cpow(-1j, m)
         * expd((lgamma(l + m + 1) + lgamma(l - m + 1)) * 0.5)
         / (fabs(_misc.area(a, a + 2)) * k * k * ipow(-2, l))
     )
-    if l == 0 and array_zero(r, 3): # Necessary?
+    if l == 0 and array_zero(r, 3):  # Necessary?
         return realsum + recsum + zero3d(eta)
     return realsum + recsum
 
@@ -1192,7 +1193,7 @@ cdef double complex lsumsw1d_shift(long l, long m, number_t k, double kpar, doub
     cdef double coord[3]
     cdef long point[1]
     cdef double vec
-    cdef long start = 1 if array_zero(r, 3) else 0, i # todo: necessary?
+    cdef long start = 1 if array_zero(r, 3) else 0, i  # todo: necessary?
     for i in range(start, 200):
         pprev = prev
         prev = realsum
@@ -1223,7 +1224,7 @@ cdef double complex lsumsw1d_shift(long l, long m, number_t k, double kpar, doub
         )
         * cexp(1j * m * atan2(-r[1], -r[0]))
     )
-    if l == 0 and array_zero(r, 3): #todo: necessary?
+    if l == 0 and array_zero(r, 3):  # todo: necessary?
         return realsum + recsum + zero3d(eta)
     return realsum + recsum
 
@@ -1381,7 +1382,7 @@ cdef double complex lsumcw1d_shift(long l, number_t k, double kpar, double a, do
     cdef double b = 2 * pi / a
 
     cdef double complex realsum = 0, prev = INFINITY, pprev
-    cdef long i, start = 1 if array_zero(r, 2) else 0 # todo: necessary?
+    cdef long i, start = 1 if array_zero(r, 2) else 0  # todo: necessary?
     cdef double coord[2]
     cdef long point[1]
     cdef double vec
@@ -1407,6 +1408,6 @@ cdef double complex lsumcw1d_shift(long l, number_t k, double kpar, double a, do
         r[1] = -r[1]
     cdef double complex recsum = _reccw1d_shift(labs(l), k, kpar, b, r[0], r[1], eta)
     recsum *= 2 * cpow(-1j, l) / (sqrtd(pi) * fabs(a) * k)
-    if l == 0 and array_zero(r, 2): # todo
+    if l == 0 and array_zero(r, 2):  # todo
         return realsum + recsum + zero2d(eta)
     return realsum + recsum

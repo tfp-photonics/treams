@@ -131,7 +131,7 @@ cdef double complex _cintkambe_0(double complex z, double complex eta) nogil:
 
 cdef double _dintkambe_0(double z, double eta) nogil:
     """Kambe integral of order 0 for double"""
-    if z < 0: # TODO: necessary?
+    if z < 0:  # TODO: necessary?
         z = -z
     cdef double faddp = creal(cs.erfc((z * eta - 1j / eta) * M_SQRT1_2) * exp(-1j * z))
     cdef double faddm = creal(cs.erfc((z * eta + 1j / eta) * M_SQRT1_2) * exp(1j * z))

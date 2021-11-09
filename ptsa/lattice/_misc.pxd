@@ -5,7 +5,7 @@ ctypedef fused real_t:
 cdef real_t area(real_t *a, real_t *b) nogil
 cdef long cube_next(long *r, long d, long n) nogil
 cdef long cubeedge_next(long *r, long d, long n) nogil
-cpdef diffr_orders_circle(real_t[:,:] b, double rmax)
+cpdef diffr_orders_circle(real_t[:, :] b, double rmax)
 cdef long ncube(long d, long n) nogil
 cdef long nedge(long d, long n) nogil
 cdef void recvec2(double *a0, double *a1, double *b0, double *b1) nogil

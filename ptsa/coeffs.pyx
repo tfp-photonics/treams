@@ -138,12 +138,12 @@ cdef void _mie(long l, double *x, number_t *epsilon, number_t *mu, number_t *kap
     Calculate the mie coefficients for degree l
     """
     cdef double complex mfull[4][4]
-    cdef double complex mtmp[2][4] # Column major
-    cdef double complex m[2][4] # Column major
+    cdef double complex mtmp[2][4]  # Column major
+    cdef double complex m[2][4]  # Column major
     cdef number_t xn[2][2]
     cdef number_t z[2]
     cdef number_t nr[2]
-    cdef char c = b'N' # Since the matrices are filled accordingly
+    cdef char c = b'N'  # Since the matrices are filled accordingly
     cdef int two = 2, four = 4
     cdef double complex zone = 1, zzero = 0
     nr[1] = sqrt(epsilon[0] * mu[0])
@@ -267,12 +267,12 @@ mie = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_mie_loops,
     gufunc_mie_data,
     gufunc_mie_types,
-    2, # number of supported input types
-    5, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'mie', # function name
-    """
+    2,  # number of supported input types
+    5,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'mie',  # function name
+    r"""
     mie(l, x, epsilon, mu, kappa)
 
     Mie coefficient of degree l in helicity basis
@@ -298,9 +298,9 @@ mie = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex (2, 2)-array
-    """, # docstring
-    0, # unused
-    '(),(a),(b),(b),(b)->(2,2)' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(a),(b),(b),(b)->(2,2)'  # signature
 )
 
 cdef void _fresnel(number_t ks[2][2], number_t kzs[2][2], number_t zs[2], number_t res[2][2][2][2]) nogil:
@@ -335,7 +335,8 @@ cdef void _fresnel(number_t ks[2][2], number_t kzs[2][2], number_t zs[2], number
         ) * zs[j] * 4 * pref
         res[i][i][1][1] = (zs[0] + zs[1]) * ks[j][1] * kzs[i][1] * cp * zs[j] * 4 * pref
 
-        res[j][i][0][0] = (-zs_diff * zs_diff * am[i] * ap[j] - zs_prod * bp
+        res[j][i][0][0] = (
+            -zs_diff * zs_diff * am[i] * ap[j] - zs_prod * bp
             * (ks[i][0] * kzs[j][0] - ks[j][0] * kzs[i][0])
         ) * pref
         res[j][i][0][1] = -(
@@ -344,7 +345,8 @@ cdef void _fresnel(number_t ks[2][2], number_t kzs[2][2], number_t zs[2], number
         res[j][i][1][0] = -(
             2 * (zs[j] * zs[j] - zs[i] * zs[i]) * ks[i][1] * kzs[i][0] * ap[j]
         ) * pref
-        res[j][i][1][1] = (zs_diff * zs_diff * am[i] * ap[j] - zs_prod * cp
+        res[j][i][1][1] = (
+            zs_diff * zs_diff * am[i] * ap[j] - zs_prod * cp
             * (ks[i][1] * kzs[j][1] - ks[j][1] * kzs[i][1])
         ) * pref
 
@@ -427,11 +429,11 @@ fresnel = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_fresnel_loops,
     gufunc_fresnel_data,
     gufunc_fresnel_types,
-    2, # number of supported input types
-    3, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'fresnel', # function name
+    2,  # number of supported input types
+    3,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'fresnel',  # function name
     r"""
     fresnel(ks, kzs, zs)
 
@@ -452,9 +454,9 @@ fresnel = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex (2, 2)-array
-    """, # docstring
-    0, # unused
-    '(2,2),(2,2),(2)->(2,2,2,2)' # signature
+    """,  # docstring
+    0,  # unused
+    '(2,2),(2,2),(2)->(2,2,2,2)',  # signature
 )
 
 cdef void _fill_cyl(long m, double complex kz, double complex ks[2], double rho, double complex z, double complex res[4][4]) nogil:
@@ -504,7 +506,7 @@ cdef void _fill_cyl_init(long m, double complex kz, double complex ks[2], double
 cdef void _mie_cyl(double kz, long m, double k0, double *radii, double complex *epsilon, double complex *mu, double complex *kappa, long n, double complex res[2][2]) nogil:
     cdef double complex mfull[4][4]
     cdef double complex mtmp[2][4]
-    cdef double complex mres[2][4] # Column major
+    cdef double complex mres[2][4]  # Column major
     cdef long i
     cdef double complex ks[2]
     cdef double complex z, zone = 1, zzero = 0
@@ -590,11 +592,11 @@ mie_cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_mie_cyl_loops,
     gufunc_mie_cyl_data,
     gufunc_mie_cyl_types,
-    1, # number of supported input types
-    7, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'mie_cyl', # function name
+    1,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'mie_cyl',  # function name
     r"""
     mie_cyl(kz, m, k0, radii, epsilon, mu, kappa)
 
@@ -621,7 +623,7 @@ mie_cyl = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex (2, 2)-array
-    """, # docstring
-    0, # unused
-    '(),(),(),(a),(b),(b),(b)->(2,2)' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(a),(b),(b),(b)->(2,2)',  # signature
 )

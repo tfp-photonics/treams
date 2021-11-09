@@ -32,7 +32,7 @@ __all__ = [
 cdef void loop_volume_l(char **args, np.npy_intp *dims, np.npy_intp *steps, void *data) nogil:
     cdef np.npy_intp i, j, k, n = dims[0]
     if dims[1] < 2 or dims[1] > 3:
-        raise ValueError('Dimension out of range') # todo: force error by numpy
+        raise ValueError('Dimension out of range')  # todo: force error by numpy
     cdef long input[3][3]
     cdef void *area = (<void**>data)[0]
     cdef void *vol = (<void**>data)[1]
@@ -55,7 +55,7 @@ cdef void loop_volume_l(char **args, np.npy_intp *dims, np.npy_intp *steps, void
 cdef void loop_volume_d(char **args, np.npy_intp *dims, np.npy_intp *steps, void *data) nogil:
     cdef np.npy_intp i, j, k, n = dims[0]
     if dims[1] < 2 or dims[1] > 3:
-        raise ValueError('Dimension out of range') # todo: force error by numpy
+        raise ValueError('Dimension out of range')  # todo: force error by numpy
     cdef double input[3][3]
     cdef void *area = (<void**>data)[0]
     cdef void *vol = (<void**>data)[1]
@@ -78,7 +78,7 @@ cdef void loop_volume_d(char **args, np.npy_intp *dims, np.npy_intp *steps, void
 cdef void loop_reciprocal_d(char **args, np.npy_intp *dims, np.npy_intp *steps, void *data) nogil:
     cdef np.npy_intp i, j, k, n = dims[0]
     if dims[1] < 2 or dims[1] > 3:
-        raise ValueError('Dimension out of range') # todo: force error by numpy
+        raise ValueError('Dimension out of range')  # todo: force error by numpy
     cdef double input[3][3]
     cdef double output[3][3]
     cdef void *area = (<void**>data)[0]
@@ -406,7 +406,7 @@ cdef void loop_lsumsw1d_shift_D(char **args, np.npy_intp *dims, np.npy_intp *ste
     for i in range(n):
         for j in range(3):
             r[j] = (<double*>(ip5 + j * steps[8]))[0]
-        ov0 = (<double complex (*)(long, long, double complex, double, double, double*, double complex) nogil>func)(<long>(<long*>ip0)[0], <long>(<long*>ip1)[0],<double complex>(<double complex*>ip2)[0], <double>(<double*>ip3)[0], <double>(<double*>ip4)[0], r, <double complex>(<double complex*>ip6)[0])
+        ov0 = (<double complex (*)(long, long, double complex, double, double, double*, double complex) nogil>func)(<long>(<long*>ip0)[0], <long>(<long*>ip1)[0], <double complex>(<double complex*>ip2)[0], <double>(<double*>ip3)[0], <double>(<double*>ip4)[0], r, <double complex>(<double complex*>ip6)[0])
         (<double complex*>op0)[0] = <double complex>ov0
         ip0 += steps[0]
         ip1 += steps[1]
@@ -822,7 +822,7 @@ cdef void loop_dsumsw1d_shift_D(char **args, np.npy_intp *dims, np.npy_intp *ste
     for i in range(n):
         for j in range(3):
             r[j] = (<double*>(ip5 + j * steps[8]))[0]
-        ov0 = (<double complex (*)(long, long, double complex, double, double, double*, long) nogil>func)(<long>(<long*>ip0)[0], <long>(<long*>ip1)[0],<double complex>(<double complex*>ip2)[0], <double>(<double*>ip3)[0], <double>(<double*>ip4)[0], r, <long>(<long*>ip6)[0])
+        ov0 = (<double complex (*)(long, long, double complex, double, double, double*, long) nogil>func)(<long>(<long*>ip0)[0], <long>(<long*>ip1)[0], <double complex>(<double complex*>ip2)[0], <double>(<double*>ip3)[0], <double>(<double*>ip4)[0], r, <long>(<long*>ip6)[0])
         (<double complex*>op0)[0] = <double complex>ov0
         ip0 += steps[0]
         ip1 += steps[1]
@@ -953,11 +953,11 @@ reciprocal = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_reciprocal_loops,
     gufunc_reciprocal_data,
     gufunc_reciprocal_types,
-    1, # number of supported input types
-    1, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'reciprocal', # function name
+    1,  # number of supported input types
+    1,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'reciprocal',  # function name
     """
     reciprocal(a)
 
@@ -970,9 +970,9 @@ reciprocal = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         float, (2,2)- or (3,3)-array
-    """, # docstring
-    0, # unused
-    '(i,i)->(i,i)' # signature
+    """,  # docstring
+    0,  # unused
+    '(i,i)->(i,i)',  # signature
     )
 
 
@@ -998,11 +998,11 @@ volume = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_volume_loops,
     gufunc_volume_data,
     gufunc_volume_types,
-    2, # number of supported input types
-    1, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'volume', # function name
+    2,  # number of supported input types
+    1,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'volume',  # function name
     """
     volume(a)
 
@@ -1017,9 +1017,9 @@ volume = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         float
-    """, # docstring
-    0, # unused
-    '(i,i)->()' # signature
+    """,  # docstring
+    0,  # unused
+    '(i,i)->()',  # signature
     )
 
 area = volume
@@ -1052,11 +1052,11 @@ lsumcw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumcw2d_loops,
     gufunc_lsumcw2d_data,
     gufunc_lsumcw2d_types,
-    2, # number of supported input types
-    6, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'lsumcw2d', # function name
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'lsumcw2d',  # function name
     r"""
     lsumcw2d(l, k, kpar, a, r, eta)
 
@@ -1088,9 +1088,9 @@ lsumcw2d = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex
-    """, # docstring
-    0, # unused
-    '(),(),(2),(2,2),(2),()->()' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(2),(2,2),(2),()->()',  # signature
     )
 
 
@@ -1123,11 +1123,11 @@ lsumsw3d = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumsw3d_loops,
     gufunc_lsumsw3d_data,
     gufunc_lsumsw3d_types,
-    2, # number of supported input types
-    7, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'lsumsw3d', # function name
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'lsumsw3d',  # function name
     r"""
     lsumsw3d(l, m, k, kpar, a, r, eta)
 
@@ -1160,9 +1160,9 @@ lsumsw3d = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex
-    """, # docstring
-    0, # unused
-    '(),(),(),(3),(3,3),(3),()->()' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(3),(3,3),(3),()->()',  # signature
     )
 
 
@@ -1195,11 +1195,11 @@ lsumsw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumsw2d_loops,
     gufunc_lsumsw2d_data,
     gufunc_lsumsw2d_types,
-    2, # number of supported input types
-    7, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'lsumsw2d', # function name
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'lsumsw2d',  # function name
     r"""
     lsumsw2d(l, m, k, kpar, a, r, eta)
 
@@ -1232,9 +1232,9 @@ lsumsw2d = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex
-    """, # docstring
-    0, # unused
-    '(),(),(),(2),(2,2),(2),()->()' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(2),(2,2),(2),()->()',  # signature
     )
 
 
@@ -1267,11 +1267,11 @@ lsumsw2d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumsw2d_shift_loops,
     gufunc_lsumsw2d_shift_data,
     gufunc_lsumsw2d_shift_types,
-    2, # number of supported input types
-    7, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'lsumsw2d_shift', # function name
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'lsumsw2d_shift',  # function name
     r"""
     lsumsw2d_shift(l, m, k, kpar, a, r, eta)
 
@@ -1304,9 +1304,9 @@ lsumsw2d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex
-    """, # docstring
-    0, # unused
-    '(),(),(),(2),(2,2),(3),()->()' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(2),(2,2),(3),()->()',  # signature
     )
 
 
@@ -1339,11 +1339,11 @@ lsumsw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumsw1d_shift_loops,
     gufunc_lsumsw1d_shift_data,
     gufunc_lsumsw1d_shift_types,
-    2, # number of supported input types
-    7, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'lsumsw1d_shift', # function name
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'lsumsw1d_shift',  # function name
     r"""
     lsumsw1d_shift(l, m, k, kpar, a, r, eta)
 
@@ -1376,9 +1376,9 @@ lsumsw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex
-    """, # docstring
-    0, # unused
-    '(),(),(),(),(),(3),()->()' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),(),(3),()->()',  # signature
     )
 
 
@@ -1409,11 +1409,11 @@ lsumcw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumcw1d_shift_loops,
     gufunc_lsumcw1d_shift_data,
     gufunc_lsumcw1d_shift_types,
-    2, # number of supported input types
-    6, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'lsumcw1d_shift', # function name
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'lsumcw1d_shift',  # function name
     r"""
     lsumcw1d_shift(l, k, kpar, a, r, eta)
 
@@ -1445,9 +1445,9 @@ lsumcw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex
-    """, # docstring
-    0, # unused
-    '(),(),(),(),(2),()->()' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),(2),()->()',  # signature
     )
 
 
@@ -1478,11 +1478,11 @@ lsumcw1d = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumcw1d_loops,
     gufunc_lsumcw1d_data,
     gufunc_lsumcw1d_types,
-    2, # number of supported input types
-    6, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'lsumcw1d', # function name
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'lsumcw1d',  # function name
     r"""
     lsumcw1d(l, k, kpar, a, r, eta)
 
@@ -1514,9 +1514,9 @@ lsumcw1d = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex
-    """, # docstring
-    0, # unused
-    '(),(),(),(),(),()->()' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),(),()->()',  # signature
     )
 
 
@@ -1547,11 +1547,11 @@ lsumsw1d = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumsw1d_loops,
     gufunc_lsumsw1d_data,
     gufunc_lsumsw1d_types,
-    2, # number of supported input types
-    6, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'lsumsw1d', # function name
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'lsumsw1d',  # function name
     r"""
     lsumsw1d(l, k, kpar, a, r, eta)
 
@@ -1583,9 +1583,9 @@ lsumsw1d = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex
-    """, # docstring
-    0, # unused
-    '(),(),(),(),(),()->()' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),(),()->()',  # signature
     )
 
 
@@ -1616,11 +1616,11 @@ dsumcw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_dsumcw2d_loops,
     gufunc_dsumcw2d_data,
     gufunc_dsumcw2d_types,
-    2, # number of supported input types
-    6, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'dsumcw2d', # function name
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'dsumcw2d',  # function name
     r"""
     dsumcw2d(l, k, kpar, a, r, i)
 
@@ -1650,9 +1650,9 @@ dsumcw2d = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex
-    """, # docstring
-    0, # unused
-    '(),(),(2),(2,2),(2),()->()' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(2),(2,2),(2),()->()',  # signature
     )
 
 
@@ -1685,11 +1685,11 @@ dsumsw3d = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_dsumsw3d_loops,
     gufunc_dsumsw3d_data,
     gufunc_dsumsw3d_types,
-    2, # number of supported input types
-    7, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'dsumsw3d', # function name
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'dsumsw3d',  # function name
     r"""
     dsumsw3d(l, m, k, kpar, a, r, i)
 
@@ -1720,9 +1720,9 @@ dsumsw3d = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex
-    """, # docstring
-    0, # unused
-    '(),(),(),(3),(3,3),(3),()->()' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(3),(3,3),(3),()->()',  # signature
     )
 
 
@@ -1755,11 +1755,11 @@ dsumsw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_dsumsw2d_loops,
     gufunc_dsumsw2d_data,
     gufunc_dsumsw2d_types,
-    2, # number of supported input types
-    7, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'dsumsw2d', # function name
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'dsumsw2d',  # function name
     r"""
     dsumsw2d(l, m, k, kpar, a, r, i)
 
@@ -1790,9 +1790,9 @@ dsumsw2d = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex
-    """, # docstring
-    0, # unused
-    '(),(),(),(2),(2,2),(2),()->()' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(2),(2,2),(2),()->()',  # signature
     )
 
 
@@ -1825,11 +1825,11 @@ dsumsw2d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_dsumsw2d_shift_loops,
     gufunc_dsumsw2d_shift_data,
     gufunc_dsumsw2d_shift_types,
-    2, # number of supported input types
-    7, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'dsumsw2d_shift', # function name
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'dsumsw2d_shift',  # function name
     r"""
     dsumsw2d_shift(l, m, k, kpar, a, r, i)
 
@@ -1860,9 +1860,9 @@ dsumsw2d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex
-    """, # docstring
-    0, # unused
-    '(),(),(),(2),(2,2),(3),()->()' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(2),(2,2),(3),()->()',  # signature
     )
 
 
@@ -1895,11 +1895,11 @@ dsumsw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_dsumsw1d_shift_loops,
     gufunc_dsumsw1d_shift_data,
     gufunc_dsumsw1d_shift_types,
-    2, # number of supported input types
-    7, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'dsumsw1d_shift', # function name
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'dsumsw1d_shift',  # function name
     r"""
     dsumsw1d_shift(l, m, k, kpar, a, r, i)
 
@@ -1930,9 +1930,9 @@ dsumsw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex
-    """, # docstring
-    0, # unused
-    '(),(),(),(),(),(3),()->()' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),(),(3),()->()',  # signature
     )
 
 
@@ -1963,11 +1963,11 @@ dsumcw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_dsumcw1d_shift_loops,
     gufunc_dsumcw1d_shift_data,
     gufunc_dsumcw1d_shift_types,
-    2, # number of supported input types
-    6, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'dsumcw1d_shift', # function name
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'dsumcw1d_shift',  # function name
     r"""
     dsumcw1d_shift(l, k, kpar, a, r, i)
 
@@ -1997,9 +1997,9 @@ dsumcw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex
-    """, # docstring
-    0, # unused
-    '(),(),(),(),(2),()->()' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),(2),()->()',  # signature
     )
 
 
@@ -2030,11 +2030,11 @@ dsumcw1d = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_dsumcw1d_loops,
     gufunc_dsumcw1d_data,
     gufunc_dsumcw1d_types,
-    2, # number of supported input types
-    6, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'dsumcw1d', # function name
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'dsumcw1d',  # function name
     r"""
     dsumcw1d(l, k, kpar, a, r, i)
 
@@ -2064,9 +2064,9 @@ dsumcw1d = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex
-    """, # docstring
-    0, # unused
-    '(),(),(),(),(),()->()' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),(),()->()',  # signature
     )
 
 
@@ -2097,11 +2097,11 @@ dsumsw1d = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_dsumsw1d_loops,
     gufunc_dsumsw1d_data,
     gufunc_dsumsw1d_types,
-    2, # number of supported input types
-    6, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'dsumsw1d', # function name
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'dsumsw1d',  # function name
     r"""
     dsumsw1d(l, k, kpar, a, r, i)
 
@@ -2133,7 +2133,7 @@ dsumsw1d = np.PyUFunc_FromFuncAndDataAndSignature(
 
     Returns:
         complex
-    """, # docstring
-    0, # unused
-    '(),(),(),(),(),()->()' # signature
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),(),()->()',  # signature
     )

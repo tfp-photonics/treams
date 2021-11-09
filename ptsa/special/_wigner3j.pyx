@@ -112,7 +112,7 @@ cdef double _wigner3jforward(
             res = _initforwardj(j2, j1, m2, m1)
         elif j3 == m1 + m2:
             res = _initforwardm(j1, j2, m1, m2)
-        else: # j3 == -m1 - m2:
+        else:  # j3 == -m1 - m2:
             res = _initforwardm(j2, j1, -m2, -m1)
         cache[j3] = res
         return res
@@ -217,7 +217,7 @@ cdef double wigner3j(long j1, long j2, long j3, long m1, long m2, long m3) nogil
     if m1 + m2 + m3 != 0:
         return 0.0
 
-    cdef double *cache = <double*>malloc((j1 + j2 + 1) * sizeof(double)) # Size could be smaller by closely inspecting forward or backward recursion
+    cdef double *cache = <double*>malloc((j1 + j2 + 1) * sizeof(double))  # Size could be smaller by closely inspecting forward or backward recursion
     cdef long i
     for i in range(j1 + j2 + 1):
         cache[i] = <double>NAN

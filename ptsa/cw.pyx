@@ -708,7 +708,7 @@ def translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, eta=0):
     if ks.shape[0] == 2 and ks[0] == ks[1]:
         ks = ks[:1]
     if ks.shape[0] == 1 or ks[0] == ks[1]:
-        krhos = np.sqrt((ks[0] * ks[0] - out[1][:, None] * in_[1]).astype(complex)) # todo: out not necessary this only simplifies krhos[compute] below
+        krhos = np.sqrt((ks[0] * ks[0] - out[1][:, None] * in_[1]).astype(complex))  # todo: out not necessary this only simplifies krhos[compute] below
     else:
         krhos = np.sqrt((ks[in_[3]] * ks[in_[3]] - out[1][:, None] * in_[1]).astype(complex))
     krhos[krhos.imag < 0] = -krhos[krhos.imag < 0]

@@ -232,7 +232,7 @@ class TMatrixBase:
         return self
 
     def latticeinteract(self, kpar, a, eta=0):
-        """
+        r"""
         The T-matrix after interaction with the lattice.
 
         Returns

@@ -14,7 +14,7 @@ cdef long cube_next(long *r, long d, long n) nogil:
 cdef long cubeedge_next(long *r, long d, long n) nogil:
     """See the documentation of :func:`ptsa.lattice._misc.cubeedge_next`"""
     return _misc.cubeedge_next(r, d, n)
-cpdef diffr_orders_circle(real_t[:,:] b, double rmax):
+cpdef diffr_orders_circle(real_t[:, :] b, double rmax):
     """
     diffr_orders_circle(b, rmax)
 

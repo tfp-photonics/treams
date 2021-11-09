@@ -426,11 +426,11 @@ lpmv = np.PyUFunc_FromFuncAndData(
     ufunc_lpmv_loops,
     ufunc_lpmv_data,
     ufunc_lpmv_types,
-    2, # number of supported input types
-    3, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'lpmv', # function name
+    2,  # number of supported input types
+    3,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'lpmv',  # function name
     r"""
     lpmv(m, v, z)
 
@@ -464,8 +464,8 @@ lpmv = np.PyUFunc_FromFuncAndData(
 
     References:
         - `Wikipedia: Associated Legendre polynomials <https://en.wikipedia.org/wiki/Associated_Legendre_polynomials>`_
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -492,11 +492,11 @@ sph_harm = np.PyUFunc_FromFuncAndData(
     ufunc_sph_harm_loops,
     ufunc_sph_harm_data,
     ufunc_sph_harm_types,
-    2, # number of supported input types
-    4, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'sph_harm', # function name
+    2,  # number of supported input types
+    4,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'sph_harm',  # function name
     r"""
     sph_harm(m, l, phi, theta)
 
@@ -522,8 +522,8 @@ sph_harm = np.PyUFunc_FromFuncAndData(
 
     Returns:
         complex
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -546,11 +546,11 @@ incgamma = np.PyUFunc_FromFuncAndData(
     ufunc_incgamma_loops,
     ufunc_incgamma_data,
     ufunc_incgamma_types,
-    2, # number of supported input types
-    2, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'incgamma', # function name
+    2,  # number of supported input types
+    2,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'incgamma',  # function name
     r"""
     incgamma(l, z)
 
@@ -574,8 +574,8 @@ incgamma = np.PyUFunc_FromFuncAndData(
 
     References:
         - `DLMF: 8.2 <https://dlmf.nist.gov/8.2>`_
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -600,11 +600,11 @@ intkambe = np.PyUFunc_FromFuncAndData(
     ufunc_intkambe_loops,
     ufunc_intkambe_data,
     ufunc_intkambe_types,
-    2, # number of supported input types
-    3, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'intkambe', # function name
+    2,  # number of supported input types
+    3,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'intkambe',  # function name
     r"""
     intkambe(n, z, eta)
 
@@ -633,8 +633,8 @@ intkambe = np.PyUFunc_FromFuncAndData(
 
     References:
         .. [#] `K. Kambe, Zeitschrift Fuer Naturforschung A 23, 9 (1968). <https://doi.org/10.1515/zna-1968-0908>`_
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -661,11 +661,11 @@ wignerd = np.PyUFunc_FromFuncAndData(
     ufunc_wignerd_loops,
     ufunc_wignerd_data,
     ufunc_wignerd_types,
-    2, # number of supported input types
-    4, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'wignerd', # function name
+    2,  # number of supported input types
+    4,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'wignerd',  # function name
     r"""
     wignerd(l, m, k, theta)
 
@@ -692,8 +692,8 @@ wignerd = np.PyUFunc_FromFuncAndData(
     References:
         - `Wikipedia: Wigner D-matrix <https://en.wikipedia.org/wiki/Wigner_D-matrix>`_
         - `H. Dachsela, J. Chem. Phys. 142, 144115 (2006) <https://doi.org/10.1063/1.2194548>`_
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -724,11 +724,11 @@ wignerD = np.PyUFunc_FromFuncAndData(
     ufunc_wignerD_loops,
     ufunc_wignerD_data,
     ufunc_wignerD_types,
-    2, # number of supported input types
-    6, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'wignerD', # function name
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'wignerD',  # function name
     r"""
     wignerD(l, m, k, phi, theta, psi)
 
@@ -754,8 +754,8 @@ wignerD = np.PyUFunc_FromFuncAndData(
 
     References:
         - `Wikipedia: Wigner D-matrix <https://en.wikipedia.org/wiki/Wigner_D-matrix>`_
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -777,11 +777,11 @@ wigner3j = np.PyUFunc_FromFuncAndData(
     ufunc_wigner3j_loops,
     ufunc_wigner3j_data,
     ufunc_wigner3j_types,
-    2, # number of supported input types
-    6, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'wigner3j', # function name
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'wigner3j',  # function name
     r"""
     wigner3j(j1, j2, j3, m1, m2, m3)
 
@@ -808,8 +808,8 @@ wigner3j = np.PyUFunc_FromFuncAndData(
     References:
         - `Y.-L. Xu, J. Comput. Phys. 139, 137 - 165 (1998) <https://doi.org/10.1006/jcph.1997.5867>`_
         - `DLMF: 34.3 <https://dlmf.nist.gov/34.3>`_
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -832,11 +832,11 @@ jv_d = np.PyUFunc_FromFuncAndData(
     ufunc_jv_d_loops,
     ufunc_jv_d_data,
     ufunc_jv_d_types,
-    2, # number of supported input types
-    2, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'jv_d', # function name
+    2,  # number of supported input types
+    2,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'jv_d',  # function name
     r"""
     jv_d(v, z)
 
@@ -857,8 +857,8 @@ jv_d = np.PyUFunc_FromFuncAndData(
 
     References:
         - `DLMF: 10.6 <https://dlmf.nist.gov/10.6>`_
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -881,11 +881,11 @@ yv_d = np.PyUFunc_FromFuncAndData(
     ufunc_yv_d_loops,
     ufunc_yv_d_data,
     ufunc_yv_d_types,
-    2, # number of supported input types
-    2, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'yv_d', # function name
+    2,  # number of supported input types
+    2,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'yv_d',  # function name
     r"""
     yv_d(v, z)
 
@@ -906,8 +906,8 @@ yv_d = np.PyUFunc_FromFuncAndData(
 
     References:
         - `DLMF: 10.6 <https://dlmf.nist.gov/10.6>`_
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -925,11 +925,11 @@ spherical_hankel1 = np.PyUFunc_FromFuncAndData(
     ufunc_spherical_hankel1_loops,
     ufunc_spherical_hankel1_data,
     ufunc_spherical_hankel1_types,
-    1, # number of supported input types
-    2, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'spherical_hankel1', # function name
+    1,  # number of supported input types
+    2,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'spherical_hankel1',  # function name
     r"""
     spherical_hankel1(n, z)
 
@@ -952,8 +952,8 @@ spherical_hankel1 = np.PyUFunc_FromFuncAndData(
 
     References:
         - `DLMF: 10.47 <https://dlmf.nist.gov/10.47>`_
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -971,11 +971,11 @@ spherical_hankel2 = np.PyUFunc_FromFuncAndData(
     ufunc_spherical_hankel2_loops,
     ufunc_spherical_hankel2_data,
     ufunc_spherical_hankel2_types,
-    1, # number of supported input types
-    2, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'spherical_hankel2', # function name
+    1,  # number of supported input types
+    2,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'spherical_hankel2',  # function name
 
     r"""
     spherical_hankel2(n, z)
@@ -999,8 +999,8 @@ spherical_hankel2 = np.PyUFunc_FromFuncAndData(
 
     References:
         - `DLMF: 10.47 <https://dlmf.nist.gov/10.47>`_
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -1018,11 +1018,11 @@ spherical_hankel1_d = np.PyUFunc_FromFuncAndData(
     ufunc_spherical_hankel1_d_loops,
     ufunc_spherical_hankel1_d_data,
     ufunc_spherical_hankel1_d_types,
-    1, # number of supported input types
-    2, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'spherical_hankel1_d', # function name
+    1,  # number of supported input types
+    2,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'spherical_hankel1_d',  # function name
     r"""
     spherical_hankel1_d(n, z)
 
@@ -1043,8 +1043,8 @@ spherical_hankel1_d = np.PyUFunc_FromFuncAndData(
 
     References:
         - `DLMF: 10.51 <https://dlmf.nist.gov/10.51>`_
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -1062,11 +1062,11 @@ spherical_hankel2_d = np.PyUFunc_FromFuncAndData(
     ufunc_spherical_hankel2_d_loops,
     ufunc_spherical_hankel2_d_data,
     ufunc_spherical_hankel2_d_types,
-    1, # number of supported input types
-    2, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'spherical_hankel2_d', # function name
+    1,  # number of supported input types
+    2,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'spherical_hankel2_d',  # function name
     r"""
     spherical_hankel2_d(n, z)
 
@@ -1087,8 +1087,8 @@ spherical_hankel2_d = np.PyUFunc_FromFuncAndData(
 
     References:
         - `DLMF: 10.51 <https://dlmf.nist.gov/10.51>`_
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -1106,11 +1106,11 @@ hankel1_d = np.PyUFunc_FromFuncAndData(
     ufunc_hankel1_d_loops,
     ufunc_hankel1_d_data,
     ufunc_hankel1_d_types,
-    1, # number of supported input types
-    2, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'hankel1_d', # function name
+    1,  # number of supported input types
+    2,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'hankel1_d',  # function name
     r"""
     hankel1_d(v, z)
 
@@ -1131,8 +1131,8 @@ hankel1_d = np.PyUFunc_FromFuncAndData(
 
     References:
         - `DLMF: 10.6 <https://dlmf.nist.gov/10.6>`_
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -1150,11 +1150,11 @@ hankel2_d = np.PyUFunc_FromFuncAndData(
     ufunc_hankel2_d_loops,
     ufunc_hankel2_d_data,
     ufunc_hankel2_d_types,
-    1, # number of supported input types
-    2, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'hankel2_d', # function name
+    1,  # number of supported input types
+    2,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'hankel2_d',  # function name
     r"""
     hankel2_d(v, z)
 
@@ -1175,8 +1175,8 @@ hankel2_d = np.PyUFunc_FromFuncAndData(
 
     References:
         - `DLMF: 10.6 <https://dlmf.nist.gov/10.6>`_
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -1201,11 +1201,11 @@ pi_fun = np.PyUFunc_FromFuncAndData(
     ufunc_pi_fun_loops,
     ufunc_pi_fun_data,
     ufunc_pi_fun_types,
-    2, # number of supported input types
-    3, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'pi_fun', # function name
+    2,  # number of supported input types
+    3,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'pi_fun',  # function name
     r"""
     pi_fun(l, m, x)
 
@@ -1224,8 +1224,8 @@ pi_fun = np.PyUFunc_FromFuncAndData(
 
     Returns:
         float or complex
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -1250,11 +1250,11 @@ tau_fun = np.PyUFunc_FromFuncAndData(
     ufunc_tau_fun_loops,
     ufunc_tau_fun_data,
     ufunc_tau_fun_types,
-    2, # number of supported input types
-    3, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'tau_fun', # function name
+    2,  # number of supported input types
+    3,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'tau_fun',  # function name
     r"""
     tau_fun(l, m, x)
 
@@ -1273,8 +1273,8 @@ tau_fun = np.PyUFunc_FromFuncAndData(
 
     Returns:
         float or complex
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -1307,11 +1307,11 @@ tl_vsw_rA = np.PyUFunc_FromFuncAndData(
     ufunc_tl_vsw_rA_loops,
     ufunc_tl_vsw_rA_data,
     ufunc_tl_vsw_rA_types,
-    2, # number of supported input types
-    7, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'tl_vsw_rA', # function name
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'tl_vsw_rA',  # function name
     r"""
     tl_vsw_rA(lambda, mu, l, m, x, theta, phi)
 
@@ -1364,8 +1364,8 @@ tl_vsw_rA = np.PyUFunc_FromFuncAndData(
 
     References:
         .. [#] L. Tsang, J. A. Kong, and R. T. Shi, Theory of Microwave Remote Sensing (Wiley Series in Remote Sensing and Image Processing) (Wiley-Interscience, 1985).
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -1398,11 +1398,11 @@ tl_vsw_rB = np.PyUFunc_FromFuncAndData(
     ufunc_tl_vsw_rB_loops,
     ufunc_tl_vsw_rB_data,
     ufunc_tl_vsw_rB_types,
-    2, # number of supported input types
-    7, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'tl_vsw_rB', # function name
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'tl_vsw_rB',  # function name
     r"""
     tl_vsw_rB(lambda, mu, l, m, x, theta, phi)
 
@@ -1455,8 +1455,8 @@ tl_vsw_rB = np.PyUFunc_FromFuncAndData(
 
     References:
         .. [#] L. Tsang, J. A. Kong, and R. T. Shi, Theory of Microwave Remote Sensing (Wiley Series in Remote Sensing and Image Processing) (Wiley-Interscience, 1985).
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -1489,11 +1489,11 @@ tl_vsw_A = np.PyUFunc_FromFuncAndData(
     ufunc_tl_vsw_A_loops,
     ufunc_tl_vsw_A_data,
     ufunc_tl_vsw_A_types,
-    2, # number of supported input types
-    7, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'tl_vsw_A', # function name
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'tl_vsw_A',  # function name
     r"""
     tl_vsw_A(lambda, mu, l, m, x, theta, phi)
 
@@ -1545,8 +1545,8 @@ tl_vsw_A = np.PyUFunc_FromFuncAndData(
 
     References:
         .. [#] L. Tsang, J. A. Kong, and R. T. Shi, Theory of Microwave Remote Sensing (Wiley Series in Remote Sensing and Image Processing) (Wiley-Interscience, 1985).
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -1579,11 +1579,11 @@ tl_vsw_B = np.PyUFunc_FromFuncAndData(
     ufunc_tl_vsw_B_loops,
     ufunc_tl_vsw_B_data,
     ufunc_tl_vsw_B_types,
-    2, # number of supported input types
-    7, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'tl_vsw_B', # function name
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'tl_vsw_B',  # function name
     r"""
     tl_vsw_B(lambda, mu, l, m, x, theta, phi)
 
@@ -1635,8 +1635,8 @@ tl_vsw_B = np.PyUFunc_FromFuncAndData(
 
     References:
         .. [#] L. Tsang, J. A. Kong, and R. T. Shi, Theory of Microwave Remote Sensing (Wiley Series in Remote Sensing and Image Processing) (Wiley-Interscience, 1985).
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -1659,11 +1659,11 @@ tl_vcw = np.PyUFunc_FromFuncAndData(
     ufunc_tl_vcw_loops,
     ufunc_tl_vcw_data,
     ufunc_tl_vcw_types,
-    1, # number of supported input types
-    7, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'tl_vcw', # function name
+    1,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'tl_vcw',  # function name
     r"""
     tl_vcw(kz1, mu, kz2, m, k, xrho, phi, z)
 
@@ -1694,8 +1694,8 @@ tl_vcw = np.PyUFunc_FromFuncAndData(
 
     Returns:
         complex
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )
 
 
@@ -1728,11 +1728,11 @@ tl_vcw_r = np.PyUFunc_FromFuncAndData(
     ufunc_tl_vcw_r_loops,
     ufunc_tl_vcw_r_data,
     ufunc_tl_vcw_r_types,
-    2, # number of supported input types
-    7, # number of input args
-    1, # number of output args
-    0, # `identity` element, never mind this
-    'tl_vcw_r', # function name
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'tl_vcw_r',  # function name
     r"""
     tl_vcw_r(kz1, mu, kz2, m, k, xrho, phi, z)
 
@@ -1763,6 +1763,6 @@ tl_vcw_r = np.PyUFunc_FromFuncAndData(
 
     Returns:
         complex
-    """, # docstring
-    0 # unused
+    """,  # docstring
+    0,  # unused
     )

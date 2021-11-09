@@ -254,17 +254,16 @@ class QMatrix:
         """Change the basis"""
         if modes is None:
             modes = self.modes
-        mat = basischange(self.modes, modes)
+        mat = misc.basischange(self.modes, modes)
         self.q[0, 0, :, :] = mat.T @ self.q[0, 0, :, :] @ mat
         self.q[0, 1, :, :] = mat.T @ self.q[0, 1, :, :] @ mat
         self.q[1, 0, :, :] = mat.T @ self.q[1, 0, :, :] @ mat
         self.q[1, 1, :, :] = mat.T @ self.q[1, 1, :, :] @ mat
         self.modes = modes
         self.helicity = not self.helicity
-        ks = k0 * misc.refractive_index(epsilon, mu, kappa)
         self.kzs = np.zeros((modes.shape[0], 2))
-        self.kzs[0, :] = misc.wave_vec_z(modes[:, 0], modes[:, 1], ks[0, modes[:, 2]])
-        self.kzs[1, :] = misc.wave_vec_z(modes[:, 0], modes[:, 1], ks[1, modes[:, 2]])
+        self.kzs[0, :] = misc.wave_vec_z(modes[0], modes[1], self.ks[0, modes[2]])
+        self.kzs[1, :] = misc.wave_vec_z(modes[0], modes[1], self.ks[1, modes[2]])
         return self
 
     def helicitybasis(self, modes=None):

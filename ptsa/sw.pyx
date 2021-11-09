@@ -429,7 +429,6 @@ cdef double complex _ctranslate_periodic_p(long lambda_, long mu, long pol1, lon
     return _transl_B_lattice(lambda_, mu, l, m, dlms, step)
 
 
-
 cdef double complex _ctranslate_periodic_h(long lambda_, long mu, long pol1, long l, long m, long pol2, double complex *dlms, long step) nogil:
     if pol1 == pol2:
         return _transl_A_lattice(lambda_, mu, l, m, dlms, step) + (
