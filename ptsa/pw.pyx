@@ -6,10 +6,10 @@ Functions associated with plane waves
 .. autosummary::
    :toctree: generated/
 
-   flip_y_to_z
    to_cw
    to_sw
    translate
+   xyz_to_zxy
 
 """
 
