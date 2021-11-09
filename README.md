@@ -63,9 +63,10 @@ This last step makes the program available in the environment independently of t
 current folder. This is especially necessary for correctly building the documentation.
 
 ## Documentation
-The code is documented with docstrings and `sphinx`. Go into `docs` and run `make html`
-and you'll find a nice HTML-page at `docs/_build/index.html`. For this to work properly,
-install it using the development environment method.
+The code is documented with docstrings and `sphinx`. Run
+`sphinx-build -b html docs docs/_build/html` and you'll find a nice HTML-page at
+`docs/_build/index.html`. For this to work properly, install the program using the
+development environment method.
 
 ## Features
 
