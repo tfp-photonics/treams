@@ -55,13 +55,29 @@ current folder. This is especially necessary for correctly building the document
 Running tests
 =============
 
-Run tests with
+Tests can be run with
 
 .. code-block:: console
 
-   python -m pytest tests
+   python -m pytest
 
-.. todo:: coverage, slow tests, ...
+but for development a more fine grained selection can be made by passing a directory or
+file as an argument. Additionally, the option ``-k`` allows to define keywords when
+selecting test.
+
+Some tests in the module :ref:`ptsa-lattice` take a long time to finish and are
+therefore disabled by default. You can add them with the option ``--runslow``.
+
+If coverage reports should be included on can use the option ``--cov ptsa``. However,
+this will only report on the pure python files. To also get coverage reports for the
+cython part, it is necessary to compile it with linetracing support. This can be
+achieved by setting the environment variable ``CYTHON_COVERAGE``, for example with
+
+.. code-block:: console
+
+    CYTHON_COVERAGE=1 python setup.py develop
+
+Make sure that new C code files are generated and that those files are compiled.
 
 Building the documentation
 ==========================

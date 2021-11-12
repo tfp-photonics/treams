@@ -1,5 +1,5 @@
-ptsa.special package
-====================
+ptsa.special module
+===================
 
 .. automodule:: ptsa.special
    :no-members:
