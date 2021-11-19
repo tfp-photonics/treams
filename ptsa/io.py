@@ -235,33 +235,34 @@ def save_hdf5(
         )
         k0s = k0s[k0slice]
 
-    _write_hdf5(
-        savename,
-        id,
-        name,
-        description,
-        tms,
-        k0s,
-        epsilons,
-        mus,
-        kappas,
-        tmat_first.l,
-        tmat_first.m,
-        tmat_first.pol,
-        tmat_first.pidx,
-        positions,
-        unit_k0,
-        unit_length,
-        embedding_name,
-        embedding_description,
-        tmat_first.helicity,
-        frequency_axis,
-        mode,
-    )
+    with h5py.File(savename, mode) as f:
+        _write_hdf5(
+            f,
+            id,
+            name,
+            description,
+            tms,
+            k0s,
+            epsilons,
+            mus,
+            kappas,
+            tmat_first.l,
+            tmat_first.m,
+            tmat_first.pol,
+            tmat_first.pidx,
+            positions,
+            unit_k0,
+            unit_length,
+            embedding_name,
+            embedding_description,
+            tmat_first.helicity,
+            frequency_axis,
+            mode,
+        )
 
 
 def _write_hdf5(
-    savename,
+    f,
     id,
     name,
     description,
@@ -281,94 +282,92 @@ def _write_hdf5(
     embedding_description="",
     helicity=True,
     frequency_axis=None,
-    mode="w-",
 ):
-    with h5py.File(savename, mode) as f:
-        f.create_dataset("tmatrix", data=tms)
-        f["tmatrix"].attrs["id"] = id
-        f["tmatrix"].attrs["name"] = name
-        f["tmatrix"].attrs["description"] = description
+    f.create_dataset("tmatrix", data=tms)
+    f["tmatrix"].attrs["id"] = id
+    f["tmatrix"].attrs["name"] = name
+    f["tmatrix"].attrs["description"] = description
 
-        f.create_dataset("k0", data=k0s)
-        f["k0"].attrs["unit"] = unit_k0
+    f.create_dataset("k0", data=k0s)
+    f["k0"].attrs["unit"] = unit_k0
 
-        f.create_dataset("modes/l", data=ls)
-        f.create_dataset("modes/m", data=ms)
-        f.create_dataset(
-            "modes/polarization",
-            data=_translate_polarizations(pols, helicity=helicity),
-        )
-        f.create_dataset("modes/position_index", data=pidxs)
-        f["modes/position_index"].attrs[
-            "description"
-        ] = """
-            For local T-matrices each mode is associated with an origin. This index maps
-            the modes to an entry in positions.
-        """
-        f.create_dataset("modes/positions", data=positions)
-        f["modes/positions"].attrs[
-            "description"
-        ] = """
-            The postions of the origins for a local T-matrix.
-        """
-        f["modes/positions"].attrs["unit"] = unit_length
+    f.create_dataset("modes/l", data=ls)
+    f.create_dataset("modes/m", data=ms)
+    f.create_dataset(
+        "modes/polarization",
+        data=_translate_polarizations(pols, helicity=helicity),
+    )
+    f.create_dataset("modes/position_index", data=pidxs)
+    f["modes/position_index"].attrs[
+        "description"
+    ] = """
+        For local T-matrices each mode is associated with an origin. This index maps
+        the modes to an entry in positions.
+    """
+    f.create_dataset("modes/positions", data=positions)
+    f["modes/positions"].attrs[
+        "description"
+    ] = """
+        The postions of the origins for a local T-matrix.
+    """
+    f["modes/positions"].attrs["unit"] = unit_length
 
-        f["modes/l"].make_scale("l")
-        f["modes/m"].make_scale("m")
-        f["modes/polarization"].make_scale("polarization")
-        f["modes/position_index"].make_scale("position_index")
+    f["modes/l"].make_scale("l")
+    f["modes/m"].make_scale("m")
+    f["modes/polarization"].make_scale("polarization")
+    f["modes/position_index"].make_scale("position_index")
 
-        ndims = len(f["tmatrix"].dims)
-        f["tmatrix"].dims[ndims - 2].label = "Scattered modes"
-        f["tmatrix"].dims[ndims - 2].attach_scale(f["modes/l"])
-        f["tmatrix"].dims[ndims - 2].attach_scale(f["modes/m"])
-        f["tmatrix"].dims[ndims - 2].attach_scale(f["modes/polarization"])
-        f["tmatrix"].dims[ndims - 2].attach_scale(f["modes/position_index"])
-        f["tmatrix"].dims[ndims - 1].label = "Incident modes"
-        f["tmatrix"].dims[ndims - 1].attach_scale(f["modes/l"])
-        f["tmatrix"].dims[ndims - 1].attach_scale(f["modes/m"])
-        f["tmatrix"].dims[ndims - 1].attach_scale(f["modes/polarization"])
-        f["tmatrix"].dims[ndims - 1].attach_scale(f["modes/position_index"])
+    ndims = len(f["tmatrix"].dims)
+    f["tmatrix"].dims[ndims - 2].label = "Scattered modes"
+    f["tmatrix"].dims[ndims - 2].attach_scale(f["modes/l"])
+    f["tmatrix"].dims[ndims - 2].attach_scale(f["modes/m"])
+    f["tmatrix"].dims[ndims - 2].attach_scale(f["modes/polarization"])
+    f["tmatrix"].dims[ndims - 2].attach_scale(f["modes/position_index"])
+    f["tmatrix"].dims[ndims - 1].label = "Incident modes"
+    f["tmatrix"].dims[ndims - 1].attach_scale(f["modes/l"])
+    f["tmatrix"].dims[ndims - 1].attach_scale(f["modes/m"])
+    f["tmatrix"].dims[ndims - 1].attach_scale(f["modes/polarization"])
+    f["tmatrix"].dims[ndims - 1].attach_scale(f["modes/position_index"])
 
-        embedding_path = "materials/" + embedding_name.lower()
-        f.create_group(embedding_path)
-        f[embedding_path].attrs["name"] = embedding_name
-        f[embedding_path].attrs["description"] = embedding_description
-        f.create_dataset(embedding_path + "/relative_permittivity", data=epsilons)
-        f.create_dataset(embedding_path + "/relative_permeability", data=mus)
-        if np.any(kappas != 0):
-            f.create_dataset(embedding_path + "/chirality", data=kappas)
+    embedding_path = "materials/" + embedding_name.lower()
+    f.create_group(embedding_path)
+    f[embedding_path].attrs["name"] = embedding_name
+    f[embedding_path].attrs["description"] = embedding_description
+    f.create_dataset(embedding_path + "/relative_permittivity", data=epsilons)
+    f.create_dataset(embedding_path + "/relative_permeability", data=mus)
+    if np.any(kappas != 0):
+        f.create_dataset(embedding_path + "/chirality", data=kappas)
 
-        f["embedding"] = h5py.SoftLink("/" + embedding_path)
+    f["embedding"] = h5py.SoftLink("/" + embedding_path)
 
-        if frequency_axis is not None:
-            f["k0"].make_scale("k0")
-            f["tmatrix"].dims[frequency_axis].label = "Wave number"
-            f["tmatrix"].dims[frequency_axis].attach_scale(f["k0"])
-            if np.ndim(epsilons) != 0:
-                f[embedding_path + "/relative_permittivity"].dims[
-                    frequency_axis
-                ].label = "Wave number"
-                f[embedding_path + "/relative_permittivity"].dims[
-                    frequency_axis
-                ].attach_scale(f["k0"])
-            if np.ndim(mus) != 0:
-                f[embedding_path + "/relative_permeability"].dims[
-                    frequency_axis
-                ].label = "Wave number"
-                f[embedding_path + "/relative_permeability"].dims[
-                    frequency_axis
-                ].attach_scale(f["k0"])
-            if np.ndim(kappas) != 0 and np.any(kappas != 0):
-                f[embedding_path + "/chirality"].dims[
-                    frequency_axis
-                ].label = "Wave number"
-                f[embedding_path + "/chirality"].dims[frequency_axis].attach_scale(
-                    f["k0"]
-                )
-            if np.ndim(positions) > 2:
-                f["modes/positions"].dims[frequency_axis].label = "Wave number"
-                f["modes/positions"].dims[frequency_axis].attach_scale(f["k0"])
+    if frequency_axis is not None:
+        f["k0"].make_scale("k0")
+        f["tmatrix"].dims[frequency_axis].label = "Wave number"
+        f["tmatrix"].dims[frequency_axis].attach_scale(f["k0"])
+        if np.ndim(epsilons) != 0:
+            f[embedding_path + "/relative_permittivity"].dims[
+                frequency_axis
+            ].label = "Wave number"
+            f[embedding_path + "/relative_permittivity"].dims[
+                frequency_axis
+            ].attach_scale(f["k0"])
+        if np.ndim(mus) != 0:
+            f[embedding_path + "/relative_permeability"].dims[
+                frequency_axis
+            ].label = "Wave number"
+            f[embedding_path + "/relative_permeability"].dims[
+                frequency_axis
+            ].attach_scale(f["k0"])
+        if np.ndim(kappas) != 0 and np.any(kappas != 0):
+            f[embedding_path + "/chirality"].dims[
+                frequency_axis
+            ].label = "Wave number"
+            f[embedding_path + "/chirality"].dims[frequency_axis].attach_scale(
+                f["k0"]
+            )
+        if np.ndim(positions) > 2:
+            f["modes/positions"].dims[frequency_axis].label = "Wave number"
+            f["modes/positions"].dims[frequency_axis].attach_scale(f["k0"])
 
 
 def _convert_to_k0(x, xtype, xunit, k0unit=r"nm^{-1}"):
