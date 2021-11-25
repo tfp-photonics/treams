@@ -48,7 +48,7 @@ cdef double complex _redincgamma(double n, double complex z) nogil:
         raise ValueError("l is not integer of half-integer")
     cdef double singularity = 0.5e-3  # Value of the singularity: smaller is stronger
     cdef double complex res
-    if z == 0:
+    if creal(z) * creal(z) + cimag(z) * cimag(z) < 1e-12:
         if twicen > 2:
             raise ValueError("l must not be larger than one for z equal zero")
         if twicen == 0:
@@ -972,7 +972,7 @@ cdef double complex _recsw2d_shift(long l, long m, number_t k, double *kpar, dou
 cdef double complex lsumsw2d_shift(long l, long m, number_t k, double *kpar, double *a, double *r, number_t eta) nogil:
     """See the documentation of :func:`ptsa.lattice.lsumsw2d_shift`"""
     if eta == 0.0:
-        eta = sqrtd(2 * pi / _misc.area(a, a + 2)) / k
+        eta = sqrtd(2 * pi / fabs(_misc.area(a, a + 2))) / k
     if fabs(r[2]) < 1e-100:
         return lsumsw2d(l, m, k, kpar, a, r, eta)
     cdef double b[4]
