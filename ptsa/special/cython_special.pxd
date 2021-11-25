@@ -72,8 +72,8 @@ cdef void vsw_rM(long l, long m, number_t kr, number_t theta, double phi, double
 cdef void vsw_rN(long l, long m, number_t kr, number_t theta, double phi, double complex *out) nogil
 
 
-cpdef number_t wignerd(long l, long m, long k, number_t theta) nogil
-cpdef double complex wignerD(long l, long m, long k, double phi, number_t theta, double psi) nogil
+cpdef number_t wignersmalld(long l, long m, long k, number_t theta) nogil
+cpdef double complex wignerd(long l, long m, long k, double phi, number_t theta, double psi) nogil
 
 
 cpdef double wigner3j(long j1, long j2, long j3, long m1, long m2, long m3) nogil

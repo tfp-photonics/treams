@@ -271,17 +271,17 @@ cpdef double wigner3j(long j1, long j2, long j3, long m1, long m2, long m3) nogi
     return _wigner3j.wigner3j(j1, j2, j3, m1, m2, m3)
 
 
-cpdef number_t wignerd(long l, long m, long k, number_t theta) nogil:
+cpdef number_t wignersmalld(long l, long m, long k, number_t theta) nogil:
     """
-    wignerd(l, m, k, theta)
+    wignersmalld(l, m, k, theta)
+
+    See the documentation for :func:`ptsa.special.wignersmalld`
+    """
+    return _wignerd.wignersmalld(l, m, k, theta)
+cpdef double complex wignerd(long l, long m, long k, double phi, number_t theta, double psi) nogil:
+    """
+    wignerd(l, m, k, phi, theta, psi)
 
     See the documentation for :func:`ptsa.special.wignerd`
     """
-    return _wignerd.wignerd(l, m, k, theta)
-cpdef double complex wignerD(long l, long m, long k, double phi, number_t theta, double psi) nogil:
-    """
-    wignerD(l, m, k, phi, theta, psi)
-
-    See the documentation for :func:`ptsa.special.wignerD`
-    """
-    return _wignerd.wignerD(l, m, k, phi, theta, psi)
+    return _wignerd.wignerd(l, m, k, phi, theta, psi)

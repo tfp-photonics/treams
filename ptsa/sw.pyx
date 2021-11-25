@@ -298,7 +298,7 @@ cdef double complex _crotate(long lambda_, long mu, long pol1, long l, long m, l
     It is intended to be used to construct the rotation matrix manually.
     """
     if lambda_ == l and (pol1 == pol2 == 0 or pol1 == pol2 == 1):
-        return cs.wignerD(l, mu, m, phi, theta, psi)
+        return cs.wignerd(l, mu, m, phi, theta, psi)
     if (pol1 == 0 or pol1 == 1) and (pol2 == 0 or pol2 == 1):
         return 0
     raise ValueError('TODO')
@@ -341,7 +341,7 @@ def rotate(lambda_, mu, pol, l, m, qol, phi, theta=0, psi=0):
 
     Rotation coefficient for spherical modes
 
-    Returns the correct rotation coefficient from :func:`ptsa.special.wignerD`. The
+    Returns the correct rotation coefficient from :func:`ptsa.special.wignerd`. The
     angles are given as Euler angles in `z-y-z`-convention. In the intrinsic (object
     fixed coordinate system) convention the rotations are applied in the order phi
     first, theta second, psi third. In the extrinsic (global or reference frame fixed

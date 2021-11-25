@@ -79,8 +79,8 @@ Wigner d- and Wigner D-matrix elements
 .. autosummary::
    :toctree: generated/
 
+   wignersmalld
    wignerd
-   wignerD
 
 
 Wigner 3j-symbols

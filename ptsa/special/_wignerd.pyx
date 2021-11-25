@@ -122,7 +122,7 @@ cdef bint _wignerd_f_or_b(long l, long m, long k) nogil:
     return forward >= backward
 
 
-cdef number_t wignerd(long l, long m, long k, number_t theta) nogil:
+cdef number_t wignersmalld(long l, long m, long k, number_t theta) nogil:
     r"""
     Wigner-(small)-d symbol :math:`d^l_{mk}(\theta)` calculated via forward or backward
     recursion for integer arguments. The decision is based on the number of
@@ -204,7 +204,7 @@ cdef number_t wignerd(long l, long m, long k, number_t theta) nogil:
     return pref_shift * pref_swap * res
 
 
-cdef double complex wignerD(
+cdef double complex wignerd(
     long l,
     long m,
     long k,
@@ -235,4 +235,4 @@ cdef double complex wignerD(
     References:
         - `Wikipedia: Wigner D-matrix <https://en.wikipedia.org/wiki/Wigner_D-matrix>`_
     """
-    return cexp(-1j * (phi * m + psi * k)) * wignerd(l, m, k, theta)
+    return cexp(-1j * (phi * m + psi * k)) * wignersmalld(l, m, k, theta)

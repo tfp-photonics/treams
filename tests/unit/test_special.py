@@ -364,27 +364,27 @@ class TestWignerD:
     @pytest.mark.skip
     def test_error(self):
         with pytest.raises(ValueError):
-            sc.wignerd(-1, 0, 0, 0)
+            sc.wignersmalld(-1, 0, 0, 0)
     def test_warning(self):
-        assert sc.wignerd(1, 0, 2, 0) == 0
+        assert sc.wignersmalld(1, 0, 2, 0) == 0
     def test_1(self):
-        assert sc.wignerd(1, 0, 0, 0) == 1
+        assert sc.wignersmalld(1, 0, 0, 0) == 1
     def test_2(self):
-        assert sc.wignerd(1, 1, 0, 2*np.pi) == 0
+        assert sc.wignersmalld(1, 1, 0, 2*np.pi) == 0
     def test_3(self):
-        assert sc.wignerd(2, 1, -1, np.pi) == -1
+        assert sc.wignersmalld(2, 1, -1, np.pi) == -1
     def test_4(self):
-        assert sc.wignerd(2, 1, 0, 2*np.pi) == 0
+        assert sc.wignersmalld(2, 1, 0, 2*np.pi) == 0
     def test_5(self):
-        assert isclose(sc.wignerd(4, 3, 2, 1), -0.07526360176530718)
+        assert isclose(sc.wignersmalld(4, 3, 2, 1), -0.07526360176530718)
     def test_6(self):
-        assert isclose(sc.wignerd(16, 8, -4, 2), -0.06370185806824848)
+        assert isclose(sc.wignersmalld(16, 8, -4, 2), -0.06370185806824848)
     def test_7(self):
-        assert isclose(sc.wignerd(15, -7, -4, 4), -0.3126274668164052)
+        assert isclose(sc.wignersmalld(15, -7, -4, 4), -0.3126274668164052)
     def test_8(self):
-        assert isclose(sc.wignerd(2, -1, 1, 6), 0.05815816395893696)
+        assert isclose(sc.wignersmalld(2, -1, 1, 6), 0.05815816395893696)
     def test_9(self):
-        assert isclose(sc.wignerD(4, 2, 3, 1., 2., 3.), -0.0011756123083512-0.2656305961739311j)
+        assert isclose(sc.wignerd(4, 2, 3, 1., 2., 3.), -0.0011756123083512-0.2656305961739311j)
 
 
 class TestPiFun:

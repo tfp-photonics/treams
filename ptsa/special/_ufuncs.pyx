@@ -27,7 +27,7 @@ __all__ = [
     'tl_vcw',
     'tl_vcw_r',
     'wignerd',
-    'wignerD',
+    'wignersmalld',
     'wigner3j',
     'yv_d',
 ]
@@ -638,36 +638,36 @@ intkambe = np.PyUFunc_FromFuncAndData(
     )
 
 
-cdef np.PyUFuncGenericFunction ufunc_wignerd_loops[2]
-cdef void *ufunc_wignerd_data[2]
-cdef char ufunc_wignerd_types[10]
+cdef np.PyUFuncGenericFunction ufunc_wignersmalld_loops[2]
+cdef void *ufunc_wignersmalld_data[2]
+cdef char ufunc_wignersmalld_types[10]
 
-ufunc_wignerd_loops[0] = <np.PyUFuncGenericFunction>loop_d_llld
-ufunc_wignerd_loops[1] = <np.PyUFuncGenericFunction>loop_D_lllD
-ufunc_wignerd_types[0] = <char>np.NPY_LONG
-ufunc_wignerd_types[1] = <char>np.NPY_LONG
-ufunc_wignerd_types[2] = <char>np.NPY_LONG
-ufunc_wignerd_types[3] = <char>np.NPY_DOUBLE
-ufunc_wignerd_types[4] = <char>np.NPY_DOUBLE
-ufunc_wignerd_types[5] = <char>np.NPY_LONG
-ufunc_wignerd_types[6] = <char>np.NPY_LONG
-ufunc_wignerd_types[7] = <char>np.NPY_LONG
-ufunc_wignerd_types[8] = <char>np.NPY_CDOUBLE
-ufunc_wignerd_types[9] = <char>np.NPY_CDOUBLE
-ufunc_wignerd_data[0] = <void*>_wignerd.wignerd[double]
-ufunc_wignerd_data[1] = <void*>_wignerd.wignerd[double_complex]
+ufunc_wignersmalld_loops[0] = <np.PyUFuncGenericFunction>loop_d_llld
+ufunc_wignersmalld_loops[1] = <np.PyUFuncGenericFunction>loop_D_lllD
+ufunc_wignersmalld_types[0] = <char>np.NPY_LONG
+ufunc_wignersmalld_types[1] = <char>np.NPY_LONG
+ufunc_wignersmalld_types[2] = <char>np.NPY_LONG
+ufunc_wignersmalld_types[3] = <char>np.NPY_DOUBLE
+ufunc_wignersmalld_types[4] = <char>np.NPY_DOUBLE
+ufunc_wignersmalld_types[5] = <char>np.NPY_LONG
+ufunc_wignersmalld_types[6] = <char>np.NPY_LONG
+ufunc_wignersmalld_types[7] = <char>np.NPY_LONG
+ufunc_wignersmalld_types[8] = <char>np.NPY_CDOUBLE
+ufunc_wignersmalld_types[9] = <char>np.NPY_CDOUBLE
+ufunc_wignersmalld_data[0] = <void*>_wignerd.wignersmalld[double]
+ufunc_wignersmalld_data[1] = <void*>_wignerd.wignersmalld[double_complex]
 
-wignerd = np.PyUFunc_FromFuncAndData(
-    ufunc_wignerd_loops,
-    ufunc_wignerd_data,
-    ufunc_wignerd_types,
+wignersmalld = np.PyUFunc_FromFuncAndData(
+    ufunc_wignersmalld_loops,
+    ufunc_wignersmalld_data,
+    ufunc_wignersmalld_types,
     2,  # number of supported input types
     4,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'wignerd',  # function name
+    'wignersmalld',  # function name
     r"""
-    wignerd(l, m, k, theta)
+    wignersmalld(l, m, k, theta)
 
     Wigner-d matrix element
 
@@ -717,10 +717,10 @@ ufunc_wignerD_types[10] = <char>np.NPY_CDOUBLE
 ufunc_wignerD_types[11] = <char>np.NPY_CDOUBLE
 ufunc_wignerD_types[12] = <char>np.NPY_CDOUBLE
 ufunc_wignerD_types[13] = <char>np.NPY_CDOUBLE
-ufunc_wignerD_data[0] = <void*>_wignerd.wignerD[double]
-ufunc_wignerD_data[1] = <void*>_wignerd.wignerD[double_complex]
+ufunc_wignerD_data[0] = <void*>_wignerd.wignerd[double]
+ufunc_wignerD_data[1] = <void*>_wignerd.wignerd[double_complex]
 
-wignerD = np.PyUFunc_FromFuncAndData(
+wignerd = np.PyUFunc_FromFuncAndData(
     ufunc_wignerD_loops,
     ufunc_wignerD_data,
     ufunc_wignerD_types,
@@ -728,9 +728,9 @@ wignerD = np.PyUFunc_FromFuncAndData(
     6,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'wignerD',  # function name
+    'wignerd',  # function name
     r"""
-    wignerD(l, m, k, phi, theta, psi)
+    wignerd(l, m, k, phi, theta, psi)
 
     Wigner-D matrix element
 
@@ -738,7 +738,7 @@ wignerD = np.PyUFunc_FromFuncAndData(
 
         D^l_{mk}(\varphi, \theta, \psi) = \mathrm e^{-\mathrm i m \varphi} d^l_{mk}(\theta) \mathrm e^{-\mathrm i k \psi}
 
-    See also :func:`ptsa.special.wignerd`.
+    See also :func:`ptsa.special.wignersmalld`.
     Note:
         Mathematica uses a different sign convention, which means taking the negative
         angles.
@@ -1343,7 +1343,7 @@ tl_vsw_rA = np.PyUFunc_FromFuncAndData(
 
        \gamma_{lm} = \mathrm i \sqrt{\frac{2l + 1}{4\pi l (l + 1)}\frac{(l - m)!}{(l + m)!}}
 
-    and the Winger 3j-symbols (:func:`ptsa.special.wigner3j`) and the spherical Bessel
+    and the Wigner 3j-symbols (:func:`ptsa.special.wigner3j`) and the spherical Bessel
     functions. The summation runs over all
     :math:`p \in \{\lambda + l, \lambda + l - 2, \dots, \max(|\lambda - l|, |\mu - m|)\}`.
 
@@ -1434,7 +1434,7 @@ tl_vsw_rB = np.PyUFunc_FromFuncAndData(
 
        \gamma_{lm} = \mathrm i \sqrt{\frac{2l + 1}{4\pi l (l + 1)}\frac{(l - m)!}{(l + m)!}}
 
-    and the Winger 3j-symbols (:func:`ptsa.special.wigner3j`) and the spherical Bessel
+    and the Wigner 3j-symbols (:func:`ptsa.special.wigner3j`) and the spherical Bessel
     functions. The summation runs over all
     :math:`p \in \{\lambda + l - 1, \lambda + l - 3, \dots, \max(|\lambda - l| + 1, |\mu - m|)\}`.
 
@@ -1525,7 +1525,7 @@ tl_vsw_A = np.PyUFunc_FromFuncAndData(
 
        \gamma_{lm} = \mathrm i \sqrt{\frac{2l + 1}{4\pi l (l + 1)}\frac{(l - m)!}{(l + m)!}}
 
-    and the Winger 3j-symbols (:func:`ptsa.special.wigner3j`) and the spherical Hankel
+    and the Wigner 3j-symbols (:func:`ptsa.special.wigner3j`) and the spherical Hankel
     functions. The summation runs over all
     :math:`p \in \{\lambda + l, \lambda + l - 2, \dots, \max(|\lambda - l|, |\mu - m|)\}`.
 
