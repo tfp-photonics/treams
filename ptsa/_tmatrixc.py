@@ -63,7 +63,7 @@ class TMatrixC(TMatrixBase):
         super().__init__(tmat, k0, epsilon, mu, kappa, positions, helicity, modes)
         if modes is None:
             modes = TMatrixC.defaultmodes(
-                TMatrixC.defaultlmax(self.t.shape[0], self.positions.shape[0]),
+                TMatrixC.defaultmmax(self.t.shape[0], self.positions.shape[0]),
                 self.positions.shape[0],
             )
         modes = self._check_modes(modes)
