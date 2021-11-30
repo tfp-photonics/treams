@@ -9,7 +9,14 @@ from ptsa.special._misc cimport cos, double_complex, minusonepow, pow, sqrt
 from ptsa.special._waves cimport clpmv
 
 
+# The preprocessor directives correct the missing macro in mingw-w64 by
+# substituting it with a corresponding function that is defined by cython anyway
 cdef extern from "<complex.h>" nogil:
+    """
+    #ifndef CMPLX
+    #define CMPLX __pyx_t_double_complex_from_parts
+    #endif
+    """
     double complex cexp(double complex z)
     double creal(double complex z)
     double cimag(double complex z)

@@ -12,7 +12,14 @@ cimport ptsa.special.cython_special as sc
 from ptsa.special._misc cimport SQPI, array_zero, exp, ipow, min, minusonepow, pow, sqrt
 
 
+# The preprocessor directives correct the missing macro in mingw-w64 by
+# substituting it with a corresponding function that is defined by cython anyway
 cdef extern from "<complex.h>" nogil:
+    """
+    #ifndef CMPLX
+    #define CMPLX __pyx_t_double_complex_from_parts
+    #endif
+    """
     double complex CMPLX(double, double)
     double cabs(double complex z)
     double complex cexp(double complex z)
