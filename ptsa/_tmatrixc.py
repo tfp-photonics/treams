@@ -233,14 +233,14 @@ class TMatrixC(TMatrixBase):
             rvec = np.reshape(rvec, (1, -1))
         matin = cw.translate(
             *(m[:, None] for m in self.modes),
-            *modes,
+            *modes[1:],
             self.krho[:, None] * rs[0, 0],
             rs[0, 1],
             rs[0, 2],
             False,
         )
         matout = cw.translate(
-            *(m[:, None] for m in modes),
+            *(m[:, None] for m in modes[1:]),
             *self.modes,
             self.krho * rs[0, 0],
             rs[0, 1] + np.pi,
