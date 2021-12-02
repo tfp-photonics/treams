@@ -5,7 +5,7 @@ scipy
 cython
 
 ## docs
-sphinx
+# sphinx
 
 ## test and lint
 # pytest
