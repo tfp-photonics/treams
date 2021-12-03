@@ -80,15 +80,6 @@ else:
     extensions = no_cythonize(extensions)
 
 setup(
-    name="ptsa",
-    packages=["ptsa", "ptsa.special", "ptsa.lattice"],
-    install_requires=["numpy", "scipy>=1.6"],
-    extras_require={"test": ["pytest", "pytest-cov"], "docs": ["sphinx"]},
     ext_modules=extensions,
-    package_data={
-        "ptsa.lattice": ["cython_lattice.pxd"],
-        "ptsa.special": ["cython_special.pxd"],
-    },
-    zip_safe=False,
     cmdclass={"build_ext": build_ext},
 )
