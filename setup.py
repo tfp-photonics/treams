@@ -81,7 +81,6 @@ else:
 
 setup(
     name="ptsa",
-    version="0.1",
     packages=["ptsa", "ptsa.special", "ptsa.lattice"],
     install_requires=["numpy", "scipy>=1.6"],
     extras_require={"test": ["pytest", "pytest-cov"], "docs": ["sphinx"]},
