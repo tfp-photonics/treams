@@ -87,8 +87,9 @@ setup(
     extras_require={"test": ["pytest", "pytest-cov"], "docs": ["sphinx"]},
     ext_modules=extensions,
     package_data={
-        "ptsa.lattice": ["ptsa/lattice/cython_lattice.pxd"],
-        "ptsa.special": ["ptsa/special/cython_special.pxd"],
+        "ptsa.lattice": ["cython_lattice.pxd"],
+        "ptsa.special": ["cython_special.pxd"],
     },
+    zip_safe=False,
     cmdclass={"build_ext": build_ext},
 )
