@@ -3,24 +3,24 @@ import os
 
 import numpy as np
 from setuptools import Extension, setup
+from setuptools.command.build_ext import build_ext as _build_ext
 
 try:
     from Cython.Build import cythonize
 except ImportError:
     cythonize = None
 
-from setuptools.command.build_ext import build_ext as build_ext_orig
 
 if os.name == "nt":
 
-    class build_ext(build_ext_orig):
+    class build_ext(_build_ext):
         def finalize_options(self):
             super().finalize_options()
             self.compiler = "mingw32"
 
 
 else:
-    build_ext = build_ext_orig
+    build_ext = _build_ext
 
 # https://cython.readthedocs.io/en/latest/src/userguide/source_files_and_compilation.html#distributing-cython-modules
 def no_cythonize(extensions, **_ignore):
@@ -67,7 +67,7 @@ extension_names = [
     "ptsa.special.cython_special",
 ]
 extensions = [
-    Extension(name, [f"{name.replace('.', '/')}.pyx"], **keys,)
+    Extension(name, [f"{name.replace('.', '/')}.pyx"], **keys)
     for name in extension_names
 ]
 
@@ -79,7 +79,4 @@ if cythonize is not None:
 else:
     extensions = no_cythonize(extensions)
 
-setup(
-    ext_modules=extensions,
-    cmdclass={"build_ext": build_ext},
-)
+setup(ext_modules=extensions, cmdclass={"build_ext": build_ext})
