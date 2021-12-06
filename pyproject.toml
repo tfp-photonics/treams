@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "wheel", "Cython", "numpy", "scipy", "setuptools_scm>=6.2"]
+requires = ["setuptools", "wheel", "Cython", "numpy", "scipy>=1.6", "setuptools_scm>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [tool.isort]
@@ -7,4 +7,3 @@ profile = "black"
 multi_line_output = 3
 
 [tool.setuptools_scm]
-
