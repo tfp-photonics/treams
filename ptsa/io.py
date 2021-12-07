@@ -5,13 +5,14 @@ Loading and storing data
 
 Most functions rely on at least one of the external packages `h5py` or `gmsh`.
 
+.. rubric:: Functions
+
 .. autosummary::
    :toctree: generated/
 
    mesh_spheres
    save_hdf5
    load_hdf5
-
 """
 
 import importlib.metadata
