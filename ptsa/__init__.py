@@ -32,6 +32,14 @@ higher-level classes.
    ptsa.cw
    ptsa.pw
 
+This module is for loading and storing data in HDF5 files and also for creating meshes
+of sphere ensembles.
+
+.. toctree::
+   :maxdepth: 1
+
+   ptsa.io
+
 Finally, two modules for calculating scattering coefficients and doing miscellaneous
 tasks.
 
