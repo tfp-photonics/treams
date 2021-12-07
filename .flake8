@@ -1,8 +1,0 @@
-[flake8]
-filename = *.py,*.pyx,*.pxd
-max-line-length = 88
-select = C,E,F,W,B,B950
-extend-ignore = E203, E501
-per-file-ignores =
-    *.pyx:E211,E225,E227
-    *.pxd:E211,E225,E227

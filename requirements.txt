@@ -1,11 +1,11 @@
 numpy
-scipy
+scipy>=1.6
 
 ## build
 cython
 
 ## docs
-sphinx
+# sphinx
 
 ## test and lint
 # pytest
