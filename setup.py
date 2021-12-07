@@ -13,14 +13,31 @@ except ImportError:
 
 if os.name == "nt":
 
+    link_args = [
+        "-static-libgcc",
+        "-static-libstdc++",
+        "-Wl,-Bstatic,--whole-archive",
+        "-lwinpthread",
+        "-Wl,--no-whole-archive",
+    ]
+
     class build_ext(_build_ext):
+        # Enforce the gcc compiler under windows
         def finalize_options(self):
             super().finalize_options()
             self.compiler = "mingw32"
 
+        # https://cython.readthedocs.io/en/latest/src/tutorial/appendix.html
+        def build_extensions(self):
+            if self.compiler.compiler_type == "mingw32":
+                for e in self.extensions:
+                    e.extra_link_args = link_args
+            super().build_extensions()
+
 
 else:
     build_ext = _build_ext
+
 
 # https://cython.readthedocs.io/en/latest/src/userguide/source_files_and_compilation.html#distributing-cython-modules
 def no_cythonize(extensions, **_ignore):
