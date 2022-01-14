@@ -164,14 +164,16 @@ def mesh_spheres(radii, positions, model, meshsize=None, meshsize_boundary=None)
         tag = i + 1
         model.occ.addSphere(*position, radius, tag)
         spheres.append((3, tag))
+        model.occ.synchronize()
         model.addPhysicalGroup(3, [i + 1], tag)
         # Add surfaces for other mesh formats like stl, ...
         model.addPhysicalGroup(2, [i + 1], tag)
 
-    model.mesh.setSize(model.getEntities(0), meshsize)
+    model.mesh.setSize(model.getEntities(3), meshsize)
     model.mesh.setSize(
-        model.getBoundary(spheres, False, False, True), meshsize_boundary
+        model.getBoundary(spheres, False, False), meshsize_boundary
     )
+    model.mesh.generate()
     return model
 
 
@@ -214,13 +216,13 @@ def _translate_polarizations_inv(pols):
         int, array_like
     """
     helicity = {"plus": 1, "positive": 1, "minus": 0, "negative": 0}
-    parity = {"te": 0, "magnetic": 0, "tm": 1, "magnetic": 1}
+    parity = {"te": 0, "magnetic": 0, "tm": 1, "electric": 1}
     if pols[0].decode() in helicity:
         dct = helicity
     elif pols[0].decode() in parity:
         dct = parity
     else:
-        raise ValueError(f"unrecognized polarization {pols[0]}")
+        raise ValueError(f"unrecognized polarization '{pols[0].decode()}'")
     return [dct[i.decode()] for i in pols], pols[0] in helicity
 
 
@@ -250,8 +252,6 @@ def save_hdf5(
             inverse) for the wave number
         embedding_name (string, optional): Name of the embedding material, defaults to
             "Embedding"
-        embedding_description (string, optional): Description of the material, defaults
-            to an empty string
         frequency_axis (int, optional): Assign one axis of the T-matrices array to
             parametrize a frequency sweep
 
@@ -330,7 +330,6 @@ def save_hdf5(
         positions,
         unit_length,
         embedding_name,
-        embedding_description,
         tmat_first.helicity,
         frequency_axis,
     )
@@ -361,7 +360,7 @@ def _write_hdf5(
     datafile["tmatrix"].attrs["name"] = name
     datafile["tmatrix"].attrs["description"] = description
 
-    data.create_dataset("k0", data=k0s)
+    datafile.create_dataset("k0", data=k0s)
     datafile["k0"].attrs["unit"] = unit_length + r"^{-1}"
 
     datafile.create_dataset("modes/l", data=ls)
@@ -587,4 +586,6 @@ def load_hdf5(filename, unit_length="nm"):
                 helicity,
                 modes,
             )
+        if res.shape == ():
+            res = res.item()
         return res
