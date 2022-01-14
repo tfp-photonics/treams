@@ -168,7 +168,7 @@ cdef number_t _intkambe(long n, number_t z, number_t eta, number_t *cache) nogil
         cache[labs(n)] = INFINITY
     # n < -4 is handled regularly
     elif z == 0 and n == -4:
-        cache[labs(n)] = -intkambe(-2, 0, eta) - exp(0.5 / (eta * eta)) / eta
+        cache[labs(n)] = -intkambe(-2, 0, eta) + exp(0.5 / (eta * eta)) / eta
     elif z == 0 and n == -3:
         cache[labs(n)] = exp(1 / (2 * eta * eta)) - 1
     # n == -2 is handled regularly

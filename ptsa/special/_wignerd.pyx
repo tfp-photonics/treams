@@ -126,7 +126,7 @@ cdef bint _wignerd_f_or_b(long l, long m, long k) nogil:
     cdef long backward = ((l - k + 1) * (l - k + 2)) // 2
     if k < m:
         backward -= (m - k) * (m - k + 1) // 2
-    return forward >= backward
+    return forward <= backward
 
 
 cdef number_t wignersmalld(long l, long m, long k, number_t theta) nogil:

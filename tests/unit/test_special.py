@@ -78,6 +78,8 @@ class TestIncgamma:
     def test_neg_zero(self):
         result = sc.incgamma(-1, 0)
         assert np.isinf(result.real) and result.imag == 0
+    def test_gamma(self):
+        assert sc.incgamma(4, 0) == 6
 
 
 class TestWigner3j:
@@ -109,6 +111,9 @@ class TestWigner3j:
         assert sc.wigner3j(2, 2, 1, 0, 0, 0) == 0.0
     def test_divide_by_zero(self):
         assert isclose(sc.wigner3j(4, 4, 1, 1, -1, 0), -1 / (6 * np.sqrt(5)))
+    def test_last_init(self):
+        assert isclose(sc.wigner3j(4, 7, 4, 1, 3, -4), np.sqrt(5 / 858))
+
 
 
 class TestHankel1:
@@ -200,6 +205,10 @@ class TestLpmv:
         assert isclose(sc.lpmv(5, 12, 0.4+0j), ssc.clpmn(5, 12, 0.4+0j, type=2)[0][5,12])
     def test_complex_asso_pos_c(self):
         assert isclose(sc.lpmv(5, 12, 1.3-1j), ssc.clpmn(5, 12, 1.3-1j, type=2)[0][5,12])
+    def test_nan_l(self):
+        assert np.isnan(sc.lpmv(0, .5, 1j))
+    def test_nan_m(self):
+        assert np.isnan(sc.lpmv(.5, 1, 1j))
 
 
 class TestSphHarm:
@@ -207,6 +216,10 @@ class TestSphHarm:
         assert sc.sph_harm(1, 2, 3, 4) == ssc.sph_harm(1, 2, 3, 4)
     def test_complex(self):
         assert isclose(sc.sph_harm(1, 2, 3, 4j), np.sqrt(5/(24*np.pi)) * ssc.clpmn(1, 2, np.cos(4j), type=2)[0][1,2] * np.exp(3j))
+    def test_nan_l(self):
+        assert np.isnan(sc.sph_harm(0, .5, 0, 1j))
+    def test_nan_m(self):
+        assert np.isnan(sc.sph_harm(.5, 1, 0, 1j))
 
 
 class TestSphHankel1:
@@ -358,6 +371,14 @@ class TestIntkambe:
         assert isclose(sc.intkambe(-10, 3, 2), 7.203365170219268e-13)
     def test_beven_complex(self):
         assert isclose(sc.intkambe(-10, 1.4 + .01j, 3 - .01j), 2.82715e-10- 1.18144e-11j, rel_tol=1e-5)
+    def test_m4_zzero(self):
+        assert isclose(sc.intkambe(-4, 0, 3), 0.01276548573157296882)
+    def test_m6_negz(self):
+        assert isclose(sc.intkambe(-6, -2 - 1j, 3), 1.20189537847431e-10 + 3.80731298663362e-12j)
+    def test_6_negz(self):
+        assert isclose(sc.intkambe(6, -1, 3), 4.959558569294379)
+    def test_m5_negz(self):
+        assert isclose(sc.intkambe(-5, -2 + 1j, 3), 3.65682124179e-10 - 6.38779831117841e-12j)
 
 
 class TestWignerD:
@@ -370,11 +391,11 @@ class TestWignerD:
     def test_1(self):
         assert sc.wignersmalld(1, 0, 0, 0) == 1
     def test_2(self):
-        assert sc.wignersmalld(1, 1, 0, 2*np.pi) == 0
+        assert sc.wignersmalld(1, 1, 0, 2 * np.pi) == 0
     def test_3(self):
         assert sc.wignersmalld(2, 1, -1, np.pi) == -1
     def test_4(self):
-        assert sc.wignersmalld(2, 1, 0, 2*np.pi) == 0
+        assert sc.wignersmalld(2, 1, 0, 2 * np.pi) == 0
     def test_5(self):
         assert isclose(sc.wignersmalld(4, 3, 2, 1), -0.07526360176530718)
     def test_6(self):
@@ -385,6 +406,10 @@ class TestWignerD:
         assert isclose(sc.wignersmalld(2, -1, 1, 6), 0.05815816395893696)
     def test_9(self):
         assert isclose(sc.wignerd(4, 2, 3, 1., 2., 3.), -0.0011756123083512-0.2656305961739311j)
+    def test_10(self):
+        assert isclose(sc.wignersmalld(2, 0, -2, 7 + 1j), 0.14867417641112 + 1.1000641894940703j)
+    def test_11(self):
+        assert isclose(sc.wignersmalld(2, 0, -2, np.pi + 1e-18), 0)
 
 
 class TestPiFun:
@@ -396,6 +421,10 @@ class TestPiFun:
         assert sc.pi_fun(3, 3, 1) == 0
     def test_4_2_complex(self):
         assert isclose(sc.pi_fun(4, 2, np.cos(1+1j)), 51.9022970181194 - 253.1942074716320j)
+    def test_nan_l(self):
+        assert np.isnan(sc.pi_fun(.5, 0, 1j))
+    def test_nan_m(self):
+        assert np.isnan(sc.pi_fun(1, .5, 1j))
 
 
 class TestTauFun:
@@ -405,6 +434,10 @@ class TestTauFun:
         assert isclose(sc.tau_fun(3, 3, np.cos(.2)), -1.740723332980088)
     def test_4_2_complex(self):
         assert isclose(sc.tau_fun(4, 2, np.cos(1+1j)), -568.1643037179911 - 456.9245589672897j)
+    def test_nan_l(self):
+        assert np.isnan(sc.tau_fun(.5, 0, 1j))
+    def test_nan_m(self):
+        assert np.isnan(sc.tau_fun(1, .5, 1j))
 
 
 class TestVshZ:
@@ -520,7 +553,12 @@ class TestVcwrM:
         assert np.array_equal(sc.vcw_rM(0, 0, 1, 0, 0), [0, -sc.jv_d(0, 1), 0])
     def test_1(self):
         assert np.sum(np.abs(sc.vcw_rM(1, -2, 3, 4, 5) - np.exp(-3j) * np.array([-2j / 3 * sc.jv(-2, 3), -sc.jv_d(-2, 3), 0]))) < EPSSQ
-
+    def test_origin_m0(self):
+        assert np.array_equal(sc.vcw_rM(0, 0, 0, 0, 0), [0, 0, 0])
+    def test_origin_m1(self):
+        assert np.array_equal(sc.vcw_rM(0, 1, 0, 0, 0), [.5j, -.5, 0])
+    def test_origin_m4(self):
+        assert np.array_equal(sc.vcw_rM(0, 4, 0, 0, 0), [0, 0, 0])
 
 class TestVcwN:
     def test_0(self):
@@ -562,6 +600,14 @@ class TestTlVcwr:
         assert sc.tl_vcw_r(0, 0, 1, 0, 0, 0, 0) == 0
     def test_1(self):
         assert sc.tl_vcw_r(1, 2, 1, 3, 4, 5, 6) == np.exp(11j) * sc.jv(1, 4)
+
+
+class TestVpwM:
+    def test_k0(self):
+        res = sc.vpw_M(0, 0, 0, 0, 0, 0)
+        assert np.all([np.isnan(i) for i in res])
+    def test_kpar0(self):
+        assert np.array_equal(sc.vpw_M(0, 0, 3, 3, 2, 1), [0, -1j * np.exp(3j), 0])
 
 
 class TestCar2Cyl:
