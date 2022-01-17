@@ -4,6 +4,7 @@ import numpy as np
 import scipy.special as ssc
 
 import ptsa.special as sc
+import ptsa.special.cython_special as cs
 
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
     return abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
@@ -406,6 +407,8 @@ class TestWignerD:
         assert isclose(sc.wignersmalld(2, -1, 1, 6), 0.05815816395893696)
     def test_9(self):
         assert isclose(sc.wignerd(4, 2, 3, 1., 2., 3.), -0.0011756123083512-0.2656305961739311j)
+    def test_9_complex(self):
+        assert isclose(sc.wignerd(4, 2, 3, 1., 2j, 3.), -250.9892374159303 + 1.1108134417492j)
     def test_10(self):
         assert isclose(sc.wignersmalld(2, 0, -2, 7 + 1j), 0.14867417641112 + 1.1000641894940703j)
     def test_11(self):
@@ -510,7 +513,7 @@ class TestVswrA:
     def test_p(self):
         assert np.array_equal(sc.vsw_rA(5, 4, 3, 2, 1, 1), (sc.vsw_rN(5, 4, 3, 2, 1) + sc.vsw_rM(5, 4, 3, 2, 1)) * np.sqrt(0.5))
     def test_m(self):
-        assert np.array_equal(sc.vsw_rA(5, 4, 3, 2, 1, 0), (sc.vsw_rN(5, 4, 3, 2, 1) - sc.vsw_rM(5, 4, 3, 2, 1)) * np.sqrt(0.5))
+        assert np.array_equal(sc.vsw_rA(5, 4, 3j, 2, 1, 0), (sc.vsw_rN(5, 4, 3j, 2, 1) - sc.vsw_rM(5, 4, 3j, 2, 1)) * np.sqrt(0.5))
 
 
 class TestTlVswA:
@@ -524,7 +527,7 @@ class TestTlVswrA:
     def test_0(self):
         assert isclose(sc.tl_vsw_rA(1, 0, 1, 0, 1, 0, 0), 0.903506036819270)
     def test_1(self):
-        assert isclose(sc.tl_vsw_rA(14, 13, 11, -3, 12, 2, 1), 6.853762595651612e-05 - 2.060462015430312e-05j)
+        assert isclose(sc.tl_vsw_rA(14, 13, 11, -3, 12 + 0j, 2, 1), 6.853762595651612e-05 - 2.060462015430312e-05j)
 
 
 class TestTlVswB:
@@ -604,10 +607,41 @@ class TestTlVcwr:
 
 class TestVpwM:
     def test_k0(self):
-        res = sc.vpw_M(0, 0, 0, 0, 0, 0)
+        res = sc.vpw_M(0, 0, 0j, 0, 0, 0)
         assert np.all([np.isnan(i) for i in res])
     def test_kpar0(self):
         assert np.array_equal(sc.vpw_M(0, 0, 3, 3, 2, 1), [0, -1j * np.exp(3j), 0])
+    def test_k_general(self):
+        k = np.array([3, 4, -3])
+        r = np.array([4, .2, 3])
+        res = sc.vpw_M(*k, *r)
+        assert np.all(np.abs(res - [1j * k[1] * np.exp(1j * k @ r) / 5, -1j * k[0] * np.exp(1j * k @ r) / 5, 0]) < EPSSQ)
+
+
+class TestVpwN:
+    def test_k0(self):
+        res = sc.vpw_N(0, 0, 0j, 0, 0, 0)
+        assert np.all([np.isnan(i) for i in res])
+    def test_kpar0(self):
+        assert np.array_equal(sc.vpw_N(0, 0, 3, 3, 2, 1), [-np.exp(3j), 0, 0])
+    def test_kpar0_imagkz(self):
+        assert np.array_equal(sc.vpw_N(0, 0, -3j, 3, 2, 1), [np.exp(3), 0, 0])
+    def test_k_general(self):
+        k = np.array([3, 4, -3])
+        r = np.array([4, .2, 3])
+        res = sc.vpw_N(*k, *r)
+        assert np.all(np.abs(res - [-0.2441697182761140 - 0.1888789726889204j, -0.3255596243681520 - 0.2518386302518939j, -0.6782492174336500 - 0.5246638130247790j]) < EPSSQ)
+
+
+class TestVpwA:
+    def test(self):
+        k = np.array([-3, 1, -6])
+        r = np.array([2, .2, .5])
+        assert np.all(np.abs(np.sqrt(2) * sc.vpw_A(*k, *r, 0) - sc.vpw_N(*k, *r) + sc.vpw_M(*k, *r)) < EPSSQ)
+    def test_complex(self):
+        k = np.array([-3, 1j, -6])
+        r = np.array([2, .2, .5])
+        assert np.all(np.abs(np.sqrt(2) * sc.vpw_A(*k, *r, 0) - sc.vpw_N(*k, *r) + sc.vpw_M(*k, *r)) < EPSSQ)
 
 
 class TestCar2Cyl:
@@ -668,7 +702,7 @@ class TestPol2Car:
 
 class TestVCarCyl:
     def test_0(self):
-        assert np.array_equal(sc.vcar2cyl([0, 0, 0], [0, 0, 0]), [0, 0, 0])
+        assert np.array_equal(sc.vcar2cyl([0, 0, 0j], [0, 0, 0]), [0, 0, 0])
     def test_1(self):
         assert np.array_equal(sc.vcar2cyl([1, 0, 0], [0, 0, 0]), [1, 0, 0])
     def test_2(self):
@@ -732,3 +766,54 @@ class TestVCarPol:
         pcyl = sc.car2pol(pcar)
         vcyl = sc.vcar2pol(vcar, pcar)
         assert np.sum(np.abs(sc.vpol2car(vcyl, pcyl) - vcar)) < EPSSQ
+
+
+class TestCythonSpecial:
+    def test_hankel1_d(self):
+        assert sc.hankel1_d(.4, .3j) == cs.hankel1_d(.4, .3j)
+    def test_hankel2_d(self):
+        assert sc.hankel2_d(.4, .3j) == cs.hankel2_d(.4, .3j)
+    def test_jv_d(self):
+        assert sc.jv_d(.4, .3j) == cs.jv_d(.4, .3j)
+    def test_spherical_hankel1(self):
+        assert sc.spherical_hankel1(4, .3j) == cs.spherical_hankel1(4, .3j)
+    def test_spherical_hankel2(self):
+        assert sc.spherical_hankel2(4, .3j) == cs.spherical_hankel2(4, .3j)
+    def test_spherical_hankel1_d(self):
+        assert sc.spherical_hankel1_d(4, .3j) == cs.spherical_hankel1_d(4, .3j)
+    def test_spherical_hankel2_d(self):
+        assert sc.spherical_hankel2_d(4, .3j) == cs.spherical_hankel2_d(4, .3j)
+    def test_yv_d(self):
+        assert sc.yv_d(.4, .3j) == cs.yv_d(.4, .3j)
+    def test_incgamma(self):
+        assert sc.incgamma(1.5, .3j) == cs.incgamma(1.5, .3j)
+    def test_intkambe(self):
+        assert sc.intkambe(4, .3j, .2 + 1j) == cs.intkambe(4, .3j, .2 + 1j)
+    def test_lpmv(self):
+        assert sc.lpmv(3, 4, .2 + 1j) == cs.lpmv(3, 4, .2 + 1j)
+    def test_pi_fun(self):
+        assert sc.pi_fun(4, 3, .2 + 1j) == cs.pi_fun(4, 3, .2 + 1j)
+    def test_sph_harm(self):
+        assert sc.sph_harm(3, 4, 1, .2 + 1j) == cs.sph_harm(3, 4, 1, .2 + 1j)
+    def test_tau_fun(self):
+        assert sc.tau_fun(4, 3, .2 + 1j) == cs.tau_fun(4, 3, .2 + 1j)
+    def test_tl_vcw(self):
+        assert sc.tl_vcw(6, 5, 4, 3, 2, 1, 0) == cs.tl_vcw(6, 5, 4, 3, 2, 1, 0)
+    def test_tl_vcw_r(self):
+        assert sc.tl_vcw_r(6, 5, 4, 3, 2., 1, 0) == cs.tl_vcw_r(6, 5, 4, 3, 2., 1, 0)
+    def test_tl_vsw_A(self):
+        assert sc.tl_vsw_A(6, 5, 4, 3, 2, 1., 0) == cs.tl_vsw_A(6, 5, 4, 3, 2, 1., 0)
+    def test_tl_vsw_rA(self):
+        assert sc.tl_vsw_rA(6, 5, 4, 3, 2, 1., 0) == cs.tl_vsw_rA(6, 5, 4, 3, 2., 1., 0)
+    def test_tl_vsw_B(self):
+        assert sc.tl_vsw_B(6, 5, 4, 3, 2, 1., 0) == cs.tl_vsw_B(6, 5, 4, 3, 2, 1., 0)
+    def test_tl_vsw_rB(self):
+        assert sc.tl_vsw_rB(6, 5, 4, 3, 2, 1., 0) == cs.tl_vsw_rB(6, 5, 4, 3, 2., 1., 0)
+    def test_wigner3j(self):
+        assert sc.wigner3j(5, 4, 3, -3, 2, 1) == cs.wigner3j(5, 4, 3, -3, 2, 1)
+    def test_wigner3j(self):
+        assert sc.wigner3j(5, 4, 3, -3, 2, 1) == cs.wigner3j(5, 4, 3, -3, 2, 1)
+    def test_wignersmalld(self):
+        assert sc.wignersmalld(5, 4, 3, 2) == cs.wignersmalld(5, 4, 3, 2.)
+    def test_wignerd(self):
+        assert sc.wignerd(5, 4, 3, 2, 1, 0) == cs.wignerd(5, 4, 3, 2, 1., 0)
