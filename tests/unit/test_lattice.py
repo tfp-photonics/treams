@@ -34,6 +34,7 @@ class TestLSumSW1d:
 
     @pytest.mark.parametrize("l", [0, 1, 2, 7, 8])
     @pytest.mark.parametrize("r", [-0.2, 0, 0.5])
+    @pytest.mark.slow
     def test_singular(self, l, r):
         a = 2 * np.pi
         k = 1
@@ -446,6 +447,7 @@ class TestLSumSW1dShift:
         ],
     )
     @pytest.mark.parametrize("r", [np.array([0, 0.1, 0]), np.array([0.2, 0.2, 1.1])])
+    @pytest.mark.slow
     def test_singular(self, lm, r):
         k = 1
         kpar = 0
@@ -482,6 +484,7 @@ class TestLSumCW1dShift:
 
     @pytest.mark.parametrize("l", [-2, -1, 0, 7, 8])
     @pytest.mark.parametrize("r", [np.array([0, 0.1]), np.array([0.2, 1.1])])
+    @pytest.mark.slow
     def test_singular(self, l, r):
         k = 1
         kpar = 0
@@ -491,4 +494,61 @@ class TestLSumCW1dShift:
             la.dsumcw1d_shift(l, k, kpar, a, r, np.arange(1_800_000)).sum(),
             rel_tol=1e-1,
             abs_tol=EPS,
+        )
+
+
+class TestArea:
+    def test(self):
+        assert la.area([[1, 2], [3, 4]]) == -2
+
+
+class TestVolume:
+    def test_2d(self):
+        assert la.volume([[1, 2], [3, 4]]) == -2
+    def test_3d(self):
+        assert la.volume([[1, 2, 3], [4, 5, 6], [7, 8, 10]]) == -3
+
+
+class TestReciprocal:
+    def test_2d(self):
+        res = la.reciprocal(3 * np.eye(2)).flatten()
+        expect = (np.eye(2) * 2 * np.pi / 3).flatten()
+        assert np.all(np.abs(res - expect) < EPSSQ)
+    def test_3d(self):
+        a = [[1, 2, 3], [4, 5, 6], [7, 8, 10]]
+        res = la.reciprocal(a)
+        expect = 2 * np.pi / (-3) * np.array([[2, 2, -3], [4, -11, 6], [-3, 6, -3]])
+        assert np.all(np.abs(res - expect) < EPSSQ)
+
+
+class TestDiffrOrdersCircle:
+    def test_0(self):
+        assert np.array_equal(la.diffr_orders_circle(np.eye(2), 0), [[0, 0]])
+    def test_square(self):
+        assert np.array_equal(
+            la.diffr_orders_circle(np.eye(2), 1.5),
+            [
+                [0, 0],
+                [0, 1],
+                [0, -1],
+                [1, 0],
+                [-1, 0],
+                [1, 1],
+                [-1, -1],
+                [1, -1],
+                [-1, 1],
+            ],
+        )
+    def test_hex(self):
+        assert np.array_equal(
+            la.diffr_orders_circle([[1, 0], [.5, np.sqrt(0.75)]], 1.1),
+            [
+                [0, 0],
+                [0, 1],
+                [0, -1],
+                [1, 0],
+                [-1, 0],
+                [1, -1],
+                [-1, 1],
+            ],
         )

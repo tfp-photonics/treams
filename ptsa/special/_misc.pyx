@@ -1,6 +1,5 @@
 """Miscellaneous functions for ptsa.special"""
 
-from libc.math cimport acos as acosd
 from libc.math cimport cos as cosd
 from libc.math cimport exp as expd
 from libc.math cimport fabs, pi
@@ -11,7 +10,6 @@ from libc.math cimport sqrt as sqrtd
 
 cdef extern from "<complex.h>" nogil:
     double cabs(double complex z)
-    double complex cacos(double complex z)
     double complex ccos(double complex z)
     double complex cexp(double complex z)
     double complex cpow(double complex x, double complex y)
@@ -44,14 +42,6 @@ cdef number_t exp(number_t x) nogil:
         return expd(x)
     elif number_t is double_complex:
         return cexp(x)
-
-
-cdef number_t acos(number_t x) nogil:
-    """Fused type version of acos"""
-    if number_t is double:
-        return acosd(x)
-    elif number_t is double_complex:
-        return cacos(x)
 
 
 cdef number_t pow(number_t x, number_t y) nogil:
