@@ -115,6 +115,8 @@ References
 
 """
 
+import numpy as np
+
 from ptsa.lattice._gufuncs import *
 from ptsa.lattice._misc import cube, cubeedge
 from ptsa.lattice import _misc
@@ -134,4 +136,4 @@ def diffr_orders_circle(b, rmax):
     Returns:
         float array
     """
-    return _misc.diffr_orders_circle(b, rmax)
+    return _misc.diffr_orders_circle(np.array(b), rmax)

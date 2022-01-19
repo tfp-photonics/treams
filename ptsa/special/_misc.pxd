@@ -15,7 +15,6 @@ ctypedef fused real_t:
 
 
 cdef double abs(number_t x) nogil
-cdef number_t acos(number_t x) nogil
 cdef number_t cos(number_t x) nogil
 cdef number_t exp(number_t x) nogil
 cdef number_t pow(number_t x, number_t y) nogil

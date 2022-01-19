@@ -1,4 +1,5 @@
-"""Configuration for pytest
+"""
+Configuration for pytest
 
 It's needed here to add the option `--runslow`, which is mainly used in the
 lattice subpackage.

@@ -126,7 +126,7 @@ cdef bint _wignerd_f_or_b(long l, long m, long k) nogil:
     cdef long backward = ((l - k + 1) * (l - k + 2)) // 2
     if k < m:
         backward -= (m - k) * (m - k + 1) // 2
-    return forward >= backward
+    return forward <= backward
 
 
 cdef number_t wignersmalld(long l, long m, long k, number_t theta) nogil:
@@ -202,13 +202,16 @@ cdef number_t wignersmalld(long l, long m, long k, number_t theta) nogil:
     elif 1.5 * pi <= creal(theta) < 2 * pi:  # TODO: < 2pi unnecessary ?
         pref_shift = minusonepow(m + k)
         theta = 2 * pi - theta
+    cdef double pref_pure_complex = 1
+    if creal(theta) == 0 and cimag(theta) < 0:
+        pref_pure_complex = minusonepow(m + k)
     cdef number_t res
     if _wignerd_f_or_b(l, m, k):
         res = _wignerdforward(l, m, k, cos(theta), cache)
     else:
         res = _wignerdbackward(l, m, k, cos(theta), cache)
     free(cache)
-    return pref_shift * pref_swap * res
+    return pref_shift * pref_swap * pref_pure_complex * res
 
 
 cdef double complex wignerd(
