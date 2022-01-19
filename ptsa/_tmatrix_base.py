@@ -69,10 +69,10 @@ class TMatrixBase:
                 f"invalid T-matrix shape {tmat.shape}, expected square matrix"
             )
         self.t = tmat
-        self.k0 = k0
-        self.epsilon = epsilon
-        self.mu = mu
-        self.kappa = kappa
+        self.k0 = np.array(k0, float).item()
+        self.epsilon = np.array(epsilon).item()
+        self.mu = np.array(mu).item()
+        self.kappa = np.array(kappa).item()
         self.positions = positions
         self.helicity = helicity
         self.ks = k0 * misc.refractive_index(epsilon, mu, kappa)
