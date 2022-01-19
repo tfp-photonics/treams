@@ -32,8 +32,6 @@ from ptsa.special._misc cimport double_complex, sqrt
 
 
 cdef extern from "<complex.h>" nogil:
-    double creal(double complex z)
-    double cimag(double complex z)
     double complex csqrt(double complex z)
 
 cdef void _interface(long l, number_t x[2][2], number_t *z, double complex m[4][4]) nogil:
