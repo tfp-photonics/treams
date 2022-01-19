@@ -24,7 +24,7 @@ from libc.math cimport lgamma, pi
 from libc.math cimport sqrt as sqrtd
 
 cimport ptsa.special.cython_special as cs
-from ptsa.special._misc cimport abs, acos, double_complex, sqrt
+from ptsa.special._misc cimport abs, double_complex, sqrt
 
 
 cdef extern from "<complex.h>" nogil:

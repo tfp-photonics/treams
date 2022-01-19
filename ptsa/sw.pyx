@@ -26,7 +26,7 @@ from libc.math cimport sqrt as sqrtd
 from libc.stdlib cimport labs
 
 cimport ptsa.special.cython_special as cs
-from ptsa.special._misc cimport abs, acos, double_complex, minusonepow, sqrt
+from ptsa.special._misc cimport abs, double_complex, minusonepow, sqrt
 
 
 cdef extern from "<complex.h>" nogil:
