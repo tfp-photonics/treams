@@ -1,3 +1,22 @@
+"""
+=======================
+Miscellaneous functions
+=======================
+
+.. rubric:: Functions
+
+.. autosummary::
+   :toctree: generated/
+
+   basischange
+   firstbrillouin1d
+   firstbrillouin2d
+   firstbrillouin3d
+   pickmodes
+   refractive_index
+   wave_vec_z
+"""
+
 import numpy as np
 
 import ptsa.lattice as la
@@ -22,8 +41,9 @@ def refractive_index(epsilon=1, mu=1, kappa=0):
     """
     epsilon = np.array(epsilon)
     n = np.sqrt(epsilon * mu)
-    return np.stack((n - kappa, n + kappa), axis=-1)
-
+    res = np.stack((n - kappa, n + kappa), axis=-1)
+    res[np.imag(res) < 0] *= -1
+    return res
 
 def basischange(out, in_=None):
     """
