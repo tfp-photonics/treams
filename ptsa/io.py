@@ -456,7 +456,7 @@ def _convert_to_k0(x, xtype, xunit, k0unit=r"nm^{-1}"):
         return x * (xunit / k0unit)
     elif xtype == "lambda0":
         xunit = LENGTHS[xunit]
-        return 2 * np.pi / (c * xunit * k0unit)
+        return 2 * np.pi / (x * xunit * k0unit)
     raise ValueError(f"unrecognized frequency/wavenumber/wavelength type: {xtype}")
 
 
@@ -498,6 +498,8 @@ def load_hdf5(filename, unit_length="nm"):
                 break
         if "modes/positions" in f:
             k0unit = f["modes/positions"].attrs.get("unit", unit_length) + r"^{-1}"
+        else:
+            k0unit = unit_length + r"^{-1}"
         k0s = _convert_to_k0(ld_freq, freq_type, f[freq_type].attrs["unit"], k0unit)
         k0_dim = _scale_position(f[freq_type], f["tmatrix"], offset=2)
         k0s = k0s.reshape(k0s.shape + (1,) * k0_dim)
