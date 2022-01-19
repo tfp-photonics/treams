@@ -19,7 +19,7 @@ class TMatrix(TMatrixBase):
     :func:`ptsa.special.vsw_N`. A default order according to :func:`TMatrix.defaultmodes`
     is assumed if not specified. Helicity and parity modes are possible, but not mixed.
 
-    The embedding medium is described by permittivity, permeability and the chirality
+    The embedding medium is described by permittivity, permeability, and the chirality
     parameter.
 
     The T-matrix can be global or local. For a local T-matrix multiple positions have to
@@ -29,11 +29,11 @@ class TMatrix(TMatrixBase):
         tmat (float or complex, array): T-matrix itself
         k0 (float): Wave number in vacuum
         epsilon (float or complex, optional): Relative permittivity of the embedding medium
-        mu (complex): Relative permeability of the embedding medium
-        kappa (complex): Chirality parameter of the embedding medium
-        positions (float, (3,)- or (M,3)-array): Positions for a local T-matrix
-        helicity (bool): Helicity or parity modes
-        modes (iterable): Sorting of the T-matrix entries. Either four entries for
+        mu (float or complex, optional): Relative permeability of the embedding medium
+        kappa (float or complex, optional): Chirality parameter of the embedding medium
+        positions (float, (3,)- or (M,3)-array, optional): Positions for a local T-matrix
+        helicity (bool, optional): Helicity or parity modes
+        modes (iterable, optional): Sorting of the T-matrix entries. Either four entries for
             local T-Matrices, with the first specifying the corresponding position
             or three entries only, specifying degree, order, and polarization.
 
@@ -253,7 +253,7 @@ class TMatrix(TMatrixBase):
 
         Args:
             illu (complex, array): Illumination coefficients
-            flux (optional): Ingoing flux correspondin to the illumination. Used for
+            flux (optional): Ingoing flux corresponding to the illumination. Used for
                 the result's normalization.
 
         Returns:
