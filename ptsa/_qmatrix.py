@@ -8,7 +8,47 @@ from ptsa.coeffs import fresnel
 
 
 class QMatrix:
-    """Q-Matrix"""
+    """
+    Q-Matrix (plane wave basis)
+
+    The Q-matrix describes the scattering of incoming into outgoing modes using a plane
+    wave basis, with functions :func:`ptsa.special.vsw_A`, :func:`ptsa.special.vsw_M`,
+    and :func:`ptsa.special.vsw_N`. The primary direction of propagation is parallel or
+    anti-parallel to the z-axis. The scattering object itself is infinitely extended in
+    the x- and y-directions. The Q-matrix is divided into four submatrices
+    :math:`Q_{\uparrow \uparrow}`, :math:`Q_{\uparrow \downarrow}`,
+    :math:`Q_{\downarrow \uparrow}`, and :math:`Q_{\downarrow \downarrow}`:
+
+    .. math::
+
+        Q = \begin{pmatrix}
+            Q_{\uparrow \uparrow} & Q_{\uparrow \downarrow} \\
+            Q_{\downarrow \uparrow} & Q_{\downarrow \downarrow}
+        \end{pmatrix}\,.
+
+    These matrices describe the transmission of plane waves propagating into positive
+    z-direction, reflection of plane waves into the positive z-direction, reflection
+    of plane waves into negative z-direction, and the transmission of plane waves
+    propagating in negative z-direction, respectively. Each of those for matrices
+    contain different diffraction orders and different polarizations. The polarizations
+    can be in either helicity of parity basis.
+
+    The embedding medium is described by permittivity, permeability, and the chirality
+    parameter. The two sides of the Q-matrix can have different materials.
+
+    Args:
+        qmats (float or complex, array): Q-matrices
+        k0 (float): Wave number in vacuum
+        modes (iterable, optional): The modes corresponding to the Q-matrices rows and
+            columns. It must contain three arrays of equal length for the wave vectors'
+            x- and y-component, and the polarization.
+        epsilon (float or complex, optional): Relative permittivity of the medium
+        mu (float or complex, optional): Relative permeability of the medium
+        kappa (float or complex, optional): Chirality parameter of the medium
+        helicity (bool, optional): Helicity or parity modes
+        kz (float or complex, (N, 2)-array, optional): The z-component of the wave
+            vector on both sides of the Q-matrix
+    """
 
     def __init__(
         self, qmats, k0, modes, epsilon=1, mu=1, kappa=0, helicity=True, kz=None,
@@ -33,19 +73,23 @@ class QMatrix:
             ValueError(f"shape of kappa f{kappa.shape} not supported")
         modes = self._check_modes(modes)
         self.kx, self.ky, self.pol = modes  # ((a,), (a,), (a,))
+        self.ks = k0 * misc.refractive_index(epsilon, mu, kappa)
         if kz is None:
-            kz = misc.wave_vec_z(self.kx, self.ky, self.ks[:, self.pol])
+            kz = misc.wave_vec_z(self.kx[:, None], self.ky[:, None], self.ks[:, self.pol])
         kz = np.array(kz)
         if kz.shape != (2, self.kx.shape[0]):
             ValueError(f"shape of kz f{kz.shape} not supported")
         self.q = qmats  # (2, 2, a, a)
-        self.k0 = k0  # ()
+        self.k0 = np.array(k0).item()  # ()
         self.epsilon = epsilon  # (2,)
         self.mu = mu  # (2,)
         self.kappa = kappa  # (2,)
         self.helicity = helicity
         self.kz = kz  # (2, a)
-        self.ks = k0 * misc.refractive_index(epsilon, mu, kappa)
+
+    @property
+    def modes(self):
+        return self.kx, self.ky, self.pol
 
     @staticmethod
     def defaultmodes(kpars):
@@ -111,7 +155,34 @@ class QMatrix:
         Returns:
             QMatrix
         """
-        raise NotImplementedError
+        thickness = np.atleast_1d(thickness)
+        epsilon = np.atleast_1d(epsilon)
+        mu = np.atleast_1d(mu)
+        kappa = np.atleast_1d(kappa)
+        nthickness = thickness.shape[0]
+        for name, param in [
+                ("thickness", thickness),
+                ("epsilon", epsilon),
+                ("kappa", kappa),
+                ("mu", mu)
+        ]:
+            if param.ndim > 1:
+                raise ValueError(f"'{name}' must be scalar or 1D, but was {param.ndim}D")
+            if name == "thickness":
+                continue
+            if len(param) == 1:
+                param = np.repeat(param, nthickness + 2)
+            elif len(param) != nthickness + 2:
+                raise ValueError(f"'{name}' must be scalar or of length {thickness}, but was {len(param)}")
+        items == 0
+        # Use the truncation of the material parameters by zip due to 'thickness'
+        for d, epsilon_below, epsilon_above, mu_below, mu_above, k_below, k_above in zip(thickness, epsilon, epsilon[1:], mu, mu[1:], kappa, kappa[1:]):
+            items.append(QMatrix.interface(k0, kpars, [epsilon_below, epsilon_above], [mu_below, mu_above], [kappa_below, kappa_above]))
+            items.append(QMatrix.propagation([0, 0, d], k0, kpars, epsilon_above, mu_above, kappa_above))
+        items.append(QMatrix.interface(k0, kpars, epsilon[-2:], mu[-2:], kappa[-2:]))
+        return QMatrix.stack(items, check_materials=False, check_modes=False)
+
+
 
     @classmethod
     def stack(cls, items, check_materials=True, check_modes=False):
@@ -261,9 +332,9 @@ class QMatrix:
         self.q[1, 1, :, :] = mat.T @ self.q[1, 1, :, :] @ mat
         self.modes = modes
         self.helicity = not self.helicity
-        self.kzs = np.zeros((modes.shape[0], 2))
-        self.kzs[0, :] = misc.wave_vec_z(modes[0], modes[1], self.ks[0, modes[2]])
-        self.kzs[1, :] = misc.wave_vec_z(modes[0], modes[1], self.ks[1, modes[2]])
+        self.kz = np.zeros((2, modes.shape[0]))
+        self.kz[0, :] = misc.wave_vec_z(modes[0], modes[1], self.ks[0, modes[2]])
+        self.kz[1, :] = misc.wave_vec_z(modes[0], modes[1], self.ks[1, modes[2]])
         return self
 
     def helicitybasis(self, modes=None):
@@ -294,29 +365,27 @@ class QMatrix:
         self.kz = misc.wave_vec_z(self.kx, self.ky, self.ks[:, self.pol])
         return self
 
-    def field_outside(self, illu, illu_above=None):
-        if illu_above is None:
-            illu_above = np.zeros_like(illu)
-        field_above = self.q[0, 0, :, :] @ illu + self.q[0, 1] @ illu_above
-        field_below = self.q[1, 0, :, :] @ illu + self.q[1, 1] @ illu_above
+    def field_outside(self, illu):
+        illu = (np.zeros_like(self.kx) if i is None else i for i in illu)
+        field_above = self.q[0, 0, :, :] @ illu[0] + self.q[0, 1] @ illu[1]
+        field_below = self.q[1, 0, :, :] @ illu[0] + self.q[1, 1] @ illu[1]
         return field_above, field_below
 
-    def field_inside(self, illu, q_above, illu_above=None):
-        if illu_above is None:
-            illu_above = np.zeros_like(illu)
+    def field_inside(self, illu, q_above):
+        illu = (np.zeros_like(self.kx) if i is None else i for i in illu)
         qtmp_up = np.eye(self.q.shape[2]) - self.q[0, 1, :, :] @ q_above.q[1, 0, :, :]
         qtmp_down = np.eye(self.q.shape[2]) - q_above.q[1, 0, :, :] @ self.q[0, 1, :, :]
-        field_up = np.linalg.solve(qtmp_up, self.q[0, 0, :, :] @ illu) + self.q[
+        field_up = np.linalg.solve(qtmp_up, self.q[0, 0, :, :] @ illu[0]) + self.q[
             0, 1
-        ] @ np.linalg.solve(qtmp_down, q_above.q[1, 1, :, :] @ illu_above)
+        ] @ np.linalg.solve(qtmp_down, q_above.q[1, 1, :, :] @ illu[1])
         field_down = np.linalg.solve(
-            qtmp_down, q_above.q[1, 1, :, :] @ illu_above
-        ) + q_above.q[1, 0] @ np.linalg.solve(qtmp_up, self.q[0, 0, :, :] @ illu)
+            qtmp_down, q_above.q[1, 1, :, :] @ illu[1]
+        ) + q_above.q[1, 0] @ np.linalg.solve(qtmp_up, self.q[0, 0, :, :] @ illu[0])
         return field_up, field_down
 
     def field(self, r, field_above=True, outgoing=True):
-        choice = np.int(field_above)
-        pref = (2 * choice - 1) * (2 * outgoing - 1)
+        choice = bool(field_above)
+        pref = (2 * choice - 1) * (2 * bool(outgoing) - 1)
         if self.helicity:
             return sc.vpw_A(
                 self.kx,
@@ -344,50 +413,60 @@ class QMatrix:
                 r[..., None, 2],
             )
 
-    def poynting_avg(self, coeffs, thickness=0, above=True):
-        if not self.helicity:
-            raise NotImplementedError
-        choice = np.int(above)
-        coeffs = np.array(coeffs)
-        res = (
-            coeffs[:, None]
-            @ coeffs.T.conjugate()
-            * (
-                self.pol[:, None]
-                * self.pol
-                * self.kz[:, choice, None]
-                / self.ks[self.pol, None]
-                + self.kz[:, choice].conjugate() / self.ks[self.pol]
-            )
-            / np.conjugate(np.sqrt(self.mu[choice] / self.epsilon[choice]))
+    def poynting_avg(self, coeffs, above=True):
+        choice = bool(above)
+        ky, ky, pol = self.modes
+        selections = pol == 0, pol == 1
+        pref = (
+            self.kz[pol == 0, choice] / self.ks[choice, 0],
+            self.kz[pol == 1, choice] / self.ks[choice, 1],
         )
-        if thickness != 0:
-            res *= np.exp(1j * (self.kz[:, None] - self.kz.conjugate()) * thickness)
-        return 0.25 * np.real(np.sum(res))
+        allcoeffs = [
+            (1, -1, coeffs[0][selections[0]]),
+            (1, 1, coeffs[0][selections[1]]),
+            (-1, -1, coeffs[1][selections[0]]),
+            (-1, 1, coeffs[1][selections[1]]),
+        ]
+        res = 0
+        if self.helicity:
+            for (dira, pola, a), (dirb, polb, b) in itertools.product(allcoeffs, repeat=2):
+                res += a @ (b.conjugate() * (pola * polb * pref[(polb + 1) // 2].conjugate() * dirb + pref[(pola + 1) // 2] * dira))
+            res *= 0.25
+        else:
+            for (dira, _, a), (dirb, _, b) in itertools.product(allcoeffs[::2], repeat=2):
+                res += a @ (b.conjugate() * pref[0].conjugate() * dirb)
+            for (dira, _, a), (dirb, _, b) in itertools.product(allcoeffs[1::2], repeat=2):
+                res += a @ (b.conjugate() * pref[1] * dira)
+            res *= 0.5
+        return np.real(res / np.conjugate(np.sqrt(self.mu[choice] / self.epsilon[choice])))
 
     def chirality_density(self, coeffs, thickness=0):
         if not self.helicity:
             raise NotImplementedError
         raise NotImplementedError
 
-    def transmittance(self, illu, from_above=False):
+    def transmittance(self, illu):
         """Transmittance"""
         raise NotImplementedError
 
-    def reflectance(self, illu, from_above=False):
+    def reflectance(self, illu):
         """Reflectance"""
         raise NotImplementedError
 
-    def tr(self, illu, from_above=False):
+    def tr(self, illu):
         """Transmittance and reflectance"""
         return self.transmittance, self.reflectance
 
-    def cd(self, illu, from_above=False):
+    def cd(self, illu):
         """Circular dichroism"""
+        if not self.helicity:
+            raise NotImplementedError
         raise NotImplementedError
 
-    def optrot(self, illu, from_above=False):
+    def optrot(self, illu):
         """Optical rotation"""
+        if not self.helicity:
+            raise NotImplementedError
         raise NotImplementedError
 
     def periodic(self):
