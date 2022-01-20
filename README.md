@@ -53,13 +53,7 @@ conda activate ptsa-dev
 3. Setup the package with
 
 ```sh
-python setup.py develop
-```
-
-4. And finally install the current directory with conda
-
-```sh
-conda develop .
+pip install -e .
 ```
 
 This last step makes the program available in the environment independently of the
@@ -72,7 +66,7 @@ is using the
 [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/en-us/windows/wsl/install).
 Within WSL ptsa can be installed just as described above. The second option, that was
 tested is using [MSYS2](https://www.msys2.org/) with the ``mingw64`` environment.
-Likely, other python versions based on ``mingw-w64`` might also work. 
+Likely, other python versions based on ``mingw-w64`` might also work.
 
 ## Documentation
 The code is documented with docstrings and `sphinx`. Run

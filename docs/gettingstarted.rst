@@ -21,21 +21,6 @@ To install the package with pip, use
    pip install git+https://git.scc.kit.edu/photonics/ptsa.git
 
 
-Manual local installation
--------------------------
-
-This is not recommended.
-
-Either clone the repository via git or download and unzip the files. Then change into
-the new directory and execute
-
-.. code-block:: console
-
-   python setup.py build_ext --inplace
-
-You can use the package only from its own directory.
-
-
 How to use ptsa
 ===============
 

@@ -40,13 +40,7 @@ benchmarks, and building the documentation. Activate the environment:
 
 .. code-block:: console
 
-   python setup.py develop
-
-4. And finally install the current directory with conda
-
-.. code-block:: console
-
-   conda develop .
+   pip install -e .
 
 This last step makes the program available in the environment independently of the
 current folder. This is especially necessary for correctly building the documentation.
@@ -75,7 +69,7 @@ achieved by setting the environment variable ``CYTHON_COVERAGE``, for example wi
 
 .. code-block:: console
 
-    CYTHON_COVERAGE=1 python setup.py develop
+    CYTHON_COVERAGE=1 pip install -e .
 
 Make sure that new C code files are generated and that those files are compiled.
 

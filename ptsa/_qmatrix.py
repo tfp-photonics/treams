@@ -8,7 +8,7 @@ from ptsa.coeffs import fresnel
 
 
 class QMatrix:
-    """
+    r"""
     Q-Matrix (plane wave basis)
 
     The Q-matrix describes the scattering of incoming into outgoing modes using a plane
@@ -383,14 +383,14 @@ class QMatrix:
         ) + q_above.q[1, 0] @ np.linalg.solve(qtmp_up, self.q[0, 0, :, :] @ illu[0])
         return field_up, field_down
 
-    def field(self, r, field_above=True, outgoing=True):
-        choice = bool(field_above)
-        pref = (2 * choice - 1) * (2 * bool(outgoing) - 1)
+    def field(self, r, direction=1):
+        if direction not in (-1, 1):
+            raise ValueError(f"direction must be '-1' or '1', but is '{direction}''")
         if self.helicity:
             return sc.vpw_A(
                 self.kx,
                 self.ky,
-                pref * self.kz[:, choice],
+                direction * self.kz[:, choice],
                 r[..., None, 0],
                 r[..., None, 1],
                 r[..., None, 2],
@@ -400,14 +400,14 @@ class QMatrix:
             return (1 - self.pol[:, None]) * sc.vpw_M(
                 self.kx,
                 self.ky,
-                pref * self.kz[:, choice],
+                direction * self.kz[:, choice],
                 r[..., None, 0],
                 r[..., None, 1],
                 r[..., None, 2],
             ) - self.pol[:, None] * sc.vpw_M(
                 self.kx,
                 self.ky,
-                pref * self.kz[:, choice],
+                direction * self.kz[:, choice],
                 r[..., None, 0],
                 r[..., None, 1],
                 r[..., None, 2],
@@ -421,6 +421,7 @@ class QMatrix:
             self.kz[pol == 0, choice] / self.ks[choice, 0],
             self.kz[pol == 1, choice] / self.ks[choice, 1],
         )
+        coeffs = [np.zeros_like(self.kx) if c is None else c for c in coeffs]
         allcoeffs = [
             (1, -1, coeffs[0][selections[0]]),
             (1, 1, coeffs[0][selections[1]]),
@@ -445,17 +446,16 @@ class QMatrix:
             raise NotImplementedError
         raise NotImplementedError
 
-    def transmittance(self, illu):
-        """Transmittance"""
-        raise NotImplementedError
-
-    def reflectance(self, illu):
-        """Reflectance"""
-        raise NotImplementedError
-
-    def tr(self, illu):
+    def tr(self, illu, direction=1):
         """Transmittance and reflectance"""
-        return self.transmittance, self.reflectance
+        if direction not in (-1, 1):
+            raise ValueError(f"direction must be '-1' or '1', but is '{direction}''")
+        illu = (illu, None) if direction == 1 else (None, illu)
+        pow_i = self.poynting_avg(illu, above=direction == -1)
+        field_above, field_below = self.field_outside(illu)
+        a = self.poynting_avg((field_above, None)) / pow_i
+        b = self.poynting_avg((None, field_below)) / pow_i
+        return (a, -b) if direction == 1 else (b, -a)
 
     def cd(self, illu):
         """Circular dichroism"""
