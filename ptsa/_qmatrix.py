@@ -1,4 +1,5 @@
 import copy
+import itertools
 
 import numpy as np
 
@@ -75,7 +76,9 @@ class QMatrix:
         self.kx, self.ky, self.pol = modes  # ((a,), (a,), (a,))
         self.ks = k0 * misc.refractive_index(epsilon, mu, kappa)
         if kz is None:
-            kz = misc.wave_vec_z(self.kx[:, None], self.ky[:, None], self.ks[:, self.pol])
+            kz = misc.wave_vec_z(
+                self.kx[:, None], self.ky[:, None], self.ks[:, self.pol]
+            )
         kz = np.array(kz)
         if kz.shape != (2, self.kx.shape[0]):
             ValueError(f"shape of kz f{kz.shape} not supported")
@@ -138,7 +141,11 @@ class QMatrix:
         vals = fresnel(ks, kzs, zs)
         for i in range(kpars.shape[0]):
             qs[:, :, 2 * i : 2 * i + 2, 2 * i : 2 * i + 2] = vals[i, :, :, :, :]
-        return cls(qs, k0, modes, epsilon, mu, kappa, True, kzs)
+
+        reshaped_kzs = np.zeros((2 * kzs.shape[0], 2), kzs.dtype)
+        reshaped_kzs[::2, :] = kzs[:, 1, :]
+        reshaped_kzs[1::2, :] = kzs[:, 0, :]
+        return cls(qs, k0, modes, epsilon, mu, kappa, True, reshaped_kzs)
 
     @classmethod
     def slab(cls, k0, kpars, thickness, epsilon, mu=1, kappa=0):
@@ -161,28 +168,50 @@ class QMatrix:
         kappa = np.atleast_1d(kappa)
         nthickness = thickness.shape[0]
         for name, param in [
-                ("thickness", thickness),
-                ("epsilon", epsilon),
-                ("kappa", kappa),
-                ("mu", mu)
+            ("thickness", thickness),
+            ("epsilon", epsilon),
+            ("kappa", kappa),
+            ("mu", mu),
         ]:
             if param.ndim > 1:
-                raise ValueError(f"'{name}' must be scalar or 1D, but was {param.ndim}D")
+                raise ValueError(
+                    f"'{name}' must be scalar or 1D, but was {param.ndim}D"
+                )
             if name == "thickness":
                 continue
             if len(param) == 1:
                 param = np.repeat(param, nthickness + 2)
             elif len(param) != nthickness + 2:
-                raise ValueError(f"'{name}' must be scalar or of length {thickness}, but was {len(param)}")
+                raise ValueError(
+                    f"'{name}' must be scalar or of length {thickness}, but was {len(param)}"
+                )
         items == 0
         # Use the truncation of the material parameters by zip due to 'thickness'
-        for d, epsilon_below, epsilon_above, mu_below, mu_above, k_below, k_above in zip(thickness, epsilon, epsilon[1:], mu, mu[1:], kappa, kappa[1:]):
-            items.append(QMatrix.interface(k0, kpars, [epsilon_below, epsilon_above], [mu_below, mu_above], [kappa_below, kappa_above]))
-            items.append(QMatrix.propagation([0, 0, d], k0, kpars, epsilon_above, mu_above, kappa_above))
+        for (
+            d,
+            epsilon_below,
+            epsilon_above,
+            mu_below,
+            mu_above,
+            k_below,
+            k_above,
+        ) in zip(thickness, epsilon, epsilon[1:], mu, mu[1:], kappa, kappa[1:]):
+            items.append(
+                QMatrix.interface(
+                    k0,
+                    kpars,
+                    [epsilon_below, epsilon_above],
+                    [mu_below, mu_above],
+                    [kappa_below, kappa_above],
+                )
+            )
+            items.append(
+                QMatrix.propagation(
+                    [0, 0, d], k0, kpars, epsilon_above, mu_above, kappa_above
+                )
+            )
         items.append(QMatrix.interface(k0, kpars, epsilon[-2:], mu[-2:], kappa[-2:]))
         return QMatrix.stack(items, check_materials=False, check_modes=False)
-
-
 
     @classmethod
     def stack(cls, items, check_materials=True, check_modes=False):
@@ -366,13 +395,13 @@ class QMatrix:
         return self
 
     def field_outside(self, illu):
-        illu = (np.zeros_like(self.kx) if i is None else i for i in illu)
+        illu = [np.zeros_like(self.kx) if i is None else i for i in illu]
         field_above = self.q[0, 0, :, :] @ illu[0] + self.q[0, 1] @ illu[1]
         field_below = self.q[1, 0, :, :] @ illu[0] + self.q[1, 1] @ illu[1]
         return field_above, field_below
 
     def field_inside(self, illu, q_above):
-        illu = (np.zeros_like(self.kx) if i is None else i for i in illu)
+        illu = [np.zeros_like(self.kx) if i is None else i for i in illu]
         qtmp_up = np.eye(self.q.shape[2]) - self.q[0, 1, :, :] @ q_above.q[1, 0, :, :]
         qtmp_down = np.eye(self.q.shape[2]) - q_above.q[1, 0, :, :] @ self.q[0, 1, :, :]
         field_up = np.linalg.solve(qtmp_up, self.q[0, 0, :, :] @ illu[0]) + self.q[
@@ -414,12 +443,12 @@ class QMatrix:
             )
 
     def poynting_avg(self, coeffs, above=True):
-        choice = bool(above)
+        choice = int(bool(above))
         ky, ky, pol = self.modes
         selections = pol == 0, pol == 1
         pref = (
-            self.kz[pol == 0, choice] / self.ks[choice, 0],
-            self.kz[pol == 1, choice] / self.ks[choice, 1],
+            self.kz[selections[0], choice] / self.ks[choice, 0],
+            self.kz[selections[1], choice] / self.ks[choice, 1],
         )
         coeffs = [np.zeros_like(self.kx) if c is None else c for c in coeffs]
         allcoeffs = [
@@ -430,21 +459,162 @@ class QMatrix:
         ]
         res = 0
         if self.helicity:
-            for (dira, pola, a), (dirb, polb, b) in itertools.product(allcoeffs, repeat=2):
-                res += a @ (b.conjugate() * (pola * polb * pref[(polb + 1) // 2].conjugate() * dirb + pref[(pola + 1) // 2] * dira))
+            for (dira, pola, a), (dirb, polb, b) in itertools.product(
+                allcoeffs, repeat=2
+            ):
+                res += a @ (
+                    b.conjugate()
+                    * (
+                        pola * polb * pref[(polb + 1) // 2].conjugate() * dirb
+                        + pref[(pola + 1) // 2] * dira
+                    )
+                )
             res *= 0.25
         else:
-            for (dira, _, a), (dirb, _, b) in itertools.product(allcoeffs[::2], repeat=2):
+            for (dira, _, a), (dirb, _, b) in itertools.product(
+                allcoeffs[::2], repeat=2
+            ):
                 res += a @ (b.conjugate() * pref[0].conjugate() * dirb)
-            for (dira, _, a), (dirb, _, b) in itertools.product(allcoeffs[1::2], repeat=2):
+            for (dira, _, a), (dirb, _, b) in itertools.product(
+                allcoeffs[1::2], repeat=2
+            ):
                 res += a @ (b.conjugate() * pref[1] * dira)
             res *= 0.5
-        return np.real(res / np.conjugate(np.sqrt(self.mu[choice] / self.epsilon[choice])))
+        return np.real(
+            res / np.conjugate(np.sqrt(self.mu[choice] / self.epsilon[choice]))
+        )
 
-    def chirality_density(self, coeffs, thickness=0):
-        if not self.helicity:
-            raise NotImplementedError
-        raise NotImplementedError
+    def chirality_density(self, coeffs, z=None):
+        choice = bool(above)
+        z = (0, 0) if z is None else z
+        ky, ky, pol = self.modes
+        selections = pol == 0, pol == 1
+        kzs = (self.kz[pol == 0, choice], self.kz[pol == 1, choice])
+        coeffs = [np.zeros_like(self.kx) if c is None else c for c in coeffs]
+        allcoeffs = [
+            (1, -1, coeffs[0][selections[0]]),
+            (1, 1, coeffs[0][selections[1]]),
+            (-1, -1, coeffs[1][selections[0]]),
+            (-1, 1, coeffs[1][selections[1]]),
+        ]
+        res = 0
+        if self.helicity:
+            for (dira, _, a), (dirb, _, b) in itertools.product(
+                allcoeffs[::2], repeat=2
+            ):
+                pref = 1
+                if (0, 0) != z:
+                    pref = (
+                        np.sin(
+                            (dira * kzs[0] - dirb * kzs[0].conjugate)
+                            * 0.5
+                            * (z[1] - z[0])
+                        )
+                        * np.exp(
+                            1j
+                            * (dira * kzs[0] - dirb * kzs[0].conjugate)
+                            * 0.5
+                            * (z[1] + z[0])
+                        )
+                        / (
+                            (dira * kzs[0] - dirb * kzs[0].conjugate)
+                            * 0.5
+                            * (z[1] - z[0])
+                        )
+                    )
+                res += (
+                    a
+                    @ (
+                        b.conjugate()
+                        * pref
+                        * (
+                            1
+                            + (
+                                ks[choice, 0] * ks[choice, 0].conjugate()
+                                - kzs[0] * (kzs[0] + dira * dirb * kzs[0].conjugate())
+                            )
+                        )
+                    )
+                    / (ks[0] * ks[0].conjugate())
+                )
+            for (dira, _, a), (dirb, _, b) in itertools.product(
+                allcoeffs[1::2], repeat=2
+            ):
+                pref = 1
+                if (0, 0) != z:
+                    pref = (
+                        np.sin(
+                            (dira * kzs[1] - dirb * kzs[0].conjugate)
+                            * 0.5
+                            * (z[1] - z[0])
+                        )
+                        * np.exp(
+                            1j
+                            * (dira * kzs[1] - dirb * kzs[1].conjugate)
+                            * 0.5
+                            * (z[1] + z[0])
+                        )
+                        / (
+                            (dira * kzs[1] - dirb * kzs[1].conjugate)
+                            * 0.5
+                            * (z[1] - z[0])
+                        )
+                    )
+                res += (
+                    a
+                    @ (
+                        b.conjugate()
+                        * pref
+                        * (
+                            1
+                            + (
+                                ks[choice, 1] * ks[choice, 1].conjugate()
+                                - kzs[1] * (kzs[1] + dira * dirb * kzs[1].conjugate())
+                            )
+                        )
+                    )
+                    / (ks[1] * ks[1].conjugate())
+                )
+        else:
+            for (dira, _, a), (dirb, _, b) in itertools.product(
+                allcoeffs[::2], allcoeffs[1::2]
+            ):
+                pref = 1
+                if (0, 0) != z:
+                    pref = (
+                        np.sin(
+                            (dira * kzs[0] - dirb * kzs[0].conjugate)
+                            * 0.5
+                            * (z[1] - z[0])
+                        )
+                        * np.exp(
+                            1j
+                            * (dira * kzs[0] - dirb * kzs[0].conjugate)
+                            * 0.5
+                            * (z[1] + z[0])
+                        )
+                        / (
+                            (dira * kzs[0] - dirb * kzs[0].conjugate)
+                            * 0.5
+                            * (z[1] - z[0])
+                        )
+                    )
+                res += (
+                    2
+                    * np.sum(
+                        np.real(a * b.conjugate())
+                        * pref
+                        * (
+                            1
+                            + (
+                                ks[choice, 0] * ks[choice, 0].conjugate()
+                                - kzs[0] * (kzs[0] + dira * dirb * kzs[0].conjugate())
+                            )
+                        )
+                    )
+                    / (ks[0] * ks[0].conjugate())
+                )
+        return 0.5 * np.real(res)
 
     def tr(self, illu, direction=1):
         """Transmittance and reflectance"""
@@ -457,16 +627,38 @@ class QMatrix:
         b = self.poynting_avg((None, field_below)) / pow_i
         return (a, -b) if direction == 1 else (b, -a)
 
-    def cd(self, illu):
-        """Circular dichroism"""
+    def cd(self, illu, direction=1):
+        """Transmission and absorption circular dichroism"""
         if not self.helicity:
             raise NotImplementedError
-        raise NotImplementedError
+        tm, rm = tr(self, (illu, None), direction=direction)
+        tp, rp = tr(self, (None, ille), direction=direction)
+        return (tp - tm) / (tp + tm), (tp + rp - tm - rm) / (tp + rp + tm + rm)
 
-    def optrot(self, illu):
+    def optrot(self, direction=1):
         """Optical rotation"""
-        if not self.helicity:
-            raise NotImplementedError
+        if direction not in (-1, 1):
+            raise ValueError(f"direction must be '-1' or '1', but is '{direction}''")
+        choice = np.logical_and(self.kx == 0, self.ky == 0)
+        minus = np.logical_and(choice, self.pol == 0)
+        plus = np.logical_and(choice, self.pol == 1)
+        if np.sum(plus) != 1 or np.sum(minus != 1):
+            raise ValueError("did not find normal direction")
+        for p, m, kz in zip(plus, minus, self.kz[:, 2 * direction - 1]):
+            if np.abs(np.real(kz)) > 1e-40:
+                raise ValueError("oblique propagating mode found")
+        if self.helicity:
+            if direction == 1:
+                field, _ = self.field_outside((plus, 0))
+            else:
+                _, fieldp = self.field_outside((0, plus))
+        else:
+            if direction == 1:
+                fieldp, _ = self.field_outside((plus, 0))
+                fieldm, _ = self.field_outside((minus, 0))
+            else:
+                _, fieldp = self.field_outside((0, plus))
+                _, fieldm = self.field_outside((0, minus))
         raise NotImplementedError
 
     def periodic(self):
