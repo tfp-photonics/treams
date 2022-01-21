@@ -10,7 +10,7 @@ from ptsa.coeffs import fresnel
 
 class QMatrix:
     r"""
-    Q-Matrix (plane wave basis)
+    Q-matrix (plane wave basis)
 
     The Q-matrix describes the scattering of incoming into outgoing modes using a plane
     wave basis, with functions :func:`ptsa.special.vsw_A`, :func:`ptsa.special.vsw_M`,
@@ -49,6 +49,23 @@ class QMatrix:
         helicity (bool, optional): Helicity or parity modes
         kz (float or complex, (N, 2)-array, optional): The z-component of the wave
             vector on both sides of the Q-matrix
+
+    Attributes:
+        q (complex, (2, 2, N, N)-array): Q-matrices for the layer. The first dimension
+            corresponds to the output side, the second to the input side, the third one
+            to the outgoing modes and the last one to the incoming modes.
+        k0 (float): Wave number in vacuum
+        epsilon (float or complex, optional): Relative permittivity of the embedding medium
+        mu (complex): Relative permeability of the embedding medium
+        kappa (complex): Chirality parameter of the embedding medium
+        helicity (bool): Helicity or parity modes
+        kx (float, (N,)-array): X-component of the wave vector for each column/row of the Q-matrix
+        ky (float, (N,)-array): Y-component of the wave vector for each column/row of the Q-matrix
+        kz (float, (2, N)-array): Z-component of the wave vector for each column/row of the Q-matrix
+            and for both sides
+        pol (int, (N,)-array): Polarization of the mode for each column/row of the Q-matrix
+        ks (float or complex (2, 2)-array): Wave numbers in the medium for both sides
+            and both polarizations
     """
 
     def __init__(
@@ -73,30 +90,48 @@ class QMatrix:
         else:
             ValueError(f"shape of kappa f{kappa.shape} not supported")
         modes = self._check_modes(modes)
-        self.kx, self.ky, self.pol = modes  # ((a,), (a,), (a,))
-        self.ks = k0 * misc.refractive_index(epsilon, mu, kappa)
+        self.kx, self.ky, self.pol = modes
+        self.ks = k0 * misc.refractive_index(epsilon, mu, kappa)  # (2, 2) -> side, pol
         if kz is None:
-            kz = misc.wave_vec_z(
-                self.kx[:, None], self.ky[:, None], self.ks[:, self.pol]
-            )
+            kz = misc.wave_vec_z(self.kx, self.ky, self.ks[:, self.pol])
         kz = np.array(kz)
+        print(kz.shape)
         if kz.shape != (2, self.kx.shape[0]):
             ValueError(f"shape of kz f{kz.shape} not supported")
-        self.q = qmats  # (2, 2, a, a)
-        self.k0 = np.array(k0).item()  # ()
-        self.epsilon = epsilon  # (2,)
-        self.mu = mu  # (2,)
-        self.kappa = kappa  # (2,)
+        self.q = qmats
+        self.k0 = np.array(k0).item()
+        self.epsilon = epsilon
+        self.mu = mu
+        self.kappa = kappa
         self.helicity = helicity
-        self.kz = kz  # (2, a)
+        self.kz = kz
 
     @property
     def modes(self):
+        """
+        Modes of the Q-matrix
+
+        X- and Y-components and polarization of each row/column of the Q-matrix
+
+        Returns:
+            3-tuple
+        """
         return self.kx, self.ky, self.pol
 
     @staticmethod
     def defaultmodes(kpars):
-        """Default modes"""
+        """
+        Default sortation of modes
+
+        Default sortation of the Q-matrix entries, including degree `kx`, order `ky` and
+        polarization `p`.
+
+        Args:
+            kpars (float, (N, 2)-array): Tangential components of the wave vector
+
+        Returns:
+            tuple
+        """
         kpars = np.array(kpars)
         res = np.empty((2 * kpars.shape[0], 2), np.float64)
         res[::2, :] = kpars
@@ -109,11 +144,11 @@ class QMatrix:
     @classmethod
     def interface(cls, k0, kpars, epsilon, mu=1, kappa=0):
         """
-        Interface
+        Planar interface between two media
 
         Args:
             k0 (float): Wave number in vacuum
-            kpars (float, array): Tangential part of the wave vector
+            kpars (float, (N, 2)-array): Tangential components of the wave vector
             epsilon (float or complex): Relative permittivity on both sides of the interface
             mu (float or complex, optional): Relative permittivity on both sides of the interface
             kappa (float or complex, optional): Relative permittivity on both sides of the interface
@@ -140,21 +175,25 @@ class QMatrix:
         qs = np.zeros((2, 2, modes[0].shape[0], modes[0].shape[0]), complex)
         vals = fresnel(ks, kzs, zs)
         for i in range(kpars.shape[0]):
-            qs[:, :, 2 * i : 2 * i + 2, 2 * i : 2 * i + 2] = vals[i, :, :, :, :]
+            qs[:, :, 2 * i : 2 * i + 2, 2 * i : 2 * i + 2] = vals[i, :, :, ::-1, ::-1]
 
-        reshaped_kzs = np.zeros((2 * kzs.shape[0], 2), kzs.dtype)
-        reshaped_kzs[::2, :] = kzs[:, 1, :]
-        reshaped_kzs[1::2, :] = kzs[:, 0, :]
+        reshaped_kzs = np.zeros((2, 2 * kzs.shape[0]), kzs.dtype)
+        reshaped_kzs[:, modes[2] == 0] = kzs[:, :, 0].T
+        reshaped_kzs[:, modes[2] == 1] = kzs[:, :, 1].T
         return cls(qs, k0, modes, epsilon, mu, kappa, True, reshaped_kzs)
 
     @classmethod
     def slab(cls, k0, kpars, thickness, epsilon, mu=1, kappa=0):
         """
-        Slab
+        Slab of material
+
+        A slab of material, defined by a thickness and three materials. Consecutive
+        slabs of material can be defined by `n` thicknesses and and `n + 2` material
+        parameters.
 
         Args:
             k0 (float): Wave number in vacuum
-            kpars (float, array): Tangential part of the wave vector
+            kpars (float, (N, 2)-array): Tangential components of the wave vector
             epsilon (float or complex): Relative permittivity on both sides of the interface
             mu (float or complex, optional): Relative permittivity on both sides of the interface
             kappa (float or complex, optional): Relative permittivity on both sides of the interface
@@ -215,7 +254,21 @@ class QMatrix:
 
     @classmethod
     def stack(cls, items, check_materials=True, check_modes=False):
-        """Stack"""
+        """
+        Stack of Q-matrices
+
+        Electromagnetically couple multiple Q-matrices in the order given. Before
+        coupling it can be checked for matching materials and modes.
+
+        Args:
+            items (QMatrix, array-like): An array of Q-matrices in their intended order
+            check_materials (bool, optional): Check for matching material parameters
+                at each Q-matrix
+            check_materials (bool, optional): Check for matching modes at each Q-matrix
+
+        Returns:
+            QMatrix
+        """
         acc = copy.deepcopy(items[0])
         for item in items[1:]:
             acc.add(item, check_materials, check_modes)
@@ -223,7 +276,22 @@ class QMatrix:
 
     @classmethod
     def propagation(cls, r, k0, kpars, epsilon=1, mu=1, kappa=0):
-        """Propagation"""
+        """
+        Q-matrix for the propagation along a distance
+
+        This Q-matrix translates the reference origin along `r`.
+
+        Args:
+            r (float, (3,)-array): Translation vector
+            k0 (float): Wave number in vacuum
+            kpars (float, (N, 2)-array): Tangential components of the wave vector
+            epsilon (float or complex, optional): Relative permittivity of the medium
+            mu (float or complex, optional): Relative permeability of the medium
+            kappa (float or complex, optional): Chirality parameter of the medium
+
+        Returns:
+            QMatrix
+        """
         ks = k0 * misc.refractive_index(epsilon, mu, kappa)
         kpars = np.array(kpars)
         if kpars.ndim == 1:
@@ -243,12 +311,27 @@ class QMatrix:
             np.array([mu, mu], complex),
             np.array([kappa, kappa], complex),
             True,
-            np.stack((kzs, kzs), axis=-1),
+            np.stack((kzs, kzs), axis=0),
         )
 
     @classmethod
     def array(cls, tmat, kpars, a, eta=0):
-        """Array"""
+        """
+        Q-matrix from an array of (cylindrical) T-matrices
+
+        Create a Q-matrix for a two-dimensional array of objects described by the
+        T-Matrix or an one-dimensional array of objects described by a cylindrical
+        T-matrix.
+
+        Args:
+            tmat (TMatrix or TMatrixC): (Cylindrical) T-matrix to put in the arry
+            kpars (float, (N, 2)-array): Tangential components of the wave vector
+            a (array): Definition of the lattice
+            eta (float or complex, optional): Splitting parameter in the lattice summation
+
+        Returns:
+            QMatrix
+        """
         modes = QMatrix.defaultmodes(kpars)
         kzs = misc.wave_vec_z(*modes[:2], tmat.ks[modes[2]])
         a = np.array(a)
@@ -292,7 +375,7 @@ class QMatrix:
             mu,
             kappa,
             tmat.helicity,
-            np.stack((kzs, kzs), axis=-1),
+            np.stack((kzs, kzs), axis=0),
         )
 
     @property
@@ -309,7 +392,21 @@ class QMatrix:
         return self.epsilon, self.mu, self.kappa
 
     def add(self, qmat, check_materials=True, check_modes=False):
-        """Add"""
+        """
+        Couple another Q-matrix on top of the current one
+
+        See also :func:`ptsa.QMatrix.stack` for a function that does not change the
+        current Q-matrix but creates a new one.
+
+        Args:
+            items (QMatrix): Q-matrices in their intended order
+            check_materials (bool, optional): Check for matching material parameters
+                at each Q-matrix
+            check_materials (bool, optional): Check for matching modes at each Q-matrix
+
+        Returns:
+            QMatrix
+        """
         if check_materials and (
             self.epsilon[1] != qmat.epsilon[0]
             or self.mu[1] != qmat.mu[0]
@@ -345,13 +442,32 @@ class QMatrix:
         return self
 
     def double(self, times=1):
-        """Double"""
+        """
+        Double the Q-matrix
+
+        By default this function doubles the Q-matrix but it can also create a
+        :math:`2^n`-fold repetition of itself:
+
+        Args:
+            times (int, optional): Number of times to double itself. Defaults to 1.
+
+        Returns:
+            QMatrix
+        """
         for _ in range(times):
-            self.coupling(self)
+            self.add(self)
         return self
 
     def changebasis(self, modes=None):
-        """Change the basis"""
+        """
+        Swap between helicity and parity basis
+
+        Args:
+            modes (array, optional): Change the number of modes while changing the basis
+
+        Returns:
+            QMatrix
+        """
         if modes is None:
             modes = self.modes
         mat = misc.basischange(self.modes, modes)
@@ -359,15 +475,21 @@ class QMatrix:
         self.q[0, 1, :, :] = mat.T @ self.q[0, 1, :, :] @ mat
         self.q[1, 0, :, :] = mat.T @ self.q[1, 0, :, :] @ mat
         self.q[1, 1, :, :] = mat.T @ self.q[1, 1, :, :] @ mat
-        self.modes = modes
+        self.kx, self.ky, self.pol = modes
         self.helicity = not self.helicity
-        self.kz = np.zeros((2, modes.shape[0]))
-        self.kz[0, :] = misc.wave_vec_z(modes[0], modes[1], self.ks[0, modes[2]])
-        self.kz[1, :] = misc.wave_vec_z(modes[0], modes[1], self.ks[1, modes[2]])
+        self.kz = misc.wave_vec_z(*modes[:2], self.ks[:, modes[2]])
         return self
 
     def helicitybasis(self, modes=None):
-        """Helicity basis"""
+        """
+        Change to helicity basis
+
+        Args:
+            modes (array, optional): Change the number of modes while changing the basis
+
+        Returns:
+            QMatrix
+        """
         if not self.helicity:
             return self.changebasis(modes)
         if modes is None:
@@ -375,7 +497,15 @@ class QMatrix:
         return self.pick(modes)
 
     def paritybasis(self, modes=None):
-        """Parity basis"""
+        """
+        Change to parity basis
+
+        Args:
+            modes (array, optional): Change the number of modes while changing the basis
+
+        Returns:
+            QMatrix
+        """
         if self.helicity:
             return self.changebasis(modes)
         if modes is None:
@@ -383,7 +513,15 @@ class QMatrix:
         return self.pick(modes)
 
     def pick(self, modes):
-        """Pick modes"""
+        """
+        Pick modes from the Q-matrix
+
+        Args:
+            modes (array): Modes of the new Q-matrix
+
+        Returns:
+            QMatrix
+        """
         modes = self._check_modes(modes)
         mat = misc.pickmodes(self.modes, modes)
         self.q[0, 0, :, :] = mat.T @ self.q[0, 0, :, :] @ mat
@@ -395,12 +533,40 @@ class QMatrix:
         return self
 
     def field_outside(self, illu):
+        """
+        Field coefficients above and below the Q-matrix
+
+        Given an illumination defined by the coefficients of each incoming mode
+        calculate the coefficients for the outgoing field above and below the Q-matrix.
+
+        Args:
+            illu (tuple): A 2-tuple of arrays, with the entries corresponding to
+                upwards and downwards incoming modes.
+
+        Returns:
+            tuple
+        """
         illu = [np.zeros_like(self.kx) if i is None else i for i in illu]
         field_above = self.q[0, 0, :, :] @ illu[0] + self.q[0, 1] @ illu[1]
         field_below = self.q[1, 0, :, :] @ illu[0] + self.q[1, 1] @ illu[1]
         return field_above, field_below
 
     def field_inside(self, illu, q_above):
+        """
+        Field coefficients between two Q-matrices
+
+        Given an illumination defined by the coefficients of each incoming mode
+        calculate the coefficients for the field between the two Q-matrices. The
+        coefficients are separated into upwards and downwards propagating modes.
+
+        Args:
+            illu (tuple): A 2-tuple of arrays, with the entries corresponding to
+                upwards and downwards incoming modes.
+            q_above (QMatrix): Q-matrix above the current one
+
+        Returns:
+            tuple
+        """
         illu = [np.zeros_like(self.kx) if i is None else i for i in illu]
         qtmp_up = np.eye(self.q.shape[2]) - self.q[0, 1, :, :] @ q_above.q[1, 0, :, :]
         qtmp_down = np.eye(self.q.shape[2]) - q_above.q[1, 0, :, :] @ self.q[0, 1, :, :]
@@ -412,43 +578,78 @@ class QMatrix:
         ) + q_above.q[1, 0] @ np.linalg.solve(qtmp_up, self.q[0, 0, :, :] @ illu[0])
         return field_up, field_down
 
-    def field(self, r, direction=1):
+    def field(self, r, direction=1, above=True):
+        """
+        Calculate the field at specified points
+
+        The mode expansion of the Q-matrix is used. The field direction and the side of
+        the Q-matrix can be specified
+
+        Args:
+            r (float, array_like): Array of the positions to probe
+            direction (int, optional): The direction of the field, options are `-1` and `1`
+            above (bool, optional): Take the field above or below the Q-matrix
+
+        Returns
+            complex
+        """
         if direction not in (-1, 1):
             raise ValueError(f"direction must be '-1' or '1', but is '{direction}''")
+        choice = int(bool(above))
         if self.helicity:
             return sc.vpw_A(
                 self.kx,
                 self.ky,
-                direction * self.kz[:, choice],
+                direction * self.kz[choice, :],
                 r[..., None, 0],
                 r[..., None, 1],
                 r[..., None, 2],
                 self.pol,
             )
         else:
-            return (1 - self.pol[:, None]) * sc.vpw_M(
+            return (1 - self.pol) * sc.vpw_M(
                 self.kx,
                 self.ky,
-                direction * self.kz[:, choice],
+                direction * self.kz[choice, :],
                 r[..., None, 0],
                 r[..., None, 1],
                 r[..., None, 2],
-            ) - self.pol[:, None] * sc.vpw_M(
+            ) - self.pol * sc.vpw_M(
                 self.kx,
                 self.ky,
-                direction * self.kz[:, choice],
+                direction * self.kz[choice, :],
                 r[..., None, 0],
                 r[..., None, 1],
                 r[..., None, 2],
             )
 
     def poynting_avg(self, coeffs, above=True):
+        r"""
+        Time-averaged z-component of the Poynting vector
+
+        Calculate the time-averaged Poynting vector's z-component
+
+        .. math::
+
+            \langle S_z \rangle = \frac{1}{2} \Re (\boldsymbol E \times \boldsymbol H^\ast) \boldsymbol{\hat{z}}
+
+        on one side of the Q-matrix with the given coefficients.
+
+        Args:
+            coeffs (2-tuple): The first entry are the upwards propagating modes the
+                second one the downwards propagating modes
+            above (bool, optional): Calculate the Poynting vector above or below the
+                Q-matrix
+
+        Returns:
+            float
+        """
         choice = int(bool(above))
         ky, ky, pol = self.modes
         selections = pol == 0, pol == 1
         pref = (
-            self.kz[selections[0], choice] / self.ks[choice, 0],
-            self.kz[selections[1], choice] / self.ks[choice, 1],
+            self.kz[choice, selections[0]] / self.ks[choice, 0],
+            self.kz[choice, selections[1]] / self.ks[choice, 1],
         )
         coeffs = [np.zeros_like(self.kx) if c is None else c for c in coeffs]
         allcoeffs = [
@@ -484,12 +685,34 @@ class QMatrix:
             res / np.conjugate(np.sqrt(self.mu[choice] / self.epsilon[choice]))
         )
 
-    def chirality_density(self, coeffs, z=None):
+    def chirality_density(self, coeffs, z=None, above=True):
+        r"""
+        Volume-averaged chirality density
+
+        Calculate the volume-averaged chirality density
+
+        .. math::
+
+            \int_{A_\text{unit cell}} \mathrm d A \int_{z_0}^{z_1} \mathrm d z |G_+(\boldsymbol r)|^2 - |G_-(\boldsymbol r)|^2
+
+        on one side of the Q-matrix with the given coefficients. The calculation can
+        also be done for an infinitely thin sheet. The Riemann-Silberstein vectors are
+        :math:`\sqrt{2} \boldsymbol G_\pm(\boldsymbol r) = \boldsymbol E(\boldsymbol r) + \mathrm i Z_0 Z \boldsymbol H(\boldsymbol r)`.
+
+        Args:
+            coeffs (2-tuple): The first entry are the upwards propagating modes the
+                second one the downwards propagating modes
+            above (bool, optional): Calculate the chirality density above or below the
+                Q-matrix
+
+        Returns:
+            float
+        """
         choice = bool(above)
         z = (0, 0) if z is None else z
         ky, ky, pol = self.modes
         selections = pol == 0, pol == 1
-        kzs = (self.kz[pol == 0, choice], self.kz[pol == 1, choice])
+        kzs = (self.kz[choice, pol == 0], self.kz[choice, pol == 1])
         coeffs = [np.zeros_like(self.kx) if c is None else c for c in coeffs]
         allcoeffs = [
             (1, -1, coeffs[0][selections[0]]),
@@ -617,52 +840,71 @@ class QMatrix:
         return 0.5 * np.real(res)
 
     def tr(self, illu, direction=1):
-        """Transmittance and reflectance"""
+        """
+        Transmittance and reflectance
+
+        Calculate the transmittance and reflectance for one Q-matrix with the given
+        illumination and direction.
+
+        Args:
+            illu (complex, array_like): Expansion coefficients for the incoming light
+            direction (int, optional): The direction of the field, options are `-1` and `1`
+
+        Returns:
+            tuple
+        """
         if direction not in (-1, 1):
             raise ValueError(f"direction must be '-1' or '1', but is '{direction}''")
-        illu = (illu, None) if direction == 1 else (None, illu)
-        pow_i = self.poynting_avg(illu, above=direction == -1)
-        field_above, field_below = self.field_outside(illu)
-        a = self.poynting_avg((field_above, None)) / pow_i
-        b = self.poynting_avg((None, field_below)) / pow_i
-        return (a, -b) if direction == 1 else (b, -a)
+        illu_full = (illu, None) if direction == 1 else (None, illu)
+        field_above, field_below = self.field_outside(illu_full)
+        r = (None, field_below) if direction == 1 else (field_above, None)
+        ir = (illu, field_below) if direction == 1 else (field_above, illu)
+        t = (field_above, None) if direction == 1 else (None, field_below)
+
+        s_r = self.poynting_avg(r, above=direction == -1)
+        s_ir = self.poynting_avg(ir, above=direction == -1)
+        s_t = self.poynting_avg(t, above=direction == 1)
+        return s_t / (s_ir - s_r), s_r / (s_r - s_ir)
 
     def cd(self, illu, direction=1):
-        """Transmission and absorption circular dichroism"""
+        """
+        Transmission and absorption circular dichroism
+
+        Calculate the transmission and absoption CD for one Q-matrix with the given
+        illumination and direction.
+
+        Args:
+            illu (complex, array_like): Expansion coefficients for the incoming light
+            direction (int, optional): The direction of the field, options are `-1` and `1`
+
+        Returns:
+            tuple
+        """
         if not self.helicity:
             raise NotImplementedError
         tm, rm = tr(self, (illu, None), direction=direction)
         tp, rp = tr(self, (None, ille), direction=direction)
         return (tp - tm) / (tp + tm), (tp + rp - tm - rm) / (tp + rp + tm + rm)
 
-    def optrot(self, direction=1):
-        """Optical rotation"""
-        if direction not in (-1, 1):
-            raise ValueError(f"direction must be '-1' or '1', but is '{direction}''")
-        choice = np.logical_and(self.kx == 0, self.ky == 0)
-        minus = np.logical_and(choice, self.pol == 0)
-        plus = np.logical_and(choice, self.pol == 1)
-        if np.sum(plus) != 1 or np.sum(minus != 1):
-            raise ValueError("did not find normal direction")
-        for p, m, kz in zip(plus, minus, self.kz[:, 2 * direction - 1]):
-            if np.abs(np.real(kz)) > 1e-40:
-                raise ValueError("oblique propagating mode found")
-        if self.helicity:
-            if direction == 1:
-                field, _ = self.field_outside((plus, 0))
-            else:
-                _, fieldp = self.field_outside((0, plus))
-        else:
-            if direction == 1:
-                fieldp, _ = self.field_outside((plus, 0))
-                fieldm, _ = self.field_outside((minus, 0))
-            else:
-                _, fieldp = self.field_outside((0, plus))
-                _, fieldm = self.field_outside((0, minus))
-        raise NotImplementedError
-
     def periodic(self):
-        """Periodic arrangement"""
+        r"""
+        Periodic repetition of the Q-Matrix
+
+        Transform the Q-matrix to an infinite periodic arrangement of itself defined
+        by
+
+        .. math::
+
+            \begin{pmatrix}
+                Q_{\uparrow \uparrow} & Q_{\uparrow \downarrow} \\
+                -Q_{\downarrow \downarrow}^{-1} Q_{\downarrow \uparrow} Q_{\uparrow \uparrow} &
+                Q_{\downarrow \downarrow}^{-1} (\mathbb{1} - Q_{\downarrow \uparrow} Q_{\uparrow \downarrow})
+            \end{pmatrix}\,.
+
+        Returns:
+            complex, array_like
+
+        """
         dim = self.q.shape[2]
         res = np.empty((2 * dim, 2 * dim), dtype=complex)
         res[0:dim, 0:dim] = self.q[0, 0, :, :]
@@ -675,10 +917,35 @@ class QMatrix:
         )
         return res
 
-    def bands_kz(self, a3):
-        """Band structure calculation"""
+    def bands_kz(self, az):
+        r"""
+        Band structure calculation
+
+        Calculate the band structure for the given Q-matrix, assuming it is periodically
+        repeated along the z-axis. The function returns the z-components of the wave
+        vector :math:`k_z` and the corresponding eigenvectors :math:`v` of
+
+        .. math::
+
+            \begin{pmatrix}
+                Q_{\uparrow \uparrow} & Q_{\uparrow \downarrow} \\
+                -Q_{\downarrow \downarrow}^{-1} Q_{\downarrow \uparrow} Q_{\uparrow \uparrow} &
+                Q_{\downarrow \downarrow}^{-1} (\mathbb{1} - Q_{\downarrow \uparrow} Q_{\uparrow \downarrow})
+            \end{pmatrix}
+            \boldsymbol v
+            =
+            \mathrm{e}^{\mathrm{i}k_z a_z}
+            \boldsymbol v\,.
+
+        Args:
+            az (float): Lattice pitch along the z direction
+
+        Returns:
+            tuple
+
+        """
         w, v = np.linalg.eig(self.periodic())
-        return -1j * np.log(w) / a3, v
+        return -1j * np.log(w) / az, v
 
     def _check_modes(self, modes):
         """_check_modes"""

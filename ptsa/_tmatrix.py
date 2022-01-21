@@ -465,7 +465,7 @@ class TMatrix(TMatrixBase):
 
     def field(self, r, scattered=True):
         """
-        Calculate the scattered or incident field at a specified points
+        Calculate the scattered or incident field at specified points
 
         The mode expansion of the T-matrix is used
 

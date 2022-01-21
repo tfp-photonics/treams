@@ -151,7 +151,7 @@ class TMatrixBase:
         Swap between helicity and parity basis
 
         Args:
-            modes (array): Change the number of modes while changing the basis
+            modes (array, optional): Change the number of modes while changing the basis
 
         Returns:
             TMatrixBase
@@ -174,7 +174,7 @@ class TMatrixBase:
         Change to helicity basis
 
         Args:
-            modes (array): Change the number of modes while changing the basis
+            modes (array, optional): Change the number of modes while changing the basis
 
         Returns:
             TMatrixBase
@@ -190,7 +190,7 @@ class TMatrixBase:
         Change to parity basis
 
         Args:
-            modes (array): Change the number of modes while changing the basis
+            modes (array, optional): Change the number of modes while changing the basis
 
         Returns:
             TMatrixBase

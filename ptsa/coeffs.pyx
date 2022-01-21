@@ -440,10 +440,10 @@ fresnel = np.PyUFunc_FromFuncAndDataAndSignature(
     The first dimension contains the numbers for the two media, the second dimenison
     indexes the polarizations.
 
-    The result is an array relating incident light of negative (index `0`) and
-    positive (index `1`) helicity with the scattered modes, which are index in the same
-    way. The first dimension of the array are the scattered and the second dimension the
-    incident modes.
+    The result is an array relating incoming light of negative (index `0`) and
+    positive (index `1`) helicity with the outgoing modes, which are indexed in the same
+    way. The first dimension of the array are the outgoing and the second dimension the
+    incoming modes.
 
     Args:
         ks (float or complex): Wave numbers
@@ -451,7 +451,7 @@ fresnel = np.PyUFunc_FromFuncAndDataAndSignature(
         zs (float or complex): Impedances
 
     Returns:
-        complex (2, 2)-array
+        complex (2, 2, 2, 2)-array
     """,  # docstring
     0,  # unused
     '(2,2),(2,2),(2)->(2,2,2,2)',  # signature
