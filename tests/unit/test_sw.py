@@ -6,8 +6,6 @@ from ptsa import sw
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
     return abs(a - b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
 
-EPS = 2e-7
-EPSSQ = 4e-14
 
 class TestPeriodicToCw:
     def test_h(self):

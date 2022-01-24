@@ -9,7 +9,7 @@ Functions associated with plane waves
    to_cw
    to_sw
    translate
-   xyz_to_zxy
+   permute_xyz
 
 """
 
@@ -572,8 +572,8 @@ cdef double complex _cxyz_to_zxy_h(number_t kx, number_t ky, number_t kz, long p
 
 cdef double complex _cxyz_to_yzx_p(number_t kx, number_t ky, number_t kz, long polout, long polin) nogil:
     if polout == polin:
-        return -_cxyz_to_zxy_p(kx, ky, kz, polout, polin)
-    return _cxyz_to_zxy_p(kx, ky, kz, polout, polin)
+        return _cxyz_to_zxy_p(kx, ky, kz, polout, polin)
+    return -_cxyz_to_zxy_p(kx, ky, kz, polout, polin)
 
 
 cdef double complex _cxyz_to_yzx_h(number_t kx, number_t ky, number_t kz, long polout, long polin) nogil:
@@ -591,16 +591,13 @@ cdef void _loop_yz_d(char **args, np.npy_intp *dims, np.npy_intp *steps, void *d
     cdef char *ip5 = args[5]
     cdef char *ip6 = args[6]
     cdef char *ip7 = args[7]
-    cdef char *ip8 = args[8]
-    cdef char *ip9 = args[9]
-    cdef char *op0 = args[10]
+    cdef char *op0 = args[8]
     cdef double complex ov0
     for i in range(n):
         if (
             <double>(<double*>ip0)[0] == <double>(<double*>ip4)[0]
             and <double>(<double*>ip1)[0] == <double>(<double*>ip5)[0]
             and <double>(<double*>ip2)[0] == <double>(<double*>ip6)[0]
-            and <long>(<long*>ip8)[0] == <long>(<long*>ip9)[0]
         ):
             ov0 = (<double complex(*)(double, double, double, long, long) nogil>func)(
                 <double>(<double*>ip0)[0],
@@ -620,9 +617,7 @@ cdef void _loop_yz_d(char **args, np.npy_intp *dims, np.npy_intp *steps, void *d
         ip5 += steps[5]
         ip6 += steps[6]
         ip7 += steps[7]
-        ip8 += steps[8]
-        ip9 += steps[9]
-        op0 += steps[10]
+        op0 += steps[8]
 
 
 cdef void _loop_yz_D(char **args, np.npy_intp *dims, np.npy_intp *steps, void *data) nogil:
@@ -636,16 +631,13 @@ cdef void _loop_yz_D(char **args, np.npy_intp *dims, np.npy_intp *steps, void *d
     cdef char *ip5 = args[5]
     cdef char *ip6 = args[6]
     cdef char *ip7 = args[7]
-    cdef char *ip8 = args[8]
-    cdef char *ip9 = args[9]
-    cdef char *op0 = args[10]
+    cdef char *op0 = args[8]
     cdef double complex ov0
     for i in range(n):
         if (
             <double complex>(<double complex*>ip0)[0] == <double complex>(<double complex*>ip4)[0]
             and <double complex>(<double complex*>ip1)[0] == <double complex>(<double complex*>ip5)[0]
             and <double complex>(<double complex*>ip2)[0] == <double complex>(<double complex*>ip6)[0]
-            and <long>(<long*>ip8)[0] == <long>(<long*>ip9)[0]
         ):
             ov0 = (<double complex(*)(double complex, double complex, double complex, long, long) nogil>func)(
                 <double complex>(<double complex*>ip0)[0],
@@ -665,9 +657,7 @@ cdef void _loop_yz_D(char **args, np.npy_intp *dims, np.npy_intp *steps, void *d
         ip5 += steps[5]
         ip6 += steps[6]
         ip7 += steps[7]
-        ip8 += steps[8]
-        ip9 += steps[9]
-        op0 += steps[10]
+        op0 += steps[8]
 
 
 cdef np.PyUFuncGenericFunction ufunc_yz_loops[2]
@@ -675,7 +665,7 @@ cdef void *ufunc_yz_h_data[2]
 cdef void *ufunc_yz_p_data[2]
 cdef void *ufunc_zy_h_data[2]
 cdef void *ufunc_zy_p_data[2]
-cdef char ufunc_yz_types[2 * 11]
+cdef char ufunc_yz_types[2 * 9]
 
 ufunc_yz_loops[0] = <np.PyUFuncGenericFunction>_loop_yz_d
 ufunc_yz_loops[1] = <np.PyUFuncGenericFunction>_loop_yz_D
@@ -687,20 +677,16 @@ ufunc_yz_types[4] = <char>np.NPY_DOUBLE
 ufunc_yz_types[5] = <char>np.NPY_DOUBLE
 ufunc_yz_types[6] = <char>np.NPY_DOUBLE
 ufunc_yz_types[7] = <char>np.NPY_LONG
-ufunc_yz_types[8] = <char>np.NPY_LONG
-ufunc_yz_types[9] = <char>np.NPY_LONG
+ufunc_yz_types[8] = <char>np.NPY_CDOUBLE
+ufunc_yz_types[9] = <char>np.NPY_CDOUBLE
 ufunc_yz_types[10] = <char>np.NPY_CDOUBLE
 ufunc_yz_types[11] = <char>np.NPY_CDOUBLE
-ufunc_yz_types[12] = <char>np.NPY_CDOUBLE
+ufunc_yz_types[12] = <char>np.NPY_LONG
 ufunc_yz_types[13] = <char>np.NPY_CDOUBLE
-ufunc_yz_types[14] = <char>np.NPY_LONG
+ufunc_yz_types[14] = <char>np.NPY_CDOUBLE
 ufunc_yz_types[15] = <char>np.NPY_CDOUBLE
-ufunc_yz_types[16] = <char>np.NPY_CDOUBLE
+ufunc_yz_types[16] = <char>np.NPY_LONG
 ufunc_yz_types[17] = <char>np.NPY_CDOUBLE
-ufunc_yz_types[18] = <char>np.NPY_LONG
-ufunc_yz_types[19] = <char>np.NPY_LONG
-ufunc_yz_types[20] = <char>np.NPY_LONG
-ufunc_yz_types[21] = <char>np.NPY_CDOUBLE
 ufunc_yz_h_data[0] = <void*>_cxyz_to_zxy_h[double]
 ufunc_yz_h_data[1] = <void*>_cxyz_to_zxy_h[double_complex]
 ufunc_yz_p_data[0] = <void*>_cxyz_to_zxy_p[double]
@@ -715,7 +701,7 @@ _xyz_to_zxy_h = np.PyUFunc_FromFuncAndData(
     ufunc_yz_h_data,
     ufunc_yz_types,
     2,
-    10,
+    8,
     1,
     0,
     '_xyz_to_zxy_h',
@@ -727,7 +713,7 @@ _xyz_to_zxy_p = np.PyUFunc_FromFuncAndData(
     ufunc_yz_p_data,
     ufunc_yz_types,
     2,
-    10,
+    8,
     1,
     0,
     '_xyz_to_zxy_p',
@@ -739,7 +725,7 @@ _xyz_to_yzx_h = np.PyUFunc_FromFuncAndData(
     ufunc_zy_h_data,
     ufunc_yz_types,
     2,
-    10,
+    8,
     1,
     0,
     '_xyz_to_yzx_h',
@@ -751,7 +737,7 @@ _xyz_to_yzx_p = np.PyUFunc_FromFuncAndData(
     ufunc_zy_p_data,
     ufunc_yz_types,
     2,
-    10,
+    8,
     1,
     0,
     '_xyz_to_yzx_p',
@@ -760,31 +746,31 @@ _xyz_to_yzx_p = np.PyUFunc_FromFuncAndData(
 )
 
 
-def xyz_to_zxy(kx, ky, kz, pol, qx, qy, qz, qol, posout=0, posin=0, helicity=True, inverse=False):
+def permute_xyz(kxa, kya, kza, pa, kx, ky, kz, p, helicity=True, inverse=False):
     """
-    xyz_to_zxy(kx, ky, kz, pol, qx, qy, qz, qol, posout=0, posin=0, helicity=True, inverse=False)
+    permute_xyz(kxp, kyp, kzp, pp, kx, ky, kz, qol, helicity=True, inverse=False)
 
     Change the coordinate system of the plane wave
 
     A plane wave in the coordinate system :math:`(x, y, z)` with primary direction of
     propagation along the z-axis is described in the system
-    :math:`(x, y, z) = (z', x', y')`, where still the modes are described with
+    :math:`(x', y', z') = (y, z, x)`, where still the modes are described with
     :func:`ptsa.special.vpw_M`, :func:`ptsa.special.vpw_N`, and
-    :func:`ptsa.special.vpw_A`. The inverse transformation is also possible.
+    :func:`ptsa.special.vpw_A` in the primed coordinate system. Therefore the
+    polarizations are defined differently. The inverse transformation is also possible.
 
-    The function is essentially diagonal in the wave number.
+    The function is essentially diagonal in the wave number, because we always describe
+    the source and destination mode in the unprimed coordinate system.
 
     Args:
-        kx (float, array_like): X component of destination mode wave vector
-        ky (float, array_like): Y component of destination mode wave vector
-        kz (float or complex, array_like): Z component of destination mode wave vector
-        pol (int, array_like): Polarization of the destination mode
+        kxa (float, array_like): X component of destination mode wave vector
+        kya (float or complex, array_like): Y component of destination mode wave vector
+        kza (float, array_like): Z component of destination mode wave vector
+        pa (int, array_like): Polarization of the destination mode
         kx (float, array_like): X component of source mode wave vector
         ky (float, array_like): Y component of source mode wave vector
-        kz (float, array_like): Z component of source mode wave vector
-        pol (int, array_like): Polarization of the source mode
-        posout (int, optional): Output positions
-        posin (int, optional): Input positions
+        kz (float or complex, array_like): Z component of source mode wave vector
+        p (int, array_like): Polarization of the source mode
         helicity (bool, optional): If true, helicity basis is assumed, else parity basis.
             Defaults to ``True``.
         inverse (bool, optional): Use the inverse transformation.
@@ -794,8 +780,8 @@ def xyz_to_zxy(kx, ky, kz, pol, qx, qy, qz, qol, posout=0, posin=0, helicity=Tru
     """
     if helicity:
         if inverse:
-            return _xyz_to_yzx_h(kx, ky, kz, pol, qx, qy, qz, qol, posout, posin)
-        return _xyz_to_zxy_h(kx, ky, kz, pol, qx, qy, qz, qol, posout, posin)
+            return _xyz_to_yzx_h(kxa, kya, kza, pa, kx, ky, kz, p)
+        return _xyz_to_zxy_h(kxa, kya, kza, pa, kx, ky, kz, p)
     if inverse:
-        return _xyz_to_yzx_p(kx, ky, kz, pol, qx, qy, qz, qol, posout, posin)
-    return _xyz_to_zxy_p(kx, ky, kz, pol, qx, qy, qz, qol, posout, posin)
+        return _xyz_to_yzx_p(kxa, kya, kza, pa, kx, ky, kz, p)
+    return _xyz_to_zxy_p(kxa, kya, kza, pa, kx, ky, kz, p)

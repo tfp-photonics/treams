@@ -341,10 +341,10 @@ class QMatrix:
             np.hstack((modes[2], modes[2])),
         )
         if a.ndim == 0 or (a.ndim == 1 and a.shape[0] == 1):
-            yz = pw.xyz_to_zxy(
+            yz = pw.permute_xyz(
                 *(m[:, None] for m in allpw), *allpw, helicity=tmat.helicity,
             )
-            zy = pw.xyz_to_zxy(
+            zy = pw.permute_xyz(
                 *(m[:, None] for m in allpw),
                 *allpw,
                 helicity=tmat.helicity,
