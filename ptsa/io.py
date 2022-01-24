@@ -223,7 +223,7 @@ def _translate_polarizations_inv(pols):
         dct = parity
     else:
         raise ValueError(f"unrecognized polarization '{pols[0].decode()}'")
-    return [dct[i.decode()] for i in pols], pols[0] in helicity
+    return [dct[i.decode()] for i in pols], pols[0].decode() in helicity
 
 
 def save_hdf5(
