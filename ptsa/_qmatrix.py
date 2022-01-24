@@ -95,7 +95,6 @@ class QMatrix:
         if kz is None:
             kz = misc.wave_vec_z(self.kx, self.ky, self.ks[:, self.pol])
         kz = np.array(kz)
-        print(kz.shape)
         if kz.shape != (2, self.kx.shape[0]):
             ValueError(f"shape of kz f{kz.shape} not supported")
         self.q = qmats
@@ -439,6 +438,7 @@ class QMatrix:
         self.epsilon[1] = qmat.epsilon[1]
         self.mu[1] = qmat.mu[1]
         self.kappa[1] = qmat.kappa[1]
+        self.kz[1, :] = qmat.kz[1, :]
         return self
 
     def double(self, times=1):
