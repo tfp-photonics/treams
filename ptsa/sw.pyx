@@ -453,7 +453,7 @@ cdef void _loop_translate_periodic_h(char **args, np.npy_intp *dims, np.npy_intp
     cdef char *dlmchoice
     cdef double complex ov0
     for i in range(n):
-        if <long>(<long*>ip2)[0] == 1:
+        if <long>(<long*>ip2)[0] == 0:
             dlmchoice = ip6
             dlmstep = step1
         else:
@@ -617,7 +617,7 @@ def translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, helicity=True,
         out = (np.zeros_like(out[0]),) + out
     if len(in_) < 3 or len(in_) > 4:
         raise ValueError(f"invalid length of input modes {len(in_)}, must be 3 or 4")
-    elif len(out) == 3:
+    elif len(in_) == 3:
         in_ = (np.zeros_like(in_[0]),) + in_
     if rsin is None:
         rsin = rs
