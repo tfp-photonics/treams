@@ -72,7 +72,7 @@ def basischange(out, in_=None):
     return res
 
 
-def pickmodes(out, in_=None):
+def pickmodes(out, in_):
     """
     Coefficients to pick modes
 
@@ -85,8 +85,6 @@ def pickmodes(out, in_=None):
     Returns:
         float, ((M, N)-array
     """
-    if in_ is None:
-        in_ = out
     out = np.array([*zip(*out)])
     in_ = np.array([*zip(*in_)])
     return np.all(out[:, None, :] == in_, axis=-1)
@@ -125,7 +123,10 @@ def wave_vec_z(kx, ky, k):
     Returns:
         complex
     """
-    res = np.sqrt((k * k - kx * kx - ky * ky).astype(complex))
+    kx = np.array(kx)
+    ky = np.array(ky)
+    k = np.array(k, complex)
+    res = np.sqrt(k * k - kx * kx - ky * ky)
     if res.ndim == 0 and res.imag < 0:
         res = -res
     elif res.ndim > 0:
