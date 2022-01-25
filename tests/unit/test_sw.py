@@ -1,5 +1,3 @@
-import pytest
-
 from ptsa import sw
 
 
