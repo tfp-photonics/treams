@@ -100,7 +100,7 @@ class TMatrixC(TMatrixBase):
             np.any([i.ndim != 1 for i in (epsilon, mu, kappa, radii)])
             or not epsilon.size == mu.size == kappa.size == radii.size + 1
         ):
-            ValueError(
+            raise ValueError(
                 f"dimensions of radii and material parameters do not match, got {radii.size}, {epsilon.size}, {mu.size}, and {kappa.size}"
             )
         dim = TMatrixC.defaultdim(len(kzs), mmax)
@@ -173,12 +173,12 @@ class TMatrixC(TMatrixBase):
         return krhos
 
     @property
-    def xlext(self):
+    def xl_ext(self):
         """Extinction cross length"""
         raise NotImplementedError
 
     @property
-    def xlsca(self):
+    def xl_sca(self):
         """Scattering cross length"""
         raise NotImplementedError
 

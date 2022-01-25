@@ -102,7 +102,7 @@ class TMatrix(TMatrixBase):
             np.any([i.ndim != 1 for i in (epsilon, mu, kappa, radii)])
             or not epsilon.size == mu.size == kappa.size == radii.size + 1
         ):
-            ValueError(
+            raise ValueError(
                 f"dimensions of radii and material parameters do not match, got {radii.size}, {epsilon.size}, {mu.size}, and {kappa.size}"
             )
         dim = TMatrix.defaultdim(lmax)
@@ -113,13 +113,13 @@ class TMatrix(TMatrixBase):
             for i in range(2 * l + 1):
                 tmat[
                     pos + 2 * i : pos + 2 * i + 2, pos + 2 * i : pos + 2 * i + 2
-                ] = miecoeffs
+                ] = miecoeffs[::-1, ::-1]
         return cls(
             tmat, k0, epsilon[-1], mu[-1], kappa[-1], modes=TMatrix.defaultmodes(lmax)
         )
 
     @property
-    def xsext_avg(self):
+    def xs_ext_avg(self):
         """
         Rotational average of the extinction cross section
 
@@ -130,22 +130,29 @@ class TMatrix(TMatrixBase):
         """
         if self.positions.shape[0] > 1:
             raise NotImplementedError
-        if not self.kappa == 0:
-            raise NotImplementedError(
-                "Cross section in chiral embedding is not implemented"
+        if self.kappa == 0:
+            res = (
+                -2
+                * np.pi
+                * np.real(np.trace(self.t))
+                / (self.ks[0] * self.ks[0])
             )
-        res = (
-            -2
-            * np.pi
-            * np.real(np.trace(self.t))
-            / (self.k0 * self.k0 * self.epsilon * self.mu)
-        )
+        else:
+            res = 0
+            for pol in [0, 1]:
+                choice = self.pol == pol
+                res += (
+                    -2
+                    * np.pi
+                    * np.real(np.trace(self.t[choice, :][:, choice]))
+                    / (self.ks[pol] * self.ks[pol])
+                )
         if res.imag == 0:
             return res.real
         return res
 
     @property
-    def xssca_avg(self):
+    def xs_sca_avg(self):
         """
         Rotational average of the scattering cross section
 
@@ -156,16 +163,22 @@ class TMatrix(TMatrixBase):
         """
         if self.positions.shape[0] > 1:
             raise NotImplementedError
-        if not self.kappa == 0:
-            raise NotImplementedError(
-                "Cross section in chiral embedding is not implemented"
+        if self.kappa == 0:
+            res = (
+                2
+                * np.pi
+                * np.sum(self.t.real * self.t.real + self.t.imag * self.t.imag)
+                / (self.k0 * self.k0 * self.epsilon * self.mu)
             )
-        res = (
-            2
-            * np.pi
-            * np.sum(self.t.real * self.t.real + self.t.imag * self.t.imag)
-            / (self.k0 * self.k0 * self.epsilon * self.mu)
-        )
+        else:
+            res = (
+                2
+                * np.pi
+                * np.sum(
+                    (self.t.real * self.t.real + self.t.imag * self.t.imag)
+                    / (self.ks[self.pol, None] * self.ks[self.pol, None])
+                )
+            )
         if res.imag == 0:
             return res.real
         return res
@@ -687,7 +700,7 @@ class TMatrix(TMatrixBase):
             int
         """
         res = np.sqrt(1 + dim * 0.5 / nmax) - 1
-        res_int = np.int(np.rint(res))
+        res_int = int(np.rint(res))
         if np.abs(res - res_int) > 1e-8 * np.maximum(np.abs(res), np.abs(res_int)):
             raise ValueError("cannot estimate the default lmax")
         return res_int

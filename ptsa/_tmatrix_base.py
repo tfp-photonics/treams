@@ -96,7 +96,7 @@ class TMatrixBase:
         if len(tmats) < positions.shape[0]:
             warnings.warn("specified more positions than T-matrices")
         elif len(tmats) > positions.shape[0]:
-            ValueError(
+            raise ValueError(
                 f"got {len(tmats)} T-matrices and only {positions.shape[0]} positions"
             )
         material = tmats[0].material
@@ -112,7 +112,7 @@ class TMatrixBase:
             if tmat.k0 != k0:
                 warnings.warn(f"vacuum wave numbers {k0} and {tmat.k0} do not match")
             if tmat.helicity != helicity:
-                ValueError("found T-matrices in helicity and parity mode")
+                raise ValueError("found T-matrices in helicity and parity mode")
             dim = tmat.t.shape[0]
             for k in range(1, 4):
                 modes[k][i : i + dim] = tmat.modes[k - 1]
@@ -254,12 +254,12 @@ class TMatrixBase:
     def _check_modes(self, modes):
         """_check_modes"""
         if len(modes) < 3 or len(modes) > 4:
-            ValueError(f"invalid length of variable modes {len(modes)}, must be 3 or 4")
+            raise ValueError(f"invalid length of variable modes {len(modes)}, must be 3 or 4")
         modes = (*(np.array(a) for a in modes),)
         if len(modes) == 3:
             modes = (np.zeros_like(modes[0]),) + modes
         if not np.all([m.ndim == 1 for m in modes]):
-            ValueError("invalid dimensions of modes")
+            raise ValueError("invalid dimensions of modes")
         if not np.all([m.size == modes[0].size for m in modes[1:]]):
             raise ValueError("all modes need equal size")
         return modes

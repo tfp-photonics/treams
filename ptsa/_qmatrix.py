@@ -80,15 +80,15 @@ class QMatrix:
         if epsilon.ndim == 0 or (epsilon.ndim == 1 and epsilon.shape[0] == 1):
             epsilon = np.stack((epsilon, epsilon), axis=-1)
         else:
-            ValueError(f"shape of epsilon f{epsilon.shape} not supported")
+            raise ValueError(f"shape of epsilon f{epsilon.shape} not supported")
         if mu.ndim == 0 or (mu.ndim == 1 and mu.shape[0] == 1):
             mu = np.stack((mu, mu), axis=-1)
         else:
-            ValueError(f"shape of mu f{mu.shape} not supported")
+            raise ValueError(f"shape of mu f{mu.shape} not supported")
         if kappa.ndim == 0 or (kappa.ndim == 1 and kappa.shape[0] == 1):
             kappa = np.stack((kappa, kappa), axis=-1)
         else:
-            ValueError(f"shape of kappa f{kappa.shape} not supported")
+            raise ValueError(f"shape of kappa f{kappa.shape} not supported")
         modes = self._check_modes(modes)
         self.kx, self.ky, self.pol = modes
         self.ks = k0 * misc.refractive_index(epsilon, mu, kappa)  # (2, 2) -> side, pol
@@ -96,7 +96,7 @@ class QMatrix:
             kz = misc.wave_vec_z(self.kx, self.ky, self.ks[:, self.pol])
         kz = np.array(kz)
         if kz.shape != (2, self.kx.shape[0]):
-            ValueError(f"shape of kz f{kz.shape} not supported")
+            raise ValueError(f"shape of kz f{kz.shape} not supported")
         self.q = qmats
         self.k0 = np.array(k0).item()
         self.epsilon = epsilon
@@ -411,13 +411,13 @@ class QMatrix:
             or self.mu[1] != qmat.mu[0]
             or self.kappa[1] != qmat.kappa[0]
         ):
-            ValueError("materials do not match")
+            raise ValueError("materials do not match")
         if check_modes and (
             np.any(self.kx != qmat.kx)
             or np.any(self.ky != qmat.ky)
             or np.any(self.kz != qmat.kz)
         ):
-            ValueError("modes do not match")
+            raise ValueError("modes do not match")
         dim = self.q.shape[2]
         qnew = np.empty_like(self.q)
         q_tmp = np.linalg.solve(
@@ -950,7 +950,7 @@ class QMatrix:
     def _check_modes(self, modes):
         """_check_modes"""
         if len(modes) != 3:
-            ValueError(f"invalid length of variable modes {len(modes)}, must be 3 or 4")
+            raise ValueError(f"invalid length of variable modes {len(modes)}, must be 3 or 4")
         modes = (*(np.array(a) for a in modes),)
         if not np.all([m.size == modes[0].size for m in modes[1:]]):
             raise ValueError("all modes need equal size")
