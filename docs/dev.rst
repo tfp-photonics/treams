@@ -1,3 +1,5 @@
+.. highlight:: console
+
 ============================
 Development and contributing
 ============================
@@ -5,40 +7,31 @@ Development and contributing
 Setting up the development environment
 ======================================
 
-1. Clone the repository with
-
-.. code-block:: console
+1.
+Clone the repository with ::
 
    git clone git@git.scc.kit.edu/photonics/ptsa.git
 
-or
-
-.. code-block:: console
+or ::
 
    git clone https://git.scc.kit.edu/photonics/ptsa.git
 
-and enter the directory
-
-.. code-block:: console
+and enter the directory ::
 
    cd ptsa
 
-2. Create a conda environment with
-
-.. code-block:: console
+2.
+Create a conda environment with ::
 
    conda env create -f environment.yml
 
 which installs all packages needed for building and running ptsa, testing, different
-benchmarks, and building the documentation. Activate the environment:
-
-.. code-block:: console
+benchmarks, and building the documentation. Activate the environment::
 
    conda activate ptsa-dev
 
-3. Setup the package with
-
-.. code-block:: console
+3.
+Setup the package with ::
 
    pip install -e .
 
@@ -49,9 +42,7 @@ current folder. This is especially necessary for correctly building the document
 Running tests
 =============
 
-Tests can be run with
-
-.. code-block:: console
+Tests can be run with ::
 
    python -m pytest
 
@@ -59,26 +50,24 @@ but for development a more fine grained selection can be made by passing a direc
 file as an argument. Additionally, the option ``-k`` allows to define keywords when
 selecting test.
 
-Some tests in the module :ref:`ptsa-lattice` take a long time to finish and are
-therefore disabled by default. You can add them with the option ``--runslow``.
+Some integration tests for the module :ref:`ptsa-lattice` take a long time to finish and
+are therefore disabled by default. You can add them with the option ``--runslow``.
 
 If coverage reports should be included on can use the option ``--cov ptsa``. However,
 this will only report on the pure python files. To also get coverage reports for the
 cython part, it is necessary to compile it with linetracing support. This can be
-achieved by setting the environment variable ``CYTHON_COVERAGE``, for example with
-
-.. code-block:: console
+achieved by setting the environment variable ``CYTHON_COVERAGE``, for example with ::
 
     CYTHON_COVERAGE=1 pip install -e .
 
 Make sure that new C code files are generated and that those files are compiled.
+Enabling the tracing for getting code coverage slows down the integration tests
+considerably. For the coverage calculation only the unit tests are used.
 
 Building the documentation
 ==========================
 
-After setting up the development environment run
-
-.. code-block:: console
+After setting up the development environment run ::
 
    sphinx-build -b html docs docs/_build/html
 
@@ -151,7 +140,7 @@ Within MSYS2 install `mingw-w64-x86_64-gcc`.
 
 The compilation is steered from the command line. First go into the directory of ptsa.
 Then, set up your path by prepending the direction for MSYS2's mingw64 binaries with
-`set PATH=C:\msys2\mingw64\bin;%PATH%` (adjust accordingly if you have installed MSYS2
+``set PATH=C:\msys2\mingw64\bin;%PATH%`` (adjust accordingly if you have installed MSYS2
 with non-default parameters). Check that gcc from MSYS2 is recognized correctly but
 make sure that the version of python that is found on the path corresponds to the
 Windows Python. With this setup building binaries should work with `python -m build`.

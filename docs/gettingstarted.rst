@@ -1,3 +1,5 @@
+.. highlight:: console
+
 ===============
 Getting started
 ===============
@@ -14,9 +16,7 @@ in development mode (see :ref:`dev:Setting up the development environment`).
 Installation using pip
 ----------------------
 
-To install the package with pip, use
-
-.. code-block:: console
+To install the package with pip, use ::
 
    pip install git+https://git.scc.kit.edu/photonics/ptsa.git
 

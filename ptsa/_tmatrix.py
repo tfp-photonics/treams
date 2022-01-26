@@ -97,7 +97,7 @@ class TMatrix(TMatrixBase):
             kappa = np.zeros_like(epsilon)
         mu = np.array(mu)
         kappa = np.array(kappa)
-        radii = np.array(radii)
+        radii = np.atleast_1d(radii)
         if (
             np.any([i.ndim != 1 for i in (epsilon, mu, kappa, radii)])
             or not epsilon.size == mu.size == kappa.size == radii.size + 1
@@ -258,8 +258,8 @@ class TMatrix(TMatrixBase):
         """
         return self.l, self.m, self.pol
 
-    def xs(self, illu, flux=1):
-        """
+    def xs(self, illu, flux=.5):
+        r"""
         Scattering and extinction cross section
 
         Possible for all T-matrices (global and local) in non-absorbing embedding.
@@ -267,7 +267,10 @@ class TMatrix(TMatrixBase):
         Args:
             illu (complex, array): Illumination coefficients
             flux (optional): Ingoing flux corresponding to the illumination. Used for
-                the result's normalization.
+                the result's normalization. The flux is given in units of
+                :math:`\frac{\text{V}^2}{{l^2}} \frac{1}{Z_0 Z}` where :math:`l` is the
+                unit of length used in the wave number (and positions). A plane wave
+                has the flux `0.5` in this normalization, which is used as default.
 
         Returns:
             float, (2,)-tuple
@@ -289,8 +292,8 @@ class TMatrix(TMatrixBase):
             / (np.power(self.ks[self.pol], 2) * flux)
         )
         return (
-            np.real(np.diag(p.conjugate().T @ m @ p)),
-            -np.real(np.diag(illu.conjugate().T @ m @ p)),
+            0.5 * np.real(np.diag(p.conjugate().T @ m @ p)),
+            -0.5 * np.real(np.diag(illu.conjugate().T @ m @ p)),
         )
 
     def rotate(self, phi, theta, psi, modes=None):
