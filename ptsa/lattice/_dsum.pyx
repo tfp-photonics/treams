@@ -189,7 +189,7 @@ cdef double complex dsumsw2d_shift(long l, long m, number_t k, double *kpar, dou
 cdef double complex dsumsw1d_shift(long l, long m, number_t k, double kpar, double a, double *r, long i) nogil:
     """See the documentation of :func:`ptsa.lattice.dsumsw1d_shift`"""
     if r[1] == 0 and r[2] == 0:
-        if (l + m) % 2 == 1:
+        if m != 0:
             return 0
         return dsumsw1d(l, k, kpar, a, r[0], i)
     cdef double complex res
