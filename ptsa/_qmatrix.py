@@ -79,14 +79,20 @@ class QMatrix:
         kappa = np.array(kappa)
         if epsilon.ndim == 0 or (epsilon.ndim == 1 and epsilon.shape[0] == 1):
             epsilon = np.stack((epsilon, epsilon), axis=-1)
+        elif epsilon.ndim == 1 and epsilon.shape[0] == 2:
+            pass
         else:
             raise ValueError(f"shape of epsilon f{epsilon.shape} not supported")
         if mu.ndim == 0 or (mu.ndim == 1 and mu.shape[0] == 1):
             mu = np.stack((mu, mu), axis=-1)
+        elif mu.ndim == 1 and mu.shape[0] == 2:
+            pass
         else:
             raise ValueError(f"shape of mu f{mu.shape} not supported")
         if kappa.ndim == 0 or (kappa.ndim == 1 and kappa.shape[0] == 1):
             kappa = np.stack((kappa, kappa), axis=-1)
+        elif kappa.ndim == 1 and kappa.shape[0] == 2:
+            pass
         else:
             raise ValueError(f"shape of kappa f{kappa.shape} not supported")
         modes = self._check_modes(modes)
