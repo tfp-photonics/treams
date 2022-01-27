@@ -192,6 +192,8 @@ class TMatrix(TMatrixBase):
         """
         if self.positions.shape[0] > 1:
             raise NotImplementedError
+        if not self.helicity:
+            raise NotImplementedError
         selections = self.pol == 0, self.pol == 1
         tpp = self.t[np.ix_(selections[1], selections[1])]
         tpm = self.t[np.ix_(selections[1], selections[0])]
@@ -212,6 +214,8 @@ class TMatrix(TMatrixBase):
             float
         """
         if self.positions.shape[0] > 1:
+            raise NotImplementedError
+        if not self.helicity:
             raise NotImplementedError
         selections = self.pol == 0, self.pol == 1
         _, spp, _ = np.linalg.svd(self.t[np.ix_(selections[1], selections[1])])
@@ -235,6 +239,8 @@ class TMatrix(TMatrixBase):
             float
         """
         if self.positions.shape[0] > 1:
+            raise NotImplementedError
+        if not self.helicity:
             raise NotImplementedError
         selections = self.pol == 0, self.pol == 1
         tpm = self.t[np.ix_(selections[1], selections[0])]
