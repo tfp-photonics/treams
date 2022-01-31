@@ -182,6 +182,23 @@ class TMatrixC(TMatrixBase):
         """Scattering cross length"""
         raise NotImplementedError
 
+
+    def pick(self, modes):
+        """
+        Pick modes from the T-Matrix
+
+        Args:
+            modes (array): Modes of the new T-matrix
+
+        Returns:
+            TMatrixC
+        """
+        modes = self._check_modes(modes)
+        mat = misc.pickmodes(self.fullmodes, modes)
+        self.t = mat.T @ self.t @ mat
+        self.pidx, self.kz, self.m, self.pol = modes
+        return self
+
     def rotate(self, phi, modes=None):
         """
         Rotate the T-Matrix around the z-axis

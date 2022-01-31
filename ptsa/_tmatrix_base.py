@@ -201,22 +201,6 @@ class TMatrixBase:
             return self
         return self.pick(modes)
 
-    def pick(self, modes):
-        """
-        Pick modes from the T-Matrix
-
-        Args:
-            modes (array): Modes of the new T-matrix
-
-        Returns:
-            TMatrixBase
-        """
-        modes = self._check_modes(modes)
-        mat = misc.pickmodes(self.fullmodes, modes)
-        self.t = mat.T @ self.t @ mat
-        self.pidx, self.l, self.m, self.pol = modes
-        return self
-
     def interact(self):
         """
         Interact the blockdiagonal T-matrices to a local T-matrix
