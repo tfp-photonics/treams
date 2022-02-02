@@ -87,9 +87,15 @@ class TestProperties:
     def test_xs_ext_avg(self):
         tm = TMatrix.sphere(2, 3, [4], [2 + 1j, 9], kappa=[1, 2])
         assert isclose(tm.xs_ext_avg, 2.9294930236877077)
+    def test_xs_ext_avg_kappa_zero(self):
+        tm = TMatrix.sphere(2, 3, [4], [2 + 1j, 9], [3, 4])
+        assert isclose(tm.xs_ext_avg, 0.15523595021864234)
     def test_xs_sca_avg(self):
         tm = TMatrix.sphere(2, 3, [4], [2 + 1j, 9], kappa=[1, 2])
         assert isclose(tm.xs_sca_avg, 1.6603264386283758)
+    def test_xs_sca_avg_kappa_zero(self):
+        tm = TMatrix.sphere(2, 3, [4], [2 + 1j, 9], [3, 4])
+        assert isclose(tm.xs_sca_avg, 0.08434021223849283)
     def test_cd(self):
         tm = TMatrix.sphere(2, 3, [4], [2 + 1j, 9], kappa=[1, 2])
         assert isclose(tm.cd, 78.6846845551069)
@@ -128,9 +134,17 @@ class TestXs:
 
 class TestTranslate:
     def test(self):
-        tm = TMatrix.sphere(4, .1, [.2], [2 + 1j, 9], [1.1, 1], [1, 2])
+        tm = TMatrix.sphere(3, .1, [.2], [2 + 1j, 9], [1.1, 1], [1, 2])
         m = copy.deepcopy(tm.t)
-        rs = np.array([[.1, .2, .3], [.6, -.5, -.4]])
+        rs = np.array([[.1, .2, .3], [-.4, -.5, -.4]])
+        tm.translate(rs[0])
+        tm.translate(rs[1])
+        tm.translate(-rs[0] - rs[1])
+        assert np.all(np.abs(tm.t - m) < 1e-8)
+    def test_kappa_zero(self):
+        tm = TMatrix.sphere(3, .1, [.2], [2 + 1j, 9], [1.1, 1])
+        m = copy.deepcopy(tm.t)
+        rs = np.array([[.1, .2, .3], [-.4, -.5, -.4]])
         tm.translate(rs[0])
         tm.translate(rs[1])
         tm.translate(-rs[0] - rs[1])
@@ -139,7 +153,7 @@ class TestTranslate:
 
 class TestClusterRotate:
     def test(self):
-        tms = [TMatrix.sphere(4, .1, [.1], [i * i, 1]) for i in range(1, 5)]
+        tms = [TMatrix.sphere(3, .1, [.1], [i * i, 1]) for i in range(1, 5)]
         rs1 = np.array([[0, 0, 0], [.2, 0, 0], [0, .2, 0], [0, 0, .2]])
         tm1 = TMatrix.cluster(tms, rs1)
         tm1.interact().globalmat()
@@ -199,3 +213,10 @@ class TestField:
             r_sph,
         )
         assert np.all(tm.field(r, scattered=False) == expect)
+
+
+class TestPick:
+    def test(self):
+        tm = TMatrix([[1, 2], [3, 4]], 1, modes=([1, 1], [0, 0], [0, 1]))
+        tm.pick(([1, 2], [0, 0], [0, 0]))
+        assert np.array_equal(tm.t, [[1, 0,], [0, 0]])

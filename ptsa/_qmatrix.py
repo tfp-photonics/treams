@@ -221,15 +221,25 @@ class QMatrix:
                 raise ValueError(
                     f"'{name}' must be scalar or 1D, but was {param.ndim}D"
                 )
-            if name == "thickness":
-                continue
-            if len(param) == 1:
-                param = np.repeat(param, nthickness + 2)
-            elif len(param) != nthickness + 2:
-                raise ValueError(
-                    f"'{name}' must be scalar or of length {thickness}, but was {len(param)}"
-                )
-        items == 0
+        if len(epsilon) == 1:
+            epsilon = np.repeat(epsilon, nthickness + 2)
+        elif len(epsilon) != nthickness + 2:
+            raise ValueError(
+                f"'epsilon' must be scalar or of length {nthickness}, but was {len(epsilon)}"
+            )
+        if len(mu) == 1:
+            mu = np.repeat(mu, nthickness + 2)
+        elif len(mu) != nthickness + 2:
+            raise ValueError(
+                f"'mu' must be scalar or of length {nthickness}, but was {len(mu)}"
+            )
+        if len(kappa) == 1:
+            kappa = np.repeat(kappa, nthickness + 2)
+        elif len(kappa) != nthickness + 2:
+            raise ValueError(
+                f"'kappa' must be scalar or of length {nthickness}, but was {len(kappa)}"
+            )
+        items = []
         # Use the truncation of the material parameters by zip due to 'thickness'
         for (
             d,
@@ -237,8 +247,8 @@ class QMatrix:
             epsilon_above,
             mu_below,
             mu_above,
-            k_below,
-            k_above,
+            kappa_below,
+            kappa_above,
         ) in zip(thickness, epsilon, epsilon[1:], mu, mu[1:], kappa, kappa[1:]):
             items.append(
                 QMatrix.interface(
@@ -445,6 +455,7 @@ class QMatrix:
         self.mu[1] = qmat.mu[1]
         self.kappa[1] = qmat.kappa[1]
         self.kz[1, :] = qmat.kz[1, :]
+        self.ks[1, :] = qmat.ks[1, :]
         return self
 
     def double(self, times=1):
@@ -530,10 +541,12 @@ class QMatrix:
         """
         modes = self._check_modes(modes)
         mat = misc.pickmodes(self.modes, modes)
-        self.q[0, 0, :, :] = mat.T @ self.q[0, 0, :, :] @ mat
-        self.q[0, 1, :, :] = mat.T @ self.q[0, 1, :, :] @ mat
-        self.q[1, 0, :, :] = mat.T @ self.q[1, 0, :, :] @ mat
-        self.q[1, 1, :, :] = mat.T @ self.q[1, 1, :, :] @ mat
+        q = np.zeros((2, 2, mat.shape[-1], mat.shape[-1]), self.q.dtype)
+        q[0, 0, :, :] = mat.T @ self.q[0, 0, :, :] @ mat
+        q[0, 1, :, :] = mat.T @ self.q[0, 1, :, :] @ mat
+        q[1, 0, :, :] = mat.T @ self.q[1, 0, :, :] @ mat
+        q[1, 1, :, :] = mat.T @ self.q[1, 1, :, :] @ mat
+        self.q = q
         self.kx, self.ky, self.pol = modes
         self.kz = misc.wave_vec_z(self.kx, self.ky, self.ks[:, self.pol])
         return self
@@ -602,6 +615,9 @@ class QMatrix:
         if direction not in (-1, 1):
             raise ValueError(f"direction must be '-1' or '1', but is '{direction}''")
         choice = int(bool(above))
+        r = np.array(r)
+        if r.ndim == 1:
+            r = np.reshape(r, (1, -1))
         if self.helicity:
             return sc.vpw_A(
                 self.kx,
@@ -613,14 +629,14 @@ class QMatrix:
                 self.pol,
             )
         else:
-            return (1 - self.pol) * sc.vpw_M(
+            return (1 - self.pol[:, None]) * sc.vpw_M(
                 self.kx,
                 self.ky,
                 direction * self.kz[choice, :],
                 r[..., None, 0],
                 r[..., None, 1],
                 r[..., None, 2],
-            ) - self.pol * sc.vpw_M(
+            ) + self.pol[:, None] * sc.vpw_N(
                 self.kx,
                 self.ky,
                 direction * self.kz[choice, :],
@@ -657,7 +673,7 @@ class QMatrix:
             self.kz[choice, selections[0]] / self.ks[choice, 0],
             self.kz[choice, selections[1]] / self.ks[choice, 1],
         )
-        coeffs = [np.zeros_like(self.kx) if c is None else c for c in coeffs]
+        coeffs = [np.zeros_like(self.kx) if c is None else np.array(c) for c in coeffs]
         allcoeffs = [
             (1, -1, coeffs[0][selections[0]]),
             (1, 1, coeffs[0][selections[1]]),
@@ -868,6 +884,7 @@ class QMatrix:
         t = (field_above, None) if direction == 1 else (None, field_below)
 
         s_r = self.poynting_avg(r, above=direction == -1)
+        print(ir)
         s_ir = self.poynting_avg(ir, above=direction == -1)
         s_t = self.poynting_avg(t, above=direction == 1)
         return s_t / (s_ir - s_r), s_r / (s_r - s_ir)
