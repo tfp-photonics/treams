@@ -730,135 +730,30 @@ class QMatrix:
         Returns:
             float
         """
-        choice = bool(above)
+        choice = int(bool(above))
         z = (0, 0) if z is None else z
-        ky, ky, pol = self.modes
-        selections = pol == 0, pol == 1
-        kzs = (self.kz[choice, pol == 0], self.kz[choice, pol == 1])
-        coeffs = [np.zeros_like(self.kx) if c is None else c for c in coeffs]
+        selections = self.pol == 0, self.pol == 1
+        kzs = (self.kz[choice, selections[0]], self.kz[choice, selections[1]])
+        coeffs = [np.zeros_like(self.kx) if c is None else np.array(c) for c in coeffs]
         allcoeffs = [
-            (1, -1, coeffs[0][selections[0]]),
+            (1, 0, coeffs[0][selections[0]]),
             (1, 1, coeffs[0][selections[1]]),
-            (-1, -1, coeffs[1][selections[0]]),
+            (-1, 0, coeffs[1][selections[0]]),
             (-1, 1, coeffs[1][selections[1]]),
         ]
         res = 0
         if self.helicity:
-            for (dira, _, a), (dirb, _, b) in itertools.product(
-                allcoeffs[::2], repeat=2
+            for (dira, pola, a), (dirb, polb, b) in itertools.product(
+                allcoeffs, repeat=2
             ):
-                pref = 1
-                if (0, 0) != z:
-                    pref = (
-                        np.sin(
-                            (dira * kzs[0] - dirb * kzs[0].conjugate)
-                            * 0.5
-                            * (z[1] - z[0])
-                        )
-                        * np.exp(
-                            1j
-                            * (dira * kzs[0] - dirb * kzs[0].conjugate)
-                            * 0.5
-                            * (z[1] + z[0])
-                        )
-                        / (
-                            (dira * kzs[0] - dirb * kzs[0].conjugate)
-                            * 0.5
-                            * (z[1] - z[0])
-                        )
-                    )
-                res += (
-                    a
-                    @ (
-                        b.conjugate()
-                        * pref
-                        * (
-                            1
-                            + (
-                                ks[choice, 0] * ks[choice, 0].conjugate()
-                                - kzs[0] * (kzs[0] + dira * dirb * kzs[0].conjugate())
-                            )
-                        )
-                    )
-                    / (ks[0] * ks[0].conjugate())
-                )
-            for (dira, _, a), (dirb, _, b) in itertools.product(
-                allcoeffs[1::2], repeat=2
-            ):
-                pref = 1
-                if (0, 0) != z:
-                    pref = (
-                        np.sin(
-                            (dira * kzs[1] - dirb * kzs[0].conjugate)
-                            * 0.5
-                            * (z[1] - z[0])
-                        )
-                        * np.exp(
-                            1j
-                            * (dira * kzs[1] - dirb * kzs[1].conjugate)
-                            * 0.5
-                            * (z[1] + z[0])
-                        )
-                        / (
-                            (dira * kzs[1] - dirb * kzs[1].conjugate)
-                            * 0.5
-                            * (z[1] - z[0])
-                        )
-                    )
-                res += (
-                    a
-                    @ (
-                        b.conjugate()
-                        * pref
-                        * (
-                            1
-                            + (
-                                ks[choice, 1] * ks[choice, 1].conjugate()
-                                - kzs[1] * (kzs[1] + dira * dirb * kzs[1].conjugate())
-                            )
-                        )
-                    )
-                    / (ks[1] * ks[1].conjugate())
-                )
+                if pola != polb:
+                    continue
+                res += (2 * pola - 1) * _coeff_chirality_density(self.ks[choice, pola], kzs[pola], a, dira, b, dirb, z)
         else:
             for (dira, _, a), (dirb, _, b) in itertools.product(
                 allcoeffs[::2], allcoeffs[1::2]
             ):
-                pref = 1
-                if (0, 0) != z:
-                    pref = (
-                        np.sin(
-                            (dira * kzs[0] - dirb * kzs[0].conjugate)
-                            * 0.5
-                            * (z[1] - z[0])
-                        )
-                        * np.exp(
-                            1j
-                            * (dira * kzs[0] - dirb * kzs[0].conjugate)
-                            * 0.5
-                            * (z[1] + z[0])
-                        )
-                        / (
-                            (dira * kzs[0] - dirb * kzs[0].conjugate)
-                            * 0.5
-                            * (z[1] - z[0])
-                        )
-                    )
-                res += (
-                    2
-                    * np.sum(
-                        np.real(a * b.conjugate())
-                        * pref
-                        * (
-                            1
-                            + (
-                                ks[choice, 0] * ks[choice, 0].conjugate()
-                                - kzs[0] * (kzs[0] + dira * dirb * kzs[0].conjugate())
-                            )
-                        )
-                    )
-                    / (ks[0] * ks[0].conjugate())
-                )
+                res += _coeff_chirality_density(self.ks[choice, 0], kzs[0], a, dira, b, dirb, z, False)
         return 0.5 * np.real(res)
 
     def tr(self, illu, direction=1):
@@ -884,7 +779,6 @@ class QMatrix:
         t = (field_above, None) if direction == 1 else (None, field_below)
 
         s_r = self.poynting_avg(r, above=direction == -1)
-        print(ir)
         s_ir = self.poynting_avg(ir, above=direction == -1)
         s_t = self.poynting_avg(t, above=direction == 1)
         return s_t / (s_ir - s_r), s_r / (s_r - s_ir)
@@ -903,10 +797,17 @@ class QMatrix:
         Returns:
             tuple
         """
-        if not self.helicity:
-            raise NotImplementedError
-        tm, rm = tr(self, (illu, None), direction=direction)
-        tp, rp = tr(self, (None, ille), direction=direction)
+        minus, plus = self.pol == 0, self.pol == 1
+        illu = np.array(illu)
+        if self.helicity:
+            illuopposite = np.zeros_like(illu)
+            illuopposite[minus] = illu[plus]
+            illuopposite[plus] = illu[minus]
+        else:
+            illuopposite = copy.deepcopy(illu)
+            illuopposite[minus] *= -1
+        tm, rm = self.tr(illu, direction=direction)
+        tp, rp = self.tr(illuopposite, direction=direction)
         return (tp - tm) / (tp + tm), (tp + rp - tm - rm) / (tp + rp + tm + rm)
 
     def periodic(self):
@@ -978,3 +879,15 @@ class QMatrix:
         if not np.all([m.size == modes[0].size for m in modes[1:]]):
             raise ValueError("all modes need equal size")
         return modes
+
+
+def _coeff_chirality_density(k, kz, a, dira, b, dirb, z=None, helicity=True):
+    z = (0, 0) if z is None else z
+    tmp = (dira * kz - dirb * kz.conjugate()) * 0.5
+    pref = np.exp(1j * tmp * (z[1] + z[0]))
+    if np.abs(z[1] - z[0]) > 1e-16:
+        pref *= np.sin(tmp * (z[1] - z[0])) / (tmp * (z[1] - z[0]))
+    pref *= 1 + (k * k - kz * (kz - dira * dirb * kz.conjugate())) / (k * k.conjugate())
+    if helicity:
+        return np.sum(a * b.conjugate() * pref)
+    return 2 * np.sum(np.real(a * b.conjugate()) * pref)

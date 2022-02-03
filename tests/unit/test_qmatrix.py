@@ -302,3 +302,42 @@ class TestTR:
         qm.paritybasis()
         t, r = qm.tr([.3, .2])
         assert np.abs(t + r - 1) < 1e-15
+
+class TestChiralityDensity:
+    def test_z_zero_helicity(self):
+        qm_below = QMatrix.interface(4, [1, 0], [1, 4 + .1j])
+        qm_below.add(QMatrix.propagation([0, 0, 2], 4, [1, 0], 4 + .1j))
+        qm_above = QMatrix.interface(4, [1, 0], [4 + .1j, 1])
+        coeffs = qm_below.field_inside(([1, 0], None), qm_above)
+        assert isclose(qm_below.chirality_density(coeffs), 0.2972593823648686)
+    def test_z_zero_parity(self):
+        qm_below = QMatrix.interface(4, [1, 0], [1, 4 + .1j])
+        qm_below.add(QMatrix.propagation([0, 0, 2], 4, [1, 0], 4 + .1j))
+        qm_above = QMatrix.interface(4, [1, 0], [4 + .1j, 1])
+        qm_below.paritybasis()
+        qm_above.paritybasis()
+        coeffs = qm_below.field_inside(([np.sqrt(0.5), -np.sqrt(0.5)], None), qm_above)
+        assert isclose(qm_below.chirality_density(coeffs), -0.2972593823648686)
+    def test_helicity(self):
+        qm_below = QMatrix.interface(4, [1, 0], [1, 4 + .1j])
+        qm_below.add(QMatrix.propagation([0, 0, 2], 4, [1, 0], 4 + .1j))
+        qm_above = QMatrix.interface(4, [1, 0], [4 + .1j, 1])
+        coeffs = qm_below.field_inside(([1, 0], None), qm_above)
+        assert isclose(qm_below.chirality_density(coeffs, (-2, 0)), 0.38113929722178935,)
+    def test_parity(self):
+        qm_below = QMatrix.interface(4, [1, 0], [1, 4 + .1j])
+        qm_below.add(QMatrix.propagation([0, 0, 2], 4, [1, 0], 4 + .1j))
+        qm_above = QMatrix.interface(4, [1, 0], [4 + .1j, 1])
+        qm_below.paritybasis()
+        qm_above.paritybasis()
+        coeffs = qm_below.field_inside(([np.sqrt(0.5), -np.sqrt(0.5)], None), qm_above)
+        assert isclose(qm_below.chirality_density(coeffs, (-2, 0)), -0.38113929722178935, 1e-7)
+
+class TestCD:
+    def test_h(self):
+        qm = QMatrix.slab(4, [1, 0], 4, [1, 4 + .1j, 1], kappa=[0, .5, 0])
+        assert np.all(np.abs(np.array([-0.003530982180309652, -0.0032078453784040294]) - qm.cd([1, 0])) < 1e-16)
+    def test_p(self):
+        qm = QMatrix.slab(4, [1, 0], 4, [1, 4 + .1j, 1], kappa=[0, .5, 0])
+        qm.paritybasis()
+        assert np.all(np.abs(np.array([0.003530982180309652, 0.0032078453784040294]) - qm.cd([np.sqrt(.5), -np.sqrt(.5)])) < 1e-16)
