@@ -336,8 +336,8 @@ class TestChiralityDensity:
 class TestCD:
     def test_h(self):
         qm = QMatrix.slab(4, [1, 0], 4, [1, 4 + .1j, 1], kappa=[0, .5, 0])
-        assert np.all(np.abs(np.array([-0.003530982180309652, -0.0032078453784040294]) - qm.cd([1, 0])) < 1e-16)
+        assert np.all(np.abs(np.array([-0.003530982180309652, -0.0032078453784040294]) - qm.cd([1, 0])) < 1e-8)
     def test_p(self):
         qm = QMatrix.slab(4, [1, 0], 4, [1, 4 + .1j, 1], kappa=[0, .5, 0])
         qm.paritybasis()
-        assert np.all(np.abs(np.array([0.003530982180309652, 0.0032078453784040294]) - qm.cd([np.sqrt(.5), -np.sqrt(.5)])) < 1e-16)
+        assert np.all(np.abs(np.array([0.003530982180309652, 0.0032078453784040294]) - qm.cd([np.sqrt(.5), -np.sqrt(.5)])) < 1e-8)

@@ -137,7 +137,7 @@ def mesh_spheres(radii, positions, model, meshsize=None, meshsize_boundary=None)
         >>> gmsh.initialize()
         >>> gmsh.model.add("spheres")
         >>> mesh_spheres([1, 2], [[0, 0, 2], [0, 0, -2]], gmsh.model)
-        >>> gmsh.model.write("spheres.msh")
+        >>> gmsh.write("spheres.msh")
         >>> gmsh.finalize()
 
     Args:
@@ -491,103 +491,179 @@ def load_hdf5(filename, unit_length="nm"):
     Returns:
         TMatrix, array_like
     """
+    if isinstance(filename, h5py.File):
+        return _load_hdf5(filename, unit_length)
     with h5py.File(filename, "r") as f:
-        for freq_type in ("freq", "nu", "omega", "k0", "lambda0"):
-            if freq_type in f:
-                ld_freq = f[freq_type][...]
-                break
-        if "modes/positions" in f:
-            k0unit = f["modes/positions"].attrs.get("unit", unit_length) + r"^{-1}"
-        else:
-            k0unit = unit_length + r"^{-1}"
-        k0s = _convert_to_k0(ld_freq, freq_type, f[freq_type].attrs["unit"], k0unit)
-        k0_dim = _scale_position(f[freq_type], f["tmatrix"], offset=2)
-        k0s = k0s.reshape(k0s.shape + (1,) * k0_dim)
+        return _load_hdf5(f, unit_length)
 
-        found_epsilon_mu = False
-        epsilon = _load_parameter(
-            "relative_permittivity",
+def _load_hdf5(f, unit_length):
+    ld_freq = None
+    for freq_type in ("freq", "nu", "omega", "k0", "lambda0"):
+        if freq_type in f:
+            ld_freq = f[freq_type][...]
+            break
+    if ld_freq is None:
+        raise ValueError('no definition of frequency found')
+    if "modes/positions" in f:
+        k0unit = f["modes/positions"].attrs.get("unit", unit_length) + r"^{-1}"
+    else:
+        k0unit = unit_length + r"^{-1}"
+    k0s = _convert_to_k0(ld_freq, freq_type, f[freq_type].attrs["unit"], k0unit)
+    k0_dim = _scale_position(f[freq_type], f["tmatrix"], offset=2)
+    k0s = k0s.reshape(k0s.shape + (1,) * k0_dim)
+
+    found_epsilon_mu = False
+    epsilon = _load_parameter(
+        "relative_permittivity",
+        f["embedding"],
+        f["tmatrix"],
+        f[freq_type],
+        k0_dim,
+        default=None,
+    )
+    mu = _load_parameter(
+        "relative_permeability",
+        f["embedding"],
+        f["tmatrix"],
+        f[freq_type],
+        k0_dim,
+        default=None,
+    )
+    if epsilon is None and mu is None:
+        n = _load_parameter(
+            "refractive_index",
             f["embedding"],
             f["tmatrix"],
             f[freq_type],
             k0_dim,
-            default=None,
+            default=1,
         )
-        mu = _load_parameter(
-            "relative_permeability",
+        z = _load_parameter(
+            "relative_impedance",
             f["embedding"],
             f["tmatrix"],
             f[freq_type],
             k0_dim,
-            default=None,
+            default=1,
         )
-        if epsilon is None and mu is None:
-            n = _load_parameter(
-                "refractive_index",
-                f["embedding"],
-                f["tmatrix"],
-                f[freq_type],
-                k0_dim,
-                default=1,
-            )
-            z = _load_parameter(
-                "relative_impedance",
-                f["embedding"],
-                f["tmatrix"],
-                f[freq_type],
-                k0_dim,
-                default=1,
-            )
-            epsilon = n / z
-            mu = n * z
-        epsilon = 1 if epsilon is None else epsilon
-        mu = 1 if mu is None else mu
+        epsilon = n / z
+        mu = n * z
+    epsilon = 1 if epsilon is None else epsilon
+    mu = 1 if mu is None else mu
 
-        kappa = _load_parameter(
-            "chirality", f["embedding"], f["tmatrix"], f[freq_type], k0_dim, default=0
+    kappa = _load_parameter(
+        "chirality", f["embedding"], f["tmatrix"], f[freq_type], k0_dim, default=0
+    )
+
+    if "positions" in f["modes"]:
+        dim = _scale_position(f["modes/positions"], f["tmatrix"], offset=2)
+        if dim == 0:
+            dim = _scale_position(f[freq_type], f["modes/positions"]) + k0_dim
+        positions = f["modes/positions"][...]
+        positions = positions.reshape(
+            positions.shape[:-2] + (1,) * dim + positions.shape[-2:]
         )
+    else:
+        positions = np.array([[0, 0, 0]])
 
-        if "positions" in f["modes"]:
-            dim = _scale_position(f["modes/positions"], f["tmatrix"], offset=2)
-            if dim == 0:
-                dim = _scale_position(f[freq_type], f["modes/positions"]) + k0_dim
-            positions = f["modes/positions"][...]
-            positions = positions.reshape(
-                positions.shape[:-2] + (1,) * dim + positions.shape[-2:]
-            )
-        else:
-            positions = np.array([[0, 0, 0]])
-
-        # l_incident
-        polarizations, helicity = _translate_polarizations_inv(
+    pol_inc = pol_sca = None
+    helicity_inc = helicity_sca = None
+    if "polarization_incident" in f["modes"]:
+        pol_inc, helicity_inc = _translate_polarizations_inv(
+            f["modes/polarization_incident"][...]
+        )
+    elif "polarization" in f["modes"]:
+        pol_inc, helicity_inc = _translate_polarizations_inv(
             f["modes/polarization"][...]
         )
-        modes = (f["modes/l"][...], f["modes/m"][...], polarizations)
-        if "position_index" in f["modes"]:
-            modes = (f["modes/position_index"][...],) + modes
+    if "polarization_scattered" in f["modes"]:
+        pol_sca, helicity_sca = _translate_polarizations_inv(
+            f["modes/polarization_scattered"][...]
+        )
+    elif "polarization" in f["modes"]:
+        pol_sca, helicity_sca = _translate_polarizations_inv(
+            f["modes/polarization"][...]
+        )
+    if pol_inc is None or pol_sca is None or helicity_inc != helicity_sca:
+        raise ValueError('polarization definition missing')
+    helicity = helicity_inc
+    l_inc = l_sca = None
+    if "l_incident" in f["modes"]:
+        l_inc = f["modes/l_incident"][...]
+    elif "l" in f["modes"]:
+        l_inc = f["modes/l"][...]
+    if "l_scattered" in f["modes"]:
+        l_sca = f["modes/l_scattered"][...]
+    elif "l" in f["modes"]:
+        l_sca = f["modes/l"][...]
+    if l_inc is None or l_sca is None:
+        raise ValueError("mode definition of 'l' missing")
+    m_inc = m_sca = None
+    if "m_incident" in f["modes"]:
+        m_inc = f["modes/m_incident"][...]
+    elif "m" in f["modes"]:
+        m_inc = f["modes/m"][...]
+    if "m_scattered" in f["modes"]:
+        m_sca = f["modes/m_scattered"][...]
+    elif "m" in f["modes"]:
+        m_sca = f["modes/m"][...]
+    if m_inc is None or m_sca is None:
+        raise ValueError("mode definition of 'm' missing")
 
-        shape = f["tmatrix"].shape[:-2]
-        positions_shape = positions.shape[-2:]
-        k0s = np.broadcast_to(k0s, shape)
-        epsilon = np.broadcast_to(epsilon, shape)
-        mu = np.broadcast_to(mu, shape)
-        kappa = np.broadcast_to(kappa, shape)
-        positions = np.broadcast_to(positions, shape + positions_shape)
+    modes_inc = (l_inc, m_inc, pol_inc)
+    modes_sca = (l_sca, m_sca, pol_sca)
+    pidx_inc = pidx_sca = None
+    if "position_index_incident" in f["modes"]:
+        pidx_inc = f["modes/position_index_incident"][...]
+    elif "position_index" in f["modes"]:
+        pidx_inc = f["modes/position_index"][...]
+    if "position_index_scattered" in f["modes"]:
+        pidx_sca = f["modes/position_index_scattered"][...]
+    elif "position_index" in f["modes"]:
+        pidx_sca = f["modes/position_index"][...]
+    if (pidx_inc is None) ^ (pidx_sca is None):
+        raise ValueError("mode definition of 'm' missing")
+    if pidx_sca is not None:
+        modes_inc = (pidx_inc,) + modes_inc
+        modes_sca = (pidx_sca,) + modes_sca
 
-        res = np.empty(shape, object)
-        for i in np.ndindex(*shape):
-            i_tmat = i + (slice(f["tmatrix"].shape[-2]), slice(f["tmatrix"].shape[-1]))
-            i_positions = i + (slice(positions_shape[0]), slice(positions_shape[1]))
-            res[i] = ptsa.TMatrix(
-                f["tmatrix"][i_tmat],
-                k0s[i],
-                epsilon[i],
-                mu[i],
-                kappa[i],
-                positions[i_positions],
-                helicity,
-                modes,
-            )
-        if res.shape == ():
-            res = res.item()
-        return res
+    if all([np.array_equal(i, j) for i, j in zip(modes_inc, modes_sca)]):
+        modes = modes_inc
+        pick_sca = pick_inc = None
+    else:
+        modes = np.unique(
+            np.concatenate((np.array(modes_inc), np.array(modes_sca)), axis=-1),
+            axis=-1,
+        )
+        modes = (*modes,)
+        pick_sca = ptsa.misc.pickmodes(modes, modes_sca)
+        pick_inc = ptsa.misc.pickmodes(modes_inc, modes)
+
+    shape = f["tmatrix"].shape[:-2]
+    positions_shape = positions.shape[-2:]
+    k0s = np.broadcast_to(k0s, shape)
+    epsilon = np.broadcast_to(epsilon, shape)
+    mu = np.broadcast_to(mu, shape)
+    kappa = np.broadcast_to(kappa, shape)
+    positions = np.broadcast_to(positions, shape + positions_shape)
+
+    res = np.empty(shape, object)
+    for i in np.ndindex(*shape):
+        i_tmat = i + (slice(f["tmatrix"].shape[-2]), slice(f["tmatrix"].shape[-1]))
+        tmat = f['tmatrix'][i_tmat]
+        i_positions = i + (slice(positions_shape[0]), slice(positions_shape[1]))
+        if pick_sca is not None:
+            tmat = pick_sca @ f["tmatrix"][i_tmat] @ pick_inc
+        res[i] = ptsa.TMatrix(
+            tmat,
+            k0s[i],
+            epsilon[i],
+            mu[i],
+            kappa[i],
+            positions[i_positions],
+            helicity,
+            modes,
+        )
+    if res.shape == ():
+        res = res.item()
+    return res
