@@ -123,7 +123,7 @@ class TMatrix(TMatrixBase):
         """
         Rotational average of the extinction cross section
 
-        Only implemented for global T-matrices and in achiral media.
+        Only implemented for global T-matrices.
 
         Returns:
             float or complex
@@ -131,12 +131,7 @@ class TMatrix(TMatrixBase):
         if self.positions.shape[0] > 1:
             raise NotImplementedError
         if self.kappa == 0:
-            res = (
-                -2
-                * np.pi
-                * np.real(np.trace(self.t))
-                / (self.ks[0] * self.ks[0])
-            )
+            res = -2 * np.pi * np.real(np.trace(self.t)) / (self.ks[0] * self.ks[0])
         else:
             res = 0
             for pol in [0, 1]:
@@ -156,7 +151,7 @@ class TMatrix(TMatrixBase):
         """
         Rotational average of the scattering cross section
 
-        Only implemented for global T-matrices and in achiral media.
+        Only implemented for global T-matrices.
 
         Returns:
             float or complex
@@ -168,7 +163,7 @@ class TMatrix(TMatrixBase):
                 2
                 * np.pi
                 * np.sum(self.t.real * self.t.real + self.t.imag * self.t.imag)
-                / (self.k0 * self.k0 * self.epsilon * self.mu)
+                / (self.ks[0] * self.ks[0])
             )
         else:
             res = (
@@ -264,7 +259,7 @@ class TMatrix(TMatrixBase):
         """
         return self.l, self.m, self.pol
 
-    def xs(self, illu, flux=.5):
+    def xs(self, illu, flux=0.5):
         r"""
         Scattering and extinction cross section
 
@@ -281,25 +276,25 @@ class TMatrix(TMatrixBase):
         Returns:
             float, (2,)-tuple
         """
-        if np.any(np.imag(self.ks)) != 0:
+        if np.any(np.imag(self.ks) != 0):
             raise NotImplementedError
+        illu = np.array(illu)
+        if illu.ndim == 1:
+            illu = illu[:, None]
         p = self.t @ illu
         rs = sc.car2sph(self.positions[:, None, :] - self.positions)
-        m = (
-            sw.translate(
-                *(m[:, None] for m in self.modes),
-                *self.modes,
-                self.ks[self.pol] * rs[self.pidx[:, None], self.pidx, 0],
-                rs[self.pidx[:, None], self.pidx, 1],
-                rs[self.pidx[:, None], self.pidx, 2],
-                self.helicity,
-                singular=False,
-            )
-            / (np.power(self.ks[self.pol], 2) * flux)
-        )
+        m = sw.translate(
+            *(m[:, None] for m in self.modes),
+            *self.modes,
+            self.ks[self.pol] * rs[self.pidx[:, None], self.pidx, 0],
+            rs[self.pidx[:, None], self.pidx, 1],
+            rs[self.pidx[:, None], self.pidx, 2],
+            self.helicity,
+            singular=False,
+        ) / np.power(self.ks[self.pol], 2)
         return (
-            0.5 * np.real(np.diag(p.conjugate().T @ m @ p)),
-            -0.5 * np.real(np.diag(illu.conjugate().T @ m @ p)),
+            0.5 * np.sum(np.real(p.conjugate() * (m @ p)), axis=-2) / flux,
+            -0.5 * np.sum(np.real(illu.conjugate() * (m @ p)), axis=-2) / flux,
         )
 
     def pick(self, modes):

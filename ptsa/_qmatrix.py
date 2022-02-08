@@ -748,12 +748,16 @@ class QMatrix:
             ):
                 if pola != polb:
                     continue
-                res += (2 * pola - 1) * _coeff_chirality_density(self.ks[choice, pola], kzs[pola], a, dira, b, dirb, z)
+                res += (2 * pola - 1) * _coeff_chirality_density(
+                    self.ks[choice, pola], kzs[pola], a, dira, b, dirb, z
+                )
         else:
             for (dira, _, a), (dirb, _, b) in itertools.product(
                 allcoeffs[::2], allcoeffs[1::2]
             ):
-                res += _coeff_chirality_density(self.ks[choice, 0], kzs[0], a, dira, b, dirb, z, False)
+                res += _coeff_chirality_density(
+                    self.ks[choice, 0], kzs[0], a, dira, b, dirb, z, False
+                )
         return 0.5 * np.real(res)
 
     def tr(self, illu, direction=1):
@@ -874,7 +878,9 @@ class QMatrix:
     def _check_modes(self, modes):
         """_check_modes"""
         if len(modes) != 3:
-            raise ValueError(f"invalid length of variable modes {len(modes)}, must be 3 or 4")
+            raise ValueError(
+                f"invalid length of variable modes {len(modes)}, must be 3 or 4"
+            )
         modes = (*(np.array(a) for a in modes),)
         if not np.all([m.size == modes[0].size for m in modes[1:]]):
             raise ValueError("all modes need equal size")

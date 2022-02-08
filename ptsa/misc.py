@@ -45,6 +45,7 @@ def refractive_index(epsilon=1, mu=1, kappa=0):
     res[np.imag(res) < 0] *= -1
     return res
 
+
 def basischange(out, in_=None):
     """
     Coefficients for the basis change between helicity and parity modes

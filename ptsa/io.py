@@ -170,9 +170,7 @@ def mesh_spheres(radii, positions, model, meshsize=None, meshsize_boundary=None)
         model.addPhysicalGroup(2, [i + 1], tag)
 
     model.mesh.setSize(model.getEntities(3), meshsize)
-    model.mesh.setSize(
-        model.getBoundary(spheres, False, False), meshsize_boundary
-    )
+    model.mesh.setSize(model.getBoundary(spheres, False, False), meshsize_boundary)
     model.mesh.generate()
     return model
 
@@ -366,8 +364,7 @@ def _write_hdf5(
     datafile.create_dataset("modes/l", data=ls)
     datafile.create_dataset("modes/m", data=ms)
     datafile.create_dataset(
-        "modes/polarization",
-        data=_translate_polarizations(pols, helicity=helicity),
+        "modes/polarization", data=_translate_polarizations(pols, helicity=helicity),
     )
     datafile.create_dataset("modes/position_index", data=pidxs)
     datafile["modes/position_index"].attrs[
@@ -443,7 +440,7 @@ def _write_hdf5(
 
 
 def _convert_to_k0(x, xtype, xunit, k0unit=r"nm^{-1}"):
-    c = 299792458.
+    c = 299792458.0
     k0unit = INVLENGTHS[k0unit]
     if xtype in ("freq", "nu"):
         xunit = FREQUENCIES[xunit]
@@ -496,6 +493,7 @@ def load_hdf5(filename, unit_length="nm"):
     with h5py.File(filename, "r") as f:
         return _load_hdf5(f, unit_length)
 
+
 def _load_hdf5(f, unit_length):
     ld_freq = None
     for freq_type in ("freq", "nu", "omega", "k0", "lambda0"):
@@ -503,7 +501,7 @@ def _load_hdf5(f, unit_length):
             ld_freq = f[freq_type][...]
             break
     if ld_freq is None:
-        raise ValueError('no definition of frequency found')
+        raise ValueError("no definition of frequency found")
     if "modes/positions" in f:
         k0unit = f["modes/positions"].attrs.get("unit", unit_length) + r"^{-1}"
     else:
@@ -585,7 +583,7 @@ def _load_hdf5(f, unit_length):
             f["modes/polarization"][...]
         )
     if pol_inc is None or pol_sca is None or helicity_inc != helicity_sca:
-        raise ValueError('polarization definition missing')
+        raise ValueError("polarization definition missing")
     helicity = helicity_inc
     l_inc = l_sca = None
     if "l_incident" in f["modes"]:
@@ -650,7 +648,7 @@ def _load_hdf5(f, unit_length):
     res = np.empty(shape, object)
     for i in np.ndindex(*shape):
         i_tmat = i + (slice(f["tmatrix"].shape[-2]), slice(f["tmatrix"].shape[-1]))
-        tmat = f['tmatrix'][i_tmat]
+        tmat = f["tmatrix"][i_tmat]
         i_positions = i + (slice(positions_shape[0]), slice(positions_shape[1]))
         if pick_sca is not None:
             tmat = pick_sca @ f["tmatrix"][i_tmat] @ pick_inc

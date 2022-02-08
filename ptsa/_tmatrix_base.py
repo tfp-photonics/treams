@@ -238,7 +238,9 @@ class TMatrixBase:
     def _check_modes(self, modes):
         """_check_modes"""
         if len(modes) < 3 or len(modes) > 4:
-            raise ValueError(f"invalid length of variable modes {len(modes)}, must be 3 or 4")
+            raise ValueError(
+                f"invalid length of variable modes {len(modes)}, must be 3 or 4"
+            )
         modes = (*(np.array(a) for a in modes),)
         if len(modes) == 3:
             modes = (np.zeros_like(modes[0]),) + modes

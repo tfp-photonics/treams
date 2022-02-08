@@ -63,6 +63,7 @@ class TMatrixC(TMatrixBase):
         super().__init__(tmat, k0, epsilon, mu, kappa, positions, helicity, modes)
         if modes is None:
             modes = TMatrixC.defaultmodes(
+                [0],
                 TMatrixC.defaultmmax(self.t.shape[0], self.positions.shape[0]),
                 self.positions.shape[0],
             )
@@ -88,14 +89,15 @@ class TMatrixC(TMatrixBase):
         Returns:
             T-Matrix object
         """
-        epsilon = np.array(epsilon)
+        kzs = np.atleast_1d(kzs)
+        epsilon = np.atleast_1d(epsilon)
         if mu is None:
             mu = np.ones_like(epsilon)
         if kappa is None:
             kappa = np.zeros_like(epsilon)
-        mu = np.array(mu)
-        kappa = np.array(kappa)
-        radii = np.array(radii)
+        mu = np.atleast_1d(mu)
+        kappa = np.atleast_1d(kappa)
+        radii = np.atleast_1d(radii)
         if (
             np.any([i.ndim != 1 for i in (epsilon, mu, kappa, radii)])
             or not epsilon.size == mu.size == kappa.size == radii.size + 1
@@ -109,7 +111,7 @@ class TMatrixC(TMatrixBase):
         for kz in kzs:
             for m in range(-mmax, mmax + 1):
                 miecoeffs = mie_cyl(kz, m, k0, radii, epsilon, mu, kappa)
-                tmat[idx : idx + 2, idx : idx + 2] = miecoeffs
+                tmat[idx : idx + 2, idx : idx + 2] = miecoeffs[::-1, ::-1]
                 idx += 2
         return cls(
             tmat,
@@ -173,15 +175,96 @@ class TMatrixC(TMatrixBase):
         return krhos
 
     @property
-    def xl_ext(self):
-        """Extinction cross length"""
-        raise NotImplementedError
+    def xw_ext_avg(self):
+        """
+        Rotational average of the extinction cross width
+
+        Only implemented for global T-matrices.
+
+        Returns:
+            float or complex
+        """
+        if self.positions.shape[0] > 1:
+            raise NotImplementedError
+        if self.kappa == 0:
+            res = -2 * np.real(np.trace(self.t)) / self.ks[0]
+        else:
+            res = 0
+            for pol in [0, 1]:
+                choice = self.pol == pol
+                res += (
+                    -2 * np.real(np.trace(self.t[choice, :][:, choice])) / self.ks[pol]
+                )
+        if res.imag == 0:
+            return res.real
+        return res
 
     @property
-    def xl_sca(self):
-        """Scattering cross length"""
-        raise NotImplementedError
+    def xw_sca_avg(self):
+        """
+        Rotational average of the scattering cross width
 
+        Only implemented for global T-matrices.
+
+        Returns:
+            float or complex
+        """
+        if self.positions.shape[0] > 1:
+            raise NotImplementedError
+        if self.kappa == 0:
+            res = (
+                2
+                * np.sum(self.t.real * self.t.real + self.t.imag * self.t.imag)
+                / self.ks[0]
+            )
+        else:
+            res = 2 * np.sum(
+                (self.t.real * self.t.real + self.t.imag * self.t.imag)
+                / self.ks[self.pol, None]
+            )
+        if res.imag == 0:
+            return res.real
+        return res
+
+    def xw(self, illu, flux=0.5):
+        r"""
+        Scattering and extinction cross width
+
+        Possible for all T-matrices (global and local) in non-absorbing embedding.
+
+        Args:
+            illu (complex, array): Illumination coefficients
+            flux (optional): Ingoing flux corresponding to the illumination. Used for
+                the result's normalization. The flux is given in units of
+                :math:`\frac{\text{V}^2}{{l^2}} \frac{1}{Z_0 Z}` where :math:`l` is the
+                unit of length used in the wave number (and positions). A plane wave
+                has the flux `0.5` in this normalization, which is used as default.
+
+        Returns:
+            float, (2,)-tuple
+        """
+        if np.any(np.imag(self.ks) != 0):
+            raise NotImplementedError
+        illu = np.array(illu)
+        if illu.ndim == 1:
+            illu = illu[:, None]
+        p = self.t @ illu
+        rs = sc.car2cyl(self.positions[:, None, :] - self.positions)
+        m = (
+            cw.translate(
+                *(m[:, None] for m in self.modes),
+                *self.modes,
+                self.krho[self.pol] * rs[self.pidx[:, None], self.pidx, 0],
+                rs[self.pidx[:, None], self.pidx, 1],
+                rs[self.pidx[:, None], self.pidx, 2],
+                singular=False,
+            )
+            / self.ks[self.pol]
+        )
+        return (
+            2 * np.sum(np.real(p.conjugate() * (m @ p)), axis=-2) / flux,
+            -2 * np.sum(np.real(illu.conjugate() * (m @ p)), axis=-2) / flux,
+        )
 
     def pick(self, modes):
         """
