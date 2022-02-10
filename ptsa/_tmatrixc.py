@@ -186,14 +186,15 @@ class TMatrixC(TMatrixBase):
         """
         if self.positions.shape[0] > 1:
             raise NotImplementedError
+        nk = np.unique(self.kz).size
         if self.kappa == 0:
-            res = -2 * np.real(np.trace(self.t)) / self.ks[0]
+            res = -2 * np.real(np.trace(self.t)) / (self.ks[0] * nk)
         else:
             res = 0
             for pol in [0, 1]:
                 choice = self.pol == pol
                 res += (
-                    -2 * np.real(np.trace(self.t[choice, :][:, choice])) / self.ks[pol]
+                    -2 * np.real(np.trace(self.t[choice, :][:, choice])) / (self.ks[pol] * nk)
                 )
         if res.imag == 0:
             return res.real
@@ -211,16 +212,17 @@ class TMatrixC(TMatrixBase):
         """
         if self.positions.shape[0] > 1:
             raise NotImplementedError
+        nk = np.unique(self.kz).size
         if self.kappa == 0:
             res = (
                 2
                 * np.sum(self.t.real * self.t.real + self.t.imag * self.t.imag)
-                / self.ks[0]
+                / (self.ks[0] * nk)
             )
         else:
             res = 2 * np.sum(
                 (self.t.real * self.t.real + self.t.imag * self.t.imag)
-                / self.ks[self.pol, None]
+                / (self.ks[self.pol, None] * nk)
             )
         if res.imag == 0:
             return res.real

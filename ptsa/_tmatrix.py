@@ -190,13 +190,11 @@ class TMatrix(TMatrixBase):
         if not self.helicity:
             raise NotImplementedError
         selections = self.pol == 0, self.pol == 1
-        tpp = self.t[np.ix_(selections[1], selections[1])]
-        tpm = self.t[np.ix_(selections[1], selections[0])]
-        tmp = self.t[np.ix_(selections[0], selections[1])]
-        tmm = self.t[np.ix_(selections[0], selections[0])]
-        plus = tpp + tpp.T.conj() + 2 * tpp.T.conj() @ tpp + 2 * tmp.T.conj() @ tmp
-        minus = tmm + tmm.T.conj() + 2 * tmm.T.conj() @ tmm + 2 * tpm.T.conj() @ tpm
-        return 2 * np.pi * np.real(np.trace(minus) - np.trace(plus))
+        cd = -np.sum(np.real(self.t[selections[1], selections[1]]))
+        cd -= np.sum(np.power(np.abs(self.t[:, selections[1]]), 2))
+        cd += np.sum(np.real(self.t[selections[0], selections[0]]))
+        cd += np.sum(np.power(np.abs(self.t[:, selections[0]]), 2))
+        return 4 * np.pi * cd
 
     @property
     def chi(self):
