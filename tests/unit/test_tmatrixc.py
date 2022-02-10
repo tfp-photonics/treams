@@ -51,7 +51,6 @@ class TestInit:
         )
 
 
-
 class TestCylinder:
     def test(self):
         tm = TMatrixC.cylinder([1], 2, 3, [4], [2, 9], kappa=[1, 2])
@@ -88,4 +87,39 @@ class TestCylinder:
             and np.all(tm.pol == [int((i + 1) % 2) for i in range(10)])
             and np.all(tm.pidx == 10 * [0])
             and np.all(tm.ks == [3, 15])
+        )
+
+
+class TestProperties:
+    def test_xw_ext_avg(self):
+        tm = TMatrixC.cylinder([-1, 1], 1, 3, [4], [2 + 1j, 9], kappa=[1, 2])
+        assert isclose(tm.xw_ext_avg, 2.4094468914696026)
+    def test_xw_ext_avg_kappa_zero(self):
+        tm = TMatrixC.cylinder([-1, 1], 1, 3, [4], [2 + 1j, 9], [3, 4])
+        assert isclose(tm.xw_ext_avg, 0.6659898461255899,)
+    def test_xw_sca_avg(self):
+        tm = TMatrixC.cylinder([-1, 1], 1, 3, [4], [2 + 1j, 9], kappa=[1, 2])
+        assert isclose(tm.xw_sca_avg, 1.3695972664542702,)
+    def test_xw_sca_avg_kappa_zero(self):
+        tm = TMatrixC.cylinder([-1, 1], 1, 3, [4], [2 + 1j, 9], [3, 4])
+        assert isclose(tm.xw_sca_avg, 0.3613566165936713,)
+    def test_krho(self):
+        tm = TMatrixC.cylinder([0, 5], 1, 3, [1], [2 + 1j, 1])
+        assert np.all(np.abs(tm.krho - [3, 3, 3, 3, 3, 3, 4j, 4j, 4j, 4j, 4j, 4j]) < 1e-16)
+    def test_modes(self):
+        tm = TMatrixC.cylinder([-1, 1], 1, 3, [4], [2 + 1j, 9], kappa=[1, 2])
+        kz, m, pol = tm.modes
+        assert (
+            np.all(kz == 6 * [-1] + 6 * [1])
+            and np.all(m == [-1, -1, 0, 0, 1, 1, -1, -1, 0, 0, 1, 1])
+            and np.all(pol == [int((i + 1) % 2) for i in range(12)])
+        )
+    def test_fullmodes(self):
+        tm = TMatrixC.cylinder([-1, 1], 1, 3, [4], [2 + 1j, 9], kappa=[1, 2])
+        pidx, kz, m, pol = tm.fullmodes
+        assert (
+            np.all(kz == 6 * [-1] + 6 * [1])
+            and np.all(m == [-1, -1, 0, 0, 1, 1, -1, -1, 0, 0, 1, 1])
+            and np.all(pol == [int((i + 1) % 2) for i in range(12)])
+            and np.all(pidx == 12 * [0])
         )
