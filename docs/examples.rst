@@ -1,5 +1,7 @@
 .. highlight:: python
 
+.. only:: builder_html
+
 ========
 Examples
 ========
@@ -13,36 +15,28 @@ before using it.
 
 In all examples we assume that ``import numpy as np`` and ``import ptsa`` is used.
 
-
 T-matrix examples
 =================
 
-Particle clusters
------------------
+Particle cluster
+----------------
 
 We want to build a small snowman made of four spheres. Two for the body and head and two
-smaller ones for each hand::
+smaller ones for each hand:
 
-    k0 = 2 * np.pi / 1000 # Wave number in vacuum
-    epsilon_air = 1
-    epsilon_snow = 16 + 1j # Permittivity of our snow
-    lmax = 4  # Multipole order
-    radii = [
-        150,  # body
-        100,  # head
-        40,  # right hand
-        30,  # left hand
-    ]
+.. literalinclude:: examples/cluster.py
+   :language: python
+   :lines: 7-16
 
 Here we simply set the wavelength to `1000`. For our constant material parameters we can
 choose the scale of wavelength and sphere radii arbitrarily, but for our example we
 could simply assume e.g. the unit of the wavelength and the radii to be nanometers.
 Up to now we only defined parameters, now we want to create the T-matrices. For
-convenience we store the T-matrices in a simple list::
+convenience we store the T-matrices in a simple list:
 
-    snowballs = [
-        ptsa.TMatrix.sphere(lmax, k0, r, [epsilon_snow, epsilon_air]) for r in radii
-    ]
+.. literalinclude:: examples/cluster.py
+   :language: python
+   :lines: 18-20
 
 Examining the call first invocation of `ptsa` in this example shows a simple structure.
 We use the :class:`ptsa.TMatrix` for our object and then define the sphere. As a
@@ -56,16 +50,11 @@ from the inside to the outside.
   T-matrix of spherical core-shell particles with an arbitrary number of shells. Also,
   each material can be chiral.
 
-Now, we want to create a cluster of these T-matrices::
+Now, we want to create a cluster of these T-matrices:
 
-    positions = [
-        [0, 0, -100],  # body
-        [0, 0, 150],  # head
-        [-85, 145, -5],  # right hand
-        [-80, -135, -7.5],  # left hand
-    ]
-    snowman = ptsa.TMatrix.cluster(snowballs, positions)
-    snowman.interact()
+.. literalinclude:: examples/cluster.py
+   :language: python
+   :lines: 22-29
 
 We first create the cluster by giving the T-matrices of all its constituent particles
 and specifying their positions. It is advised to always put the origin in a symmetry
@@ -78,39 +67,49 @@ This has the benefit, that one can usually obtain correct fields closer to the g
 object.
 
 Now, we can calculate the scattering and extinction cross section of our little snowman
-under a plane wave illumination along the x-axis::
+under a plane wave illumination along the x-axis:
 
-    illu = snowman.illuminate_pw(k0, 0, 0, 0)
-    xs = snowman.xs(illu)
-    print(f"scattering cross section: {xs[0]}")
-    print(f"extinction cross section: {xs[1]}")
+.. literalinclude:: examples/cluster.py
+   :language: python
+   :lines: 31-34
 
 Next, we can look at the field distribution. For this we first create a grid, that is
-separated into three parts. First, the space occupied by the spheres. Here, we cannot
+separated into three parts. First, the space occupied by the spheres, here, we cannot
 easily calculate the fields. Second, the part that is outside the individual spheres but
 inside of the circumscribing spheres. Here, we can calculate the fields using the local
-T-matrix. Third, the part outside of the circumscribing sphere. Here, we can calculate
-the fields using the local or a global T-matrix. Which calculation is more beneficial
+T-matrix. Third, the part outside of the circumscribing sphere, where we can calculate
+the fields using the local or the global T-matrix. Which calculation is more beneficial
 and faster is determined by mainly by how many orders need to be included in both cases.
-For the sake of a more diverse example we will do the latter::
+For the sake of a more diverse example we will do the latter:
 
-    grid = np.mgrid[-300:300:201j, 0:1, -300:300:201j].squeeze().transpose((1, 2, 0))
-    scattered_field = np.zeros_like(grid, complex)
-    outside = np.sum(np.power(grid, 2), axis=-1) > 250 * 250
-    in_between = np.logical_and(
-        np.logical_not(outside),
-        np.logical_and(
-            np.sum(np.power(grid - positions[0], 2), axis=-1) > radii[0] * radii[0],
-            np.sum(np.power(grid - positions[1], 2), axis=-1) > radii[1] * radii[1],
-        )
-    )
-    scattered_field_coeff = tm.field(grid[in_between, :])
-    scattered_field[in_between, :] = np.sum(scattered_field_coeff * (tm.t @ illu), axis=-1)
+.. literalinclude:: examples/cluster.py
+   :language: python
+   :lines: 36-49
 
+Mostly, we set up here a grid of points and separate the different regions. Finally, we
+take the region in between the spheres and calculate the relation of the expansion
+coefficients to the field at different point. In the last line, we calculate the
+scattered field by multiplying the illumination with the T-matrix and then summing up
+the contributions of all modes.
 
+Now we want to calculate the field at outside the circumscribing sphere of the snowman.
+As already mentioned, this is also possible for the local T-matrix, but we can create
+also the global T-matrix first. We choose a higher expansion order for this matrix.
+Then we have to recalculate the illumination and the field coefficients for the new
+expansion:
 
+.. literalinclude:: examples/cluster.py
+   :language: python
+   :lines: 51-56
 
+Now we can plot the full field around our snowman. We only add the illuminating plane
+wave and arrive at:
 
+.. plot:: examples/cluster.py
+
+We remark, that the field outside the circumscribing sphere (red dashed line) does
+nicely fit with the field inside, indicating that the chosen expansion order for the
+global T-matrix was sufficient.
 
 3D-arrays of particles
 ----------------------
