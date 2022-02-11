@@ -120,8 +120,45 @@ global T-matrix was sufficient.
 Cylindrical T-matrix examples
 =============================
 
-Clusters
---------
+Clusters of cylindrical rods
+----------------------------
+
+Due to the similarity of T-matrices and cylindrical T-matrices, we can build clusters
+analogously. For this example we take infinitely extended cylinders, for which the
+T-matrix entries can be computed analytically.
+
+We begin with defining the cylinder parameters. For the embedding medium we choose a
+non-zero value of the chirality parameter.
+
+.. literalinclude:: examples/cylindercluster.py
+   :language: python
+   :lines: 7-16
+
+In contrast to the case of spheres and spherical T-matrices, we now need to define the
+value of the z-component of the wave vector. Multiple values have to be given. Later, we
+will use one-dimensional periodic arrays (chains). Then, it's necessary that the
+different values correspond to a set of diffraction orders. Here, however, we only take
+a single value for our example. Additionally to the wave vector component the maximal
+azimuthal order is chosen to be 4. So, `m` runs from -4 to +4 in the T-matrix modes.
+
+The next step is similar to the cluster example. The most important difference is, that
+we use for the illumination a property of the cluster `ks` which holds the wave numbers
+in the chiral medium. This is done just out of convenience.
+
+.. literalinclude:: examples/cylindercluster.py
+   :language: python
+   :lines: 18
+
+Finally, we just set up a suitable grid and plot the results. This time we calculate
+the whole field in the local system, but we could have also chosen to change to the
+global T-matrix for the computation of the field outside of the T-matrix.
+
+.. literalinclude:: examples/cylindercluster.py
+   :language: python
+   :lines: 20-27
+
+.. plot:: examples/cylindercluster.py
+
 
 1D-arrays of particles
 ----------------------

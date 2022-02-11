@@ -633,6 +633,7 @@ class TMatrixC(TMatrixBase):
         Returns:
             tuple
         """
+        kzs = np.atleast_1d(kzs)
         res = np.array(
             [
                 [n, kz, m, p]
