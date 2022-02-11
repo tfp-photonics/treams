@@ -6,6 +6,9 @@
 Examples
 ========
 
+.. contents:: Table of contents
+   :local:
+
 The computations implemented in ptsa mainly revolve around three different types of
 matrices: the (spherical) T-matrix, the cylindrical T-matrix and the Q-matrices. These
 three types of matrices emerge from using either spherical, cylindrical, or plane waves
@@ -28,8 +31,8 @@ smaller ones for each hand:
    :language: python
    :lines: 7-16
 
-Here we simply set the wavelength to `1000`. For our constant material parameters we can
-choose the scale of wavelength and sphere radii arbitrarily, but for our example we
+Here, we simply set the wavelength to `1000`. For our constant material parameters we
+can choose the scale of wavelength and sphere radii arbitrarily, but for our example we
 could simply assume e.g. the unit of the wavelength and the radii to be nanometers.
 Up to now we only defined parameters, now we want to create the T-matrices. For
 convenience we store the T-matrices in a simple list:
