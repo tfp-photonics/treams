@@ -159,10 +159,15 @@ global T-matrix for the computation of the field outside of the T-matrix.
 
 .. plot:: examples/cylindercluster.py
 
-
 1D-arrays of particles
 ----------------------
 
+This, example now turns to an one-dimensional array of spheres (chain). The coupling
+between the spheres will be calculated with the Ewald method. Then, one can transition
+from a description of coupled spheres, described by T-matrices to a description using
+the cylindrical T-matrix.
+
+We start by defining two differently sized spheres.
 
 Q-matrix examples
 =================

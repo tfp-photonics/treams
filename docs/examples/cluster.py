@@ -34,7 +34,7 @@ print(f"scattering cross section: {xs[0][0]}")
 print(f"extinction cross section: {xs[1][0]}")
 
 grid = np.mgrid[-300:300:101j, 0:1, -300:300:101j].squeeze().transpose((1, 2, 0))
-scattered_field = np.zeros_like(grid, complex)
+field = np.zeros_like(grid, complex)
 outside = np.sum(np.power(grid, 2), axis=-1) > 250 * 250
 in_between = np.logical_and(
     np.logical_not(outside),
@@ -43,37 +43,26 @@ in_between = np.logical_and(
         np.sum(np.power(grid - positions[1], 2), axis=-1) > radii[1] * radii[1],
     ),
 )
+valid = np.logical_or(outside, in_between)
 scattered_field_coeff = snowman.field(grid[in_between, :])
-scattered_field[in_between, :] = np.sum(
-    scattered_field_coeff * (snowman.t @ illu), axis=-2
-)
+field[in_between, :] = np.sum(scattered_field_coeff * (snowman.t @ illu), axis=-2)
 
 snowman.globalmat(modes=ptsa.TMatrix.defaultmodes(6))
 illu = snowman.illuminate_pw(k0, 0, 0, 0)
 scattered_field_coeff = snowman.field(grid[outside, :])
-scattered_field[outside, :] = np.sum(
-    scattered_field_coeff * (snowman.t @ illu), axis=-2
+field[outside, :] = np.sum(scattered_field_coeff * (snowman.t @ illu), axis=-2)
+field[valid] += ptsa.special.vpw_A(
+    k0, 0, 0, grid[valid, 0], grid[valid, 1], grid[valid, 2], 0
 )
 
 fig, ax = plt.subplots()
 pcm = ax.pcolormesh(
     grid[:, 0, 0],
     grid[0, :, 2],
-    0.5
-    * np.sum(
-        np.power(
-            np.abs(
-                scattered_field
-                + ptsa.special.vpw_A(
-                    k0, 0, 0, grid[:, :, 0], grid[:, :, 1], grid[:, :, 2], 0
-                )
-            ),
-            2,
-        ),
-        axis=-1,
-    ).T,
+    np.sum(np.power(np.abs(field), 2), axis=-1).T,
     shading="nearest",
-    vmax=2.5,
+    vmin=0,
+    vmax=5,
 )
 ax.plot(
     np.linspace(-250, 250, 200),

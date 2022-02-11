@@ -18,32 +18,24 @@ cluster.interact()
 illu = cluster.illuminate_pw(np.real(cluster.ks[0]), 0, 0, 0)
 
 grid = np.mgrid[-300:300:101j, -300:300:101j, 0:1].squeeze().transpose((1, 2, 0))
-scattered_field = np.zeros_like(grid, complex)
+field = np.zeros_like(grid, complex)
 valid = np.logical_and(
     np.sum(np.power(grid - positions[0], 2), axis=-1) > radii[0] * radii[0],
     np.sum(np.power(grid - positions[1], 2), axis=-1) > radii[1] * radii[1],
 )
 scattered_field_coeff = cluster.field(grid[valid, :])
-scattered_field[valid, :] = np.sum(scattered_field_coeff * (cluster.t @ illu), axis=-2)
+field[valid, :] = np.sum(scattered_field_coeff * (cluster.t @ illu), axis=-2)
+field[valid, :] += ptsa.special.vpw_A(
+    cluster.ks[0].real, 0, 0, grid[valid, 0], grid[valid, 1], grid[valid, 2], 0
+)
 
 fig, ax = plt.subplots()
 pcm = ax.pcolormesh(
     grid[:, 0, 0],
     grid[0, :, 1],
-    0.5
-    * np.sum(
-        np.power(
-            np.abs(
-                scattered_field
-                + ptsa.special.vpw_A(
-                    k0, 0, 0, grid[:, :, 0], grid[:, :, 1], grid[:, :, 2], 0
-                )
-            ),
-            2,
-        ),
-        axis=-1,
-    ).T,
+    np.sum(np.power(np.abs(field), 2), axis=-1).T,
     shading="nearest",
+    vmin=0,
     vmax=2.5,
 )
 cb = plt.colorbar(pcm)
