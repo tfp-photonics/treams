@@ -7,6 +7,7 @@ import ptsa.special as sc
 from ptsa import cw, misc, pw, sw
 from ptsa._tmatrix_base import TMatrixBase
 from ptsa.coeffs import mie
+from ptsa import io
 
 
 class TMatrix(TMatrixBase):
@@ -868,8 +869,7 @@ class TMatrix(TMatrixBase):
         )
         mat = misc.pickmodes(self.modes, modes)
         T = mat.T @ self.t @ mat
-        if units!='nm':
-            k0 = ptsa.io._convert_to_k0(np.copy(self.k0),"k0",r"nm^{-1}",units+r"^{-1}")
+        k0 = io._convert_to_k0(np.copy(self.k0),"k0",r"nm^{-1}",units+r"^{-1}")
         k_mod = 1e9*k0*np.sqrt(self.epsilon*self.mu)
         scaling = -1j*6*np.pi/(c*Z*k_mod**3)*np.array([1,1j*Z,-1j*c,c*Z])
         vector = np.array([[1/np.sqrt(2),1j/np.sqrt(2),0],
