@@ -87,7 +87,7 @@ For the sake of a more diverse example we will do the latter:
 
 .. literalinclude:: examples/cluster.py
    :language: python
-   :lines: 36-49
+   :lines: 36-48
 
 Mostly, we set up here a grid of points and separate the different regions. Finally, we
 take the region in between the spheres and calculate the relation of the expansion
@@ -103,7 +103,7 @@ expansion:
 
 .. literalinclude:: examples/cluster.py
    :language: python
-   :lines: 51-56
+   :lines: 50-56
 
 Now we can plot the full field around our snowman. We only add the illuminating plane
 wave and arrive at:
@@ -167,7 +167,34 @@ between the spheres will be calculated with the Ewald method. Then, one can tran
 from a description of coupled spheres, described by T-matrices to a description using
 the cylindrical T-matrix.
 
-We start by defining two differently sized spheres.
+We start by defining two spheres, that are within one unit cell. This means we have a
+nontrivial unit cell for our system, resulting finally in a local cylindrical T-matrix.
+
+.. literalinclude:: examples/chain.py
+   :language: python
+   :lines: 7-16
+
+The definition of the unit cell is exactly the same to the definition of a regular
+cluster. Now, one only needs to call the interaction calculation within the lattice,
+which for a chain is simply defined by its pitch. Also, one needs to specify the
+z-component of the wave vector (up to a reciprocal lattice vector).
+
+We will illuminate the chain with a plane wave traveling in z-direction. To calculate
+the field, we define again different areas. By using the lattice sums for arbitrary
+points in the unit cell, it is possible to calculate the all positions outside of the
+spheres. However, this is comparably slow in comparison to the calculation using the
+cylindrical wave expansion. This expansion is only valid outside of the circumscribing
+cylinder with infinite length in z-direction.
+
+.. literalinclude:: examples/chain.py
+   :language: python
+   :lines: 18-29
+
+Having the definition of the different areas out of the way, one can do the calculation
+now for the different points. First, we have to define the expansion modes around the
+point, where we probe the field at. 
+
+.. plot:: examples/chain.py
 
 Q-matrix examples
 =================

@@ -5,13 +5,12 @@ import ptsa
 
 
 k0 = 2 * np.pi / 700  # Wave number in vacuum
-permittivities = [1, -16.486 + 1.0643j]
+permittivities = [1, -16.5 + 1j]
 lmax = 2  # Multipole order
 radii = [75, 75]
 spheres = [ptsa.TMatrix.sphere(lmax, k0, r, permittivities) for r in radii]
 positions = [[-25, 0, -73], [25, 0, 73]]
 chain_sph = ptsa.TMatrix.cluster(spheres, positions)
-
 pitch = 300
 kz = 0
 chain_sph.latticeinteract(kz, pitch)
@@ -28,6 +27,7 @@ in_between = np.logical_and(
     ),
 )
 valid = np.logical_or(outside, in_between)
+
 modes = ptsa.TMatrix.defaultmodes(1, np.sum(in_between))
 field_expansion = chain_sph.lattice_field(grid[in_between, :], modes, kz, pitch)
 field_per_mode = ptsa.special.vsph2car(
