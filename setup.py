@@ -20,6 +20,7 @@ if os.name == "nt":
         "-lwinpthread",
         "-Wl,--no-whole-archive",
     ]
+    compile_args = ["-DMS_WIN64"]
 
     class build_ext(_build_ext):
         # Enforce the gcc compiler under windows
@@ -31,6 +32,7 @@ if os.name == "nt":
         def build_extensions(self):
             if self.compiler.compiler_type == "mingw32":
                 for e in self.extensions:
+                    e.extra_compile_args = compile_args
                     e.extra_link_args = link_args
             super().build_extensions()
 
