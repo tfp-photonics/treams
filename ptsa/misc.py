@@ -180,10 +180,10 @@ def firstbrillouin2d(kpar, b, n=2):
     normsqp = (b1 + b2) @ (b1 + b2)
     normsqm = (b1 - b2) @ (b1 - b2)
     if (
-        normsqp < normsq1 - 1e-16
-        or normsqp < normsq2 - 1e-16
-        or normsqm < normsq1 - 1e-16
-        or normsqm < normsq2 - 1e-16
+        normsqp < normsq1 - 1e-14
+        or normsqp < normsq2 - 1e-14
+        or normsqm < normsq1 - 1e-14
+        or normsqm < normsq2 - 1e-14
     ):
         raise ValueError("Lattice vectors are not of minimal length")
     # Rough estimate

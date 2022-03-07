@@ -4,7 +4,7 @@ import numpy as np
 
 import ptsa.lattice as la
 import ptsa.special as sc
-from ptsa import cw, misc, pw, sw
+from ptsa import cw, ebcm, misc, pw, sw
 from ptsa._tmatrix_base import TMatrixBase
 from ptsa.coeffs import mie
 from ptsa import io
@@ -118,6 +118,17 @@ class TMatrix(TMatrixBase):
         return cls(
             tmat, k0, epsilon[-1], mu[-1], kappa[-1], modes=TMatrix.defaultmodes(lmax)
         )
+
+    @classmethod
+    def ebcm(cls, lmax, k0, r, dr, epsilon, mu=1, kappa=0, lint=None):
+        ks = k0 * misc.refractive_index(epsilon, mu, kappa)
+        zs = np.sqrt(np.array(mu) / epsilon)
+        modes = cls.ebcmmodes(lmax)
+        modes_int = modes if lint is None else cls.ebcmmodes(lint, mmax=lmax)
+        qm = ebcm.qmat(r, dr, ks, zs, modes_int[1:], modes[1:])
+        rqm = ebcm.qmat(r, dr, ks, zs, modes_int[1:], modes[1:], singular=False)
+        tm = -np.linalg.lstsq(qm, rqm, rcond=None)[0]
+        return cls(tm, k0, epsilon[-1], mu[-1], kappa[-1], modes=modes)
 
     @property
     def xs_ext_avg(self):
@@ -311,7 +322,7 @@ class TMatrix(TMatrixBase):
         modes = self._check_modes(modes)
         mat = misc.pickmodes(self.fullmodes, modes)
         self.t = mat.T @ self.t @ mat
-        self.pidx, self.kz, self.m, self.pol = modes
+        self.pidx, self.l, self.m, self.pol = modes
         return self
 
     def rotate(self, phi, theta, psi, modes=None):
@@ -705,6 +716,35 @@ class TMatrix(TMatrixBase):
             ).T,
         )
 
+
+    @staticmethod
+    def ebcmmodes(lmax, nmax=1, mmax=None):
+        """
+        Default sortation of modes
+
+        Default sortation of the T-Matrix entries, including degree `l`, order `m` and
+        polarization `p`.
+
+        Args:
+            lmax (int): Maximal value of `l`
+            nmax (int, optional): Number of particles, defaults to `1`
+
+        Returns:
+            tuple
+        """
+        mmax = lmax if mmax is None else mmax
+        return (
+            *np.array(
+                [
+                    [n, l, m, p]
+                    for n in range(0, nmax)
+                    for m in range(-mmax, mmax + 1)
+                    for l in range(max(abs(m), 1), lmax + 1)
+                    for p in range(1, -1, -1)
+                ]
+            ).T,
+        )
+
     @staticmethod
     def defaultlmax(dim, nmax=1):
         """
@@ -871,7 +911,7 @@ class TMatrix(TMatrixBase):
         )
         mat = misc.pickmodes(self.modes, modes)
         T = mat.T @ self.t @ mat
-        k0 = io._convert_to_k0(np.copy(self.k0), "k0", r"nm^{-1}", units + r"^{-1}")
+        k0 = io._convert_to_k0(np.copy(self.k0), "k0", units + r"^{-1}", r"nm^{-1}")
         k_mod = 1e9 * k0 * np.sqrt(self.epsilon * self.mu)
         scaling = (
             -1j
