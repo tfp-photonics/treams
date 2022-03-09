@@ -877,18 +877,24 @@ class TMatrix(TMatrixBase):
         return cluster
 
     def effective_optical_parameters(self, concentration, units="nm"):
-        """Computes the effective optical parameters of a medium with immersed scatteres given by their T-matrix. The effective parameters are obtained using Clausius-Mosotti homegenization equations.
-
-        Computes the effective optical parameters of a medium with immersed scatteres given by their T-matrix. The effective parameters are obtained using Clausius-Mosotti homegenization equations.
-        Authors: This code is an adaptation made by Xavi from an original script created by Benedikt Zerulla.
+        """
+        Computes the effective optical parameters of a medium with immersed scatteres
+        given by their T-matrix. The effective parameters are obtained using
+        Clausius-Mosotti homegenization equations.
+        Authors: This code is an adaptation made by Xavi from an original script created
+        by Benedikt Zerulla.
 
         Args:
             self (_tmatrix): object of class _tmatrix
-            concentration (float): concentration of scatterers per cubic meter of host medium.
-            units (string): units in which k0 is given in the _tmatrix object. By default it is assumed to be in nm^{-1}.
+            concentration (float): concentration of scatterers per cubic meter of host
+                medium.
+            units (string): units in which k0 is given in the _tmatrix object. By
+                default it is assumed to be in nm^{-1}.
 
         Returns:
-            tuple: tuple containing three float numbers corresponding to the relative permittivity, relative permeability and relative chirality parameter. (eff_eps, eff_mu, eff_kappa)
+            tuple: tuple containing three float numbers corresponding to the relative
+                permittivity, relative permeability and relative chirality parameter.
+                (eff_eps, eff_mu, eff_kappa)
         """
 
         eps0 = 8.8541878128 * 1e-12
@@ -899,36 +905,26 @@ class TMatrix(TMatrixBase):
         Z = np.sqrt(mu / epsilon)
         if self.helicity:
             self.changebasis()
-        modes = (
-            *np.array(
-                [
-                    [n, m, p]
-                    for p in range(1, -1, -1)
-                    for n in range(1, 2)
-                    for m in range(-n, n + 1)
-                ]
-            ).T,
-        )
+        modes = (6 * [1], 2 * [-1, 0, 1], 3 * [1] + 3 * [0])
         mat = misc.pickmodes(self.modes, modes)
         T = mat.T @ self.t @ mat
         k0 = io._convert_to_k0(np.copy(self.k0), "k0", units + r"^{-1}", r"nm^{-1}")
         k_mod = 1e9 * k0 * np.sqrt(self.epsilon * self.mu)
         scaling = (
-            -1j
-            * 6
+            -6j
             * np.pi
             / (c * Z * k_mod**3)
             * np.array([1, 1j * Z, -1j * c, c * Z])
         )
         vector = np.array(
             [
-                [1 / np.sqrt(2), 1j / np.sqrt(2), 0],
+                [np.sqrt(.5), 1j * np.sqrt(.5), 0],
                 [0, 0, 1],
-                [-1 / np.sqrt(2), 1j / np.sqrt(2), 0],
+                [-np.sqrt(.5), 1j * np.sqrt(.5), 0],
             ]
         )
         alpha_mean = []
-        size_t = int(T.shape[0] / 2)
+        size_t = T.shape[0] // 2
         index = np.array(
             [
                 [0, size_t, 0, size_t],
@@ -956,30 +952,26 @@ class TMatrix(TMatrixBase):
             + concentration**2 * delta_alpha / (9 * mu * epsilon)
         )
         epsilon_eff = (
-            1
-            / eps0
-            * (
+            (
                 epsilon
-                + 1
-                / D
-                * (
+                + (
                     concentration * alpha_mean[0]
                     - concentration**2 * delta_alpha / (3 * mu)
                 )
+                / D
             )
+            / eps0
         )
         mu_eff = (
-            1
-            / mu0
-            * (
+            (
                 mu
-                + 1
-                / D
-                * (
+                + (
                     concentration * alpha_mean[3] * mu
                     - concentration**2 * delta_alpha / (3 * epsilon)
                 )
+                / D
             )
+            / mu0
         )
         kappa_eff = -1j * concentration * alpha_mean[1] / np.sqrt(mu0 * eps0) / D
         return epsilon_eff, mu_eff, kappa_eff

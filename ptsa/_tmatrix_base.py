@@ -6,6 +6,7 @@ from ptsa import misc
 
 
 class TMatrixBase:
+    _max_periodic_dim = 3
     """
     T-matrix base class
 
@@ -76,6 +77,34 @@ class TMatrixBase:
         self.positions = positions
         self.helicity = helicity
         self.ks = k0 * misc.refractive_index(epsilon, mu, kappa)
+        self._interacted = False
+        self._periodic = None
+
+    @property
+    def interacted(self):
+        return self._interacted
+
+    @interacted.setter
+    def interacted(self, val):
+        if self.periodic is not None:
+            raise ValueError('T-matrix marked as periodic')
+        self._interacted = bool(val)
+
+    @property
+    def periodic(self):
+        return self.periodic
+
+    @periodic.setter
+    def periodic(self, val):
+        val = np.array(val, float)
+        if val.ndim > 2 or (val.ndim == 1 and val.size != 1):
+            raise ValueError(f"invalid shape '{val.shape}'")
+        elif val.size == 1:
+            val = val.squeeze()
+        elif not (val.shape[0] == val.shape[1]) and (val.shape[0] in (2, _max_periodic_dim)):
+            raise ValueError(f"invalid shape '{val.shape}'")
+        self._interacted = True
+        self._periodic = val
 
     @classmethod
     def cluster(cls, tmats, positions):
@@ -97,7 +126,7 @@ class TMatrixBase:
             warnings.warn("specified more positions than T-matrices")
         elif len(tmats) > positions.shape[0]:
             raise ValueError(
-                f"got {len(tmats)} T-matrices and only {positions.shape[0]} positions"
+                f"got '{len(tmats)}' T-matrices and only '{positions.shape[0]}' positions"
             )
         material = tmats[0].material
         k0 = tmats[0].k0
@@ -108,9 +137,9 @@ class TMatrixBase:
         i = 0
         for j, tmat in enumerate(tmats):
             if tmat.material != material:
-                warnings.warn(f"materials {material} and {tmat.material} do not match")
+                warnings.warn(f"materials with values '{material}' and '{tmat.material}' do not match")
             if tmat.k0 != k0:
-                warnings.warn(f"vacuum wave numbers {k0} and {tmat.k0} do not match")
+                warnings.warn(f"vacuum wave numbers '{k0}' and '{tmat.k0}' do not match")
             if tmat.helicity != helicity:
                 raise ValueError("found T-matrices in helicity and parity mode")
             dim = tmat.t.shape[0]

@@ -7,6 +7,7 @@ from ptsa.coeffs import mie_cyl
 
 
 class TMatrixC(TMatrixBase):
+    _max_periodic_dim = 2
     """
     T-matrix for cylindrical modes
 
@@ -370,7 +371,7 @@ class TMatrixC(TMatrixBase):
         )
         return np.eye(self.t.shape[0]) - self.t @ m
 
-    def globalmat(self, origin=None, modes=None, interacted=True):
+    def globalmat(self, origin=None, modes=None):
         """
         Global T-matrix
 
@@ -385,6 +386,8 @@ class TMatrixC(TMatrixBase):
         Returns
             TMatrix
         """
+        if periodic is not None:
+            raise ValueError("T-matrix is marked as periodic, cannot compute global matrix")
         if origin is None:
             origin = np.zeros((3,))
         origin = np.reshape(origin, (1, 3))
@@ -409,7 +412,7 @@ class TMatrixC(TMatrixBase):
             -rs[self.pidx, 2],
             False,
         )
-        if interacted:
+        if self.interacted:
             self.t = pout @ self.t @ ain
         else:
             self.t = pout @ np.linalg.solve(self.coupling(), self.t @ ain)
