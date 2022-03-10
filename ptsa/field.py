@@ -1,15 +1,21 @@
 from ptsa import special as sc
+from ptsa import _basisset
 
 class Field:
-    def field(self, modes):
-        NotImplementedError
-    def hfield(self, modes):
-        NotImplementedError
-    def poynting(self, modes):
-        NotImplementedError
+    def efield(self, r):
+        raise NotImplementedError
+    def hfield(self, r):
+        raise NotImplementedError
+    def dfield(self, r):
+        raise NotImplementedError
+    def bfield(self, r):
+        raise NotImplementedError
+    def gfield(self, r, pol):
+        raise NotImplementedError
 
 class PlaneWave(Field):
     def __init__(self, kx, ky, kz, pol, coeff=None, helicity=True, k0=None, epsilon=None, mu=None, kappa=None):
+        # Todo: test
         self.kx = np.atleast_1d(kx)
         self.ky = np.atleast_1d(ky)
         self.kz = np.atleast_1d(kz)
@@ -19,7 +25,7 @@ class PlaneWave(Field):
         self.mu = mu
         self.kappa = kappa
         self.helicity = helicity
-        self.coeff = np.zeros_like(kx, complex) if coeff is None else coeff
+        self.coeff = coeff
         fix = ''.join(fix.lower().split())
         self._fix = fix
 
@@ -72,32 +78,118 @@ class PlaneWave(Field):
     def pick(self, modes):
         pass
 
-class SphericalWave(Field):
-    def __init__(self, k0, l, m, pol, epsilon=1, mu=1, kappa=1, coeff=None, helicity=True):
-        self.k0, self.l, self.m, self.pol =
-        self.epsilon = self.kappa = self.mu = None
-        self.helicity = helicity
-        coeff=np.zeros_like(kx, complex)
+    def field(r):
+        r = np.array(r)
+        if r.ndim == 1:
+            r = np.reshape(r, (1, -1))
+        if self.helicity:
+            return sc.vpw_A(
+                self.kx,
+                self.ky,
+                self.kz,
+                r[..., None, 0],
+                r[..., None, 1],
+                r[..., None, 2],
+                self.pol,
+            )
+        else:
+            return (1 - self.pol[:, None]) * sc.vpw_M(
+                self.kx,
+                self.ky,
+                self.kz,
+                r[..., None, 0],
+                r[..., None, 1],
+                r[..., None, 2],
+            ) + self.pol[:, None] * sc.vpw_N(
+                self.kx,
+                self.ky,
+                self.kz[choice, :],
+                r[..., None, 0],
+                r[..., None, 1],
+                r[..., None, 2],
+            )
+
+class SphericalWave(Field, _basisset.SphericalWaveBasis):
+    def __init__(self, coeff, pidx, l, m, pol=None, /, k0=None, epsilon=1, mu=1, kappa=1, positions=None, helicity=True, wavetype=None):
+        super().__init__(pidx, l, m, pol, positions, helicity, wavetype)
+        self.epsilon = epsilon
+        self.mu = mu
+        self.kappa = kappa
+        coeff = np.atleast_1d(coeff)
+        if (
+                coeff.ndim > 2
+                or (coeff.ndim in (1, 2) and coeff.shape[0] != self.l.shape[0])
+        ):
+            raise ValueError(f"invalid shape of coeff '{coeff.shape}'")
+        self.coeff = coeff
+        self.k0 = k0
 
     @classmethod
-    def from(cls, source, modes, positions=None):
+    def from(cls, source, basis):
         pidx, l, m, pol = modes
+        positions = np.zeros((3, 1)) if positions is None else positions
+        if positions.ndim == 1:
+            positions = positions[:, None]
+        elif positions.ndim != 2:
+            raise ValueError
         pos = (*(i[:, None] for i in positions[pidx, :].T),)
         if isinstance(source, PlaneWave):
             m = pw.to_sw(
                 l, m, pol, source.kx, source.ky, source.kz, source.pol, source.helicity
-                ) * pw.translate(source.kx, source.ky, source.kz)
-        elif isinstance(source, SphericalWave):
-            pass
+            ) * pw.translate(source.kx, source.ky, source.kz, *pos)
         elif isinstance(source, CylindricalWave):
             m = cw.to_sw(
-
+                *(m[:, None] for m in self.modes),
+                source.kz,
+                source.m,
+                source.pol,
+                self.ks[pol],
+                posout=self.pidx[:, None],
+                posin=pidx,
+                helicity=self.helicity,
             )
+        elif isinstance(source, SphericalWave):
+            pass
         else:
             raise ValueError
 
     def pick(self, modes):
         pass
+
+    def field(r):
+        r = np.array(r)
+        if r.ndim == 1:
+            r = np.reshape(r, (1, -1))
+        r_sph = sc.car2sph(r[..., None, :] - self.positions)
+        if scattered:
+            wave_A = sc.vsw_A
+            wave_M = sc.vsw_M
+            wave_N = sc.vsw_N
+        else:
+            wave_A = sc.vsw_rA
+            wave_M = sc.vsw_rM
+            wave_N = sc.vsw_rN
+        if self.helicity:
+            res = wave_A(
+                *self.modes[:2],
+                self.ks[self.pol] * r_sph[..., self.pidx, 0],
+                r_sph[..., self.pidx, 1],
+                r_sph[..., self.pidx, 2],
+                self.pol,
+            )
+        else:
+            res = (1 - self.pol[:, None]) * wave_M(
+                *self.modes[:2],
+                self.ks[self.pol] * r_sph[..., self.pidx, 0],
+                r_sph[..., self.pidx, 1],
+                r_sph[..., self.pidx, 2],
+            ) + self.pol[:, None] * wave_N(
+                *self.modes[:2],
+                self.ks[self.pol] * r_sph[..., self.pidx, 0],
+                r_sph[..., self.pidx, 1],
+                r_sph[..., self.pidx, 2],
+            )
+        return sc.vsph2car(res, r_sph[..., self.pidx, :])
 
 class CylindricalWave(Field):
     def __init__(self, k0, l, m, pol, epsilon=1, mu=1, kappa=1, coeff=None, helicity=True):
@@ -119,3 +211,41 @@ class CylindricalWave(Field):
 
     def pick(self, modes):
         pass
+
+
+    def field(r):
+        r = np.array(r)
+        if r.ndim == 1:
+            r = np.reshape(r, (1, -1))
+        r_cyl = sc.car2cyl(r[..., None, :] - self.positions)
+        if self.scattered:
+            wave_A = sc.vcw_A
+            wave_M = sc.vcw_M
+            wave_N = sc.vcw_N
+        else:
+            wave_A = sc.vcw_rA
+            wave_M = sc.vcw_rM
+            wave_N = sc.vcw_rN
+        if self.helicity:
+            res = wave_A(
+                *self.modes[:2],
+                self.krho * r_cyl[..., self.pidx, 0],
+                r_cyl[..., self.pidx, 1],
+                r_cyl[..., self.pidx, 2],
+                self.ks[self.pol],
+                self.pol,
+            )
+        else:
+            res = (1 - self.pol[:, None]) * wave_M(
+                *self.modes[:2],
+                self.krho * r_cyl[..., self.pidx, 0],
+                r_cyl[..., self.pidx, 1],
+                r_cyl[..., self.pidx, 2],
+            ) + self.pol[:, None] * wave_N(
+                *self.modes[:2],
+                self.krho * r_cyl[..., self.pidx, 0],
+                r_cyl[..., self.pidx, 1],
+                r_cyl[..., self.pidx, 2],
+                self.ks[self.pol],
+            )
+        return sc.vcyl2car(res, r_cyl[..., self.pidx, :])
