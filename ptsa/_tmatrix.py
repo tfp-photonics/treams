@@ -257,7 +257,7 @@ class TMatrix(TMatrixBase):
             + tpm.imag * tpm.imag
             + tmp.real * tmp.real
             + tmp.imag * tmp.imag
-        ) / np.sqrt(np.sum(np.power(np.abs(self.t), 2)))
+        ) / (np.sum(np.power(np.abs(self.t), 2)))
 
     @property
     def modes(self):
@@ -503,9 +503,8 @@ class TMatrix(TMatrixBase):
             m,
             pol,
             self.ks[pol],
-            posout=self.pidx[:, None],
-            posin=pidx,
             helicity=self.helicity,
+            where=self.pidx[:, None] == pidx
         )
 
     def field(self, r, scattered=True):

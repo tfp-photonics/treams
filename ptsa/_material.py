@@ -1,10 +1,15 @@
 from ptsa import misc
 
 class Material:
-    def __init__(epsilon=1, mu=1, kappa=0):
+    def __init__(self, epsilon=1, mu=1, kappa=0):
+        if isinstance(epsilon, Material):
+            epsilon, mu, kappa = epsilon()
         self.epsilon = epsilon
         self.mu = mu
         self.kappa = kappa
+
+    def __iter__(self):
+        return iter((self.epsilon, self.mu, self.kappa))
 
     @classmethod
     def from_n(cls, n=1, impedance=1, kappa=0):
@@ -25,10 +30,10 @@ class Material:
     def n(self):
         if self.kappa == 0:
             n = np.sqrt(self.epsilon * self.mu)
-            if x.imag < 0:
+            if n.imag < 0:
                 n = -n
             return n
-        raise ValueError("'n' not unique in chiral media, consider using 'nmp'")
+        raise ValueError("'n' is not unique in chiral media, consider using 'nmp'")
 
     @property
     def nmp(self):
@@ -38,11 +43,25 @@ class Material:
     def impedance(self):
         return np.sqrt(self.mu / self.epsilon)
 
-    @property
-    def parameters(self):
+    def __call__(self):
         return self.epsilon, self.mu, self.kappa
 
-    def __eq__(self, x):
-        if not isinstance(x, Material):
-            x = Material(*x)
-        return self.epsilon == x.epsilon and self.mu == x.mu and self.kappa == x.kappa
+    def __eq__(self, other):
+        if not isinstance(other, Material):
+            other = Material(*other)
+        return (
+            super().__eq__(other)
+            and self.epsilon == other.epsilon
+            and self.mu == other.mu
+            and self.kappa == other.kappa
+        )
+
+    @property
+    def ischiral(self):
+        return self.kappa != 0
+
+    def __str__(self):
+        return '(' + ', '.join([str(i) for i in self()]) + ')'
+
+    def __repr__(self):
+        return self.__class__.__name__ + str(self)

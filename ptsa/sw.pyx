@@ -712,24 +712,19 @@ cdef void _loop_periodic_d(char **args, np.npy_intp *dims, np.npy_intp *steps, v
     cdef char *ip5 = args[5]
     cdef char *ip6 = args[6]
     cdef char *ip7 = args[7]
-    cdef char *ip8 = args[8]
-    cdef char *ip9 = args[9]
-    cdef char *op0 = args[10]
+    cdef char *op0 = args[8]
     cdef double complex ov0
     for i in range(n):
-        if <long>(<long*>ip8)[0] == <long>(<long*>ip9)[0]:
-            ov0 = (<double complex(*)(double, double, double, long, long, long, long, double) nogil>func)(
-                <double>(<double*>ip0)[0],
-                <double>(<double*>ip1)[0],
-                <double>(<double*>ip2)[0],
-                <long>(<long*>ip3)[0],
-                <long>(<long*>ip4)[0],
-                <long>(<long*>ip5)[0],
-                <long>(<long*>ip6)[0],
-                <double>(<double*>ip7)[0],
-            )
-        else:
-            ov0 = 0
+          ov0 = (<double complex(*)(double, double, double, long, long, long, long, double) nogil>func)(
+              <double>(<double*>ip0)[0],
+              <double>(<double*>ip1)[0],
+              <double>(<double*>ip2)[0],
+              <long>(<long*>ip3)[0],
+              <long>(<long*>ip4)[0],
+              <long>(<long*>ip5)[0],
+              <long>(<long*>ip6)[0],
+              <double>(<double*>ip7)[0],
+          )
         (<double complex*>op0)[0] = <double complex>ov0
         ip0 += steps[0]
         ip1 += steps[1]
@@ -739,9 +734,7 @@ cdef void _loop_periodic_d(char **args, np.npy_intp *dims, np.npy_intp *steps, v
         ip5 += steps[5]
         ip6 += steps[6]
         ip7 += steps[7]
-        ip8 += steps[8]
-        ip9 += steps[9]
-        op0 += steps[10]
+        op0 += steps[8]
 
 
 cdef void _loop_periodic_D(char **args, np.npy_intp *dims, np.npy_intp *steps, void *data) nogil:
@@ -755,24 +748,19 @@ cdef void _loop_periodic_D(char **args, np.npy_intp *dims, np.npy_intp *steps, v
     cdef char *ip5 = args[5]
     cdef char *ip6 = args[6]
     cdef char *ip7 = args[7]
-    cdef char *ip8 = args[8]
-    cdef char *ip9 = args[9]
-    cdef char *op0 = args[10]
+    cdef char *op0 = args[8]
     cdef double complex ov0
     for i in range(n):
-        if <long>(<long*>ip8)[0] == <long>(<long*>ip9)[0]:
-            ov0 = (<double complex(*)(double, double, double complex, long, long, long, long, double) nogil>func)(
-                <double>(<double*>ip0)[0],
-                <double>(<double*>ip1)[0],
-                <double complex>(<double complex*>ip2)[0],
-                <long>(<long*>ip3)[0],
-                <long>(<long*>ip4)[0],
-                <long>(<long*>ip5)[0],
-                <long>(<long*>ip6)[0],
-                <double>(<double*>ip7)[0],
-            )
-        else:
-            ov0 = 0
+        ov0 = (<double complex(*)(double, double, double complex, long, long, long, long, double) nogil>func)(
+            <double>(<double*>ip0)[0],
+            <double>(<double*>ip1)[0],
+            <double complex>(<double complex*>ip2)[0],
+            <long>(<long*>ip3)[0],
+            <long>(<long*>ip4)[0],
+            <long>(<long*>ip5)[0],
+            <long>(<long*>ip6)[0],
+            <double>(<double*>ip7)[0],
+        )
         (<double complex*>op0)[0] = <double complex>ov0
         ip0 += steps[0]
         ip1 += steps[1]
@@ -782,15 +770,13 @@ cdef void _loop_periodic_D(char **args, np.npy_intp *dims, np.npy_intp *steps, v
         ip5 += steps[5]
         ip6 += steps[6]
         ip7 += steps[7]
-        ip8 += steps[8]
-        ip9 += steps[9]
-        op0 += steps[10]
+        op0 += steps[8]
 
 
 cdef np.PyUFuncGenericFunction ufunc_pw_loops[2]
 cdef void *ufunc_pw_h_data[2]
 cdef void *ufunc_pw_p_data[2]
-cdef char ufunc_pw_types[2*11]
+cdef char ufunc_pw_types[2 * 9]
 
 ufunc_pw_loops[0] = <np.PyUFuncGenericFunction>_loop_periodic_d
 ufunc_pw_loops[1] = <np.PyUFuncGenericFunction>_loop_periodic_D
@@ -802,20 +788,16 @@ ufunc_pw_types[4] = <char>np.NPY_LONG
 ufunc_pw_types[5] = <char>np.NPY_LONG
 ufunc_pw_types[6] = <char>np.NPY_LONG
 ufunc_pw_types[7] = <char>np.NPY_DOUBLE
-ufunc_pw_types[8] = <char>np.NPY_LONG
-ufunc_pw_types[9] = <char>np.NPY_LONG
-ufunc_pw_types[10] = <char>np.NPY_CDOUBLE
-ufunc_pw_types[11] = <char>np.NPY_DOUBLE
-ufunc_pw_types[12] = <char>np.NPY_DOUBLE
-ufunc_pw_types[13] = <char>np.NPY_CDOUBLE
+ufunc_pw_types[8] = <char>np.NPY_CDOUBLE
+ufunc_pw_types[9] = <char>np.NPY_DOUBLE
+ufunc_pw_types[10] = <char>np.NPY_DOUBLE
+ufunc_pw_types[11] = <char>np.NPY_CDOUBLE
+ufunc_pw_types[12] = <char>np.NPY_LONG
+ufunc_pw_types[13] = <char>np.NPY_LONG
 ufunc_pw_types[14] = <char>np.NPY_LONG
 ufunc_pw_types[15] = <char>np.NPY_LONG
-ufunc_pw_types[16] = <char>np.NPY_LONG
-ufunc_pw_types[17] = <char>np.NPY_LONG
-ufunc_pw_types[18] = <char>np.NPY_DOUBLE
-ufunc_pw_types[19] = <char>np.NPY_LONG
-ufunc_pw_types[20] = <char>np.NPY_LONG
-ufunc_pw_types[21] = <char>np.NPY_CDOUBLE
+ufunc_pw_types[16] = <char>np.NPY_DOUBLE
+ufunc_pw_types[17] = <char>np.NPY_CDOUBLE
 ufunc_pw_h_data[0] = <void*>_cperiodic_to_pw_h[double]
 ufunc_pw_h_data[1] = <void*>_cperiodic_to_pw_h[double_complex]
 ufunc_pw_p_data[0] = <void*>_cperiodic_to_pw_p[double]
@@ -826,7 +808,7 @@ _periodic_to_pw_h = np.PyUFunc_FromFuncAndData(
     ufunc_pw_h_data,
     ufunc_pw_types,
     2,
-    10,
+    8,
     1,
     0,
     '_periodic_to_pw_h',
@@ -838,7 +820,7 @@ _periodic_to_pw_p = np.PyUFunc_FromFuncAndData(
     ufunc_pw_p_data,
     ufunc_pw_types,
     2,
-    10,
+    8,
     1,
     0,
     '_periodic_to_pw_p',
@@ -847,9 +829,9 @@ _periodic_to_pw_p = np.PyUFunc_FromFuncAndData(
 )
 
 
-def periodic_to_pw(kx, ky, kz, pol, l, m, qol, area, posout=0, posin=0, helicity=True):
+def periodic_to_pw(kx, ky, kz, pol, l, m, qol, area, helicity=True):
     """
-    periodic_to_pw(kx, ky, kz, pol, l, m, qol, area, posout=0, posin=0, helicity=True)
+    periodic_to_pw(kx, ky, kz, pol, l, m, qol, area, helicity=True)
 
     Convert periodic spherical wave to plane wave
 
@@ -870,8 +852,6 @@ def periodic_to_pw(kx, ky, kz, pol, l, m, qol, area, posout=0, posin=0, helicity
         m (int, array_like): Order of the source mode
         qol (int, array_like): Polarization of the source mode
         area (float, array_like): Unit cell area
-        posout (int, optional): Output positions
-        posin (int, optional): Input positions
         helicity (bool, optional): If true, helicity basis is assumed, else parity basis.
             Defaults to ``True``.
 
@@ -879,8 +859,8 @@ def periodic_to_pw(kx, ky, kz, pol, l, m, qol, area, posout=0, posin=0, helicity
         complex
     """
     if helicity:
-        return _periodic_to_pw_h(kx, ky, kz, pol, l, m, qol, area, posout, posin)
-    return _periodic_to_pw_p(kx, ky, kz, pol, l, m, qol, area, posout, posin)
+        return _periodic_to_pw_h(kx, ky, kz, pol, l, m, qol, area)
+    return _periodic_to_pw_p(kx, ky, kz, pol, l, m, qol, area)
 
 
 cdef double complex _cperiodic_to_cw_h(double kz, long mu, long polcw, long l, long m, long polsw, double complex k, double a) nogil:
@@ -924,24 +904,19 @@ cdef void _loop_periodic_cw_D(char **args, np.npy_intp *dims, np.npy_intp *steps
     cdef char *ip5 = args[5]
     cdef char *ip6 = args[6]
     cdef char *ip7 = args[7]
-    cdef char *ip8 = args[8]
-    cdef char *ip9 = args[9]
-    cdef char *op0 = args[10]
+    cdef char *op0 = args[8]
     cdef double complex ov0
     for i in range(n):
-        if <long>(<long*>ip8)[0] == <long>(<long*>ip9)[0]:
-            ov0 = (<double complex(*)(double, long, long, long, long, long, double complex, double) nogil>func)(
-                <double>(<double*>ip0)[0],
-                <long>(<long*>ip1)[0],
-                <long>(<long*>ip2)[0],
-                <long>(<long*>ip3)[0],
-                <long>(<long*>ip4)[0],
-                <long>(<long*>ip5)[0],
-                <double complex>(<double complex*>ip6)[0],
-                <double>(<double*>ip7)[0],
-            )
-        else:
-            ov0 = 0
+        ov0 = (<double complex(*)(double, long, long, long, long, long, double complex, double) nogil>func)(
+            <double>(<double*>ip0)[0],
+            <long>(<long*>ip1)[0],
+            <long>(<long*>ip2)[0],
+            <long>(<long*>ip3)[0],
+            <long>(<long*>ip4)[0],
+            <long>(<long*>ip5)[0],
+            <double complex>(<double complex*>ip6)[0],
+            <double>(<double*>ip7)[0],
+        )
         (<double complex*>op0)[0] = <double complex>ov0
         ip0 += steps[0]
         ip1 += steps[1]
@@ -951,15 +926,13 @@ cdef void _loop_periodic_cw_D(char **args, np.npy_intp *dims, np.npy_intp *steps
         ip5 += steps[5]
         ip6 += steps[6]
         ip7 += steps[7]
-        ip8 += steps[8]
-        ip9 += steps[9]
-        op0 += steps[10]
+        op0 += steps[8]
 
 
 cdef np.PyUFuncGenericFunction ufunc_cw_loops[1]
 cdef void *ufunc_cw_h_data[1]
 cdef void *ufunc_cw_p_data[1]
-cdef char ufunc_cw_types[1*11]
+cdef char ufunc_cw_types[9]
 
 ufunc_cw_loops[0] = <np.PyUFuncGenericFunction>_loop_periodic_cw_D
 ufunc_cw_types[0] = <char>np.NPY_DOUBLE
@@ -970,9 +943,7 @@ ufunc_cw_types[4] = <char>np.NPY_LONG
 ufunc_cw_types[5] = <char>np.NPY_LONG
 ufunc_cw_types[6] = <char>np.NPY_CDOUBLE
 ufunc_cw_types[7] = <char>np.NPY_DOUBLE
-ufunc_cw_types[8] = <char>np.NPY_LONG
-ufunc_cw_types[9] = <char>np.NPY_LONG
-ufunc_cw_types[10] = <char>np.NPY_CDOUBLE
+ufunc_cw_types[8] = <char>np.NPY_CDOUBLE
 ufunc_cw_h_data[0] = <void*>_cperiodic_to_cw_h
 ufunc_cw_p_data[0] = <void*>_cperiodic_to_cw_p
 
@@ -981,7 +952,7 @@ _periodic_to_cw_h = np.PyUFunc_FromFuncAndData(
     ufunc_cw_h_data,
     ufunc_cw_types,
     1,
-    10,
+    8,
     1,
     0,
     '_periodic_to_cw_h',
@@ -993,7 +964,7 @@ _periodic_to_cw_p = np.PyUFunc_FromFuncAndData(
     ufunc_cw_p_data,
     ufunc_cw_types,
     1,
-    10,
+    8,
     1,
     0,
     '_periodic_to_cw_p',
@@ -1002,9 +973,9 @@ _periodic_to_cw_p = np.PyUFunc_FromFuncAndData(
 )
 
 
-def periodic_to_cw(kz, m, pol, l, mu, qol, k, area, posout=0, posin=0, helicity=True):
+def periodic_to_cw(kz, m, pol, l, mu, qol, k, area, helicity=True):
     """
-    periodic_to_cw(kz, m, pol, l, mu, qol, k, area, posout=0, posin=0, helicity=True)
+    periodic_to_cw(kz, m, pol, l, mu, qol, k, area, helicity=True)
 
     Convert periodic spherical wave to plane wave
 
@@ -1025,8 +996,6 @@ def periodic_to_cw(kz, m, pol, l, mu, qol, k, area, posout=0, posin=0, helicity=
         qol (int, array_like): Polarization of the source mode
         k (float or complex, array_like): Wave number
         area (float, array_like): Unit cell area
-        posout (int, optional): Output positions
-        posin (int, optional): Input positions
         helicity (bool, optional): If true, helicity basis is assumed, else parity basis.
             Defaults to ``True``.
 
@@ -1034,5 +1003,5 @@ def periodic_to_cw(kz, m, pol, l, mu, qol, k, area, posout=0, posin=0, helicity=
         complex
     """
     if helicity:
-        return _periodic_to_cw_h(kz, m, pol, l, mu, qol, k, area, posout, posin)
-    return _periodic_to_cw_p(kz, m, pol, l, mu, qol, k, area, posout, posin)
+        return _periodic_to_cw_h(kz, m, pol, l, mu, qol, k, area)
+    return _periodic_to_cw_p(kz, m, pol, l, mu, qol, k, area)
