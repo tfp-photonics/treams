@@ -104,7 +104,7 @@ class TMatrix(TMatrixBase):
             or not epsilon.size == mu.size == kappa.size == radii.size + 1
         ):
             raise ValueError(
-                f"dimensions of radii and material parameters do not match, got {radii.size}, {epsilon.size}, {mu.size}, and {kappa.size}"
+                f"dimensions of radii and material parameters do not match: {radii.size}, {epsilon.size}, {mu.size}, and {kappa.size}"
             )
         dim = TMatrix.defaultdim(lmax)
         tmat = np.zeros((dim, dim), np.complex128)
@@ -877,18 +877,25 @@ class TMatrix(TMatrixBase):
         return cluster
 
     def effective_optical_parameters(self, concentration, units="nm"):
-        """Computes the effective optical parameters of a medium with immersed scatteres given by their T-matrix. The effective parameters are obtained using Clausius-Mosotti homegenization equations.
+        """
+        Computes the effective optical parameters of a medium with immersed scatterers
+        given by their T-matrix. The effective parameters are obtained using
+        Clausius-Mosotti homegenization equations.
 
-        Computes the effective optical parameters of a medium with immersed scatteres given by their T-matrix. The effective parameters are obtained using Clausius-Mosotti homegenization equations.
-        Authors: This code is an adaptation made by Xavi from an original script created by Benedikt Zerulla.
+        Authors: This code is an adaptation made by Xavi from an original script
+        created by Benedikt Zerulla.
 
         Args:
             self (_tmatrix): object of class _tmatrix
-            concentration (float): concentration of scatterers per cubic meter of host medium.
-            units (string): units in which k0 is given in the _tmatrix object. By default it is assumed to be in nm^{-1}.
+            concentration (float): concentration of scatterers per cubic meter of host
+                medium.
+            units (string): units in which k0 is given in the _tmatrix object. By
+                default it is assumed to be in nm^{-1}.
 
         Returns:
-            tuple: tuple containing three float numbers corresponding to the relative permittivity, relative permeability and relative chirality parameter. (eff_eps, eff_mu, eff_kappa)
+            tuple: tuple containing three float numbers corresponding to the relative
+                permittivity, relative permeability and relative chirality parameter.
+                (eff_eps, eff_mu, eff_kappa)
         """
 
         eps0 = 8.8541878128 * 1e-12
