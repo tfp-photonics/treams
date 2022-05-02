@@ -30,6 +30,7 @@ __all__ = [
     'wignersmalld',
     'wigner3j',
     'yv_d',
+    '_translate_vsw_helper',
 ]
 
 
@@ -230,6 +231,29 @@ cdef void loop_d_llllll(char **args, np.npy_intp *dims, np.npy_intp *steps, void
         op0 += steps[6]
 
 
+cdef void loop_D_llllll(char **args, np.npy_intp *dims, np.npy_intp *steps, void *data) nogil:
+    cdef np.npy_intp i, n = dims[0]
+    cdef void *func = <void*>data
+    cdef char *ip0 = args[0]
+    cdef char *ip1 = args[1]
+    cdef char *ip2 = args[2]
+    cdef char *ip3 = args[3]
+    cdef char *ip4 = args[4]
+    cdef char *ip5 = args[5]
+    cdef char *op0 = args[6]
+    cdef double complex ov0
+    for i in range(n):
+        ov0 = (<double complex(*)(long, long, long, long, long, long) nogil>func)(<long>(<long*>ip0)[0], <long>(<long*>ip1)[0], <long>(<long*>ip2)[0], <long>(<long*>ip3)[0], <long>(<long*>ip4)[0], <long>(<long*>ip5)[0])
+        (<double complex*>op0)[0] = <double complex>ov0
+        ip0 += steps[0]
+        ip1 += steps[1]
+        ip2 += steps[2]
+        ip3 += steps[3]
+        ip4 += steps[4]
+        ip5 += steps[5]
+        op0 += steps[6]
+
+
 cdef void loop_D_lllddd(char **args, np.npy_intp *dims, np.npy_intp *steps, void *data) nogil:
     cdef np.npy_intp i, n = dims[0]
     cdef void *func = <void*>data
@@ -407,7 +431,7 @@ np.import_ufunc()
 
 cdef np.PyUFuncGenericFunction ufunc_lpmv_loops[2]
 cdef void *ufunc_lpmv_data[2]
-cdef char ufunc_lpmv_types[8]
+cdef char ufunc_lpmv_types[2 * 4]
 
 ufunc_lpmv_loops[0] = <np.PyUFuncGenericFunction>loop_d_ddd
 ufunc_lpmv_loops[1] = <np.PyUFuncGenericFunction>loop_D_ddD
@@ -429,7 +453,7 @@ lpmv = np.PyUFunc_FromFuncAndData(
     2,  # number of supported input types
     3,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'lpmv',  # function name
     r"""
     lpmv(m, v, z)
@@ -466,12 +490,12 @@ lpmv = np.PyUFunc_FromFuncAndData(
         - `Wikipedia: Associated Legendre polynomials <https://en.wikipedia.org/wiki/Associated_Legendre_polynomials>`_
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_sph_harm_loops[2]
 cdef void *ufunc_sph_harm_data[2]
-cdef char ufunc_sph_harm_types[10]
+cdef char ufunc_sph_harm_types[2 * 5]
 
 ufunc_sph_harm_loops[0] = <np.PyUFuncGenericFunction>loop_D_dddd
 ufunc_sph_harm_loops[1] = <np.PyUFuncGenericFunction>loop_D_dddD
@@ -495,7 +519,7 @@ sph_harm = np.PyUFunc_FromFuncAndData(
     2,  # number of supported input types
     4,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'sph_harm',  # function name
     r"""
     sph_harm(m, l, phi, theta)
@@ -524,12 +548,12 @@ sph_harm = np.PyUFunc_FromFuncAndData(
         complex
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_incgamma_loops[2]
 cdef void *ufunc_incgamma_data[2]
-cdef char ufunc_incgamma_types[6]
+cdef char ufunc_incgamma_types[2 * 3]
 
 ufunc_incgamma_loops[0] = <np.PyUFuncGenericFunction>loop_d_dd
 ufunc_incgamma_loops[1] = <np.PyUFuncGenericFunction>loop_D_dD
@@ -549,7 +573,7 @@ incgamma = np.PyUFunc_FromFuncAndData(
     2,  # number of supported input types
     2,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'incgamma',  # function name
     r"""
     incgamma(l, z)
@@ -576,12 +600,12 @@ incgamma = np.PyUFunc_FromFuncAndData(
         - `DLMF: 8.2 <https://dlmf.nist.gov/8.2>`_
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_intkambe_loops[2]
 cdef void *ufunc_intkambe_data[2]
-cdef char ufunc_intkambe_types[8]
+cdef char ufunc_intkambe_types[2 * 4]
 
 ufunc_intkambe_loops[0] = <np.PyUFuncGenericFunction>loop_d_ldd
 ufunc_intkambe_loops[1] = <np.PyUFuncGenericFunction>loop_D_lDD
@@ -603,7 +627,7 @@ intkambe = np.PyUFunc_FromFuncAndData(
     2,  # number of supported input types
     3,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'intkambe',  # function name
     r"""
     intkambe(n, z, eta)
@@ -635,12 +659,12 @@ intkambe = np.PyUFunc_FromFuncAndData(
         .. [#] `K. Kambe, Zeitschrift Fuer Naturforschung A 23, 9 (1968). <https://doi.org/10.1515/zna-1968-0908>`_
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_wignersmalld_loops[2]
 cdef void *ufunc_wignersmalld_data[2]
-cdef char ufunc_wignersmalld_types[10]
+cdef char ufunc_wignersmalld_types[2 * 5]
 
 ufunc_wignersmalld_loops[0] = <np.PyUFuncGenericFunction>loop_d_llld
 ufunc_wignersmalld_loops[1] = <np.PyUFuncGenericFunction>loop_D_lllD
@@ -664,7 +688,7 @@ wignersmalld = np.PyUFunc_FromFuncAndData(
     2,  # number of supported input types
     4,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'wignersmalld',  # function name
     r"""
     wignersmalld(l, m, k, theta)
@@ -694,12 +718,12 @@ wignersmalld = np.PyUFunc_FromFuncAndData(
         - `H. Dachsela, J. Chem. Phys. 142, 144115 (2006) <https://doi.org/10.1063/1.2194548>`_
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_wignerD_loops[2]
 cdef void *ufunc_wignerD_data[2]
-cdef char ufunc_wignerD_types[14]
+cdef char ufunc_wignerD_types[2 * 7]
 
 ufunc_wignerD_loops[0] = <np.PyUFuncGenericFunction>loop_D_lllddd
 ufunc_wignerD_loops[1] = <np.PyUFuncGenericFunction>loop_D_llldDd
@@ -727,7 +751,7 @@ wignerd = np.PyUFunc_FromFuncAndData(
     2,  # number of supported input types
     6,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'wignerd',  # function name
     r"""
     wignerd(l, m, k, phi, theta, psi)
@@ -756,7 +780,7 @@ wignerd = np.PyUFunc_FromFuncAndData(
         - `Wikipedia: Wigner D-matrix <https://en.wikipedia.org/wiki/Wigner_D-matrix>`_
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_wigner3j_loops[1]
@@ -777,10 +801,10 @@ wigner3j = np.PyUFunc_FromFuncAndData(
     ufunc_wigner3j_loops,
     ufunc_wigner3j_data,
     ufunc_wigner3j_types,
-    2,  # number of supported input types
+    1,  # number of supported input types
     6,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'wigner3j',  # function name
     r"""
     wigner3j(j1, j2, j3, m1, m2, m3)
@@ -810,12 +834,12 @@ wigner3j = np.PyUFunc_FromFuncAndData(
         - `DLMF: 34.3 <https://dlmf.nist.gov/34.3>`_
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_jv_d_loops[2]
 cdef void *ufunc_jv_d_data[2]
-cdef char ufunc_jv_d_types[6]
+cdef char ufunc_jv_d_types[2 * 3]
 
 ufunc_jv_d_loops[0] = <np.PyUFuncGenericFunction>loop_d_dd
 ufunc_jv_d_loops[1] = <np.PyUFuncGenericFunction>loop_D_dD
@@ -835,7 +859,7 @@ jv_d = np.PyUFunc_FromFuncAndData(
     2,  # number of supported input types
     2,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'jv_d',  # function name
     r"""
     jv_d(v, z)
@@ -859,12 +883,12 @@ jv_d = np.PyUFunc_FromFuncAndData(
         - `DLMF: 10.6 <https://dlmf.nist.gov/10.6>`_
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_yv_d_loops[2]
 cdef void *ufunc_yv_d_data[2]
-cdef char ufunc_yv_d_types[6]
+cdef char ufunc_yv_d_types[2 * 3]
 
 ufunc_yv_d_loops[0] = <np.PyUFuncGenericFunction>loop_d_dd
 ufunc_yv_d_loops[1] = <np.PyUFuncGenericFunction>loop_D_dD
@@ -884,7 +908,7 @@ yv_d = np.PyUFunc_FromFuncAndData(
     2,  # number of supported input types
     2,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'yv_d',  # function name
     r"""
     yv_d(v, z)
@@ -908,7 +932,7 @@ yv_d = np.PyUFunc_FromFuncAndData(
         - `DLMF: 10.6 <https://dlmf.nist.gov/10.6>`_
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_spherical_hankel1_loops[1]
@@ -928,7 +952,7 @@ spherical_hankel1 = np.PyUFunc_FromFuncAndData(
     1,  # number of supported input types
     2,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'spherical_hankel1',  # function name
     r"""
     spherical_hankel1(n, z)
@@ -954,7 +978,7 @@ spherical_hankel1 = np.PyUFunc_FromFuncAndData(
         - `DLMF: 10.47 <https://dlmf.nist.gov/10.47>`_
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_spherical_hankel2_loops[1]
@@ -974,7 +998,7 @@ spherical_hankel2 = np.PyUFunc_FromFuncAndData(
     1,  # number of supported input types
     2,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'spherical_hankel2',  # function name
 
     r"""
@@ -1001,7 +1025,7 @@ spherical_hankel2 = np.PyUFunc_FromFuncAndData(
         - `DLMF: 10.47 <https://dlmf.nist.gov/10.47>`_
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_spherical_hankel1_d_loops[1]
@@ -1021,7 +1045,7 @@ spherical_hankel1_d = np.PyUFunc_FromFuncAndData(
     1,  # number of supported input types
     2,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'spherical_hankel1_d',  # function name
     r"""
     spherical_hankel1_d(n, z)
@@ -1045,7 +1069,7 @@ spherical_hankel1_d = np.PyUFunc_FromFuncAndData(
         - `DLMF: 10.51 <https://dlmf.nist.gov/10.51>`_
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_spherical_hankel2_d_loops[1]
@@ -1065,7 +1089,7 @@ spherical_hankel2_d = np.PyUFunc_FromFuncAndData(
     1,  # number of supported input types
     2,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'spherical_hankel2_d',  # function name
     r"""
     spherical_hankel2_d(n, z)
@@ -1089,7 +1113,7 @@ spherical_hankel2_d = np.PyUFunc_FromFuncAndData(
         - `DLMF: 10.51 <https://dlmf.nist.gov/10.51>`_
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_hankel1_d_loops[1]
@@ -1109,7 +1133,7 @@ hankel1_d = np.PyUFunc_FromFuncAndData(
     1,  # number of supported input types
     2,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'hankel1_d',  # function name
     r"""
     hankel1_d(v, z)
@@ -1133,7 +1157,7 @@ hankel1_d = np.PyUFunc_FromFuncAndData(
         - `DLMF: 10.6 <https://dlmf.nist.gov/10.6>`_
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_hankel2_d_loops[1]
@@ -1153,7 +1177,7 @@ hankel2_d = np.PyUFunc_FromFuncAndData(
     1,  # number of supported input types
     2,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'hankel2_d',  # function name
     r"""
     hankel2_d(v, z)
@@ -1177,12 +1201,12 @@ hankel2_d = np.PyUFunc_FromFuncAndData(
         - `DLMF: 10.6 <https://dlmf.nist.gov/10.6>`_
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_pi_fun_loops[2]
 cdef void *ufunc_pi_fun_data[2]
-cdef char ufunc_pi_fun_types[8]
+cdef char ufunc_pi_fun_types[2 * 4]
 
 ufunc_pi_fun_loops[0] = <np.PyUFuncGenericFunction>loop_d_ddd
 ufunc_pi_fun_loops[1] = <np.PyUFuncGenericFunction>loop_D_ddD
@@ -1204,7 +1228,7 @@ pi_fun = np.PyUFunc_FromFuncAndData(
     2,  # number of supported input types
     3,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'pi_fun',  # function name
     r"""
     pi_fun(l, m, x)
@@ -1226,12 +1250,12 @@ pi_fun = np.PyUFunc_FromFuncAndData(
         float or complex
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_tau_fun_loops[2]
 cdef void *ufunc_tau_fun_data[2]
-cdef char ufunc_tau_fun_types[8]
+cdef char ufunc_tau_fun_types[2 * 4]
 
 ufunc_tau_fun_loops[0] = <np.PyUFuncGenericFunction>loop_d_ddd
 ufunc_tau_fun_loops[1] = <np.PyUFuncGenericFunction>loop_D_ddD
@@ -1253,7 +1277,7 @@ tau_fun = np.PyUFunc_FromFuncAndData(
     2,  # number of supported input types
     3,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'tau_fun',  # function name
     r"""
     tau_fun(l, m, x)
@@ -1275,12 +1299,12 @@ tau_fun = np.PyUFunc_FromFuncAndData(
         float or complex
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_tl_vsw_rA_loops[2]
 cdef void *ufunc_tl_vsw_rA_data[2]
-cdef char ufunc_tl_vsw_rA_types[2*8]
+cdef char ufunc_tl_vsw_rA_types[2 * 8]
 
 ufunc_tl_vsw_rA_loops[0] = <np.PyUFuncGenericFunction>loop_D_llllddd
 ufunc_tl_vsw_rA_loops[1] = <np.PyUFuncGenericFunction>loop_D_llllDDd
@@ -1310,7 +1334,7 @@ tl_vsw_rA = np.PyUFunc_FromFuncAndData(
     2,  # number of supported input types
     7,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'tl_vsw_rA',  # function name
     r"""
     tl_vsw_rA(lambda, mu, l, m, x, theta, phi)
@@ -1366,12 +1390,12 @@ tl_vsw_rA = np.PyUFunc_FromFuncAndData(
         .. [#] L. Tsang, J. A. Kong, and R. T. Shi, Theory of Microwave Remote Sensing (Wiley Series in Remote Sensing and Image Processing) (Wiley-Interscience, 1985).
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_tl_vsw_rB_loops[2]
 cdef void *ufunc_tl_vsw_rB_data[2]
-cdef char ufunc_tl_vsw_rB_types[2*8]
+cdef char ufunc_tl_vsw_rB_types[2 * 8]
 
 ufunc_tl_vsw_rB_loops[0] = <np.PyUFuncGenericFunction>loop_D_llllddd
 ufunc_tl_vsw_rB_loops[1] = <np.PyUFuncGenericFunction>loop_D_llllDDd
@@ -1401,7 +1425,7 @@ tl_vsw_rB = np.PyUFunc_FromFuncAndData(
     2,  # number of supported input types
     7,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'tl_vsw_rB',  # function name
     r"""
     tl_vsw_rB(lambda, mu, l, m, x, theta, phi)
@@ -1457,12 +1481,12 @@ tl_vsw_rB = np.PyUFunc_FromFuncAndData(
         .. [#] L. Tsang, J. A. Kong, and R. T. Shi, Theory of Microwave Remote Sensing (Wiley Series in Remote Sensing and Image Processing) (Wiley-Interscience, 1985).
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_tl_vsw_A_loops[2]
 cdef void *ufunc_tl_vsw_A_data[2]
-cdef char ufunc_tl_vsw_A_types[2*8]
+cdef char ufunc_tl_vsw_A_types[2 * 8]
 
 ufunc_tl_vsw_A_loops[0] = <np.PyUFuncGenericFunction>loop_D_llllDdd
 ufunc_tl_vsw_A_loops[1] = <np.PyUFuncGenericFunction>loop_D_llllDDd
@@ -1492,7 +1516,7 @@ tl_vsw_A = np.PyUFunc_FromFuncAndData(
     2,  # number of supported input types
     7,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'tl_vsw_A',  # function name
     r"""
     tl_vsw_A(lambda, mu, l, m, x, theta, phi)
@@ -1547,12 +1571,12 @@ tl_vsw_A = np.PyUFunc_FromFuncAndData(
         .. [#] L. Tsang, J. A. Kong, and R. T. Shi, Theory of Microwave Remote Sensing (Wiley Series in Remote Sensing and Image Processing) (Wiley-Interscience, 1985).
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_tl_vsw_B_loops[2]
 cdef void *ufunc_tl_vsw_B_data[2]
-cdef char ufunc_tl_vsw_B_types[2*8]
+cdef char ufunc_tl_vsw_B_types[2 * 8]
 
 ufunc_tl_vsw_B_loops[0] = <np.PyUFuncGenericFunction>loop_D_llllDdd
 ufunc_tl_vsw_B_loops[1] = <np.PyUFuncGenericFunction>loop_D_llllDDd
@@ -1582,7 +1606,7 @@ tl_vsw_B = np.PyUFunc_FromFuncAndData(
     2,  # number of supported input types
     7,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'tl_vsw_B',  # function name
     r"""
     tl_vsw_B(lambda, mu, l, m, x, theta, phi)
@@ -1637,7 +1661,7 @@ tl_vsw_B = np.PyUFunc_FromFuncAndData(
         .. [#] L. Tsang, J. A. Kong, and R. T. Shi, Theory of Microwave Remote Sensing (Wiley Series in Remote Sensing and Image Processing) (Wiley-Interscience, 1985).
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_tl_vcw_loops[1]
@@ -1662,7 +1686,7 @@ tl_vcw = np.PyUFunc_FromFuncAndData(
     1,  # number of supported input types
     7,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'tl_vcw',  # function name
     r"""
     tl_vcw(kz1, mu, kz2, m, k, xrho, phi, z)
@@ -1696,12 +1720,12 @@ tl_vcw = np.PyUFunc_FromFuncAndData(
         complex
     """,  # docstring
     0,  # unused
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction ufunc_tl_vcw_r_loops[2]
 cdef void *ufunc_tl_vcw_r_data[2]
-cdef char ufunc_tl_vcw_r_types[2*8]
+cdef char ufunc_tl_vcw_r_types[2 * 8]
 
 ufunc_tl_vcw_r_loops[0] = <np.PyUFuncGenericFunction>loop_D_dldlddd
 ufunc_tl_vcw_r_loops[1] = <np.PyUFuncGenericFunction>loop_D_dldlDdd
@@ -1731,7 +1755,7 @@ tl_vcw_r = np.PyUFunc_FromFuncAndData(
     2,  # number of supported input types
     7,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'tl_vcw_r',  # function name
     r"""
     tl_vcw_r(kz1, mu, kz2, m, k, xrho, phi, z)
@@ -1765,4 +1789,34 @@ tl_vcw_r = np.PyUFunc_FromFuncAndData(
         complex
     """,  # docstring
     0,  # unused
-    )
+)
+
+
+cdef np.PyUFuncGenericFunction ufunc_translate_vsw_helper_loops[1]
+cdef void *ufunc_translate_vsw_helper_data[1]
+cdef char ufunc_translate_vsw_helper_types[7]
+
+ufunc_translate_vsw_helper_loops[0] = <np.PyUFuncGenericFunction>loop_d_llllll
+ufunc_translate_vsw_helper_types[0] = <char>np.NPY_LONG
+ufunc_translate_vsw_helper_types[1] = <char>np.NPY_LONG
+ufunc_translate_vsw_helper_types[2] = <char>np.NPY_LONG
+ufunc_translate_vsw_helper_types[3] = <char>np.NPY_LONG
+ufunc_translate_vsw_helper_types[4] = <char>np.NPY_LONG
+ufunc_translate_vsw_helper_types[5] = <char>np.NPY_LONG
+ufunc_translate_vsw_helper_types[6] = <char>np.NPY_CDOUBLE
+ufunc_translate_vsw_helper_data[0] = <void*>_waves._translate_vsw_helper
+
+_translate_vsw_helper = np.PyUFunc_FromFuncAndData(
+    ufunc_translate_vsw_helper_loops,
+    ufunc_translate_vsw_helper_data,
+    ufunc_translate_vsw_helper_types,
+    1,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # identity element
+    '_translate_vsw_helper',  # function name
+    r"""
+    _translate_vsw_helper(l, m, lambda_, mu, p, q)
+    """,  # docstring
+    0,  # unused
+)

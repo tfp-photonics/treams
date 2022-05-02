@@ -489,7 +489,7 @@ car2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of supported input types
     1,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'car2cyl',  # function name
     r"""
     car2cyl(r)
@@ -508,7 +508,7 @@ car2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(3)->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_car2sph_loops[1]
@@ -527,7 +527,7 @@ car2sph = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of supported input types
     1,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'car2sph',  # function name
     r"""
     car2sph(r)
@@ -546,7 +546,7 @@ car2sph = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(3)->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_cyl2car_loops[1]
@@ -565,7 +565,7 @@ cyl2car = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of supported input types
     1,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'cyl2car',  # function name
     r"""
     cyl2car(r)
@@ -584,7 +584,7 @@ cyl2car = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(3)->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_cyl2sph_loops[1]
@@ -603,7 +603,7 @@ cyl2sph = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of supported input types
     1,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'cyl2sph',  # function name
     r"""
     cyl2sph(r)
@@ -622,7 +622,7 @@ cyl2sph = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(3)->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_sph2car_loops[1]
@@ -641,7 +641,7 @@ sph2car = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of supported input types
     1,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'sph2car',  # function name
     r"""
     sph2car(r)
@@ -660,7 +660,7 @@ sph2car = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(3)->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_sph2cyl_loops[1]
@@ -679,7 +679,7 @@ sph2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of supported input types
     1,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'sph2cyl',  # function name
     r"""
     sph2cylr(r)
@@ -698,7 +698,7 @@ sph2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(3)->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_car2pol_loops[1]
@@ -717,7 +717,7 @@ car2pol = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of supported input types
     1,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'car2pol',  # function name
     r"""
     car2pol(r)
@@ -736,7 +736,7 @@ car2pol = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(2)->(2)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_pol2car_loops[1]
@@ -755,7 +755,7 @@ pol2car = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of supported input types
     1,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'pol2car',  # function name
     r"""
     pol2car(r)
@@ -774,12 +774,12 @@ pol2car = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(2)->(2)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_vcoord_loops[2]
 cdef void *gufunc_vcar2cyl_data[2]
-cdef char gufunc_vcoord_types[2*3]
+cdef char gufunc_vcoord_types[2 * 3]
 
 gufunc_vcoord_loops[0] = <np.PyUFuncGenericFunction>loop_d_dd
 gufunc_vcoord_loops[1] = <np.PyUFuncGenericFunction>loop_D_Dd
@@ -799,7 +799,7 @@ vcar2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     2,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vcar2cyl',  # function name
     r"""
     vcar2cyl(v, r)
@@ -829,7 +829,7 @@ vcar2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(3),(3)->(3)',  # signature
-    )
+)
 
 
 cdef void *gufunc_vcar2sph_data[2]
@@ -844,7 +844,7 @@ vcar2sph = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     2,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vcar2sph',  # function name
     r"""
     vcar2cyl(v, r)
@@ -874,7 +874,7 @@ vcar2sph = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(3),(3)->(3)',  # signature
-    )
+)
 
 
 cdef void *gufunc_vcyl2car_data[2]
@@ -888,7 +888,7 @@ vcyl2car = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     2,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vcyl2car',  # function name
     r"""
     vcyl2car(v, r)
@@ -918,7 +918,7 @@ vcyl2car = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(3),(3)->(3)',  # signature
-    )
+)
 
 
 cdef void *gufunc_vcyl2sph_data[2]
@@ -932,7 +932,7 @@ vcyl2sph = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     2,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vcyl2sph',  # function name
     r"""
     vcyl2sph(v, r)
@@ -962,7 +962,7 @@ vcyl2sph = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(3),(3)->(3)',  # signature
-    )
+)
 
 
 cdef void *gufunc_vsph2car_data[2]
@@ -976,7 +976,7 @@ vsph2car = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     2,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vsph2car',  # function name
     r"""
     vsph2car(v, r)
@@ -1006,7 +1006,7 @@ vsph2car = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(3),(3)->(3)',  # signature
-    )
+)
 
 
 cdef void *gufunc_vsph2cyl_data[2]
@@ -1020,7 +1020,7 @@ vsph2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     2,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vsph2cyl',  # function name
     r"""
     vsph2cyl(v, r)
@@ -1050,7 +1050,7 @@ vsph2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(3),(3)->(3)',  # signature
-    )
+)
 
 
 cdef void *gufunc_vcar2pol_data[2]
@@ -1064,7 +1064,7 @@ vcar2pol = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     2,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vcar2pol',  # function name
     r"""
     vcar2pol(v, r)
@@ -1093,7 +1093,7 @@ vcar2pol = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(2),(2)->(2)',  # signature
-    )
+)
 
 
 cdef void *gufunc_vpol2car_data[2]
@@ -1107,7 +1107,7 @@ vpol2car = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     2,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vpol2car',  # function name
     r"""
     vpol2car(v, r)
@@ -1136,12 +1136,12 @@ vpol2car = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(2),(2)->(2)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_vsh_X_loops[2]
 cdef void *gufunc_vsh_X_data[2]
-cdef char gufunc_vsh_X_types[2*5]
+cdef char gufunc_vsh_X_types[2 * 5]
 
 gufunc_vsh_X_loops[0] = <np.PyUFuncGenericFunction>loop_D_lldd
 gufunc_vsh_X_loops[1] = <np.PyUFuncGenericFunction>loop_D_llDd
@@ -1165,7 +1165,7 @@ vsh_X = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     4,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vsh_X',  # function name
     r"""
     vsh_X(l, m, theta, phi)
@@ -1202,12 +1202,12 @@ vsh_X = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),()->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_vsh_Y_loops[2]
 cdef void *gufunc_vsh_Y_data[2]
-cdef char gufunc_vsh_Y_types[2*5]
+cdef char gufunc_vsh_Y_types[2 * 5]
 
 gufunc_vsh_Y_loops[0] = <np.PyUFuncGenericFunction>loop_D_lldd
 gufunc_vsh_Y_loops[1] = <np.PyUFuncGenericFunction>loop_D_llDd
@@ -1231,7 +1231,7 @@ vsh_Y = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     4,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vsh_Y',  # function name
     r"""
     vsh_Y(l, m, theta, phi)
@@ -1262,12 +1262,12 @@ vsh_Y = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),()->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_vsh_Z_loops[2]
 cdef void *gufunc_vsh_Z_data[2]
-cdef char gufunc_vsh_Z_types[2*5]
+cdef char gufunc_vsh_Z_types[2 * 5]
 
 gufunc_vsh_Z_loops[0] = <np.PyUFuncGenericFunction>loop_D_lldd
 gufunc_vsh_Z_loops[1] = <np.PyUFuncGenericFunction>loop_D_llDd
@@ -1291,7 +1291,7 @@ vsh_Z = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     4,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vsh_Z',  # function name
     r"""
     vsh_Z(l, m, theta, phi)
@@ -1313,12 +1313,12 @@ vsh_Z = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),()->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_vsw_M_loops[2]
 cdef void *gufunc_vsw_M_data[2]
-cdef char gufunc_vsw_M_types[2*6]
+cdef char gufunc_vsw_M_types[2 * 6]
 
 gufunc_vsw_M_loops[0] = <np.PyUFuncGenericFunction>loop_D_llDdd
 gufunc_vsw_M_loops[1] = <np.PyUFuncGenericFunction>loop_D_llDDd
@@ -1344,7 +1344,7 @@ vsw_M = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     5,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vsw_M',  # function name
     r"""
     vsw_M(l, m, x, theta, phi)
@@ -1372,12 +1372,12 @@ vsw_M = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(),()->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_vsw_N_loops[2]
 cdef void *gufunc_vsw_N_data[2]
-cdef char gufunc_vsw_N_types[2*6]
+cdef char gufunc_vsw_N_types[2 * 6]
 
 gufunc_vsw_N_loops[0] = <np.PyUFuncGenericFunction>loop_D_llDdd
 gufunc_vsw_N_loops[1] = <np.PyUFuncGenericFunction>loop_D_llDDd
@@ -1403,7 +1403,7 @@ vsw_N = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     5,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vsw_N',  # function name
     r"""
     vsw_N(l, m, x, theta, phi)
@@ -1439,12 +1439,12 @@ vsw_N = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(),()->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_vsw_rM_loops[2]
 cdef void *gufunc_vsw_rM_data[2]
-cdef char gufunc_vsw_rM_types[2*6]
+cdef char gufunc_vsw_rM_types[2 * 6]
 
 gufunc_vsw_rM_loops[0] = <np.PyUFuncGenericFunction>loop_D_llddd
 gufunc_vsw_rM_loops[1] = <np.PyUFuncGenericFunction>loop_D_llDDd
@@ -1470,7 +1470,7 @@ vsw_rM = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     5,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vsw_rM',  # function name
     r"""
     vsw_rM(l, m, x, theta, phi)
@@ -1498,12 +1498,12 @@ vsw_rM = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(),()->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_vsw_rN_loops[2]
 cdef void *gufunc_vsw_rN_data[2]
-cdef char gufunc_vsw_rN_types[2*6]
+cdef char gufunc_vsw_rN_types[2 * 6]
 
 gufunc_vsw_rN_loops[0] = <np.PyUFuncGenericFunction>loop_D_llddd
 gufunc_vsw_rN_loops[1] = <np.PyUFuncGenericFunction>loop_D_llDDd
@@ -1529,7 +1529,7 @@ vsw_rN = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     5,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vsw_rN',  # function name
     r"""
     vsw_rN(l, m, x, theta, phi)
@@ -1565,12 +1565,12 @@ vsw_rN = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(),()->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_vsw_rA_loops[2]
 cdef void *gufunc_vsw_rA_data[2]
-cdef char gufunc_vsw_rA_types[2*7]
+cdef char gufunc_vsw_rA_types[2 * 7]
 
 gufunc_vsw_rA_loops[0] = <np.PyUFuncGenericFunction>loop_D_lldddl
 gufunc_vsw_rA_loops[1] = <np.PyUFuncGenericFunction>loop_D_llDDdl
@@ -1598,7 +1598,7 @@ vsw_rA = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     6,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vsw_rA',  # function name
     r"""
     vsw_rA(l, m, x, theta, phi, p)
@@ -1631,12 +1631,12 @@ vsw_rA = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(),(),()->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_vsw_A_loops[2]
 cdef void *gufunc_vsw_A_data[2]
-cdef char gufunc_vsw_A_types[2*7]
+cdef char gufunc_vsw_A_types[2 * 7]
 
 gufunc_vsw_A_loops[0] = <np.PyUFuncGenericFunction>loop_D_llDddl
 gufunc_vsw_A_loops[1] = <np.PyUFuncGenericFunction>loop_D_llDDdl
@@ -1664,7 +1664,7 @@ vsw_A = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     6,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vsw_A',  # function name
     r"""
     vsw_A(l, m, x, theta, phi, p)
@@ -1697,7 +1697,7 @@ vsw_A = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(),(),()->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_vcw_M_loops[1]
@@ -1720,7 +1720,7 @@ vcw_M = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of supported input types
     5,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vcw_M',  # function name
     r"""
     vcw_M(kz, m, xrho, phi, z)
@@ -1753,12 +1753,12 @@ vcw_M = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(),()->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_vcw_rM_loops[2]
 cdef void *gufunc_vcw_rM_data[2]
-cdef char gufunc_vcw_rM_types[2*6]
+cdef char gufunc_vcw_rM_types[2 * 6]
 
 gufunc_vcw_rM_loops[0] = <np.PyUFuncGenericFunction>loop_D_dlddd
 gufunc_vcw_rM_loops[1] = <np.PyUFuncGenericFunction>loop_D_dlDdd
@@ -1784,7 +1784,7 @@ vcw_rM = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     5,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vcw_rM',  # function name
     r"""
     vcw_rM(kz, m, xrho, phi, z)
@@ -1817,7 +1817,7 @@ vcw_rM = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(),()->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_vcw_N_loops[1]
@@ -1841,7 +1841,7 @@ vcw_N = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of supported input types
     6,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vcw_N',  # function name
     r"""
     vcw_N(kz, m, xrho, phi, z, k)
@@ -1875,12 +1875,12 @@ vcw_N = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(),(),()->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_vcw_rN_loops[2]
 cdef void *gufunc_vcw_rN_data[2]
-cdef char gufunc_vcw_rN_types[2*7]
+cdef char gufunc_vcw_rN_types[2 * 7]
 
 gufunc_vcw_rN_loops[0] = <np.PyUFuncGenericFunction>loop_D_dldddD
 gufunc_vcw_rN_loops[1] = <np.PyUFuncGenericFunction>loop_D_dlDddD
@@ -1908,7 +1908,7 @@ vcw_rN = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     6,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vcw_rN',  # function name
     r"""
     vcw_N(kz, m, xrho, phi, z, k)
@@ -1942,7 +1942,7 @@ vcw_rN = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(),(),()->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_vcw_A_loops[1]
@@ -1967,7 +1967,7 @@ vcw_A = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of supported input types
     7,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vcw_A',  # function name
     r"""
     vcw_A(kz, m, xrho, phi, z, k, pol)
@@ -2001,12 +2001,12 @@ vcw_A = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(),(),(),()->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_vcw_rA_loops[2]
 cdef void *gufunc_vcw_rA_data[2]
-cdef char gufunc_vcw_rA_types[2*8]
+cdef char gufunc_vcw_rA_types[2 * 8]
 
 gufunc_vcw_rA_loops[0] = <np.PyUFuncGenericFunction>loop_D_dldddDl
 gufunc_vcw_rA_loops[1] = <np.PyUFuncGenericFunction>loop_D_dlDddDl
@@ -2036,7 +2036,7 @@ vcw_rA = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     7,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vcw_rA',  # function name
     r"""
     vcw_rA(kz, m, xrho, phi, z, k)
@@ -2070,12 +2070,12 @@ vcw_rA = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(),(),(),()->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_vpw_M_loops[2]
 cdef void *gufunc_vpw_M_data[2]
-cdef char gufunc_vpw_M_types[2*7]
+cdef char gufunc_vpw_M_types[2 * 7]
 
 gufunc_vpw_M_loops[0] = <np.PyUFuncGenericFunction>loop_D_dddddd
 gufunc_vpw_M_loops[1] = <np.PyUFuncGenericFunction>loop_D_DDDddd
@@ -2103,7 +2103,7 @@ vpw_M = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     6,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vpw_M',  # function name
     r"""
     vpw_M(kx, ky, kz, x, y, z)
@@ -2134,12 +2134,12 @@ vpw_M = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(),(),()->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_vpw_N_loops[2]
 cdef void *gufunc_vpw_N_data[2]
-cdef char gufunc_vpw_N_types[2*7]
+cdef char gufunc_vpw_N_types[2 * 7]
 
 gufunc_vpw_N_loops[0] = <np.PyUFuncGenericFunction>loop_D_dddddd
 gufunc_vpw_N_loops[1] = <np.PyUFuncGenericFunction>loop_D_DDDddd
@@ -2167,7 +2167,7 @@ vpw_N = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     6,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vpw_N',  # function name
     r"""
     vpw_N(kx, ky, kz, x, y, z)
@@ -2197,12 +2197,12 @@ vpw_N = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(),(),()->(3)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_vpw_A_loops[2]
 cdef void *gufunc_vpw_A_data[2]
-cdef char gufunc_vpw_A_types[2*8]
+cdef char gufunc_vpw_A_types[2 * 8]
 
 gufunc_vpw_A_loops[0] = <np.PyUFuncGenericFunction>loop_D_ddddddl
 gufunc_vpw_A_loops[1] = <np.PyUFuncGenericFunction>loop_D_DDDdddl
@@ -2232,7 +2232,7 @@ vpw_A = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of supported input types
     7,  # number of input args
     1,  # number of output args
-    0,  # `identity` element, never mind this
+    0,  # identity element
     'vpw_A',  # function name
     r"""
     vpw_A(kx, ky, kz, x, y, z, p)
@@ -2266,4 +2266,4 @@ vpw_A = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(),(),(),()->(3)',  # signature
-    )
+)

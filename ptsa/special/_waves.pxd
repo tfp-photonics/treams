@@ -9,6 +9,8 @@ cdef number_t pi_fun(double l, double m, number_t theta) nogil
 cdef double complex sph_harm(double m, double l, double phi, number_t theta) nogil
 cdef number_t tau_fun(double l, double m, number_t theta) nogil
 
+cdef double complex _tl_vsw_helper(long l, long m, long lambda_, long mu, long p, long q) nogil
+
 cdef double complex tl_vsw_A(long lambda_, long mu, long l, long m, double complex kr, number_t theta, double phi) nogil
 cdef double complex tl_vsw_B(long lambda_, long mu, long l, long m, double complex kr, number_t theta, double phi) nogil
 cdef double complex tl_vsw_rA(long lambda_, long mu, long l, long m, number_t kr, number_t theta, double phi) nogil

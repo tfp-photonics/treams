@@ -159,6 +159,10 @@ cpdef number_t tau_fun(double l, double m, number_t x) nogil:
     """
     return _waves.tau_fun(l, m, x)
 
+cpdef double complex _tl_vsw_helper(long l, long m, long lambda_, long mu, long p, long q) nogil:
+    """Helper function for the translation coefficient of vector spherical waves"""
+    return _waves._tl_vsw_helper(l, m, lambda_, mu, p, q)
+
 cpdef double complex tl_vcw(double kz1, long mu, double kz2, long m, double complex krr, double phi, double z) nogil:
     """
     tl_vcw(kz1, mu, kz2, m, xrho, phi, z)

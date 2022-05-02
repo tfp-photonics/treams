@@ -44,6 +44,8 @@ cpdef number_t tau_fun(double l, double m, number_t x) nogil
 cpdef double complex tl_vcw(double kz1, long mu, double kz2, long m, double complex krr, double phi, double z) nogil
 cpdef double complex tl_vcw_r(double kz1, long mu, double kz2, long m, number_t krr, double phi, double z) nogil
 
+cpdef double complex _tl_vsw_helper(long l, long m, long lambda_, long mu, long p, long q) nogil
+
 cpdef double complex tl_vsw_A(long lambda_, long mu, long l, long m, double complex kr, number_t theta, double phi) nogil
 cpdef double complex tl_vsw_B(long lambda_, long mu, long l, long m, double complex kr, number_t theta, double phi) nogil
 cpdef double complex tl_vsw_rA(long lambda_, long mu, long l, long m, number_t kr, number_t theta, double phi) nogil
