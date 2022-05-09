@@ -169,6 +169,7 @@ class Field(metaclass=abc.ABCMeta):
         sign = sign > 0
         return np.sqrt(0.5) * (self.efield(r, **kwargs) + 1j * self.material.z * sign * self.hfield(r, **kwargs))
 
+
 class SphericalWaveGeneral(PhysicsArray, Field):
     def _check(self):
         if self.ndim == 0:
@@ -187,6 +188,7 @@ class SphericalWaveGeneral(PhysicsArray, Field):
         elif not isinstance(basis, SphericalWaveBasis):
             warnings.warn("spherical wave needs 'SphericalWaveBasis' at dimension '0'", PhysicsArrayWarning)
         super()._check()
+
 
 class SphericalWave(SphericalWaveGeneral):
     def efield(self, r):
@@ -314,6 +316,7 @@ class SphericalWave(SphericalWaveGeneral):
             return np.matmul(res, self[choice, :], axes=[(-1, -2), (-2, -1), (-1, -2)])
         return np.matmul(res, self[choice], axes=[(-1, -2), -1, -1])
 
+
 class SphericalWaveSingular(SphericalWaveGeneral):
     def efield(self, r):
         r = np.asarray(r)
@@ -440,7 +443,29 @@ class SphericalWaveSingular(SphericalWaveGeneral):
             return np.matmul(res, self[choice, :], axes=[(-1, -2), (-2, -1), (-1, -2)])
         return np.matmul(res, self[choice], axes=[(-1, -2), -1, -1])
 
+
 class SphericalWaveLattice(SphericalWaveSingular):
+    def _check(self):
+        super()._check()
+        if self.ndim == 0:
+            return
+        lattice = self.annotations[0].get("lattice")
+        if lattice is None:
+            warnings.warn("wave on latttice needs 'Lattice' at dimension '0'", PhysicsArrayWarning)
+        elif not isinstance(lattice, Lattice):
+            try:
+                self.lattice = lattice
+            except ValueError:
+                warnings.warn("wave on latttice needs 'Lattice' at dimension '0'", PhysicsArrayWarning)
+
+    @property
+    def lattice(self):
+        return self.annotations[0, "lattice"]
+
+    @lattice.setter
+    def lattice(self, lat):
+        self.annotations[0, "lattice"] = lattice(Lat)
+
     def efield(self, r, **kwargs):
         raise NotImplementedError("try re-expanding in a 'SphericalWave'")
 
@@ -453,7 +478,21 @@ class SphericalWaveLattice(SphericalWaveSingular):
     def bfield(self, r, **kwargs):
         raise NotImplementedError("try re-expanding in a 'SphericalWave'")
 
+
 class TMatrixGeneral(PhysicsArray):
+    def _check(self):
+        super()._check()
+        polarization = self.polarization
+        if polarization is None or polarization == "mixed":
+            warnings.warn("invalid polarization", PhysicsArrayWarning)
+        if self.ndim != 2:
+            warnings.warn(f"invalid number of dimensions {self.ndim} != 2", PhysicsArrayWarning)
+            return
+        basis = self.annotations[1].get("basis")
+        if basis is None:
+            self.annotations[1, "basis"] = self.annotations[0].get("basis")
+        elif not isinstance(basis, SphericalWaveBasis):
+            warnings.warn("T-Matrix needs 'SphericalWaveBasis' at dimension '1'", PhysicsArrayWarning)
 
     def __new__(cls, arr, k0=None, basis=None, polarization=None, material=None, interacted=None):
         obj = super().__new__(cls, arr, k0, basis, polarization)
@@ -465,6 +504,13 @@ class TMatrixGeneral(PhysicsArray):
             return
         self.interacted = getattr(obj, "interacted", True)
         super().__array_finalize__(obj)
+
+    def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+        inputs = [np.asanyarray(i) for i in inputs]
+        if np.any([i.ndim != 2 for i in inputs]) or method == "reduce":
+            inputs = [i.view(SphericalWaveSingular) for i in inputs]
+            return self.view(SphericalWaveSingular).__array_ufunc__(ufunc, method, *inputs, **kwargs)
+        return super().__array_ufunc__(ufunc, method, *inputs, **kwargs)
 
     @property
     def interacted(self):
@@ -511,30 +557,79 @@ class TMatrixGeneral(PhysicsArray):
             i += dim
         return cls(tlocal, k0, SphericalWaveBasis(modes, positions), polarization, material, False)
 
-class TMatrix(SphericalWaveSingular, TMatrixGeneral):
-    def _check(self):
-        super()._check()
-        polarization = self.polarization
-        if polarization is None or polarization == "mixed":
-            warnings.warn("invalid polarization", PhysicsArrayWarning)
-        if self.ndim != 2:
-            warnings.warn(f"invalid number of dimensions {self.ndim} != 2", PhysicsArrayWarning)
-            return
-        basis = self.annotations[1].get("basis")
-        if basis is None:
-            self.annotations[1, "basis"] = self.annotations[0].get("basis")
-        elif not isinstance(basis, SphericalWaveBasis):
-            warnings.warn("T-Matrix needs 'SphericalWaveBasis' at dimension '1'", PhysicsArrayWarning)
+    @classmethod
+    def sphere(cls, lmax, k0, radii, epsilon, mu=None, kappa=None):
+        pass
 
-    def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
-        inputs = [np.asanyarray(i) for i in inputs]
-        if np.any([i.ndim != 2 for i in inputs]) or method == "reduce":
-            inputs = [i.view(SphericalWaveSingular) for i in inputs]
-            return self.view(SphericalWaveSingular).__array_ufunc__(ufunc, method, *inputs, **kwargs)
-        return super().__array_ufunc__(ufunc, method, *inputs, **kwargs)
+    @classmethod
+    def ebcm(cls, lmax, k0, r, dr, epsilon, mu=1, kappa=0, lint=None):
+        pass
+
+    @property
+    def xs_ext_avg(self):
+        return NotImplemented
+
+    @property
+    def xs_sca_avg(self):
+        return NotImplemented
+
+    @property
+    def cd(self):
+        return NotImplemented
+
+    @property
+    def chi(self):
+        return NotImplemented
+
+    @property
+    def db(self):
+        return NotImplemented
+
+    def xs(self):
+        return NotImplemented
+
+    def coupling(self):
+        pass
+
+    def interact(self, out=None):
+        pass
+
+    def basischange(self, out=None):
+        pass
+
+    def helicitybasis(self, out=None):
+        pass
+
+    def paritybasis(self, out=None):
+        pass
+
+    def __getitem__(self, key):
+        return super().__getitem__(self, key)
+
+    def rotate(self, phi, theta, phi):
+        pass
+
+    def translate(self, rvec):
+        pass
+
+    def globalmat(self):
+        pass
 
 
-class TMatrixLattice(TMatrixGeneral): pass
+
+class TMatrix(SphericalWaveSingular, TMatrixGeneral): pass
+
+
+class TMatrixLattice(SphericalWaveLattice, TMatrix):
+    @property
+    def interacted(self):
+        # a global basis doesn't mean the matrix is interacted as for the 'normal' case
+        return self._interacted
+
+    def coupling(self):
+        pass
+
+
 class TMatrixCLattice(TMatrixGeneral): pass
 
 class CylindricalWaveGeneral(Field): pass
@@ -547,14 +642,56 @@ class QMatrix(PhysicsArray): pass
 class PlaneWave(Field): pass
 
 
-def expand(dst, src=None, pol=None, lattice=None, kpar=None):
+def expand(dst, src=None, ks=float("nan"), pol=None, lattice=None, kpar=None):
     """
     The source basis is expanded into a different basis, assuming the given polarization.
     If the lattice is defined and the source is spherical or cylindrical, this basis
     is assumed to be periodic.
     """
-    pass
-def reexpand(dst, src=None): pass
+    pol = "helicity" if pol is None else pol
+    if pol not in ("helicity", "parity"):
+        raise ValueError(f"invalid polarization '{pol}'")
+    pol = pol == "helicity"
+    if lattice is None and kpar is not None:
+        raise ValueError(f"'kpar' given but 'lattice' is undefined")
+    src = dst if src is None else src
+    ks = np.atleast_1d(ks)
+    if ks.ndim != 1 or ks.size > 2:
+        raise ValueError("invalid size of 'ks'")
+    if ks.size = 1:
+        ks = np.array([ks[0], ks[0]])
+    if (not isinstance(src, BasisSet) and not isinstance(dst, BasisSet)) or isinstance(src, PlaneWaveBasisPartial) or isinstance(src, PlaneWaveBasisPartial):
+        raise ValueError("unrecognized BasisSet in 'src' or 'dst'")
+    if lattice is None:
+        if isinstance(src, SphericalWaveBasis):
+            if isinstance(dst, SphericalWaveBasis):
+                rvec = sc.car2sph(dst.positions[:, None, :] - src.positions)
+                return sw.translate(*(m[:, None] for m in dst("lmp")), src("lmp"), ks[src.pol] * rvec[:, :, 0], rvec[:, :, 1], rvec[:, :, 2], helicity=pol)
+        elif isinstance(src, CylindricalWaveBasis):
+            if isinstance(dst, SphericalWaveBasis):
+                mask = dst.pidx[:, None] == src.pidx
+                res = np.zeros_like(mask, complex)
+                cw.to_sw(*(m[:, None] for m in dst("lmp")), src("kzmp"), where=mask, out=res)
+                return res
+            elif isinstance(dst CylindricalWaveBasis):
+                rvec = sc.car2cyl(dst.positions[:, None, :] - src.positions)
+                krho = src.krho(ks)
+                return cw.translate(*(m[:, None] for m in dst("kzmp")), src("kzmp"), krho * rvec[:, :, 0], rvec[:, 1], rvec[:, 2])
+        elif isinstance(src, PlaneWaveBasis):
+            if isinstance(src, PlaneWaveBasisPartial):
+                src = src.complete(ks)
+            if isinstance(dst, SphericalWaveBasis):
+                mask = dst.pidx[:, None] == src.pidx
+                res = np.zeros_like(mask, complex)
+                return pw.to_sw(*(m[:, None] for m in dst("lmp")), src(), ks[src.pol] * rvec[:, :, 0], rvec[:, :, 1], rvec[:, :, 2], helicity=pol)
+            elif isinstance(src, CylindricalWaveBasis):
+                return pw.to_cw(*(m[:, None] for m in dst("lmp")), src("lmp"), ks[src.pol] * rvec[:, :, 0], rvec[:, :, 1], rvec[:, :, 2], helicity=pol)
+    elif isinstance(src, SphericalWaveBasis):
+    elif isinstance(src, CylindricalWaveBasis):
+    elif isinstance(src, PlaneWaveBasis):
+    raise ValueError("invalid expansion")
+
+def expand_global(dst, src=None): pass
 def translate(r, dst, src=None, pol=None): pass
 def rotate(angles, dst, src=None): pass
 def permute(dst, src=None, inverse=True): pass

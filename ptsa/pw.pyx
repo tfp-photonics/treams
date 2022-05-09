@@ -232,6 +232,7 @@ cdef void _loop_sw_D(char **args, np.npy_intp *dims, np.npy_intp *steps, void *d
             <double>(<double*>ip4)[0],
             <double complex>(<double complex*>ip5)[0],
             <long>(<long*>ip6)[0],
+        )
         (<double complex*>op0)[0] = <double complex>ov0
         ip0 += steps[0]
         ip1 += steps[1]

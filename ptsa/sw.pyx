@@ -715,16 +715,16 @@ cdef void _loop_periodic_d(char **args, np.npy_intp *dims, np.npy_intp *steps, v
     cdef char *op0 = args[8]
     cdef double complex ov0
     for i in range(n):
-          ov0 = (<double complex(*)(double, double, double, long, long, long, long, double) nogil>func)(
-              <double>(<double*>ip0)[0],
-              <double>(<double*>ip1)[0],
-              <double>(<double*>ip2)[0],
-              <long>(<long*>ip3)[0],
-              <long>(<long*>ip4)[0],
-              <long>(<long*>ip5)[0],
-              <long>(<long*>ip6)[0],
-              <double>(<double*>ip7)[0],
-          )
+        ov0 = (<double complex(*)(double, double, double, long, long, long, long, double) nogil>func)(
+            <double>(<double*>ip0)[0],
+            <double>(<double*>ip1)[0],
+            <double>(<double*>ip2)[0],
+            <long>(<long*>ip3)[0],
+            <long>(<long*>ip4)[0],
+            <long>(<long*>ip5)[0],
+            <long>(<long*>ip6)[0],
+            <double>(<double*>ip7)[0],
+        )
         (<double complex*>op0)[0] = <double complex>ov0
         ip0 += steps[0]
         ip1 += steps[1]

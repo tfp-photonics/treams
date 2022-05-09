@@ -5,6 +5,12 @@ import numpy as np
 
 class AnnotatedArrayWarning(UserWarning): pass
 
+def _match(a, b):
+    for key, val in a.items():
+        if key in b and val != b[key]:
+            return False
+    return True
+
 warnings.simplefilter("always", AnnotatedArrayWarning)
 
 class ArrayAnnotations:
@@ -56,9 +62,12 @@ class ArrayAnnotations:
             self[i].update(other[i])
 
     def __eq__(self, other):
-        res = ({} in (self["all"], other["all"]) or self["all"] == other["all"])
+        if not _match(self["all"], other["all"]):
+            return False
         for i in range(-1, -1 - min(self.ndim, other.ndim), -1):
-            res = res and ({} in (self[i], other[i]) or self[i] == other[i])
+            if not _match(self[i], other[i]):
+                return False
+        return True
 
 class AnnotatedArray(np.ndarray):
     def __new__(cls, arr, annotations=None):
@@ -205,7 +214,7 @@ class AnnotatedArray(np.ndarray):
                     if dim < -in_.ndim or getattr(in_, "annotations", None) is None:
                         continue
                     source = in_.annotations[dim]
-                    if {} not in (source, destination) and source != destination:
+                    if not _match(source, destination):
                         warnings.warn(
                             f"incompatible annotations at dimension '{dim}'",
                             AnnotatedArrayWarning,
@@ -226,7 +235,7 @@ class AnnotatedArray(np.ndarray):
                     if getattr(in_, "annotations", None) is None:
                         continue
                     source = in_.annotations[dim_in]
-                    if {} not in (source, destination) and source != destination:
+                    if not _match(source, destination):
                         warnings.warn(
                             f"incompatible annotations at dimension '{dim - 1}'",
                             AnnotatedArrayWarning,
@@ -237,7 +246,7 @@ class AnnotatedArray(np.ndarray):
                 if dim < -where.ndim or getattr(where, "annotations", None) is None:
                     break
                 source = where.annotations[dim]
-                if {} not in (source, destination) and source != destination:
+                if not _match(source, destination):
                     warnings.warn(
                         f"incompatible annotations at dimension '{dim}'",
                         AnnotatedArrayWarning,
@@ -256,7 +265,7 @@ class AnnotatedArray(np.ndarray):
                 if dim < -in_.ndim or getattr(in_, "annotations", None) is None:
                     continue
                 source = in_.annotations[dim]
-                if {} not in (source, destination) and source != destination:
+                if not _match(source, destination):
                     warnings.warn(
                         f"incompatible annotations at dimension '{dim}'",
                         AnnotatedArrayWarning,
@@ -279,7 +288,7 @@ class AnnotatedArray(np.ndarray):
                 if dim_in < -in_.ndim or getattr(in_, "annotations", None) is None:
                     continue
                 source = in_.annotations[dim_in]
-                if {} not in (source, destination) and source != destination:
+                if not _match(source, destination):
                     warnings.warn(
                         f"incompatible annotations at dimension '{dim_in}'",
                         AnnotatedArrayWarning,
@@ -348,7 +357,7 @@ class AnnotatedArray(np.ndarray):
                 if getattr(in_, "annotations", None) is None:
                     continue
                 source = in_.annotations["all"]
-                if {} not in (source, destination) and source != destination:
+                if not _match(source, destination):
                     warnings.warn(
                         "incompatible annotations of category 'all'",
                         AnnotatedArrayWarning,
@@ -422,7 +431,7 @@ class AnnotatedArray(np.ndarray):
                 ):
                     source = inout[isource].annotations[dimsource]
                     dest = inout[idest].annotations[dimdest]
-                    if {} not in (source, dest) and source != dest:
+                    if not _match(source, dest):
                         warnings.warn(
                             f"incompatible annotations at core dimensions",
                             AnnotatedArrayWarning,
@@ -443,7 +452,7 @@ class AnnotatedArray(np.ndarray):
                         ):
                             continue
                         source = in_.annotations[iterdim[idim]]
-                        if {} not in (source, destination) and source != destination:
+                        if not _match(source, destination):
                             warnings.warn(
                                 f"incompatible annotations at broadcasted dimension",
                                 AnnotatedArrayWarning,
@@ -453,10 +462,7 @@ class AnnotatedArray(np.ndarray):
         return res if istuple else res[0]
 
     def diagonal(self, offset=0, axis1=0, axis2=1):
-        if not (
-            {} in (self.annotations[axis1], self.annotations[axis2])
-            or self.annotations[axis1] == self.annotations[axis2]
-        ):
+        if not _match(self.annotations[axis1], self.annotations[axis2]):
             warnings.warn("incompatible annotations")
         res = np.asarray(self).diagonal(offset, axis1, axis2)
         res = res.view(type(self))
@@ -468,10 +474,7 @@ class AnnotatedArray(np.ndarray):
         return res
 
     def trace(self, offset=0, axis1=0, axis2=1):
-        if not (
-            {} in (self.annotations[axis1], self.annotations[axis2])
-            or self.annotations[axis1] == self.annotations[axis2]
-        ):
+        if not _match(self.annotations[axis1], self.annotations[axis2]):
             warnings.warn("incompatible annotations")
         res = np.asarray(np.asarray(self).trace(offset, axis1, axis2))
         res = res.view(type(self))
@@ -500,21 +503,11 @@ class AnnotatedArray(np.ndarray):
         if not isinstance(other, AnnotatedArray):
             other = np.asanyarray(other).view(AnnotatedArray)
         if not (
-            (
-                {} in (self.annotations["all"], other.annotations["all"])
-                or self.annotations["all"] == other.annotations["all"]
-            )
+            _match(self.annotations["all"], other.annotations["all"])
             and (
                 self.ndim == 0
                 or other.ndim == 0
-                or (
-                    {}
-                    in (
-                        self.annotations[-1],
-                        other.annotations[-1 - int(other.ndim > 1)],
-                    )
-                )
-                or self.annotations[-1] == other.annotations[-1 - int(other.ndim > 1)]
+                or _match(self.annotations[-1], other.annotations[-1 - int(other.ndim > 1)])
             )
         ):
             warnings.warn("incompatible annotations", AnnotatedArrayWarning)
@@ -596,7 +589,7 @@ class AnnotatedArray(np.ndarray):
         out = out.view(type(self))
         destination = out.annotations["all"]
         source = self.annotations["all"]
-        if {} not in (source, destination) and source != destination:
+        if not _match(source, destination):
             warnings.warn(
                 "incompatible annotations of category 'all'",
                 AnnotatedArrayWarning,
@@ -608,7 +601,7 @@ class AnnotatedArray(np.ndarray):
             dim_in -= 2 if dim == axis and not keepdims else 1
             destination = out.annotations[dim]
             source = self.annotations[dim_in]
-            if {} not in (source, destination) and source != destination:
+            if not _match(source, destination):
                 warnings.warn(
                     f"incompatible annotations at dimension '{dim_in}'",
                     AnnotatedArrayWarning,
@@ -625,7 +618,7 @@ class AnnotatedArray(np.ndarray):
         out = out.view(type(self))
         destination = out.annotations["all"]
         source = self.annotations["all"]
-        if {} not in (source, destination) and source != destination:
+        if not _match(source, destination):
             warnings.warn(
                 "incompatible annotations of category 'all'",
                 AnnotatedArrayWarning,
@@ -637,7 +630,7 @@ class AnnotatedArray(np.ndarray):
             dim_in -= 2 if dim == axis and not keepdims else 1
             destination = out.annotations[dim]
             source = self.annotations[dim_in]
-            if {} not in (source, destination) and source != destination:
+            if not _match(source, destination):
                 warnings.warn(
                     f"incompatible annotations at dimension '{dim_in}'",
                     AnnotatedArrayWarning,

@@ -14,25 +14,25 @@ class OrderedSet(Sequence, Set):
         raise NotImplementedError
 
 
-# class PolarizationType:
-#     _allowed_poltypes = {"helicity", "parity"}
-#
-#     @property
-#     def poltype(self):
-#         return self._poltype
-#
-#     @poltype.setter
-#     def poltype(self, val):
-#         if val in self._allowed_poltypes:
-#             self._poltype = val
-#         else:
-#             raise ValueError(f"illegal polarization '{val}'")
-#
-#     def __eq__(self, other):
-#         return super().__eq__(other) and self.poltype == other.poltype
+class Polarizations:
+    _allowed_poltypes = {"helicity", "parity"}
+
+    @property
+    def poltype(self):
+        return self._poltype
+
+    @poltype.setter
+    def poltype(self, val):
+        if val in self._allowed_poltypes:
+            self._poltype = val
+        else:
+            raise ValueError(f"illegal polarization '{val}'")
+
+    def __eq__(self, other):
+        return super().__eq__(other) and self.poltype == other.poltype
 
 
-class BasisSet(OrderedSet, metaclass=abc.ABCMeta):
+class BasisSet(OrderedSet, Polarizations, metaclass=abc.ABCMeta):
     _names = ()
 
     @abc.abstractmethod
@@ -44,12 +44,29 @@ class BasisSet(OrderedSet, metaclass=abc.ABCMeta):
     def default(cls):
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def rotate(self, phi, theta=0, psi=0, basis=None):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def translate(self, ks, r, basis=None):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def expandin(self, ks, basis=None, *, where=True):  # lattice, kpar,
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def basischange(self, basis=None, *, where=True):
+        raise NotImplementedError
+
     def __str__(self):
         return ",\n".join(f"{name}={i}" for name, i in zip(self._names, self()))
 
     def __repr__(self):
         whitespace = "\n" + " " * (len(self.__class__.__name__) + 1)
         string = str(self).replace("\n", whitespace)
+        string = string[:-1] + "," + whitespace + f"{self.poltype=}" + ")"
         return (
             f"{self.__class__.__name__}({string})"
         )
@@ -62,10 +79,11 @@ class SphericalWaveBasis(BasisSet):
     _names = ("pidx", "l", "m", "pol")
 
     def __repr__(self):
-        positions = ",\n" + " " * (len(self.__class__.__name__) + 1) + "positions=" + ", ".join(str(self.positions).split()) + ")"
-        return super().__repr__()[:-1] + positions
+        whitespace = ",\n" + " " * (len(self.__class__.__name__) + 1)
+        positions = whitespace + "positions=" + ", ".join(str(self.positions).split())
+        return super().__repr__()[:-1] + positions + ")"
 
-    def __init__(self, modes, positions=None):
+    def __init__(self, modes, positions=None, poltype=None):
         tmp = []
         if isinstance(modes, np.ndarray):
             modes = modes.tolist()
@@ -248,6 +266,21 @@ class SphericalWaveBasis(BasisSet):
     @property
     def isglobal(self):
         return len(self) == 0 or np.all(self.pidx == self.pidx[0])
+
+
+    def rotate(self, phi, theta, psi, basis=None):
+        basis = self if basis is None else basis
+        if not isinstance(basis, SphericalWaveBasis) or self.poltype != basis.poltype:
+            raise ValueError("can only rotate in SphericalWaveBasis with the same polarization type")
+        mask = self.pidx[:, None] == basis.pidx
+        res = sw.rotate(phi, theta, psi, *(m[:, None] for m in basis("lmp")))
+        res[~mask] = 0
+        return PhysicsArray(res, basis=(basis, self))
+
+    def translate(k, r, basis=None):
+        basis = self if basis is None else basis
+        if not isinstance(basis, SphericalWaveBasis) or self.poltype != basis.poltype:
+            raise ValueError("can only rotate in SphericalWaveBasis with the same polarization type")
 
 
 class CylindricalWaveBasis(BasisSet):
