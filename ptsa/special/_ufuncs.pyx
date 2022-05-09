@@ -30,7 +30,7 @@ __all__ = [
     'wignersmalld',
     'wigner3j',
     'yv_d',
-    '_translate_vsw_helper',
+    '_tl_vsw_helper',
 ]
 
 
@@ -1792,31 +1792,31 @@ tl_vcw_r = np.PyUFunc_FromFuncAndData(
 )
 
 
-cdef np.PyUFuncGenericFunction ufunc_translate_vsw_helper_loops[1]
-cdef void *ufunc_translate_vsw_helper_data[1]
-cdef char ufunc_translate_vsw_helper_types[7]
+cdef np.PyUFuncGenericFunction ufunc_tl_vsw_helper_loops[1]
+cdef void *ufunc_tl_vsw_helper_data[1]
+cdef char ufunc_tl_vsw_helper_types[7]
 
-ufunc_translate_vsw_helper_loops[0] = <np.PyUFuncGenericFunction>loop_d_llllll
-ufunc_translate_vsw_helper_types[0] = <char>np.NPY_LONG
-ufunc_translate_vsw_helper_types[1] = <char>np.NPY_LONG
-ufunc_translate_vsw_helper_types[2] = <char>np.NPY_LONG
-ufunc_translate_vsw_helper_types[3] = <char>np.NPY_LONG
-ufunc_translate_vsw_helper_types[4] = <char>np.NPY_LONG
-ufunc_translate_vsw_helper_types[5] = <char>np.NPY_LONG
-ufunc_translate_vsw_helper_types[6] = <char>np.NPY_CDOUBLE
-ufunc_translate_vsw_helper_data[0] = <void*>_waves._translate_vsw_helper
+ufunc_tl_vsw_helper_loops[0] = <np.PyUFuncGenericFunction>loop_d_llllll
+ufunc_tl_vsw_helper_types[0] = <char>np.NPY_LONG
+ufunc_tl_vsw_helper_types[1] = <char>np.NPY_LONG
+ufunc_tl_vsw_helper_types[2] = <char>np.NPY_LONG
+ufunc_tl_vsw_helper_types[3] = <char>np.NPY_LONG
+ufunc_tl_vsw_helper_types[4] = <char>np.NPY_LONG
+ufunc_tl_vsw_helper_types[5] = <char>np.NPY_LONG
+ufunc_tl_vsw_helper_types[6] = <char>np.NPY_CDOUBLE
+ufunc_tl_vsw_helper_data[0] = <void*>_waves._tl_vsw_helper
 
-_translate_vsw_helper = np.PyUFunc_FromFuncAndData(
-    ufunc_translate_vsw_helper_loops,
-    ufunc_translate_vsw_helper_data,
-    ufunc_translate_vsw_helper_types,
+_tl_vsw_helper = np.PyUFunc_FromFuncAndData(
+    ufunc_tl_vsw_helper_loops,
+    ufunc_tl_vsw_helper_data,
+    ufunc_tl_vsw_helper_types,
     1,  # number of supported input types
     6,  # number of input args
     1,  # number of output args
     0,  # identity element
-    '_translate_vsw_helper',  # function name
+    '_tl_vsw_helper',  # function name
     r"""
-    _translate_vsw_helper(l, m, lambda_, mu, p, q)
+    _tl_vsw_helper(l, m, lambda_, mu, p, q)
     """,  # docstring
     0,  # unused
 )
