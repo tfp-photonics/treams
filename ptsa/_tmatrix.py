@@ -295,6 +295,7 @@ class TMatrix(TMatrixBase):
             illu = illu[:, None]
         p = self.t @ illu
         rs = sc.car2sph(self.positions[:, None, :] - self.positions)
+        ksq = np.power(self.ks[self.pol], 2)
         m = sw.translate(
             *(m[:, None] for m in self.modes),
             *self.modes,
@@ -303,10 +304,12 @@ class TMatrix(TMatrixBase):
             rs[self.pidx[:, None], self.pidx, 2],
             self.helicity,
             singular=False,
-        ) / np.power(self.ks[self.pol], 2)
+        ) / ksq
+        if p.ndim == 2:
+            ksq = ksq[:, None]
         return (
             0.5 * np.sum(np.real(p.conjugate() * (m @ p)), axis=-2) / flux,
-            -0.5 * np.sum(np.real(illu.conjugate() * (m @ p)), axis=-2) / flux,
+            -0.5 * np.sum(np.real(illu.conjugate() * p / ksq), axis=-2) / flux,
         )
 
     def pick(self, modes):
