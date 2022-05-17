@@ -464,7 +464,7 @@ def to_cw(kzcw, m, polcw, kx, ky, kzpw, polpw):
     returned.
 
     The polarization values `0` and `1` refer to negative and positive helicity
-    waves or, if ``helicity == False``, to TE and TM parity.
+    waves or to TE and TM parity.
 
     Args:
         kzcw (float, array_like): Z component of cylindrical wave
@@ -474,8 +474,6 @@ def to_cw(kzcw, m, polcw, kx, ky, kzpw, polpw):
         ky (float, array_like): Y component of plane wave's wave vector
         kzpw (float, array_like): Z component of plane wave's wave vector
         polpw (int, array_like): Polarization of the plane wave
-        helicity (bool, optional): If true, helicity basis is assumed, else parity basis.
-            Defaults to ``True``.
 
     Returns:
         complex
