@@ -435,6 +435,14 @@ cdef void vcw_rA(
 
 cdef double complex _tl_vsw_helper(long l, long m, long lambda_, long mu, long p, long q) nogil:
     """Helper function for the translation coefficient of vector spherical waves"""
+    if (
+        p < max(labs(m + mu), labs(l - lambda_))
+        or p > labs(l + lambda_)
+        or q < labs(l - lambda_)
+        or q > labs(l + lambda_)
+        or (q + l + lambda_) % 2 != 0
+    ):
+        return 0
     return (
         (2 * p + 1)
         * cpow(1j, lambda_ - l + p)

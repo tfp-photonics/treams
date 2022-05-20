@@ -1796,7 +1796,7 @@ cdef np.PyUFuncGenericFunction ufunc_tl_vsw_helper_loops[1]
 cdef void *ufunc_tl_vsw_helper_data[1]
 cdef char ufunc_tl_vsw_helper_types[7]
 
-ufunc_tl_vsw_helper_loops[0] = <np.PyUFuncGenericFunction>loop_d_llllll
+ufunc_tl_vsw_helper_loops[0] = <np.PyUFuncGenericFunction>loop_D_llllll
 ufunc_tl_vsw_helper_types[0] = <char>np.NPY_LONG
 ufunc_tl_vsw_helper_types[1] = <char>np.NPY_LONG
 ufunc_tl_vsw_helper_types[2] = <char>np.NPY_LONG
