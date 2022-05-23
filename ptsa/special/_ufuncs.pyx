@@ -443,8 +443,8 @@ ufunc_lpmv_types[4] = <char>np.NPY_DOUBLE
 ufunc_lpmv_types[5] = <char>np.NPY_DOUBLE
 ufunc_lpmv_types[6] = <char>np.NPY_CDOUBLE
 ufunc_lpmv_types[7] = <char>np.NPY_CDOUBLE
-ufunc_lpmv_data[0] = <void*>cs.lpmv
-ufunc_lpmv_data[1] = <void*>_waves.clpmv
+ufunc_lpmv_data[0] = <void*>_waves.lpmv[double]
+ufunc_lpmv_data[1] = <void*>_waves.lpmv[double_complex]
 
 lpmv = np.PyUFunc_FromFuncAndData(
     ufunc_lpmv_loops,

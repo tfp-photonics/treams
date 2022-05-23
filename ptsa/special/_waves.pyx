@@ -77,6 +77,8 @@ cdef double complex csph_harm(double m, double l, double phi, double complex the
 
 cdef number_t lpmv(double m, double l, number_t z) nogil:
     """Associated Legendre polynomials for fused type"""
+    if fabs(m) - 1e-8 > l:
+        return 0
     if number_t is double:
         return cs.lpmv(m, l, z)
     elif number_t is double_complex:
