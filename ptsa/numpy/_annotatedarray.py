@@ -1,9 +1,13 @@
-import collections, itertools, warnings
+import collections
+import itertools
+import warnings
 
 import numpy as np
 
 
-class AnnotatedArrayWarning(UserWarning): pass
+class AnnotatedArrayWarning(UserWarning):
+    pass
+
 
 def _match(a, b):
     for key, val in a.items():
@@ -11,12 +15,14 @@ def _match(a, b):
             return False
     return True
 
+
 warnings.simplefilter("always", AnnotatedArrayWarning)
+
 
 class ArrayAnnotations:
     def __init__(self, ndim=1):
         self._ann_dims = [{} for _ in range(ndim)]
-        self._ann_all = {}
+        self._ann_global = {}
 
     @property
     def ndim(self):
@@ -27,47 +33,53 @@ class ArrayAnnotations:
 
     def __getitem__(self, key):
         if isinstance(key, tuple):
-            if key[0] == "all":
-                return self._ann_all[key[1]]
-            elif isinstance(key[0], int):
-                return self._ann_dims[key[0]][key[1]]
+            if len(key) == 2:
+                if key[0] == "global":
+                    return self._ann_global[key[1]]
+                elif isinstance(key[0], int):
+                    return self._ann_dims[key[0]][key[1]]
             raise KeyError("invalid key")
-        if key == "all":
-            return self._ann_all
+        if key == "global":
+            return self._ann_global
+        if key is Ellipsis:
+            return [self._ann_global] + self._ann_dims
         return self._ann_dims[key]
 
     def __setitem__(self, key, item):
         if isinstance(key, tuple):
-            if key[0] == "all":
-                self._ann_all[key[1]] = item
-            elif isinstance(key[0], int):
-                self._ann_dims[key[0]][key[1]] = item
-            else:
-                raise KeyError("invalid key")
+            if len(key) == 2:
+                if key[0] == "global":
+                    self._ann_global[key[1]] = item
+                    return
+                elif isinstance(key[0], int):
+                    self._ann_dims[key[0]][key[1]] = item
+                    return
         else:
             if not isinstance(item, dict):
                 raise ValueError("invalid item type")
-            if key == "all":
-                self._ann_all = item
+            if key == "global":
+                self._ann_global = item
+                return
             elif isinstance(key, int):
                 self._ann_dims[key] = item
-            else:
-                raise KeyError("invalid key")
+                return
+        raise KeyError("invalid key")
 
     def update(self, other):
-        self["all"].update(other["all"])
+        self["global"].update(other["global"])
         for i in range(-1 - self.ndim, -1 - other.ndim, -1):
             self._ann_dims.append({})
         for i in range(-1, -1 - min(self.ndim, other.ndim), -1):
             self[i].update(other[i])
 
     def __eq__(self, other):
-        if not _match(self["all"], other["all"]):
+        if not _match(self["global"], other["global"]):
             return False
         for i in range(-1, -1 - min(self.ndim, other.ndim), -1):
             if not _match(self[i], other[i]):
                 return False
         return True
+
 
 class AnnotatedArray(np.ndarray):
     def __new__(cls, arr, annotations=None):
@@ -106,16 +118,16 @@ class AnnotatedArray(np.ndarray):
             return res
 
         res.annotations = None
-        res.annotations["all"].update(self.annotations["all"])
+        res.annotations["global"].update(self.annotations["global"])
 
         if res.ndim == 0:
             return res
 
         key = key if isinstance(key, tuple) else (key,)
         # The indexing in numpy is incredibly complicated (see also NEP 21), mainly due
-        # to the presence of two indexing "modes": regular and advanced (also called
+        # to the presence of two indexing modes: regular and advanced (also called
         # fancy) indexing. Regular indexing uses slices, the ellipsis, None, and
-        # integers, advanced indexing is triggered by anything else "array_like". Once
+        # integers, advanced indexing is triggered by anything else `array_like`. Once
         # triggered, this also affects integers. Additionally, pure Booleans have been
         # introduced with https://github.com/numpy/numpy/pull/3798, adding even more
         # complexity.
@@ -127,11 +139,11 @@ class AnnotatedArray(np.ndarray):
         #    otherwise they stay at their position (here integers play a role).
         # 4. Pure Bools are a special fancy index that add one dimension of size 0 or 1
         #    (depending on if one of them is False or not), but don't consume any
-        #    dimension. They broadcast with other fancy index types, which can let them
+        #    dimension. They broadcast with other fancy index types, which can make them
         #    "vanish".
 
         # We only copy annotations for slices and the ellipsis. If only one fancy index
-        # is present, its annotations are also copied.
+        # with ndim 1 is present, its annotations are also copied.
 
         consumed = 0
         ellipsis = False
@@ -139,6 +151,10 @@ class AnnotatedArray(np.ndarray):
         fancy_ndim = 0
         nfancy = 0
         consecutive_intfancy = 0
+        # consecutive_intfancy = 0: no fancy/integer indexing
+        # consecutive_intfancy = 1: ongoing consecutive fancy/integer indexing
+        # consecutive_intfancy = 2: terminated consecutive fancy/integer indexing
+        # consecutive_intfancy >= 2: non-consecutive fancy/integer indexing
 
         # The first pass gets the consumed dimensions, the presence of an ellipsis, and
         # fancy index properties.
@@ -156,7 +172,7 @@ class AnnotatedArray(np.ndarray):
                 # consumed is determined at the end
                 consecutive_intfancy += consecutive_intfancy % 2
             else:
-                arr = np.asarray(k)
+                arr = np.asanyarray(k)
                 if arr.dtype == bool:
                     consumed += arr.ndim
                     fancy_ndim = max(1, fancy_ndim)
@@ -165,7 +181,6 @@ class AnnotatedArray(np.ndarray):
                     fancy_ndim = max(arr.ndim, fancy_ndim)
                 nfancy += arr.ndim
                 consecutive_intfancy += (consecutive_intfancy + 1) % 2
-
 
         lenellipsis = self.ndim - consumed
         if lenellipsis != 0 and not ellipsis:
@@ -189,17 +204,19 @@ class AnnotatedArray(np.ndarray):
                     res.annotations[dest] = self.annotations[source]
                     dest += 1
                     source += 1
-            elif nfancy < 2:
-                ndim = np.ndim(k)
-                if ndim == 1:
+            else:
+                arr = np.asanyarray(k)
+                if nfancy == arr.ndim == 1:
                     if consecutive_intfancy > 2:
                         res.annotations[0] = self.annotations[source]
                     else:
                         res.annotations[dest] = self.annotations[source]
-                        dest += 1
-                elif consecutive_intfancy <= 2 and nfancy == 0:
-                    dest += 1
-                    nfancy = -1
+
+                source += arr.ndim if arr.dtype == bool else 1
+
+                if consecutive_intfancy <= 2:
+                    dest += fancy_ndim
+                    fancy_ndim = 0
 
         return res
 
@@ -333,9 +350,7 @@ class AnnotatedArray(np.ndarray):
             res = (res,)
         res = (
             *(
-                r
-                if isinstance(r, np.generic)
-                else np.asanyarray(r).view(type(self))
+                r if isinstance(r, np.generic) else np.asanyarray(r).view(type(self))
                 for r in res
             ),
         )
@@ -345,28 +360,30 @@ class AnnotatedArray(np.ndarray):
                 if a is not None:
                     r.annotations.update(a)
 
-        # compare "all"
+        # compare "global"
         inputs_and_where = (
             inputs + [np.asanyarray(kwargs["where"])] if "where" in kwargs else inputs
         )
         for out in res:
             if isinstance(out, np.generic):
                 continue
-            destination = out.annotations["all"]
+            destination = out.annotations["global"]
             for in_ in inputs_and_where:
                 if getattr(in_, "annotations", None) is None:
                     continue
-                source = in_.annotations["all"]
+                source = in_.annotations["global"]
                 if not _match(source, destination):
                     warnings.warn(
-                        "incompatible annotations of category 'all'",
+                        "incompatible annotations of category 'global'",
                         AnnotatedArrayWarning,
                     )
                 destination.update(source)
 
         if (
             ufunc.signature is None
-            or "".join([i for i in ufunc.signature if i not in ["(", ")", ",", "-", ">"]]).isspace()
+            or "".join(
+                [i for i in ufunc.signature if i not in ["(", ")", ",", "-", ">"]]
+            ).isspace()
         ):
 
             if method in ("__call__", "reduceat", "accumulate") or (
@@ -466,7 +483,7 @@ class AnnotatedArray(np.ndarray):
             warnings.warn("incompatible annotations")
         res = np.asarray(self).diagonal(offset, axis1, axis2)
         res = res.view(type(self))
-        res.annotations["all"].update(self.annotations["all"])
+        res.annotations["global"].update(self.annotations["global"])
         for i, j in enumerate([k for k in range(self.ndim) if k not in (axis1, axis2)]):
             res.annotations[i].update(self.annotations[j])
         res.annotations[-1].update(self.annotations[axis1])
@@ -478,7 +495,7 @@ class AnnotatedArray(np.ndarray):
             warnings.warn("incompatible annotations")
         res = np.asarray(np.asarray(self).trace(offset, axis1, axis2))
         res = res.view(type(self))
-        res.annotations["all"].update(self.annotations["all"])
+        res.annotations["global"].update(self.annotations["global"])
         for i, j in enumerate([k for k in range(self.ndim) if k not in (axis1, axis2)]):
             res.annotations[i].update(self.annotations[j])
         return res
@@ -490,7 +507,7 @@ class AnnotatedArray(np.ndarray):
             args = (*range(self.ndim - 1, -1, -1),)
         res = np.asarray(self).transpose(args)
         res = res.view(type(self))
-        res.annotations["all"].update(self.annotations["all"])
+        res.annotations["global"].update(self.annotations["global"])
         for i, j in enumerate(args):
             res.annotations[i].update(self.annotations[j])
         return res
@@ -503,18 +520,20 @@ class AnnotatedArray(np.ndarray):
         if not isinstance(other, AnnotatedArray):
             other = np.asanyarray(other).view(AnnotatedArray)
         if not (
-            _match(self.annotations["all"], other.annotations["all"])
+            _match(self.annotations["global"], other.annotations["global"])
             and (
                 self.ndim == 0
                 or other.ndim == 0
-                or _match(self.annotations[-1], other.annotations[-1 - int(other.ndim > 1)])
+                or _match(
+                    self.annotations[-1], other.annotations[-1 - int(other.ndim > 1)]
+                )
             )
         ):
             warnings.warn("incompatible annotations", AnnotatedArrayWarning)
         res = np.asarray(np.asarray(self).dot(np.asarray(other)))
         res = res.view(type(self))
-        res.annotations["all"].update(self.annotations["all"])
-        res.annotations["all"].update(other.annotations["all"])
+        res.annotations["global"].update(self.annotations["global"])
+        res.annotations["global"].update(other.annotations["global"])
         for i in range(0, self.ndim - 1):
             res.annotations[i].update(self.annotations[i])
         offset = i + int(i > 0)
@@ -527,7 +546,7 @@ class AnnotatedArray(np.ndarray):
     def reshape(self, newshape):
         res = np.asarray(self).reshape(newshape)
         res = res.view(type(self))
-        res.annotations["all"].update(self.annotations["all"])
+        res.annotations["global"].update(self.annotations["global"])
 
         oldacc = newacc = 1
 
@@ -545,7 +564,7 @@ class AnnotatedArray(np.ndarray):
     def flatten(self):
         res = np.asarray(self).flatten()
         res = res.view(type(self))
-        res.annotations["all"].update(self.annotations["all"])
+        res.annotations["global"].update(self.annotations["global"])
         if res.shape == self.shape:
             res.annotations[0].update(self.annotations[0])
         elif len(_squeeze(self.shape)) == 1:
@@ -555,7 +574,7 @@ class AnnotatedArray(np.ndarray):
     def ravel(self):
         res = np.asarray(self).ravel()
         res = res.view(type(self))
-        res.annotations["all"].update(self.annotations["all"])
+        res.annotations["global"].update(self.annotations["global"])
         if res.shape == self.shape:
             res.annotations[0].update(self.annotations[0])
         elif len(_squeeze(self.shape)) == 1:
@@ -565,7 +584,7 @@ class AnnotatedArray(np.ndarray):
     def squeeze(self, axis=None):
         res = np.asarray(self).squeeze(axis)
         res = res.view(type(self))
-        res.annotations["all"].update(self.annotations["all"])
+        res.annotations["global"].update(self.annotations["global"])
         if axis is None:
             for i, j in enumerate([k for k, m in enumerate(self.shape) if m != 1]):
                 res.annotations[i].update(self.annotations[j])
@@ -581,17 +600,19 @@ class AnnotatedArray(np.ndarray):
         return res
 
     def argmax(self, axis=None, out=None, *, keepdims=np._NoValue):
-        kwargs = {} if keepdims is np._NoValue else {"keepdims": keepdims}  # Needed for backward compatibility
+        kwargs = (
+            {} if keepdims is np._NoValue else {"keepdims": keepdims}
+        )  # Needed for backward compatibility
         out = np.asarray(self).argmax(axis, out, *kwargs)
         if isinstance(out, np.generic):
             return
         keepdims = False if keepdims is np._NoValue else keepdims
         out = out.view(type(self))
-        destination = out.annotations["all"]
-        source = self.annotations["all"]
+        destination = out.annotations["global"]
+        source = self.annotations["global"]
         if not _match(source, destination):
             warnings.warn(
-                "incompatible annotations of category 'all'",
+                "incompatible annotations of category 'global'",
                 AnnotatedArrayWarning,
             )
         destination.update(source)
@@ -610,17 +631,19 @@ class AnnotatedArray(np.ndarray):
         return out
 
     def argmin(self, axis=None, out=None, *, keepdims=np._NoValue):
-        kwargs = {} if keepdims is np._NoValue else {"keepdims": keepdims}  # Needed for backward compatibility
+        kwargs = (
+            {} if keepdims is np._NoValue else {"keepdims": keepdims}
+        )  # Needed for backward compatibility
         out = np.asarray(self).argmin(axis, out, *kwargs)
         if isinstance(out, np.generic):
             return
         keepdims = False if keepdims is np._NoValue else keepdims
         out = out.view(type(self))
-        destination = out.annotations["all"]
-        source = self.annotations["all"]
+        destination = out.annotations["global"]
+        source = self.annotations["global"]
         if not _match(source, destination):
             warnings.warn(
-                "incompatible annotations of category 'all'",
+                "incompatible annotations of category 'global'",
                 AnnotatedArrayWarning,
             )
         destination.update(source)
@@ -638,7 +661,7 @@ class AnnotatedArray(np.ndarray):
             destination.update(source)
         return out
 
-    def argpartition(self, kth, axis=-1, kind='introselect', order=None):
+    def argpartition(self, kth, axis=-1, kind="introselect", order=None):
         if axis is None:
             return self.flatten().argpartition(kth, -1, kind, order)
         return super().argpartition(kth, axis, kind, order)
@@ -648,10 +671,12 @@ class AnnotatedArray(np.ndarray):
             return self.flatten().argsort(-1, kind, order)
         return super().argsort(axis, kind, order)
 
-    def compress(self, a, axis=None, out=None): pass
+    def compress(self, a, axis=None, out=None):
+        pass
+
 
 def _parse_signature(signature, inputs):
-    signature = ''.join(signature.split())  # remove whitespace
+    signature = "".join(signature.split())  # remove whitespace
     sigin, sigout = signature.split("->")  # split input and output
     sigin = sigin[1:-1].split("),(")  # split input
     sigin = [i.split(",") for i in sigin]

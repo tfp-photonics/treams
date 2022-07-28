@@ -1,16 +1,9 @@
 import ptsa.numpy.linalg
-from ptsa.numpy._annotatedarray import AnnotatedArray, ArrayAnnotations, AnnotatedArrayWarning
-
-# def _apply_fun(x1, x2, fun, out=None):
-#     res = fun(_np.asarray(x1), _np.asarray(x2), out)
-#     if out is not None or (getattr(x1, "annotations", None) is None and getattr(x2, "annotations", None) is None):
-#         return res
-#     res = res.view(AnnotatedArray)
-#     if getattr(x1, "annotations", False):
-#         res.annotations.update(x1.annotations)
-#     if getattr(x2, "annotations", False):
-#         res.annotations.update(x2.annotations)
-#     return res
+from ptsa.numpy._annotatedarray import (
+    AnnotatedArray,
+    AnnotatedArrayWarning,
+    ArrayAnnotations,
+)
 
 # def reshape(): pass
 # def ravel(): pass
