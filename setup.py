@@ -66,6 +66,7 @@ if os.environ.get("CYTHON_COVERAGE", False):
 
 extension_names = [
     "ptsa.coeffs",
+    "ptsa.config",
     "ptsa.cw",
     "ptsa.pw",
     "ptsa.sw",

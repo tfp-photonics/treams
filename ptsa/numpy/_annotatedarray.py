@@ -21,64 +21,56 @@ warnings.simplefilter("always", AnnotatedArrayWarning)
 
 class ArrayAnnotations:
     def __init__(self, ndim=1):
-        self._ann_dims = [{} for _ in range(ndim)]
-        self._ann_global = {}
+        self._annotations = [{} for _ in range(ndim)]
 
     @property
     def ndim(self):
-        return len(self._ann_dims)
+        return len(self._annotations)
 
     def __len__(self):
         return self.ndim
 
     def __getitem__(self, key):
         if isinstance(key, tuple):
-            if len(key) == 2:
-                if key[0] == "global":
-                    return self._ann_global[key[1]]
-                elif isinstance(key[0], int):
-                    return self._ann_dims[key[0]][key[1]]
+            if len(key) == 2 and isinstance(key[0], int):
+                return self._annotations[key[0]][key[1]]
             raise KeyError("invalid key")
-        if key == "global":
-            return self._ann_global
-        if key is Ellipsis:
-            return [self._ann_global] + self._ann_dims
-        return self._ann_dims[key]
+        return self._annotations[key]
 
     def __setitem__(self, key, item):
         if isinstance(key, tuple):
-            if len(key) == 2:
-                if key[0] == "global":
-                    self._ann_global[key[1]] = item
-                    return
-                elif isinstance(key[0], int):
-                    self._ann_dims[key[0]][key[1]] = item
-                    return
+            if len(key) == 2 and isinstance(key[0], int):
+                self._annotations[key[0]][key[1]] = item
+                return
         else:
             if not isinstance(item, dict):
-                raise ValueError("invalid item type")
-            if key == "global":
-                self._ann_global = item
-                return
-            elif isinstance(key, int):
-                self._ann_dims[key] = item
+                raise ValueError(f"invalid item type '{type(item)}'")
+            if isinstance(key, int):
+                self._annotations[key] = item
                 return
         raise KeyError("invalid key")
 
     def update(self, other):
-        self["global"].update(other["global"])
-        for i in range(-1 - self.ndim, -1 - other.ndim, -1):
-            self._ann_dims.append({})
+        if other.ndim > self.ndim:
+            warnings.warn(
+                f"given 'ndim' larger than current 'ndim': ignored leading {other.ndim - self.ndim} dimensions",
+                AnnotatedArrayWarning,
+            )
         for i in range(-1, -1 - min(self.ndim, other.ndim), -1):
             self[i].update(other[i])
 
     def __eq__(self, other):
-        if not _match(self["global"], other["global"]):
-            return False
         for i in range(-1, -1 - min(self.ndim, other.ndim), -1):
             if not _match(self[i], other[i]):
                 return False
         return True
+
+    def __repr__(self):
+        return (
+            "ArrayAnnotations(" + ", ".join([repr(a) for a in self._annotations]) + ")"
+        )
+
+    __str__ = __repr__
 
 
 class AnnotatedArray(np.ndarray):
@@ -109,6 +101,46 @@ class AnnotatedArray(np.ndarray):
             return
         self.annotations = getattr(obj, "annotations", None)
 
+    def _property_get(self, name):
+        if self.ndim == 0:
+            warnings.warn(
+                f"'{name}' undefined for PhysicsArray of dimension 0",
+                PhysicsArrayWarning,
+            )
+            return
+        val = np.array([a.get(name) for a in self.annotations])
+        if np.all([val == val[0]]):
+            return val[0]
+        return tuple(val)
+
+    def _property_set(self, name, val, vtype=object):
+        if not isinstance(val, tuple):
+            val = (val,) * self.ndim
+        if len(val) != self.ndim:
+            warnings.warn(f"non-matching property size", AnnotatedArrayWarning)
+        for a, v in zip(self.annotations, val):
+            if v is None:
+                a.pop(name, None)
+            elif isinstance(v, vtype):
+                a[name] = v
+            else:
+                warnings.warn(
+                    f"invalid type for '{name}': {type(v).__name__}",
+                    AnnotatedArrayWarning,
+                )
+
+    def _property_del(self, name):
+        for a in self.annotations:
+            a.pop("name", None)
+
+    @staticmethod
+    def register_property(name, vtype=object):
+        return property(
+            lambda self: self._property_get(name),
+            lambda self, val: self._property_set(name, val, vtype),
+            lambda self: self._property_del(name),
+        )
+
     def __getitem__(self, key):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", AnnotatedArrayWarning)
@@ -118,7 +150,6 @@ class AnnotatedArray(np.ndarray):
             return res
 
         res.annotations = None
-        res.annotations["global"].update(self.annotations["global"])
 
         if res.ndim == 0:
             return res
@@ -313,8 +344,7 @@ class AnnotatedArray(np.ndarray):
                 destination.update(source)
 
     def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
-
-        # Compute result first to make use of numpys comprehensive checks on the arguments
+        # Compute result first to use numpy's comprehensive checks on the arguments
         inputs = [np.asanyarray(i) for i in inputs]
         inputs_ndarray = [np.asarray(i) for i in inputs]
 
@@ -327,7 +357,7 @@ class AnnotatedArray(np.ndarray):
             elif isinstance(out, tuple):
                 annotations_out = []
                 for i in out:
-                    if isinstance(out, AnnotatedArray):
+                    if isinstance(i, AnnotatedArray):
                         annotations_out.append(i.annotations)
                     else:
                         annotations_out.append(None)
@@ -360,24 +390,9 @@ class AnnotatedArray(np.ndarray):
                 if a is not None:
                     r.annotations.update(a)
 
-        # compare "global"
         inputs_and_where = (
             inputs + [np.asanyarray(kwargs["where"])] if "where" in kwargs else inputs
         )
-        for out in res:
-            if isinstance(out, np.generic):
-                continue
-            destination = out.annotations["global"]
-            for in_ in inputs_and_where:
-                if getattr(in_, "annotations", None) is None:
-                    continue
-                source = in_.annotations["global"]
-                if not _match(source, destination):
-                    warnings.warn(
-                        "incompatible annotations of category 'global'",
-                        AnnotatedArrayWarning,
-                    )
-                destination.update(source)
 
         if (
             ufunc.signature is None
@@ -483,7 +498,6 @@ class AnnotatedArray(np.ndarray):
             warnings.warn("incompatible annotations")
         res = np.asarray(self).diagonal(offset, axis1, axis2)
         res = res.view(type(self))
-        res.annotations["global"].update(self.annotations["global"])
         for i, j in enumerate([k for k in range(self.ndim) if k not in (axis1, axis2)]):
             res.annotations[i].update(self.annotations[j])
         res.annotations[-1].update(self.annotations[axis1])
@@ -495,7 +509,6 @@ class AnnotatedArray(np.ndarray):
             warnings.warn("incompatible annotations")
         res = np.asarray(np.asarray(self).trace(offset, axis1, axis2))
         res = res.view(type(self))
-        res.annotations["global"].update(self.annotations["global"])
         for i, j in enumerate([k for k in range(self.ndim) if k not in (axis1, axis2)]):
             res.annotations[i].update(self.annotations[j])
         return res
@@ -507,7 +520,6 @@ class AnnotatedArray(np.ndarray):
             args = (*range(self.ndim - 1, -1, -1),)
         res = np.asarray(self).transpose(args)
         res = res.view(type(self))
-        res.annotations["global"].update(self.annotations["global"])
         for i, j in enumerate(args):
             res.annotations[i].update(self.annotations[j])
         return res
@@ -520,20 +532,13 @@ class AnnotatedArray(np.ndarray):
         if not isinstance(other, AnnotatedArray):
             other = np.asanyarray(other).view(AnnotatedArray)
         if not (
-            _match(self.annotations["global"], other.annotations["global"])
-            and (
-                self.ndim == 0
-                or other.ndim == 0
-                or _match(
-                    self.annotations[-1], other.annotations[-1 - int(other.ndim > 1)]
-                )
-            )
+            self.ndim == 0
+            or other.ndim == 0
+            or _match(self.annotations[-1], other.annotations[-1 - int(other.ndim > 1)])
         ):
             warnings.warn("incompatible annotations", AnnotatedArrayWarning)
         res = np.asarray(np.asarray(self).dot(np.asarray(other)))
         res = res.view(type(self))
-        res.annotations["global"].update(self.annotations["global"])
-        res.annotations["global"].update(other.annotations["global"])
         for i in range(0, self.ndim - 1):
             res.annotations[i].update(self.annotations[i])
         offset = i + int(i > 0)
@@ -546,7 +551,6 @@ class AnnotatedArray(np.ndarray):
     def reshape(self, newshape):
         res = np.asarray(self).reshape(newshape)
         res = res.view(type(self))
-        res.annotations["global"].update(self.annotations["global"])
 
         oldacc = newacc = 1
 
@@ -564,7 +568,6 @@ class AnnotatedArray(np.ndarray):
     def flatten(self):
         res = np.asarray(self).flatten()
         res = res.view(type(self))
-        res.annotations["global"].update(self.annotations["global"])
         if res.shape == self.shape:
             res.annotations[0].update(self.annotations[0])
         elif len(_squeeze(self.shape)) == 1:
@@ -574,7 +577,6 @@ class AnnotatedArray(np.ndarray):
     def ravel(self):
         res = np.asarray(self).ravel()
         res = res.view(type(self))
-        res.annotations["global"].update(self.annotations["global"])
         if res.shape == self.shape:
             res.annotations[0].update(self.annotations[0])
         elif len(_squeeze(self.shape)) == 1:
@@ -584,7 +586,6 @@ class AnnotatedArray(np.ndarray):
     def squeeze(self, axis=None):
         res = np.asarray(self).squeeze(axis)
         res = res.view(type(self))
-        res.annotations["global"].update(self.annotations["global"])
         if axis is None:
             for i, j in enumerate([k for k, m in enumerate(self.shape) if m != 1]):
                 res.annotations[i].update(self.annotations[j])
@@ -608,14 +609,6 @@ class AnnotatedArray(np.ndarray):
             return
         keepdims = False if keepdims is np._NoValue else keepdims
         out = out.view(type(self))
-        destination = out.annotations["global"]
-        source = self.annotations["global"]
-        if not _match(source, destination):
-            warnings.warn(
-                "incompatible annotations of category 'global'",
-                AnnotatedArrayWarning,
-            )
-        destination.update(source)
         axis = axis % self.ndim - self.ndim
         dim_in = 0
         for dim in range(-1, -1 - out.ndim, -1):
@@ -639,14 +632,6 @@ class AnnotatedArray(np.ndarray):
             return
         keepdims = False if keepdims is np._NoValue else keepdims
         out = out.view(type(self))
-        destination = out.annotations["global"]
-        source = self.annotations["global"]
-        if not _match(source, destination):
-            warnings.warn(
-                "incompatible annotations of category 'global'",
-                AnnotatedArrayWarning,
-            )
-        destination.update(source)
         axis = axis % self.ndim - self.ndim
         dim_in = 0
         for dim in range(-1, -1 - out.ndim, -1):
@@ -670,9 +655,6 @@ class AnnotatedArray(np.ndarray):
         if axis is None:
             return self.flatten().argsort(-1, kind, order)
         return super().argsort(axis, kind, order)
-
-    def compress(self, a, axis=None, out=None):
-        pass
 
 
 def _parse_signature(signature, inputs):

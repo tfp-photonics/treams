@@ -16,7 +16,7 @@ Functions associated with cylindrical waves
 
 import numpy as np
 
-from ptsa import lattice
+from ptsa import config, lattice
 
 cimport numpy as np
 from libc.math cimport exp as expd
@@ -197,7 +197,7 @@ _translate_r = np.PyUFunc_FromFuncAndData(
 )
 
 
-def translate(kz, mu, pol, qz, m, qol, krr, phi, z, singular=True):
+def translate(kz, mu, pol, qz, m, qol, krr, phi, z, singular=True, *args, **kwargs):
     r"""
     translate(kz, mu, pol, qz, m, qol, krr, phi, z, singular=True)
 
@@ -226,8 +226,8 @@ def translate(kz, mu, pol, qz, m, qol, krr, phi, z, singular=True):
         complex
     """
     if singular:
-        return _translate_s(kz, mu, pol, qz, m, qol, krr, phi, z)
-    return _translate_r(kz, mu, pol, qz, m, qol, krr, phi, z)
+        return _translate_s(kz, mu, pol, qz, m, qol, krr, phi, z, *args, **kwargs)
+    return _translate_r(kz, mu, pol, qz, m, qol, krr, phi, z, *args, **kwargs)
 
 
 cdef double complex _crotate(double kz, long mu, long pol, double qz, long m, long qol, double phi) nogil:
@@ -433,7 +433,7 @@ ufunc_pw_types[17] = <char>np.NPY_CDOUBLE
 ufunc_pw_data[0] = <void*>_cperiodic_to_pw[double]
 ufunc_pw_data[1] = <void*>_cperiodic_to_pw[double_complex]
 
-_periodic_to_pw = np.PyUFunc_FromFuncAndData(
+periodic_to_pw = np.PyUFunc_FromFuncAndData(
     ufunc_pw_loops,
     ufunc_pw_data,
     ufunc_pw_types,
@@ -441,13 +441,7 @@ _periodic_to_pw = np.PyUFunc_FromFuncAndData(
     8,
     1,
     0,
-    '_periodic_to_pw',
-    '',
-    0,
-)
-
-
-def periodic_to_pw(kx, ky, kz, pol, qz, m, qol, area):
+    'periodic_to_pw',
     """
     periodic_to_pw(kx, ky, kz, pol, qz, m, qol, area)
 
@@ -472,8 +466,9 @@ def periodic_to_pw(kx, ky, kz, pol, qz, m, qol, area):
 
     Returns:
         complex
-    """
-    return _periodic_to_pw(kx, ky, kz, pol, qz, m, qol, area)
+    """,
+    0,
+)
 
 
 cdef double complex _cto_sw_h(long l, long m, long polpw, double kz, long mu, long polcw, double complex k) nogil:
@@ -594,7 +589,7 @@ _to_sw_p = np.PyUFunc_FromFuncAndData(
 )
 
 
-def to_sw(l, m, polsw, kz, mu, polcw, k, helicity=True):
+def to_sw(l, m, polsw, kz, mu, polcw, k, poltype=None, *args, **kwargs):
     """
     to_sw(l, m, polsw, kz, mu, polcw, k, helicity=True)
 
@@ -621,9 +616,12 @@ def to_sw(l, m, polsw, kz, mu, polcw, k, helicity=True):
     Returns:
         complex
     """
-    if helicity:
-        return _to_sw_h(l, m, polsw, kz, mu, polcw, k)
-    return _to_sw_p(l, m, polsw, kz, mu, polcw, k)
+    poltype = config.POLTYPE if poltype is None else poltype
+    if poltype == "helicity":
+        return _to_sw_h(l, m, polsw, kz, mu, polcw, k, *args, **kwargs)
+    elif poltype == "parity":
+        return _to_sw_p(l, m, polsw, kz, mu, polcw, k, *args, **kwargs)
+    raise ValueError(f"invalid poltype '{poltype}'")
 
 
 def translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, eta=0):

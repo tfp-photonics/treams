@@ -5,14 +5,16 @@ Loading and storing data
 
 Most functions rely on at least one of the external packages `h5py` or `gmsh`.
 
-.. rubric:: Functions
-
 .. autosummary::
    :toctree: generated/
 
    mesh_spheres
    save_hdf5
    load_hdf5
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 """
 
 import importlib.metadata
@@ -137,7 +139,7 @@ def mesh_spheres(radii, positions, model, meshsize=None, meshsize_boundary=None)
         >>> gmsh.initialize()
         >>> gmsh.model.add("spheres")
         >>> mesh_spheres([1, 2], [[0, 0, 2], [0, 0, -2]], gmsh.model)
-        >>> gmsh.write("spheres.msh")
+        >>> gmsh.model.write("spheres.msh")
         >>> gmsh.finalize()
 
     Args:
@@ -164,14 +166,14 @@ def mesh_spheres(radii, positions, model, meshsize=None, meshsize_boundary=None)
         tag = i + 1
         model.occ.addSphere(*position, radius, tag)
         spheres.append((3, tag))
-        model.occ.synchronize()
         model.addPhysicalGroup(3, [i + 1], tag)
         # Add surfaces for other mesh formats like stl, ...
         model.addPhysicalGroup(2, [i + 1], tag)
 
-    model.mesh.setSize(model.getEntities(3), meshsize)
-    model.mesh.setSize(model.getBoundary(spheres, False, False), meshsize_boundary)
-    model.mesh.generate()
+    model.mesh.setSize(model.getEntities(0), meshsize)
+    model.mesh.setSize(
+        model.getBoundary(spheres, False, False, True), meshsize_boundary
+    )
     return model
 
 
@@ -250,6 +252,8 @@ def save_hdf5(
             inverse) for the wave number
         embedding_name (string, optional): Name of the embedding material, defaults to
             "Embedding"
+        embedding_description (string, optional): Description of the material, defaults
+            to an empty string
         frequency_axis (int, optional): Assign one axis of the T-matrices array to
             parametrize a frequency sweep
 
@@ -440,7 +444,7 @@ def _write_hdf5(
 
 
 def _convert_to_k0(x, xtype, xunit, k0unit=r"nm^{-1}"):
-    c = 299792458.0
+    c = 299792458.
     k0unit = INVLENGTHS[k0unit]
     if xtype in ("freq", "nu"):
         xunit = FREQUENCIES[xunit]

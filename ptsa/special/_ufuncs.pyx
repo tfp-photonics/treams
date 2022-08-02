@@ -739,6 +739,7 @@ wignerd = np.PyUFunc_FromFuncAndData(
         D^l_{mk}(\varphi, \theta, \psi) = \mathrm e^{-\mathrm i m \varphi} d^l_{mk}(\theta) \mathrm e^{-\mathrm i k \psi}
 
     See also :func:`ptsa.special.wignersmalld`.
+
     Note:
         Mathematica uses a different sign convention, which means taking the negative
         angles.

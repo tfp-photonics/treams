@@ -15,6 +15,8 @@ Functions associated with plane waves
 
 import numpy as np
 
+from ptsa import config
+
 cimport numpy as np
 from libc.math cimport atan2
 from libc.math cimport exp as expd
@@ -130,7 +132,7 @@ np.import_ufunc()
 #     return _translate(kx, ky, kz, pol, qx, qy, qz, qol, x, y, z)
 
 
-def translate(kx, ky, kz, x, y, z):
+def translate(kx, ky, kz, x, y, z, *args, **kwargs):
     r"""
     translate(kx, ky, kz, x, y, z)
 
@@ -146,7 +148,7 @@ def translate(kx, ky, kz, x, y, z):
     Returns:
         complex
     """
-    return np.exp(1j * (kx * x + ky * y + kz * z))
+    return np.exp(1j * (kx * x + ky * y + kz * z), *args, **kwargs)
 
 
 cdef double complex _cto_sw_h(long l, long m, long polvsw, double kx, double ky, number_t kz, long polpw) nogil:
@@ -298,7 +300,7 @@ _to_sw_p = np.PyUFunc_FromFuncAndData(
 )
 
 
-def to_sw(l, m, polsw, kx, ky, kz, polpw, helicity=True):
+def to_sw(l, m, polsw, kx, ky, kz, polpw, poltype=None, *args, **kwargs):
     """
     to_sw(l, m, polsw, kx, ky, kz, polpw, helicity=True)
 
@@ -325,9 +327,12 @@ def to_sw(l, m, polsw, kx, ky, kz, polpw, helicity=True):
     Returns:
         complex
     """
-    if helicity:
-        return _to_sw_h(l, m, polsw, kx, ky, kz, polpw)
-    return _to_sw_p(l, m, polsw, kx, ky, kz, polpw)
+    poltype = config.POLTYPE if poltype is None else poltype
+    if poltype == "helicity":
+        return _to_sw_h(l, m, polsw, kx, ky, kz, polpw, *args, **kwargs)
+    elif poltype == "parity":
+        return _to_sw_p(l, m, polsw, kx, ky, kz, polpw, *args, **kwargs)
+    raise ValueError(f"invalid poltype '{poltype}'")
 
 
 cdef double complex _cto_cw(double kzcw, long m, long polcw, double kx, number_t ky, double kzpw, long polpw) nogil:
@@ -439,7 +444,7 @@ ufunc_cw_types[15] = <char>np.NPY_CDOUBLE
 ufunc_cw_data[0] = <void*>_cto_cw[double]
 ufunc_cw_data[1] = <void*>_cto_cw[double_complex]
 
-_to_cw = np.PyUFunc_FromFuncAndData(
+to_cw = np.PyUFunc_FromFuncAndData(
     ufunc_cw_loops,
     ufunc_cw_data,
     ufunc_cw_types,
@@ -447,13 +452,7 @@ _to_cw = np.PyUFunc_FromFuncAndData(
     7,
     1,
     0,
-    '_to_cw',
-    '',
-    0,
-)
-
-
-def to_cw(kzcw, m, polcw, kx, ky, kzpw, polpw):
+    'to_cw',
     """
     to_cw(kzcw, m, polcw, kx, ky, kzpw, polpw)
 
@@ -477,8 +476,9 @@ def to_cw(kzcw, m, polcw, kx, ky, kzpw, polpw):
 
     Returns:
         complex
-    """
-    return _to_cw(kzcw, m, polcw, kx, ky, kzpw, polpw)
+    """,
+    0,
+)
 
 
 cdef double complex _cxyz_to_zxy_p(number_t kx, number_t ky, number_t kz, long polout, long polin) nogil:
@@ -542,36 +542,23 @@ cdef void _loop_yz_d(char **args, np.npy_intp *dims, np.npy_intp *steps, void *d
     cdef char *ip2 = args[2]
     cdef char *ip3 = args[3]
     cdef char *ip4 = args[4]
-    cdef char *ip5 = args[5]
-    cdef char *ip6 = args[6]
-    cdef char *ip7 = args[7]
-    cdef char *op0 = args[8]
+    cdef char *op0 = args[5]
     cdef double complex ov0
     for i in range(n):
-        if (
-            <double>(<double*>ip0)[0] == <double>(<double*>ip4)[0]
-            and <double>(<double*>ip1)[0] == <double>(<double*>ip5)[0]
-            and <double>(<double*>ip2)[0] == <double>(<double*>ip6)[0]
-        ):
-            ov0 = (<double complex(*)(double, double, double, long, long) nogil>func)(
-                <double>(<double*>ip0)[0],
-                <double>(<double*>ip1)[0],
-                <double>(<double*>ip2)[0],
-                <long>(<long*>ip3)[0],
-                <long>(<long*>ip7)[0],
-            )
-        else:
-            ov0 = 0
+        ov0 = (<double complex(*)(double, double, double, long, long) nogil>func)(
+            <double>(<double*>ip0)[0],
+            <double>(<double*>ip1)[0],
+            <double>(<double*>ip2)[0],
+            <long>(<long*>ip3)[0],
+            <long>(<long*>ip4)[0],
+        )
         (<double complex*>op0)[0] = <double complex>ov0
         ip0 += steps[0]
         ip1 += steps[1]
         ip2 += steps[2]
         ip3 += steps[3]
         ip4 += steps[4]
-        ip5 += steps[5]
-        ip6 += steps[6]
-        ip7 += steps[7]
-        op0 += steps[8]
+        op0 += steps[5]
 
 
 cdef void _loop_yz_D(char **args, np.npy_intp *dims, np.npy_intp *steps, void *data) nogil:
@@ -582,36 +569,23 @@ cdef void _loop_yz_D(char **args, np.npy_intp *dims, np.npy_intp *steps, void *d
     cdef char *ip2 = args[2]
     cdef char *ip3 = args[3]
     cdef char *ip4 = args[4]
-    cdef char *ip5 = args[5]
-    cdef char *ip6 = args[6]
-    cdef char *ip7 = args[7]
-    cdef char *op0 = args[8]
+    cdef char *op0 = args[5]
     cdef double complex ov0
     for i in range(n):
-        if (
-            <double complex>(<double complex*>ip0)[0] == <double complex>(<double complex*>ip4)[0]
-            and <double complex>(<double complex*>ip1)[0] == <double complex>(<double complex*>ip5)[0]
-            and <double complex>(<double complex*>ip2)[0] == <double complex>(<double complex*>ip6)[0]
-        ):
-            ov0 = (<double complex(*)(double complex, double complex, double complex, long, long) nogil>func)(
-                <double complex>(<double complex*>ip0)[0],
-                <double complex>(<double complex*>ip1)[0],
-                <double complex>(<double complex*>ip2)[0],
-                <long>(<long*>ip3)[0],
-                <long>(<long*>ip7)[0],
-            )
-        else:
-            ov0 = 0
+        ov0 = (<double complex(*)(double complex, double complex, double complex, long, long) nogil>func)(
+            <double complex>(<double complex*>ip0)[0],
+            <double complex>(<double complex*>ip1)[0],
+            <double complex>(<double complex*>ip2)[0],
+            <long>(<long*>ip3)[0],
+            <long>(<long*>ip4)[0],
+        )
         (<double complex*>op0)[0] = <double complex>ov0
         ip0 += steps[0]
         ip1 += steps[1]
         ip2 += steps[2]
         ip3 += steps[3]
         ip4 += steps[4]
-        ip5 += steps[5]
-        ip6 += steps[6]
-        ip7 += steps[7]
-        op0 += steps[8]
+        op0 += steps[85
 
 
 cdef np.PyUFuncGenericFunction ufunc_yz_loops[2]
@@ -619,7 +593,7 @@ cdef void *ufunc_yz_h_data[2]
 cdef void *ufunc_yz_p_data[2]
 cdef void *ufunc_zy_h_data[2]
 cdef void *ufunc_zy_p_data[2]
-cdef char ufunc_yz_types[2 * 9]
+cdef char ufunc_yz_types[2 * 6]
 
 ufunc_yz_loops[0] = <np.PyUFuncGenericFunction>_loop_yz_d
 ufunc_yz_loops[1] = <np.PyUFuncGenericFunction>_loop_yz_D
@@ -627,20 +601,14 @@ ufunc_yz_types[0] = <char>np.NPY_DOUBLE
 ufunc_yz_types[1] = <char>np.NPY_DOUBLE
 ufunc_yz_types[2] = <char>np.NPY_DOUBLE
 ufunc_yz_types[3] = <char>np.NPY_LONG
-ufunc_yz_types[4] = <char>np.NPY_DOUBLE
-ufunc_yz_types[5] = <char>np.NPY_DOUBLE
-ufunc_yz_types[6] = <char>np.NPY_DOUBLE
-ufunc_yz_types[7] = <char>np.NPY_LONG
+ufunc_yz_types[4] = <char>np.NPY_LONG
+ufunc_yz_types[5] = <char>np.NPY_CDOUBLE
+ufunc_yz_types[6] = <char>np.NPY_CDOUBLE
+ufunc_yz_types[7] = <char>np.NPY_CDOUBLE
 ufunc_yz_types[8] = <char>np.NPY_CDOUBLE
-ufunc_yz_types[9] = <char>np.NPY_CDOUBLE
-ufunc_yz_types[10] = <char>np.NPY_CDOUBLE
+ufunc_yz_types[9] = <char>np.NPY_LONG
+ufunc_yz_types[10] = <char>np.NPY_LONG
 ufunc_yz_types[11] = <char>np.NPY_CDOUBLE
-ufunc_yz_types[12] = <char>np.NPY_LONG
-ufunc_yz_types[13] = <char>np.NPY_CDOUBLE
-ufunc_yz_types[14] = <char>np.NPY_CDOUBLE
-ufunc_yz_types[15] = <char>np.NPY_CDOUBLE
-ufunc_yz_types[16] = <char>np.NPY_LONG
-ufunc_yz_types[17] = <char>np.NPY_CDOUBLE
 ufunc_yz_h_data[0] = <void*>_cxyz_to_zxy_h[double]
 ufunc_yz_h_data[1] = <void*>_cxyz_to_zxy_h[double_complex]
 ufunc_yz_p_data[0] = <void*>_cxyz_to_zxy_p[double]
@@ -655,7 +623,7 @@ _xyz_to_zxy_h = np.PyUFunc_FromFuncAndData(
     ufunc_yz_h_data,
     ufunc_yz_types,
     2,
-    8,
+    5,
     1,
     0,
     '_xyz_to_zxy_h',
@@ -667,7 +635,7 @@ _xyz_to_zxy_p = np.PyUFunc_FromFuncAndData(
     ufunc_yz_p_data,
     ufunc_yz_types,
     2,
-    8,
+    5,
     1,
     0,
     '_xyz_to_zxy_p',
@@ -679,7 +647,7 @@ _xyz_to_yzx_h = np.PyUFunc_FromFuncAndData(
     ufunc_zy_h_data,
     ufunc_yz_types,
     2,
-    8,
+    5,
     1,
     0,
     '_xyz_to_yzx_h',
@@ -691,7 +659,7 @@ _xyz_to_yzx_p = np.PyUFunc_FromFuncAndData(
     ufunc_zy_p_data,
     ufunc_yz_types,
     2,
-    8,
+    5,
     1,
     0,
     '_xyz_to_yzx_p',
@@ -700,7 +668,7 @@ _xyz_to_yzx_p = np.PyUFunc_FromFuncAndData(
 )
 
 
-def permute_xyz(kxa, kya, kza, pa, kx, ky, kz, p, helicity=True, inverse=False):
+def permute_xyz(kx, ky, kz, p, q, poltype=None, inverse=False):
     """
     permute_xyz(kxp, kyp, kzp, pp, kx, ky, kz, qol, helicity=True, inverse=False)
 
@@ -732,10 +700,13 @@ def permute_xyz(kxa, kya, kza, pa, kx, ky, kz, p, helicity=True, inverse=False):
     Returns:
         complex
     """
-    if helicity:
+    poltype = config.POLTYPE if poltype is None else poltype
+    if poltype == "helicity":
         if inverse:
-            return _xyz_to_yzx_h(kxa, kya, kza, pa, kx, ky, kz, p)
-        return _xyz_to_zxy_h(kxa, kya, kza, pa, kx, ky, kz, p)
-    if inverse:
-        return _xyz_to_yzx_p(kxa, kya, kza, pa, kx, ky, kz, p)
-    return _xyz_to_zxy_p(kxa, kya, kza, pa, kx, ky, kz, p)
+            return _xyz_to_yzx_h(kx, ky, kz, p, q)
+        return _xyz_to_zxy_h(kx, ky, kz, p, q)
+    elif poltype == "helicity":
+        if inverse:
+            return _xyz_to_yzx_p(kx, ky, kz, p, q)
+        return _xyz_to_zxy_p(kx, ky, kz, p, q)
+    raise ValueError(f"invalid poltype {poltype}")

@@ -17,6 +17,7 @@ Functions associated with spherical waves
 import numpy as np
 
 from ptsa import lattice
+from ptsa import config
 
 cimport numpy as np
 from libc.math cimport atan2
@@ -251,7 +252,7 @@ _translate_rp = np.PyUFunc_FromFuncAndData(
 )
 
 
-def translate(lambda_, mu, pol, l, m, qol, kr, theta, phi, helicity=True, singular=True):
+def translate(lambda_, mu, pol, l, m, qol, kr, theta, phi, poltype=None, singular=True):
     """
     translate(lambda_, mu, pol, l, m, qol, kr, theta, phi, helicity=True, singular=True)
 
@@ -283,13 +284,16 @@ def translate(lambda_, mu, pol, l, m, qol, kr, theta, phi, helicity=True, singul
     Returns:
         complex
     """
-    if helicity:
+    poltype = config.POLTYPE if poltype is None else poltype
+    if poltype == "helicity":
         if singular:
             return _translate_sh(lambda_, mu, pol, l, m, qol, kr, theta, phi)
         return _translate_rh(lambda_, mu, pol, l, m, qol, kr, theta, phi)
-    if singular:
-        return _translate_sp(lambda_, mu, pol, l, m, qol, kr, theta, phi)
-    return _translate_rp(lambda_, mu, pol, l, m, qol, kr, theta, phi)
+    elif poltype == "parity":
+        if singular:
+            return _translate_sp(lambda_, mu, pol, l, m, qol, kr, theta, phi)
+        return _translate_rp(lambda_, mu, pol, l, m, qol, kr, theta, phi)
+    raise ValueError(f"invalid poltype '{poltype}'")
 
 
 cdef double complex _crotate(long lambda_, long mu, long pol1, long l, long m, long pol2, double phi, double theta, double psi) nogil:
@@ -576,7 +580,7 @@ _translate_periodic_p = np.PyUFunc_FromFuncAndDataAndSignature(
 )
 
 
-def translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, helicity=True, eta=0):
+def translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, poltype=None, eta=0, *, where=True):
     """
     translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, helicity=True, eta=0)
 
@@ -607,6 +611,9 @@ def translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, helicity=True,
     Returns:
         complex array
     """
+    poltype = config.POLTYPE if poltype is None else poltype
+    if poltype not in ("helicity", "parity"):
+        raise ValueError(f"invalid poltype '{poltype}'")
     if in_ is None:
         in_ = out
     out = (*(np.array(o) for o in out),)
@@ -645,17 +652,19 @@ def translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, helicity=True,
         dlms = lattice.lsumsw2d_shift(modes[:, 0], modes[:, 1], ks, kpar, a, rsdiff, eta)
     else:
         dlms = lattice.lsumsw3d(modes[:, 0], modes[:, 1], ks, kpar, a, rsdiff, eta)
-    if helicity:
+    if poltype == "helicity":
         return _translate_periodic_h(
             *(o[:, None] for o in out[1:]),
             *in_[1:],
             dlms[out[0][:, None], in_[0], 0, :],
             dlms[out[0][:, None], in_[0], ks.shape[0] - 1, :],
+            where=where,
         )
     return _translate_periodic_p(
         *(o[:, None] for o in out[1:]),
         *in_[1:],
         dlms[out[0][:, None], in_[0], 0, :],
+        where=where,
     )
 
 
@@ -829,7 +838,7 @@ _periodic_to_pw_p = np.PyUFunc_FromFuncAndData(
 )
 
 
-def periodic_to_pw(kx, ky, kz, pol, l, m, qol, area, helicity=True):
+def periodic_to_pw(kx, ky, kz, pol, l, m, qol, area, poltype=None, *args, **kwargs):
     """
     periodic_to_pw(kx, ky, kz, pol, l, m, qol, area, helicity=True)
 
@@ -858,9 +867,12 @@ def periodic_to_pw(kx, ky, kz, pol, l, m, qol, area, helicity=True):
     Returns:
         complex
     """
-    if helicity:
-        return _periodic_to_pw_h(kx, ky, kz, pol, l, m, qol, area)
-    return _periodic_to_pw_p(kx, ky, kz, pol, l, m, qol, area)
+    poltype = config.POLTYPE if poltype is None else poltype
+    if poltype == "helicity":
+        return _periodic_to_pw_h(kx, ky, kz, pol, l, m, qol, area, *args, **kwargs)
+    elif poltype == "parity":
+        return _periodic_to_pw_p(kx, ky, kz, pol, l, m, qol, area, *args, **kwargs)
+    raise ValueError(f"invalid poltype '{poltype}'")
 
 
 cdef double complex _cperiodic_to_cw_h(double kz, long mu, long polcw, long l, long m, long polsw, double complex k, double a) nogil:
@@ -973,7 +985,7 @@ _periodic_to_cw_p = np.PyUFunc_FromFuncAndData(
 )
 
 
-def periodic_to_cw(kz, m, pol, l, mu, qol, k, area, helicity=True):
+def periodic_to_cw(kz, m, pol, l, mu, qol, k, area, poltype=None, *args, **kwargs):
     """
     periodic_to_cw(kz, m, pol, l, mu, qol, k, area, helicity=True)
 
@@ -1002,6 +1014,9 @@ def periodic_to_cw(kz, m, pol, l, mu, qol, k, area, helicity=True):
     Returns:
         complex
     """
-    if helicity:
-        return _periodic_to_cw_h(kz, m, pol, l, mu, qol, k, area)
-    return _periodic_to_cw_p(kz, m, pol, l, mu, qol, k, area)
+    poltype = config.POLTYPE if poltype is None else poltype
+    if poltype == "helicity":
+        return _periodic_to_cw_h(kz, m, pol, l, mu, qol, k, area, *args, **kwargs)
+    elif poltype == "parity":
+        return _periodic_to_cw_p(kz, m, pol, l, mu, qol, k, area, *args, **kwargs)
+    raise ValueError(f"invalid poltype '{poltype}'")
