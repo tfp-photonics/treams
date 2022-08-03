@@ -339,7 +339,7 @@ _rotate = np.PyUFunc_FromFuncAndData(
 )
 
 
-def rotate(lambda_, mu, pol, l, m, qol, phi, theta=0, psi=0):
+def rotate(lambda_, mu, pol, l, m, qol, phi, theta=0, psi=0, *args, **kwargs):
     """
     rotate(lambda_, mu, pol, l, m, qol, phi, theta=0, psi=0)
 
@@ -365,7 +365,7 @@ def rotate(lambda_, mu, pol, l, m, qol, phi, theta=0, psi=0):
     Returns:
         complex
     """
-    return _rotate(lambda_, mu, pol, l, m, qol, phi, theta, psi)
+    return _rotate(lambda_, mu, pol, l, m, qol, phi, theta, psi, *args, **kwargs)
 
 
 cdef double complex _transl_A_lattice(long lambda_, long mu, long l, long m, double complex *dlms, long step) nogil:

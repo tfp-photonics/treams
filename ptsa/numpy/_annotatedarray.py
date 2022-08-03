@@ -74,6 +74,8 @@ class ArrayAnnotations:
 
 
 class AnnotatedArray(np.ndarray):
+    _scales = {}
+
     def __new__(cls, arr, annotations=None):
         arr = np.asanyarray(arr)
         obj = arr.view(cls)
@@ -108,8 +110,8 @@ class AnnotatedArray(np.ndarray):
                 PhysicsArrayWarning,
             )
             return
-        val = np.array([a.get(name) for a in self.annotations])
-        if np.all([val == val[0]]):
+        val = [a.get(name) for a in self.annotations]
+        if all([v == val[0] for v in val[1:]]):
             return val[0]
         return tuple(val)
 
@@ -227,7 +229,11 @@ class AnnotatedArray(np.ndarray):
             elif k is None:
                 dest += 1
             elif isinstance(k, slice):
-                res.annotations[dest] = self.annotations[source]
+                for key, val in self.annotations[source].items():
+                    if key in self._scales:
+                        res.annotations[dest][key] = val[k]
+                    else:
+                        res.annotations[dest][key] = val
                 dest += 1
                 source += 1
             elif k is Ellipsis:
@@ -236,14 +242,19 @@ class AnnotatedArray(np.ndarray):
                     dest += 1
                     source += 1
             else:
-                arr = np.asanyarray(k)
-                if nfancy == arr.ndim == 1:
-                    if consecutive_intfancy > 2:
-                        res.annotations[0] = self.annotations[source]
-                    else:
-                        res.annotations[dest] = self.annotations[source]
+                k = np.asanyarray(k)
+                ksq = arr.squeeze()
+                if ksq.ndim == 1:
+                    pos = (np.array(k.shape) == k.size).argmax()
+                    ann = self.annotations[source + pos] if k.dtype == bool else self.annotations[source]
+                    pos += int(consecutive_intfancy <= 2) * dest + fancy_ndim - k.ndim
+                    for key, val in ann.items():
+                        if key in self._scales:
+                            res.annotations[pos][key] = val[ksq]
+                        else:
+                            res.annotations[pos][key] = val
 
-                source += arr.ndim if arr.dtype == bool else 1
+                source += k.ndim if k.dtype == bool else 1
 
                 if consecutive_intfancy <= 2:
                     dest += fancy_ndim

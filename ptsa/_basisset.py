@@ -8,7 +8,7 @@ import numpy as np
 
 import ptsa.lattice as la
 import ptsa.special as sc
-from ptsa import config, misc
+from ptsa import config, cw, misc, pw, sw
 from ptsa._lattice import Lattice
 from ptsa._material import Material
 from ptsa.numpy import AnnotatedArray, AnnotatedArrayWarning
@@ -24,16 +24,12 @@ class BasisSet(OrderedSet, metaclass=abc.ABCMeta):
     _names = ()
 
     @abc.abstractmethod
-    def __call__(self):
+    def __call__(self, r, k0, poltype=None, material=None, modetype=None):
         raise NotImplementedError
 
     @classmethod
     @abc.abstractmethod
     def default(cls):
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def at(self, r, k0, poltype=None, material=None, modetype=None):
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -55,7 +51,7 @@ class BasisSet(OrderedSet, metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     def __str__(self):
-        return ",\n".join(f"{name}={i}" for name, i in zip(self._names, self()))
+        return ",\n".join(f"{name}={i}" for name, i in zip(self._names, self[()]))
 
     def __repr__(self):
         whitespace = "\n" + " " * (len(self.__class__.__name__) + 1)
@@ -64,108 +60,6 @@ class BasisSet(OrderedSet, metaclass=abc.ABCMeta):
 
     def __len__(self):
         return len(self.pol)
-
-
-class PhysicsArrayWarning(AnnotatedArrayWarning):
-    pass
-
-
-class PhysicsArray(AnnotatedArray):
-    def __new__(
-        cls,
-        arr,
-        k0=None,
-        basis=None,
-        poltype=None,
-        material=None,
-        modetype=None,
-        lattice=None,
-        kpar=None,
-    ):
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", PhysicsArrayWarning)
-            obj = super().__new__(cls, arr)
-        obj.k0 = k0
-        obj.basis = basis
-        obj.poltype = poltype
-        obj.material = material
-        obj.modetype = modetype
-        obj.lattice = lattice
-        obj.kpar = kpar
-        obj._check()
-        return obj
-
-    def _check(self):
-        self.k0
-        self.basis
-        self.poltype
-        self.material
-        self.modetype
-        self.lattice
-        self.kpar
-
-    def __array_finalize__(self, obj):
-        if obj is None:
-            return
-        super().__array_finalize__(obj)
-        self._check()
-
-    k0 = AnnotatedArray.register_property("k0", (int, float, np.floating, np.integer))
-    basis = AnnotatedArray.register_property("basis", BasisSet)
-    poltype = AnnotatedArray.register_property("poltype", str)
-    modetype = AnnotatedArray.register_property("modetype", str)
-    material = AnnotatedArray.register_property("material", Material)
-    lattice = AnnotatedArray.register_property("lattice", Lattice)
-    kpar = AnnotatedArray.register_property(
-        "kpar", (int, float, list, np.floating, np.integer, np.ndarray)
-    )
-
-    def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
-        inputs = [np.asanyarray(i) for i in inputs]
-        if np.any([i.ndim > 2 for i in inputs]):
-            inputs = [i.view(AnnotatedArray) for i in inputs]
-            return self.view(AnnotatedArray).__array_ufunc__(
-                ufunc, method, *inputs, **kwargs
-            )
-        return super().__array_ufunc__(ufunc, method, *inputs, **kwargs)
-
-    def __matmul__(self, other, *args, **kwargs):
-        other = np.asanyarray(other)
-        if other.ndim > 2:
-            return np.matmul(self.view(AnnotatedArray), other, *args, **kwargs)
-        res = super().__matmul__(other, *args, **kwargs)
-        if self.ndim == 2:
-            for name in (
-                "k0",
-                "basis",
-                "poltype",
-                "modetype",
-                "material",
-                "lattice",
-                "kpar",
-            ):
-                if getattr(self, name, None) is None:
-                    setattr(res, name, getattr(other, name, None))
-        return res
-
-    def __rmatmul__(self, other, *args, **kwargs):
-        other = np.asanyarray(other)
-        if other.ndim > 2:
-            return np.matmul(other, self.view(AnnotatedArray), *args, **kwargs)
-        res = super().__rmatmul__(other, *args, **kwargs)
-        if self.ndim == 2:
-            for name in (
-                "k0",
-                "basis",
-                "poltype",
-                "modetype",
-                "material",
-                "lattice",
-                "kpar",
-            ):
-                if getattr(self, name, None) is None:
-                    setattr(res, name, getattr(other, name, None))
-        return res
 
 
 class SphericalWaveBasis(BasisSet):
@@ -223,15 +117,23 @@ class SphericalWaveBasis(BasisSet):
 
         self._positions = positions
         self._positions.flags.writeable = False
-        self.hints = {}
 
     @property
     def positions(self):
         return self._positions
 
     def __getitem__(self, idx):
+        if isinstance(idx, str):
+            idx = idx.lower().strip()
+            if idx == "plmp":
+                return self.pidx, self.l, self.m, self.pol
+            elif idx == "lmp":
+                return self.l, self.m, self.pol
+            elif idx == "lm":
+                return self.l, self.m
+            raise ValueError(f"unrecognized key '{idx}'")
         res = self.pidx[idx], self.l[idx], self.m[idx], self.pol[idx]
-        if isinstance(idx, int):
+        if isinstance(idx, int) or idx == ():
             return res
         return type(self)(zip(*res), self.positions)
 
@@ -246,17 +148,82 @@ class SphericalWaveBasis(BasisSet):
         )
 
     def __call__(self, key=None):
-        key = "plmp" if key is None else key.lower().strip()
-        if key == "plmp":
-            return self.pidx, self.l, self.m, self.pol
-        elif key == "lmp":
-            return self.l, self.m, self.pol
-        elif key == "lm":
-            return self.l, self.m
-        raise ValueError(f"unrecognized key '{key}'")
+        material = Material() if material is None else Material(material)
+        ks = k0 * material.nmp
+        poltype = config.POLTYPE if poltype is None else poltype
+        if r.ndim == 1:
+            r = r[None, :]
+        rsph = sc.car2sph(r) - self.positions
+        res = None
+        if poltype == "helicity":
+            if modetype == "regular":
+                res = sc.vsw_rA(
+                    self.l,
+                    self.m,
+                    ks[self.pol] * rsph[..., self.pidx, 0],
+                    rsph[..., self.pidx, 1],
+                    rsph[..., self.pidx, 2],
+                    self.pol,
+                )
+            elif modetype == "singular":
+                res = sc.vsw_A(
+                    self.l,
+                    self.m,
+                    ks[self.pol] * rsph[..., self.pidx, 0],
+                    rsph[..., self.pidx, 1],
+                    rsph[..., self.pidx, 2],
+                    self.pol,
+                )
+        elif poltype == "parity":
+            if modetype == "regular":
+                res = (
+                    self.pol[:, None]
+                    * sc.vsw_rM(
+                        self.l,
+                        self.m,
+                        ks[self.pol] * rsph[..., self.pidx, 0],
+                        rsph[..., self.pidx, 1],
+                        rsph[..., self.pidx, 2],
+                    )
+                    * (1 - self.pol[:, None])
+                    * sc.vsw_rN(
+                        self.l,
+                        self.m,
+                        ks[self.pol] * rsph[..., self.pidx, 0],
+                        rsph[..., self.pidx, 1],
+                        rsph[..., self.pidx, 2],
+                    )
+                )
+            elif modetype == "singular":
+                res = (
+                    self.pol[:, None]
+                    * sc.vsw_M(
+                        self.l,
+                        self.m,
+                        ks[self.pol] * rsph[..., self.pidx, 0],
+                        rsph[..., self.pidx, 1],
+                        rsph[..., self.pidx, 2],
+                    )
+                    * (1 - self.pol[:, None])
+                    * sc.vsw_N(
+                        self.l,
+                        self.m,
+                        ks[self.pol] * rsph[..., self.pidx, 0],
+                        rsph[..., self.pidx, 1],
+                        rsph[..., self.pidx, 2],
+                    )
+                )
+        if res is None:
+            raise ValueError("invalid parameters")
+        res = AnnotatedArray(sc.vsph2car(res, rsph[..., self.pidx, :]))
+        res.annotations[-1, "basis"] = self
+        res.annotations[-1, "material"] = material
+        res.annotations[-1, "poltype"] = poltype
+        res.annotations[-1, "modetype"] = modetype
+        return res
 
     @classmethod
-    def default(cls, lmax, nmax=1, **kwargs):
+    def default(cls, lmax, nmax=1, *args, **kwargs):
         """
         Default sortation of modes
 
@@ -277,10 +244,10 @@ class SphericalWaveBasis(BasisSet):
             for m in range(-l, l + 1)
             for p in range(1, -1, -1)
         ]
-        return cls(modes, **kwargs)
+        return cls(modes, *args, **kwargs)
 
     @classmethod
-    def ebcm(cls, lmax, nmax=1, mmax=-1, **kwargs):
+    def ebcm(cls, lmax, nmax=1, mmax=-1, *args, **kwargs):
         """
         Default sortation of modes
 
@@ -303,15 +270,16 @@ class SphericalWaveBasis(BasisSet):
             for l in range(max(abs(m), 1), lmax + 1)
             for p in range(1, -1, -1)
         ]
-        return cls(modes, **kwargs)
+        return cls(modes, *args, **kwargs)
 
     @staticmethod
     def defaultlmax(dim, nmax=1):
         """
         Default maximal degree
 
-        Given the dimension of the T-matrix return the estimated maximal value of `l`. This
-        is the inverse of defaultdim. A value of zero is allowed for empty T-matrices.
+        Given the dimension of the T-matrix return the estimated maximal value of `l`.
+        This is the inverse of defaultdim. A value of zero is allowed for empty
+        T-matrices.
 
         Args:
             dim (int): Dimension of the T-matrix, respectively number of modes
@@ -331,8 +299,8 @@ class SphericalWaveBasis(BasisSet):
         """
         Default dimension
 
-        Given the maximal value of `l` return the size of the corresponding T-matrix. This
-        is the inverse of defaultlmax. A value of zero is allowed.
+        Given the maximal value of `l` return the size of the corresponding T-matrix.
+        This is the inverse of defaultlmax. A value of zero is allowed.
 
         Args:
             lmax (int): Maximal value of `l`
@@ -347,14 +315,11 @@ class SphericalWaveBasis(BasisSet):
         return 2 * lmax * (lmax + 2) * nmax
 
     def _from_iterable(cls, it, positions=None):
-        hints = {}
         if isinstance(cls, SphericalWaveBasis):
             positions = cls.positions if positions is None else positions
-            hints = cls.hints
             cls = type(cls)
         obj = cls(it, positions=positions)
-        obj.hints = copy.deepcopy(hints)
-        return
+        return obj
 
     @property
     def isglobal(self):
@@ -364,13 +329,13 @@ class SphericalWaveBasis(BasisSet):
         basis = self if basis is None else basis
         if not isinstance(basis, SphericalWaveBasis):
             raise ValueError("can only rotate within SphericalWaveBasis")
-        where = np.logical_and(where, self.pidx[:, None] == basis.pidx)
+        where = np.logical_and(where, basis.pidx[:, None] == self.pidx)
         res = sw.rotate(
+            *(m[:, None] for m in basis["lmp"]),
+            *self["lmp"],
             phi,
             theta,
             psi,
-            *(m[:, None] for m in basis("lmp")),
-            *self("lmp"),
             where=where,
         )
         res[~where] = 0
@@ -380,7 +345,7 @@ class SphericalWaveBasis(BasisSet):
         basis = self if basis is None else basis
         material = Material() if material is None else Material(material)
         if not isinstance(basis, SphericalWaveBasis):
-            raise ValueError("can only rotate within SphericalWaveBasis")
+            raise ValueError("can only translate within SphericalWaveBasis")
         where = np.logical_and(where, self.pidx[:, None] == basis.pidx)
         r = np.asanyarray(r)
         if r.shape[-1] != 3:
@@ -391,8 +356,8 @@ class SphericalWaveBasis(BasisSet):
             ks[self.pol] * r[..., 0],
             r[..., 1],
             r[..., 2],
-            *(m[:, None] for m in basis("lmp")),
-            *self("lmp"),
+            *(m[:, None] for m in basis["lmp"]),
+            *self["lmp"],
             where=where,
         )
         res[~where] = 0
@@ -410,7 +375,7 @@ class SphericalWaveBasis(BasisSet):
         kpar=None,
         modetype=None,
         *,
-        where,
+        where=True,
     ):
         basis = self if basis is None else basis
         material = Material() if material is None else Material(material)
@@ -429,8 +394,8 @@ class SphericalWaveBasis(BasisSet):
             rs = sc.car2sph(basis.positions[:, None, :] - self.positions)
             if lattice is None:
                 res = sw.translate(
-                    *[m[:, None] for m in basis("lmp")],
-                    *self("lmp"),
+                    *[m[:, None] for m in basis["lmp"]],
+                    *self["lmp"],
                     ks[self.pol] * rs[:, :, 0],
                     rs[:, :, 1],
                     rs[:, :, 2],
@@ -450,8 +415,8 @@ class SphericalWaveBasis(BasisSet):
                 kpar,
                 lattice,
                 basis.positions,
-                basis("lmp"),
-                self("lmp"),
+                basis["lmp"],
+                self["lmp"],
                 self.positions,
                 poltype=poltype,
                 where=where,
@@ -471,8 +436,8 @@ class SphericalWaveBasis(BasisSet):
         elif isinstance(basis, CylindricalWaveBasis) and lattice is not None:
             where = np.logical_and(where, basis.pidx[:, None] == self.pidx)
             res = sw.periodic_to_cw(
-                *[m[:, None] for m in basis("kzmp")],
-                *self("lmp"),
+                *[m[:, None] for m in basis["kzmp"]],
+                *self["lmp"],
                 ks[self.pol],
                 lattice.vol,
                 poltype=None,
@@ -511,96 +476,21 @@ class SphericalWaveBasis(BasisSet):
             )
         raise ValueError("invalid basis or lattice definitions")
 
-        def at(self, r, k0, poltype=None, material=None, modetype=None):
-            material = Material() if material is None else Material(material)
-            ks = k0 * material.nmp
-            poltype = config.POLTYPE if poltype is None else poltype
-            if r.ndim == 1:
-                r = r[None, :]
-            rsph = sc.car2sph(r) - self.positions
-            res = None
-            if poltype == "helicity":
-                if modetype == "regular":
-                    res = sc.vsw_rA(
-                        self.l,
-                        self.m,
-                        ks[self.pol] * rsph[..., self.posidx, 0],
-                        rsph[..., self.posidx, 1],
-                        rsph[..., self.posidx, 2],
-                        self.pol,
-                    )
-                elif modetype == "singular":
-                    res = sc.vsw_A(
-                        self.l,
-                        self.m,
-                        ks[self.pol] * rsph[..., self.posidx, 0],
-                        rsph[..., self.posidx, 1],
-                        rsph[..., self.posidx, 2],
-                        self.pol,
-                    )
-            elif poltype == "parity":
-                if modetype == "regular":
-                    res = (
-                        self.pol[:, None]
-                        * sc.vsw_rM(
-                            self.l,
-                            self.m,
-                            ks[self.pol] * rsph[..., self.posidx, 0],
-                            rsph[..., self.posidx, 1],
-                            rsph[..., self.posidx, 2],
-                        )
-                        * (1 - self.pol[:, None])
-                        * sc.vsw_rN(
-                            self.l,
-                            self.m,
-                            ks[self.pol] * rsph[..., self.posidx, 0],
-                            rsph[..., self.posidx, 1],
-                            rsph[..., self.posidx, 2],
-                        )
-                    )
-                elif modetype == "singular":
-                    res = (
-                        self.pol[:, None]
-                        * sc.vsw_M(
-                            self.l,
-                            self.m,
-                            ks[self.pol] * rsph[..., self.posidx, 0],
-                            rsph[..., self.posidx, 1],
-                            rsph[..., self.posidx, 2],
-                        )
-                        * (1 - self.pol[:, None])
-                        * sc.vsw_N(
-                            self.l,
-                            self.m,
-                            ks[self.pol] * rsph[..., self.posidx, 0],
-                            rsph[..., self.posidx, 1],
-                            rsph[..., self.posidx, 2],
-                        )
-                    )
-            if res is None:
-                raise ValueError("invalid parameters")
-            res = AnnotatedArray(sc.vsph2car(res, rsph[..., self.posidx, :]))
-            res.annotations[-1, "basis"] = self
-            res.annotations[-1, "material"] = material
-            res.annotations[-1, "poltype"] = poltype
-            res.annotations[-1, "modetype"] = modetype
-            return res
-
-        def basischange(self, basis=None, poltype=None, *, where=True):
-            basis = self if basis is None else basis
-            poltype = config.POLTYPE if poltype is None else poltype
-            if poltye == "helicity":
-                poltype = ("helicity", "parity")
-            elif poltype == "parity":
-                poltype = ("parity", "helicity")
-            if poltype != ("helicity", "parity") and poltype != ("parity", "helicity"):
-                raise ValueError("todo")
-            res = np.logical_and(
-                np.logical_and(basis.l[:, None] == self.l, basis.m[:, None] == self.m),
-                basis.posidx[:, None] == self.posidx,
-            )
-            res[np.logical_and(res, basis.pol[:, None] == self.pol)] = -1
-            return PhysicsArray(res, basis=(basis, self), poltype=poltype)
+    def basischange(self, basis=None, poltype=None, *, where=True):
+        basis = self if basis is None else basis
+        poltype = config.POLTYPE if poltype is None else poltype
+        if poltye == "helicity":
+            poltype = ("helicity", "parity")
+        elif poltype == "parity":
+            poltype = ("parity", "helicity")
+        if poltype != ("helicity", "parity") and poltype != ("parity", "helicity"):
+            raise ValueError("todo")
+        res = np.logical_and(
+            np.logical_and(basis.l[:, None] == self.l, basis.m[:, None] == self.m),
+            basis.pidx[:, None] == self.pidx,
+        )
+        res[np.logical_and(res, basis.pol[:, None] == self.pol)] = -1
+        return PhysicsArray(res, basis=(basis, self), poltype=poltype)
 
 
 class CylindricalWaveBasis(BasisSet):
@@ -665,7 +555,6 @@ class CylindricalWaveBasis(BasisSet):
 
         self._positions = positions
         self._positions.flags.writeable = False
-        self.hints = {}
 
     @property
     def positions(self):
@@ -702,8 +591,8 @@ class CylindricalWaveBasis(BasisSet):
         """
         Default dimension
 
-        Given the maximal value of `l` return the size of the corresponding T-matrix. This
-        is the inverse of defaultmmax. A value of zero is allowed.
+        Given the maximal value of `l` return the size of the corresponding T-matrix.
+        This is the inverse of defaultmmax. A value of zero is allowed.
 
         Args:
             nkz (int): Number of z components of the wave
@@ -722,8 +611,9 @@ class CylindricalWaveBasis(BasisSet):
         """
         Default maximal order
 
-        Given the dimension of the T-matrix return the estimated maximal value of `m`. This
-        is the inverse of defaultdim. A value of zero is allowed for empty T-matrices.
+        Given the dimension of the T-matrix return the estimated maximal value of `m`.
+        This is the inverse of defaultdim. A value of zero is allowed for empty
+        T-matrices.
 
         Args:
             dim (int): Dimension of the T-matrix, respectively number of modes
@@ -769,13 +659,10 @@ class CylindricalWaveBasis(BasisSet):
         return cls(modes, **kwargs)
 
     def _from_iterable(cls, it, positions=None):
-        hints = {}
         if isinstance(cls, CylindricalWaveBasis):
             positions = cls.positions if positions is None else positions
-            hints = cls.hints
             cls = type(cls)
         obj = cls(it, positions=positions)
-        obj.hints = copy.deepcopy(hints)
         return obj
 
 
@@ -811,8 +698,6 @@ class PlaneWaveBasis(BasisSet):
             raise ValueError("polarizations must be integer")
         if np.any(self.pol > 1) or np.any(self.pol < 0):
             raise ValueError("polarization must be '0' or '1'")
-
-        self.hints = {}
 
     def __getitem__(self, idx):
         res = tuple((i[idx] for i in (self.kx, self.ky, self.kz, self.pol)))
@@ -1032,3 +917,129 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
     @classmethod
     def diffr_orders(kpar, lattice, bmax):
         raise NotImplementedError
+
+
+class PhysicsArrayWarning(AnnotatedArrayWarning):
+    pass
+
+
+class PhysicsArray(AnnotatedArray):
+    _scales = {"basis"}
+
+    def __new__(
+        cls,
+        arr,
+        k0=None,
+        basis=None,
+        poltype=None,
+        material=None,
+        modetype=None,
+        lattice=None,
+        kpar=None,
+    ):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", PhysicsArrayWarning)
+            obj = super().__new__(cls, arr)
+        obj.k0 = k0
+        obj.basis = basis
+        obj.poltype = poltype
+        obj.material = material
+        obj.modetype = modetype
+        obj.lattice = lattice
+        obj.kpar = kpar
+        obj._get_basis_hints()
+        obj._check()
+        return obj
+
+    def index(self, item):
+        if len(item) == 3:
+            item = (0,) + item
+        return super().index(item)
+
+    def indices(self, basis):
+        return [self.index(i) for i in basis]
+
+    def _get_basis_hints(self):
+        pass
+
+    def _check(self):
+        self.k0
+        self.basis
+        self.poltype
+        self.material
+        self.modetype
+        self.lattice
+        self.kpar
+
+    def __array_finalize__(self, obj):
+        if obj is None:
+            return
+        super().__array_finalize__(obj)
+        self._check()
+
+    k0 = AnnotatedArray.register_property("k0", (int, float, np.floating, np.integer))
+    basis = AnnotatedArray.register_property("basis", BasisSet)
+    poltype = AnnotatedArray.register_property("poltype", str)
+    modetype = AnnotatedArray.register_property("modetype", str)
+    material = AnnotatedArray.register_property("material", Material)
+    lattice = AnnotatedArray.register_property("lattice", Lattice)
+    kpar = AnnotatedArray.register_property(
+        "kpar", (int, float, list, np.floating, np.integer, np.ndarray)
+    )
+
+    def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+        inputs = [np.asanyarray(i) for i in inputs]
+        if np.any([i.ndim > 2 for i in inputs]):
+            inputs = [i.view(AnnotatedArray) for i in inputs]
+            return self.view(AnnotatedArray).__array_ufunc__(
+                ufunc, method, *inputs, **kwargs
+            )
+        return super().__array_ufunc__(ufunc, method, *inputs, **kwargs)
+
+    def __matmul__(self, other, *args, **kwargs):
+        other = np.asanyarray(other)
+        # if other.ndim > 2:
+        #     return np.matmul(self.view(AnnotatedArray), other, *args, **kwargs)
+        res = super().__matmul__(other, *args, **kwargs)
+        other_ann = getattr(other, "annotations", [{}])
+        other_ndim = np.ndim(other)
+        for name in (
+            "k0",
+            "poltype",
+            "modetype",
+            "material",
+            "lattice",
+            "kpar",
+        ):
+            if self.ndim > 1 and self.annotations[-1].get(name) is None:
+                if other_ndim == 1:
+                    res.annotations[-1] = other_ann[-1].get(name)
+                else:
+                    res.annotations[-2] = other_ann[-2].get(name)
+            if other_ndim > 1 and other_ann[-2].get(name) is None:
+                res.annotations[-1] = self.annotations[-1].get(name)
+        return res
+
+    def __rmatmul__(self, other, *args, **kwargs):
+        other = np.asanyarray(other)
+        # if other.ndim > 2:
+        #     return np.matmul(other, self.view(AnnotatedArray), *args, **kwargs)
+        res = super().__rmatmul__(other, *args, **kwargs)
+        other_ann = getattr(other, "annotations", [{}])
+        other_ndim = np.ndim(other)
+        for name in (
+            "k0",
+            "poltype",
+            "modetype",
+            "material",
+            "lattice",
+            "kpar",
+        ):
+            if other_ndim > 1 and othe_ann[-1].get(name) is None:
+                if self.ndim == 1:
+                    res.annotations[-1] = self.annotations[-1].get(name)
+                else:
+                    res.annotations[-2] = self.annotations[-2].get(name)
+            if self.ndim > 1 and self.annotations[-2].get(name) is None:
+                res.annotations[-1] = other_ann[-1].get(name)
+        return res

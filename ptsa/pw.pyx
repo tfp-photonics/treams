@@ -585,7 +585,7 @@ cdef void _loop_yz_D(char **args, np.npy_intp *dims, np.npy_intp *steps, void *d
         ip2 += steps[2]
         ip3 += steps[3]
         ip4 += steps[4]
-        op0 += steps[85
+        op0 += steps[8]
 
 
 cdef np.PyUFuncGenericFunction ufunc_yz_loops[2]
