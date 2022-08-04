@@ -1,12 +1,10 @@
 import abc
-import collections
 import copy
 import warnings
 from collections.abc import Sequence, Set
 
 import numpy as np
 
-import ptsa.lattice as la
 import ptsa.special as sc
 from ptsa import config, cw, misc, pw, sw
 from ptsa._lattice import Lattice
@@ -1278,7 +1276,7 @@ class PhysicsArray(AnnotatedArray):
             "lattice",
             "kpar",
         ):
-            if other_ndim > 1 and othe_ann[-1].get(name) is None:
+            if other_ndim > 1 and other_ann[-1].get(name) is None:
                 if self.ndim == 1:
                     res.annotations[-1] = self.annotations[-1].get(name)
                 else:
