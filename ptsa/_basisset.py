@@ -70,7 +70,7 @@ class SphericalWaveBasis(BasisSet):
         positions = whitespace + "positions=" + ", ".join(str(self.positions).split())
         return super().__repr__()[:-1] + positions + ")"
 
-    def __init__(self, modes, positions=None, poltype=None):
+    def __init__(self, modes, positions=None):
         tmp = []
         if isinstance(modes, np.ndarray):
             modes = modes.tolist()
@@ -147,13 +147,13 @@ class SphericalWaveBasis(BasisSet):
             and np.array_equal(self.positions, other.positions)
         )
 
-    def __call__(self, key=None):
+    def __call__(self, r, k0, poltype=None, material=None, modetype=None):
         material = Material() if material is None else Material(material)
         ks = k0 * material.nmp
         poltype = config.POLTYPE if poltype is None else poltype
         if r.ndim == 1:
             r = r[None, :]
-        rsph = sc.car2sph(r) - self.positions
+        rsph = sc.car2sph(r - self.positions)
         res = None
         if poltype == "helicity":
             if modetype == "regular":
@@ -338,7 +338,7 @@ class SphericalWaveBasis(BasisSet):
             psi,
             where=where,
         )
-        res[~where] = 0
+        res[np.logical_not(where)] = 0
         return PhysicsArray(res, basis=(basis, self))
 
     def translate(self, k0, r, basis=None, poltype=None, material=None, *, where=True):
@@ -346,21 +346,21 @@ class SphericalWaveBasis(BasisSet):
         material = Material() if material is None else Material(material)
         if not isinstance(basis, SphericalWaveBasis):
             raise ValueError("can only translate within SphericalWaveBasis")
-        where = np.logical_and(where, self.pidx[:, None] == basis.pidx)
+        where = np.logical_and(where, basis.pidx[:, None] == self.pidx)
         r = np.asanyarray(r)
         if r.shape[-1] != 3:
             raise ValueError(f"invalid shape at dimension {r.ndim - 1}: {r.shape[-1]}")
         ks = k0 * material.nmp
         r = sc.car2sph(r)
         res = sw.translate(
+            *(m[:, None] for m in basis["lmp"]),
+            *self["lmp"],
             ks[self.pol] * r[..., 0],
             r[..., 1],
             r[..., 2],
-            *(m[:, None] for m in basis["lmp"]),
-            *self["lmp"],
             where=where,
         )
-        res[~where] = 0
+        res[np.logical_not(where)] = 0
         return PhysicsArray(
             res, k0=k0, basis=(basis, self), poltype=poltype, material=material
         )
@@ -403,7 +403,7 @@ class SphericalWaveBasis(BasisSet):
                     singular=modetype == "singular",
                     where=where,
                 )
-                res[~where] = 0
+                res[np.logical_not(where)] = 0
                 res = PhysicsArray(
                     res, k0=k0, basis=(basis, self), poltype=poltype, material=material
                 )
@@ -421,7 +421,7 @@ class SphericalWaveBasis(BasisSet):
                 poltype=poltype,
                 where=where,
             )
-            res[~where] = 0
+            res[np.logical_not(where)] = 0
             return PhysicsArray(
                 res,
                 k0=k0,
@@ -443,7 +443,7 @@ class SphericalWaveBasis(BasisSet):
                 poltype=None,
                 where=where,
             )
-            res[~where] = 0
+            res[np.logical_not(where)] = 0
             return PhysicsArray(
                 res,
                 k0=k0,
@@ -464,7 +464,7 @@ class SphericalWaveBasis(BasisSet):
                 poltype=poltype,
                 where=where,
             )
-            res[~where] = 0
+            res[np.logical_not(where)] = 0
             return PhysicsArray(
                 res,
                 k0=k0,
@@ -497,14 +497,9 @@ class CylindricalWaveBasis(BasisSet):
     _names = ("pidx", "kz", "m", "pol")
 
     def __repr__(self):
-        positions = (
-            ",\n"
-            + " " * (len(self.__class__.__name__) + 1)
-            + "positions="
-            + ", ".join(str(self.positions).split())
-            + ")"
-        )
-        return super().__repr__()[:-1] + positions
+        whitespace = ",\n" + " " * (len(self.__class__.__name__) + 1)
+        positions = whitespace + "positions=" + ", ".join(str(self.positions).split())
+        return super().__repr__()[:-1] + positions + ")"
 
     @property
     def isglobal(self):
@@ -533,19 +528,17 @@ class CylindricalWaveBasis(BasisSet):
 
         if positions is None:
             positions = np.zeros((1, 3))
+        positions = np.array(positions)
         if positions.ndim == 1:
             positions = positions[None, :]
         if positions.ndim != 2 or positions.shape[1] != 3:
             raise ValueError(f"invalid shape of positions {positions.shape}")
 
-        pidx, kz, m, pol = [np.array(i) for i in (pidx, kz, m, pol)]
-        for i in (pidx, kz, m, pol):
-            i.flags.writeable = False
-            if i.ndim > 1:
-                raise ValueError("invalid shape of parameters")
         self.pidx, self.m, self.pol = [np.array(i, int) for i in (pidx, m, pol)]
         self.kz = np.array(kz, float)
+        self.kz.writeable = False
         for i, j in ((self.pidx, pidx), (self.m, m), (self.pol, pol)):
+            i.flags.writeable = False
             if np.any(i != j):
                 raise ValueError("parameters must be integer")
         if np.any(self.pol > 1) or np.any(self.pol < 0):
@@ -561,13 +554,22 @@ class CylindricalWaveBasis(BasisSet):
         return self._positions
 
     def __getitem__(self, idx):
+        if isinstance(idx, str):
+            idx = idx.lower().strip()
+            if idx == "pkzmp":
+                return self.pidx, self.kz, self.m, self.pol
+            elif idx == "kzmp":
+                return self.kz, self.m, self.pol
+            elif idx == "kzm":
+                return self.kz, self.m
+            raise ValueError(f"unrecognized key '{idx}'")
         res = self.pidx[idx], self.kz[idx], self.m[idx], self.pol[idx]
-        if isinstance(idx, int):
+        if isinstance(idx, int) or idx == ():
             return res
-        return type(self)(*res, self.positions)
+        return type(self)(zip(*res), self.positions)
 
     def __eq__(self, other):
-        return (
+        return self is other or (
             other is not None
             and np.array_equal(self.pidx, other.pidx)
             and np.array_equal(self.kz, other.kz)
@@ -576,15 +578,86 @@ class CylindricalWaveBasis(BasisSet):
             and np.array_equal(self.positions, other.positions)
         )
 
-    def __call__(self, key=None):
-        key = "pkzmp" if key is None else key.lower().strip()
-        if key == "pkzmp":
-            return self.pidx, self.kz, self.m, self.pol
-        elif key == "kzmp":
-            return self.kz, self.m, self.pol
-        elif key == "kzm":
-            return self.kz, self.m
-        raise ValueError(f"unrecognized key '{key}'")
+    def __call__(self, r, k0, poltype=None, material=None, modetype=None):
+        material = Material() if material is None else Material(material)
+        ks = (k0 * material.nmp)[self.pol]
+        krhos = np.sqrt(ks * ks - self.kz * self.kz)
+        krhos[krhos.imag < 0] = -krhos[krhos.imag < 0]
+        poltype = config.POLTYPE if poltype is None else poltype
+        if r.ndim == 1:
+            r = r[None, :]
+        rcyl = sc.car2cyl(r - self.positions)
+        res = None
+        if poltype == "helicity":
+            if modetype == "regular":
+                res = sc.vsw_rA(
+                    self.kz,
+                    self.m,
+                    krhos * rcyl[..., self.pidx, 0],
+                    rcyl[..., self.pidx, 1],
+                    rcyl[..., self.pidx, 2],
+                    ks,
+                    self.pol,
+                )
+            elif modetype == "singular":
+                res = sc.vsw_A(
+                    self.kz,
+                    self.m,
+                    krhos * rcyl[..., self.pidx, 0],
+                    rcyl[..., self.pidx, 1],
+                    rcyl[..., self.pidx, 2],
+                    ks,
+                    self.pol,
+                )
+        elif poltype == "parity":
+            if modetype == "regular":
+                res = (
+                    self.pol[:, None]
+                    * sc.vsw_rM(
+                        self.kz,
+                        self.m,
+                        krhos * rcyl[..., self.pidx, 0],
+                        rcyl[..., self.pidx, 1],
+                        rcyl[..., self.pidx, 2],
+                    )
+                    * (1 - self.pol[:, None])
+                    * sc.vsw_rN(
+                        self.kz,
+                        self.m,
+                        krhos * rcyl[..., self.pidx, 0],
+                        rcyl[..., self.pidx, 1],
+                        rcyl[..., self.pidx, 2],
+                        ks,
+                    )
+                )
+            elif modetype == "singular":
+                res = (
+                    self.pol[:, None]
+                    * sc.vsw_M(
+                        self.kz,
+                        self.m,
+                        krhos * rcyl[..., self.pidx, 0],
+                        rcyl[..., self.pidx, 1],
+                        rcyl[..., self.pidx, 2],
+                    )
+                    * (1 - self.pol[:, None])
+                    * sc.vsw_N(
+                        self.kz,
+                        self.m,
+                        krhos * rcyl[..., self.pidx, 0],
+                        rcyl[..., self.pidx, 1],
+                        rcyl[..., self.pidx, 2],
+                        ks,
+                    )
+                )
+        if res is None:
+            raise ValueError("invalid parameters")
+        res = AnnotatedArray(sc.vcyl2car(res, rsph[..., self.pidx, :]))
+        res.annotations[-1, "basis"] = self
+        res.annotations[-1, "material"] = material
+        res.annotations[-1, "poltype"] = poltype
+        res.annotations[-1, "modetype"] = modetype
+        return res
 
     @staticmethod
     def defaultdim(nkz, mmax, nmax=1):
@@ -666,8 +739,178 @@ class CylindricalWaveBasis(BasisSet):
         return obj
 
 
+    def rotate(self, phi, basis=None, *, where=True):
+        basis = self if basis is None else basis
+        if not isinstance(basis, CylindricalWaveBasis):
+            raise ValueError("can only rotate within CylindricalWaveBasis")
+        where = np.logical_and(where, basis.pidx[:, None] == self.pidx)
+        res = cw.rotate(
+            *(m[:, None] for m in basis["kzmp"]),
+            *self["kzmp"],
+            phi,
+            where=where,
+        )
+        res[np.logical_not(where)] = 0
+        return PhysicsArray(res, basis=(basis, self))
+
+    def translate(self, k0, r, basis=None, poltype=None, material=None, *, where=True):
+        basis = self if basis is None else basis
+        material = Material() if material is None else Material(material)
+        if not isinstance(basis, CylindricalWaveBasis):
+            raise ValueError("can only translate within CylindricalWaveBasis")
+        where = np.logical_and(where, basis.pidx[:, None] == self.pidx)
+        r = np.asanyarray(r)
+        if r.shape[-1] != 3:
+            raise ValueError(f"invalid shape at dimension {r.ndim - 1}: {r.shape[-1]}")
+        ks = (k0 * material.nmp)[self.pol]
+        krhos = np.sqrt(ks * ks - self.kz * self.kz)
+        krhos[krhos.imag < 0] = -krhos[krhos.imag < 0]
+        r = sc.car2cyl(r)
+        res = cw.translate(
+            *(m[:, None] for m in basis["kzmp"]),
+            *self["kzmp"],
+            krhos * r[..., 0],
+            r[..., 1],
+            r[..., 2],
+            where=where,
+        )
+        res[np.logical_not(where)] = 0
+        return PhysicsArray(
+            res, k0=k0, basis=(basis, self), poltype=poltype, material=material
+        )
+
+    def expandin(
+        self,
+        k0,
+        basis=None,
+        poltype=None,
+        material=None,
+        lattice=None,
+        kpar=None,
+        modetype=None,
+        *,
+        where=True,
+    ):
+        basis = self if basis is None else basis
+        material = Material() if material is None else Material(material)
+        if lattice is not None:
+            lattice = Lattice(lattice)
+            kpar = np.zeros(lattice.dim) if kpar is None else kpar
+            if len(kpar) != lattice.dim:
+                raise ValueError("incompatible dimensions of 'lattice' and 'kpar'")
+        elif kpar is not None:
+            raise ValueError("missing definition for 'lattice'")
+        if modetype not in (None, "same", "regular", "singular"):
+            raise ValueError(f"invalid mode '{mode}'")
+
+
+        ks = (k0 * material.nmp)[self.pol]
+        krhos = np.sqrt(ks * ks - self.kz * self.kz)
+        krhos[krhos.imag < 0] = -krhos[krhos.imag < 0]
+        if isinstance(basis, CylindricalWaveBasis):
+            rs = sc.car2cyl(basis.positions[:, None, :] - self.positions)
+            if lattice is None:
+                res = cw.translate(
+                    *(m[:, None] for m in basis["kzmp"]),
+                    *self["kzmp"],
+                    krhos * r[..., 0],
+                    r[..., 1],
+                    r[..., 2],
+                    poltype=poltype,
+                    singular=modetype == "singular",
+                    where=where,
+                )
+                res[np.logical_not(where)] = 0
+                res = PhysicsArray(
+                    res, k0=k0, basis=(basis, self), poltype=poltype, material=material
+                )
+                if modetype == "singular":
+                    res.modetype = ("regular", "singular")
+                return res
+            res = cw.translate_periodic(
+                ks,
+                kpar,
+                lattice,
+                basis.positions,
+                basis["lmp"],
+                self["lmp"],
+                self.positions,
+                poltype=poltype,
+                where=where,
+            )
+            res[np.logical_not(where)] = 0
+            return PhysicsArray(
+                res,
+                k0=k0,
+                basis=(basis, self),
+                poltype=poltype,
+                material=material,
+                lattice=lattice,
+                modetype=("regular", "singular"),
+                kpar=kpar,
+            )
+
+        elif isinstance(basis, SphericalWaveBasis) and lattice is None:
+            where = np.logical_and(where, basis.pidx[:, None] == self.pidx)
+            res = cw.to_sw(
+                *[m[:, None] for m in basis["lmp"]],
+                *self["kzmp"],
+                ks,
+                poltype=None,
+                where=where,
+            )
+            res[np.logical_not(where)] = 0
+            return PhysicsArray(
+                res,
+                k0=k0,
+                basis=(basis, self),
+                poltype=poltype,
+                material=material,
+            )
+        elif isinstance(basis, PlaneWaveBasis) and lattice is not None:
+            if isinstance(basis, PlaneWaveBasisPartial):
+                basis = basis.complete(k0)
+            basis.check_lattice(lattice, kpar)
+            res = sw.periodic_to_sw(
+                *[m[:, None] for m in basis],
+                *self["kzmp"],
+                lattice.volume,
+                poltype=poltype,
+                where=where,
+            )
+            res[np.logical_not(where)] = 0
+            return PhysicsArray(
+                res,
+                k0=k0,
+                basis=(basis, self),
+                poltype=poltype,
+                material=material,
+                lattice=lattice,
+                kpar=kpar,
+            )
+        raise ValueError("invalid basis or lattice definitions")
+
+    def basischange(self, basis=None, poltype=None, *, where=True):
+        basis = self if basis is None else basis
+        poltype = config.POLTYPE if poltype is None else poltype
+        if poltye == "helicity":
+            poltype = ("helicity", "parity")
+        elif poltype == "parity":
+            poltype = ("parity", "helicity")
+        if poltype != ("helicity", "parity") and poltype != ("parity", "helicity"):
+            raise ValueError("todo")
+        res = np.logical_and(
+            np.logical_and(basis.l[:, None] == self.l, basis.m[:, None] == self.m),
+            basis.pidx[:, None] == self.pidx,
+        )
+        res[np.logical_and(res, basis.pol[:, None] == self.pol)] = -1
+        return PhysicsArray(res, basis=(basis, self), poltype=poltype)
+
+
 class PlaneWaveBasis(BasisSet):
     _names = ("kx", "ky", "kz", "pol")
+
+    is_global = True
 
     def __init__(self, modes):
         if isinstance(modes, np.ndarray):
