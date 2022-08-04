@@ -252,7 +252,7 @@ _translate_rp = np.PyUFunc_FromFuncAndData(
 )
 
 
-def translate(lambda_, mu, pol, l, m, qol, kr, theta, phi, poltype=None, singular=True):
+def translate(lambda_, mu, pol, l, m, qol, kr, theta, phi, poltype=None, singular=True, *args, **kwargs):
     """
     translate(lambda_, mu, pol, l, m, qol, kr, theta, phi, helicity=True, singular=True)
 
@@ -287,12 +287,12 @@ def translate(lambda_, mu, pol, l, m, qol, kr, theta, phi, poltype=None, singula
     poltype = config.POLTYPE if poltype is None else poltype
     if poltype == "helicity":
         if singular:
-            return _translate_sh(lambda_, mu, pol, l, m, qol, kr, theta, phi)
-        return _translate_rh(lambda_, mu, pol, l, m, qol, kr, theta, phi)
+            return _translate_sh(lambda_, mu, pol, l, m, qol, kr, theta, phi, *args, **kwargs)
+        return _translate_rh(lambda_, mu, pol, l, m, qol, kr, theta, phi, *args, **kwargs)
     elif poltype == "parity":
         if singular:
-            return _translate_sp(lambda_, mu, pol, l, m, qol, kr, theta, phi)
-        return _translate_rp(lambda_, mu, pol, l, m, qol, kr, theta, phi)
+            return _translate_sp(lambda_, mu, pol, l, m, qol, kr, theta, phi, *args, **kwargs)
+        return _translate_rp(lambda_, mu, pol, l, m, qol, kr, theta, phi, *args, **kwargs)
     raise ValueError(f"invalid poltype '{poltype}'")
 
 

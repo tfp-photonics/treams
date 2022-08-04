@@ -668,7 +668,7 @@ _xyz_to_yzx_p = np.PyUFunc_FromFuncAndData(
 )
 
 
-def permute_xyz(kx, ky, kz, p, q, poltype=None, inverse=False):
+def permute_xyz(kx, ky, kz, p, q, poltype=None, inverse=False, *args, **kwargs):
     """
     permute_xyz(kxp, kyp, kzp, pp, kx, ky, kz, qol, helicity=True, inverse=False)
 
@@ -703,10 +703,10 @@ def permute_xyz(kx, ky, kz, p, q, poltype=None, inverse=False):
     poltype = config.POLTYPE if poltype is None else poltype
     if poltype == "helicity":
         if inverse:
-            return _xyz_to_yzx_h(kx, ky, kz, p, q)
-        return _xyz_to_zxy_h(kx, ky, kz, p, q)
+            return _xyz_to_yzx_h(kx, ky, kz, p, q, *args, **kwargs)
+        return _xyz_to_zxy_h(kx, ky, kz, p, q, *args, **kwargs)
     elif poltype == "helicity":
         if inverse:
-            return _xyz_to_yzx_p(kx, ky, kz, p, q)
-        return _xyz_to_zxy_p(kx, ky, kz, p, q)
+            return _xyz_to_yzx_p(kx, ky, kz, p, q, *args, **kwargs)
+        return _xyz_to_zxy_p(kx, ky, kz, p, q, *args, **kwargs)
     raise ValueError(f"invalid poltype {poltype}")
