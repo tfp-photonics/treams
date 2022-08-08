@@ -1,9 +1,20 @@
 from ptsa import misc
 
+import numpy as np
+
 class Material:
     def __init__(self, epsilon=1, mu=1, kappa=0):
         if isinstance(epsilon, Material):
             epsilon, mu, kappa = epsilon()
+        elif isinstance(epsilon, (tuple, list, np.ndarray)):
+            if len(epsilon) == 1:
+                epsilon = epsilon[0]
+            elif len(epsilon) == 2:
+                epsilon, mu = epsilon
+            elif len(epsilon) == 3:
+                epsilon, mu, kappa = epsilon
+            else:
+                raise ValueError("invalid material definition")
         self.epsilon = epsilon
         self.mu = mu
         self.kappa = kappa
