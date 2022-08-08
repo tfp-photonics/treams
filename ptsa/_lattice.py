@@ -150,7 +150,7 @@ class Lattice:
     def __bool__(self):
         return True
 
-    def __and__(self, other):
+    def __or__(self, other):
         if self == other:
             return Lattice(self)
 
@@ -216,3 +216,27 @@ class Lattice:
                 arr[:2, :2] = self[...]
                 return Lattice(arr)
         raise ValueError("cannot combine lattices")
+
+    def __and__(self, other):
+        if self == other:
+            return Lattice(self)
+
+        alignment = list({c for c in self.alignment if c in other.alignment})
+        if len(alignment) == 0:
+            raise ValueError("cannot combine lattices")
+        alignment = "".join(sorted(alignment))
+        if alignment == "xz":
+            alignment = "zx"
+
+        a, b = Lattice(self, alignment), Lattice(other, alignment)
+        if a == b:
+            return a
+        raise ValueError("cannot combine lattices")
+
+    def __le__(self, other):
+        try:
+            lat = Lattice(other, self.alignment)
+        except ValueError:
+            return False
+        return lat == self
+
