@@ -580,7 +580,7 @@ _translate_periodic_p = np.PyUFunc_FromFuncAndDataAndSignature(
 )
 
 
-def translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, poltype=None, eta=0, *, where=True):
+def translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, poltype=None, eta=0):
     """
     translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, helicity=True, eta=0)
 
@@ -658,13 +658,11 @@ def translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, poltype=None, 
             *in_[1:],
             dlms[out[0][:, None], in_[0], 0, :],
             dlms[out[0][:, None], in_[0], ks.shape[0] - 1, :],
-            where=where,
         )
     return _translate_periodic_p(
         *(o[:, None] for o in out[1:]),
         *in_[1:],
         dlms[out[0][:, None], in_[0], 0, :],
-        where=where,
     )
 
 
