@@ -15,9 +15,21 @@ class Material:
                 epsilon, mu, kappa = epsilon
             else:
                 raise ValueError("invalid material definition")
-        self.epsilon = epsilon
-        self.mu = mu
-        self.kappa = kappa
+        self.epsilon = _epsilon
+        self.mu = _mu
+        self.kappa = _kappa
+
+    @property
+    def epsilon(self):
+        return self._epsilon
+
+    @property
+    def mu(self):
+        return self._mu
+
+    @property
+    def kappa(self):
+        return self._kappa
 
     def __iter__(self):
         return iter((self.epsilon, self.mu, self.kappa))
@@ -76,3 +88,5 @@ class Material:
 
     def __repr__(self):
         return self.__class__.__name__ + str(self)
+
+vacuum = Material()

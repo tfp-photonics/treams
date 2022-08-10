@@ -137,6 +137,8 @@ class AnnotatedArray(np.ndarray):
 
     @staticmethod
     def register_property(name, vtype=object):
+        if vtype == tuple or (isinstance(vtype, tuple) and tuple in vtype):
+            raise ValueError("vtype `tuple` is not allowed")
         return property(
             lambda self: self._property_get(name),
             lambda self, val: self._property_set(name, val, vtype),

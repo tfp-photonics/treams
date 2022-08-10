@@ -18,6 +18,9 @@ class Lattice:
         if isinstance(arr, Lattice):
             self._alignment = arr.alignment if alignment is None else alignment
             self._lattice = arr._sublattice(self._alignment)[...]
+            self._reciprocal = (
+                2 * np.pi / self[...] if self.dim == 1 else la.reciprocal(self[...])
+            )
             return
 
         arr = np.array(arr, float)
@@ -78,11 +81,11 @@ class Lattice:
         )
 
     def __eq__(self, other):
-        return self is other or (
+        return other is not None and (self is other or (
             self.alignment == other.alignment
             and self.dim == other.dim
             and np.all(self[...] == other[...])
-        )
+        ))
 
     @property
     def dim(self):
@@ -114,7 +117,7 @@ class Lattice:
         key = key.lower()
         if self.dim == 1:
             if key == self.alignment:
-                return Lattice(self)
+                return Lattice(self[...], key)
             raise ValueError(f"sublattice with key '{key}' not availale")
         idx = []
         for c in key:
@@ -151,7 +154,7 @@ class Lattice:
         return True
 
     def __or__(self, other):
-        if self == other:
+        if other is None or self == other:
             return Lattice(self)
 
         alignment = list({c for lat in (self, other) for c in lat.alignment})
@@ -218,6 +221,8 @@ class Lattice:
         raise ValueError("cannot combine lattices")
 
     def __and__(self, other):
+        if other is None:
+            return None
         if self == other:
             return Lattice(self)
 
@@ -239,4 +244,10 @@ class Lattice:
         except ValueError:
             return False
         return lat == self
+
+    def isdisjoint(self, other):
+        for c in other.alignment:
+            if c in self.alignment:
+                return False
+        return True
 
