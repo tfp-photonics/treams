@@ -15,9 +15,9 @@ class Material:
                 epsilon, mu, kappa = epsilon
             else:
                 raise ValueError("invalid material definition")
-        self.epsilon = _epsilon
-        self.mu = _mu
-        self.kappa = _kappa
+        self._epsilon = epsilon
+        self._mu = mu
+        self._kappa = kappa
 
     @property
     def epsilon(self):

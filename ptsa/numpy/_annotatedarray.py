@@ -1,3 +1,5 @@
+"""Add annotations to numpy ndarrays"""
+
 import collections
 import itertools
 import warnings
@@ -6,10 +8,16 @@ import numpy as np
 
 
 class AnnotatedArrayWarning(UserWarning):
+    """Custom warning for AnnotatedArrays"""
     pass
 
 
 def _match(a, b):
+    """
+    _match(a, b)
+
+    Check if all common keys in two dictionaries have the same value.
+    """
     for key, val in a.items():
         if key in b and val != b[key]:
             return False
@@ -248,7 +256,11 @@ class AnnotatedArray(np.ndarray):
                 ksq = arr.squeeze()
                 if ksq.ndim == 1:
                     pos = (np.array(k.shape) == k.size).argmax()
-                    ann = self.annotations[source + pos] if k.dtype == bool else self.annotations[source]
+                    ann = (
+                        self.annotations[source + pos]
+                        if k.dtype == bool
+                        else self.annotations[source]
+                    )
                     pos += int(consecutive_intfancy <= 2) * dest + fancy_ndim - k.ndim
                     for key, val in ann.items():
                         if key in self._scales:
