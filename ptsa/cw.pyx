@@ -142,7 +142,7 @@ np.import_ufunc()
 cdef np.PyUFuncGenericFunction ufunc_translate_loops[2]
 cdef void *ufunc_translate_s_data[2]
 cdef void *ufunc_translate_r_data[2]
-cdef char ufunc_translate_types[2*10]
+cdef char ufunc_translate_types[2 * 10]
 
 ufunc_translate_loops[0] = <np.PyUFuncGenericFunction>_loop_D_dlldllddd
 ufunc_translate_loops[1] = <np.PyUFuncGenericFunction>_loop_D_dlldllDdd
@@ -408,7 +408,7 @@ cdef void _loop_periodic_D(char **args, np.npy_intp *dims, np.npy_intp *steps, v
 
 cdef np.PyUFuncGenericFunction ufunc_pw_loops[2]
 cdef void *ufunc_pw_data[2]
-cdef char ufunc_pw_types[2 * 8]
+cdef char ufunc_pw_types[2 * 9]
 
 ufunc_pw_loops[0] = <np.PyUFuncGenericFunction>_loop_periodic_d
 ufunc_pw_loops[1] = <np.PyUFuncGenericFunction>_loop_periodic_D
@@ -559,7 +559,7 @@ ufunc_sw_types[3] = <char>np.NPY_DOUBLE
 ufunc_sw_types[4] = <char>np.NPY_LONG
 ufunc_sw_types[5] = <char>np.NPY_LONG
 ufunc_sw_types[6] = <char>np.NPY_CDOUBLE
-ufunc_sw_types[9] = <char>np.NPY_CDOUBLE
+ufunc_sw_types[7] = <char>np.NPY_CDOUBLE
 ufunc_sw_data_h[0] = <void*>_cto_sw_h
 ufunc_sw_data_p[0] = <void*>_cto_sw_p
 

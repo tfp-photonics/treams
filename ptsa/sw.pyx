@@ -169,7 +169,7 @@ cdef void *ufunc_translate_sh_data[2]
 cdef void *ufunc_translate_rh_data[2]
 cdef void *ufunc_translate_sp_data[2]
 cdef void *ufunc_translate_rp_data[2]
-cdef char ufunc_translate_types[2*10]
+cdef char ufunc_translate_types[2 * 10]
 
 ufunc_translate_loops[0] = <np.PyUFuncGenericFunction>_loop_D_llllllddd
 ufunc_translate_loops[1] = <np.PyUFuncGenericFunction>_loop_D_llllllDdd

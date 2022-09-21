@@ -15,10 +15,6 @@ class TestPeriodicToPw:
         assert isclose(cw.periodic_to_pw(6, 0, 4, 1, 4, 3, 1, 2), 5e19+5e19j)
     def test_pol(self):
         assert cw.periodic_to_pw(6, 5j, 4, 1, 4, 3, 0, 2) == 0
-    def test_pos(self):
-        assert cw.periodic_to_pw(6, 5, 4, 1, 4, 3, 1, 2, 10, 20) == 0
-    def test_pos_complex(self):
-        assert cw.periodic_to_pw(6, 5j, 4, 1, 4, 3, 1, 2, 10, 20) == 0
 
 
 class TestRotate:
@@ -35,16 +31,14 @@ class TestToSw:
         assert cw.to_sw(4, 3, 1, 2, 2, 1, 5) == 0
     def test_h_pol(self):
         assert cw.to_sw(4, 3, 1, 2, 3, 0, 5) == 0
-    def test_h_pos(self):
-        assert cw.to_sw(4, 3, 1, 2, 3, 1, 5, 0, 1) == 0
     def test_p_same(self):
-        assert isclose(cw.to_sw(4, 3, 1, 2, 3, 1, 5, helicity=False), 1.063572272242522j)
+        assert isclose(cw.to_sw(4, 3, 1, 2, 3, 1, 5, poltype="parity"), 1.063572272242522j)
     def test_p_same_zero(self):
-        assert cw.to_sw(4, 3, 1, 2, 2, 1, 5, helicity=False) == 0
+        assert cw.to_sw(4, 3, 1, 2, 2, 1, 5, poltype="parity") == 0
     def test_p_opposite(self):
-        assert isclose(cw.to_sw(4, 3, 1, 2, 3, 0, 5, helicity=False), -3.545240907475074j)
+        assert isclose(cw.to_sw(4, 3, 1, 2, 3, 0, 5, poltype="parity"), -3.545240907475074j)
     def test_p_opposite_zero(self):
-        assert cw.to_sw(4, 3, 1, 2, 2, 0, 5, helicity=False) == 0
+        assert cw.to_sw(4, 3, 1, 2, 2, 0, 5, poltype="parity") == 0
 
 
 class TestTranslate:

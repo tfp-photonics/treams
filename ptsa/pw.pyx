@@ -356,23 +356,18 @@ cdef void _loop_cw_d(char **args, np.npy_intp *dims, np.npy_intp *steps, void *d
     cdef char *ip4 = args[4]
     cdef char *ip5 = args[5]
     cdef char *ip6 = args[6]
-    cdef char *ip7 = args[7]
-    cdef char *ip8 = args[8]
-    cdef char *op0 = args[9]
+    cdef char *op0 = args[7]
     cdef double complex ov0
     for i in range(n):
-        if <long>(<long*>ip7)[0] == <long>(<long*>ip8)[0]:
-            ov0 = (<double complex(*)(double, long, long, double, double, double, long) nogil>func)(
-                <double>(<double*>ip0)[0],
-                <long>(<long*>ip1)[0],
-                <long>(<long*>ip2)[0],
-                <double>(<double*>ip3)[0],
-                <double>(<double*>ip4)[0],
-                <double>(<double*>ip5)[0],
-                <long>(<long*>ip6)[0],
-            )
-        else:
-            ov0 = 0
+        ov0 = (<double complex(*)(double, long, long, double, double, double, long) nogil>func)(
+            <double>(<double*>ip0)[0],
+            <long>(<long*>ip1)[0],
+            <long>(<long*>ip2)[0],
+            <double>(<double*>ip3)[0],
+            <double>(<double*>ip4)[0],
+            <double>(<double*>ip5)[0],
+            <long>(<long*>ip6)[0],
+        )
         (<double complex*>op0)[0] = <double complex>ov0
         ip0 += steps[0]
         ip1 += steps[1]
@@ -381,9 +376,7 @@ cdef void _loop_cw_d(char **args, np.npy_intp *dims, np.npy_intp *steps, void *d
         ip4 += steps[4]
         ip5 += steps[5]
         ip6 += steps[6]
-        ip7 += steps[7]
-        ip8 += steps[8]
-        op0 += steps[9]
+        op0 += steps[7]
 
 
 cdef void _loop_cw_D(char **args, np.npy_intp *dims, np.npy_intp *steps, void *data) nogil:
@@ -585,7 +578,7 @@ cdef void _loop_yz_D(char **args, np.npy_intp *dims, np.npy_intp *steps, void *d
         ip2 += steps[2]
         ip3 += steps[3]
         ip4 += steps[4]
-        op0 += steps[8]
+        op0 += steps[5]
 
 
 cdef np.PyUFuncGenericFunction ufunc_yz_loops[2]
@@ -705,7 +698,7 @@ def permute_xyz(kx, ky, kz, p, q, poltype=None, inverse=False, *args, **kwargs):
         if inverse:
             return _xyz_to_yzx_h(kx, ky, kz, p, q, *args, **kwargs)
         return _xyz_to_zxy_h(kx, ky, kz, p, q, *args, **kwargs)
-    elif poltype == "helicity":
+    elif poltype == "parity":
         if inverse:
             return _xyz_to_yzx_p(kx, ky, kz, p, q, *args, **kwargs)
         return _xyz_to_zxy_p(kx, ky, kz, p, q, *args, **kwargs)
