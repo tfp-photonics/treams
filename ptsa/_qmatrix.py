@@ -431,7 +431,7 @@ class QMatrix:
         if check_modes and (
             np.any(self.kx != qmat.kx)
             or np.any(self.ky != qmat.ky)
-            or np.any(self.kz != qmat.kz)
+            or np.any(self.pol != qmat.pol)
         ):
             raise ValueError("modes do not match")
         dim = self.q.shape[2]
