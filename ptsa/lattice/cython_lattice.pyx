@@ -98,6 +98,79 @@ cdef double complex lsumsw3d(long l, long m, number_t k, double *kpar, double *a
     return _esum.lsumsw3d(l, m, k, kpar, a, r, eta)
 
 
+cpdef double complex realsumcw1d(long l, number_t k, double kpar, double a, double r, number_t eta) nogil:
+    """
+    realsumcw1d(l, k, kpar, a, r, eta)
+
+    See the documentation of :func:`ptsa.lattice.realsumcw1d`
+    """
+    return _esum.realsumcw1d(l, k, kpar, a, r, eta)
+cdef double complex realsumcw1d_shift(long l, number_t k, double kpar, double a, double *r, number_t eta) nogil:
+    """See the documentation of :func:`ptsa.lattice.realsumcw1d_shift`"""
+    return _esum.realsumcw1d_shift(l, k, kpar, a, r, eta)
+cdef double complex realsumcw2d(long l, number_t k, double *kpar, double *a, double *r, number_t eta) nogil:
+    """See the documentation of :func:`ptsa.lattice.realsumcw2d`"""
+    return _esum.realsumcw2d(l, k, kpar, a, r, eta)
+cpdef double complex realsumsw1d(long l, number_t k, double kpar, double a, double r, number_t eta) nogil:
+    """
+    realsumsw1d(l, k, kpar, a, r, eta)
+
+    See the documentation of :func:`ptsa.lattice.realsumsw1d`
+    """
+    return _esum.realsumsw1d(l, k, kpar, a, r, eta)
+cdef double complex realsumsw1d_shift(long l, long m, number_t k, double kpar, double a, double *r, number_t eta) nogil:
+    """See the documentation of :func:`ptsa.lattice.realsumsw1d_shift`"""
+    return _esum.realsumsw1d_shift(l, m, k, kpar, a, r, eta)
+cdef double complex realsumsw2d(long l, long m, number_t k, double *kpar, double *a, double *r, number_t eta) nogil:
+    """See the documentation of :func:`ptsa.lattice.realsumsw2d`"""
+    return _esum.realsumsw2d(l, m, k, kpar, a, r, eta)
+cdef double complex realsumsw2d_shift(long l, long m, number_t k, double *kpar, double *a, double *r, number_t eta) nogil:
+    """See the documentation of :func:`ptsa.lattice.realsumsw2d_shift`"""
+    return _esum.realsumsw2d_shift(l, m, k, kpar, a, r, eta)
+cdef double complex realsumsw3d(long l, long m, number_t k, double *kpar, double *a, double *r, number_t eta) nogil:
+    """See the documentation of :func:`ptsa.lattice.realsumsw3d`"""
+    return _esum.realsumsw3d(l, m, k, kpar, a, r, eta)
+
+
+cpdef double complex recsumcw1d(long l, number_t k, double kpar, double a, double r, number_t eta) nogil:
+    """
+    recsumcw1d(l, k, kpar, a, r, eta)
+
+    See the documentation of :func:`ptsa.lattice.recsumcw1d`
+    """
+    return _esum.recsumcw1d(l, k, kpar, a, r, eta)
+cdef double complex recsumcw1d_shift(long l, number_t k, double kpar, double a, double *r, number_t eta) nogil:
+    """See the documentation of :func:`ptsa.lattice.recsumcw1d_shift`"""
+    return _esum.recsumcw1d_shift(l, k, kpar, a, r, eta)
+cdef double complex recsumcw2d(long l, number_t k, double *kpar, double *a, double *r, number_t eta) nogil:
+    """See the documentation of :func:`ptsa.lattice.recsumcw2d`"""
+    return _esum.recsumcw2d(l, k, kpar, a, r, eta)
+cpdef double complex recsumsw1d(long l, number_t k, double kpar, double a, double r, number_t eta) nogil:
+    """
+    recsumsw1d(l, k, kpar, a, r, eta)
+
+    See the documentation of :func:`ptsa.lattice.recsumsw1d`
+    """
+    return _esum.recsumsw1d(l, k, kpar, a, r, eta)
+cdef double complex recsumsw1d_shift(long l, long m, number_t k, double kpar, double a, double *r, number_t eta) nogil:
+    """See the documentation of :func:`ptsa.lattice.recsumsw1d_shift`"""
+    return _esum.recsumsw1d_shift(l, m, k, kpar, a, r, eta)
+cdef double complex recsumsw2d(long l, long m, number_t k, double *kpar, double *a, double *r, number_t eta) nogil:
+    """See the documentation of :func:`ptsa.lattice.recsumsw2d`"""
+    return _esum.recsumsw2d(l, m, k, kpar, a, r, eta)
+cdef double complex recsumsw2d_shift(long l, long m, number_t k, double *kpar, double *a, double *r, number_t eta) nogil:
+    """See the documentation of :func:`ptsa.lattice.recsumsw2d_shift`"""
+    return _esum.recsumsw2d_shift(l, m, k, kpar, a, r, eta)
+cdef double complex recsumsw3d(long l, long m, number_t k, double *kpar, double *a, double *r, number_t eta) nogil:
+    """See the documentation of :func:`ptsa.lattice.recsumsw3d`"""
+    return _esum.recsumsw3d(l, m, k, kpar, a, r, eta)
+
+
+cpdef double complex zero3d(double complex eta) nogil:
+    return _esum.zero3d(eta)
+cpdef double complex zero2d(double complex eta) nogil:
+    return _esum.zero2d(eta)
+
 cpdef double complex dsumcw1d(long l, number_t k, double kpar, double a, double r, long i) nogil:
     """
     dsumcw1d(l, k, kpar, a, r, i)

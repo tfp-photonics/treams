@@ -25,8 +25,26 @@ __all__ = [
     'lsumsw2d',
     'lsumsw2d_shift',
     'lsumsw3d',
+    'realsumcw1d',
+    'realsumcw1d_shift',
+    'realsumcw2d',
+    'realsumsw1d',
+    'realsumsw1d_shift',
+    'realsumsw2d',
+    'realsumsw2d_shift',
+    'realsumsw3d',
+    'recsumcw1d',
+    'recsumcw1d_shift',
+    'recsumcw2d',
+    'recsumsw1d',
+    'recsumsw1d_shift',
+    'recsumsw2d',
+    'recsumsw2d_shift',
+    'recsumsw3d',
     'reciprocal',
     'volume',
+    'zero2d',
+    'zero3d',
 ]
 
 cdef void loop_volume_l(char **args, np.npy_intp *dims, np.npy_intp *steps, void *data) nogil:
@@ -973,13 +991,13 @@ reciprocal = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(i,i)->(i,i)',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_volume_loops[2]
-cdef void *gufunc_volume_ptr[2*2]
+cdef void *gufunc_volume_ptr[2 * 2]
 cdef void *gufunc_volume_data[2]
-cdef char gufunc_volume_types[2*2]
+cdef char gufunc_volume_types[2 * 2]
 
 gufunc_volume_loops[0] = <np.PyUFuncGenericFunction>loop_volume_l
 gufunc_volume_loops[1] = <np.PyUFuncGenericFunction>loop_volume_d
@@ -1020,14 +1038,16 @@ volume = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(i,i)->()',  # signature
-    )
+)
 
 area = volume
 
 
 cdef np.PyUFuncGenericFunction gufunc_lsumcw2d_loops[2]
 cdef void *gufunc_lsumcw2d_data[2]
-cdef char gufunc_lsumcw2d_types[2*7]
+cdef void *gufunc_realsumcw2d_data[2]
+cdef void *gufunc_recsumcw2d_data[2]
+cdef char gufunc_lsumcw2d_types[2 * 7]
 
 gufunc_lsumcw2d_loops[0] = <np.PyUFuncGenericFunction>loop_lsumcw2d_d
 gufunc_lsumcw2d_loops[1] = <np.PyUFuncGenericFunction>loop_lsumcw2d_D
@@ -1047,6 +1067,10 @@ gufunc_lsumcw2d_types[12] = <char>np.NPY_CDOUBLE
 gufunc_lsumcw2d_types[13] = <char>np.NPY_CDOUBLE
 gufunc_lsumcw2d_data[0] = <void*>_esum.lsumcw2d[double]
 gufunc_lsumcw2d_data[1] = <void*>_esum.lsumcw2d[double_complex]
+gufunc_realsumcw2d_data[0] = <void*>_esum.realsumcw2d[double]
+gufunc_realsumcw2d_data[1] = <void*>_esum.realsumcw2d[double_complex]
+gufunc_recsumcw2d_data[0] = <void*>_esum.recsumcw2d[double]
+gufunc_recsumcw2d_data[1] = <void*>_esum.recsumcw2d[double_complex]
 
 lsumcw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumcw2d_loops,
@@ -1091,12 +1115,43 @@ lsumcw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(2),(2,2),(2),()->()',  # signature
-    )
-
+)
+realsumcw2d = np.PyUFunc_FromFuncAndDataAndSignature(
+    gufunc_lsumcw2d_loops,
+    gufunc_realsumcw2d_data,
+    gufunc_lsumcw2d_types,
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'realsumcw2d',  # function name
+    r"""
+    realsumcw2d(l, k, kpar, a, r, eta)
+    """,  # docstring
+    0,  # unused
+    '(),(),(2),(2,2),(2),()->()',  # signature
+)
+recsumcw2d = np.PyUFunc_FromFuncAndDataAndSignature(
+    gufunc_lsumcw2d_loops,
+    gufunc_recsumcw2d_data,
+    gufunc_lsumcw2d_types,
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'recsumcw2d',  # function name
+    r"""
+    recsumcw2d(l, k, kpar, a, r, eta)
+    """,  # docstring
+    0,  # unused
+    '(),(),(2),(2,2),(2),()->()',  # signature
+)
 
 cdef np.PyUFuncGenericFunction gufunc_lsumsw3d_loops[2]
 cdef void *gufunc_lsumsw3d_data[2]
-cdef char gufunc_lsumsw3d_types[2*8]
+cdef void *gufunc_realsumsw3d_data[2]
+cdef void *gufunc_recsumsw3d_data[2]
+cdef char gufunc_lsumsw3d_types[2 * 8]
 
 gufunc_lsumsw3d_loops[0] = <np.PyUFuncGenericFunction>loop_lsumsw3d_d
 gufunc_lsumsw3d_loops[1] = <np.PyUFuncGenericFunction>loop_lsumsw3d_D
@@ -1118,6 +1173,10 @@ gufunc_lsumsw3d_types[14] = <char>np.NPY_CDOUBLE
 gufunc_lsumsw3d_types[15] = <char>np.NPY_CDOUBLE
 gufunc_lsumsw3d_data[0] = <void*>_esum.lsumsw3d[double]
 gufunc_lsumsw3d_data[1] = <void*>_esum.lsumsw3d[double_complex]
+gufunc_realsumsw3d_data[0] = <void*>_esum.realsumsw3d[double]
+gufunc_realsumsw3d_data[1] = <void*>_esum.realsumsw3d[double_complex]
+gufunc_recsumsw3d_data[0] = <void*>_esum.recsumsw3d[double]
+gufunc_recsumsw3d_data[1] = <void*>_esum.recsumsw3d[double_complex]
 
 lsumsw3d = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumsw3d_loops,
@@ -1163,12 +1222,44 @@ lsumsw3d = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(3),(3,3),(3),()->()',  # signature
-    )
+)
+realsumsw3d = np.PyUFunc_FromFuncAndDataAndSignature(
+    gufunc_lsumsw3d_loops,
+    gufunc_realsumsw3d_data,
+    gufunc_lsumsw3d_types,
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'realsumsw3d',  # function name
+    r"""
+    realsumsw3d(l, m, k, kpar, a, r, eta)
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(3),(3,3),(3),()->()',  # signature
+)
+recsumsw3d = np.PyUFunc_FromFuncAndDataAndSignature(
+    gufunc_lsumsw3d_loops,
+    gufunc_recsumsw3d_data,
+    gufunc_lsumsw3d_types,
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'recsumsw3d',  # function name
+    r"""
+    recsumsw3d(l, m, k, kpar, a, r, eta)
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(3),(3,3),(3),()->()',  # signature
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_lsumsw2d_loops[2]
 cdef void *gufunc_lsumsw2d_data[2]
-cdef char gufunc_lsumsw2d_types[2*8]
+cdef void *gufunc_realsumsw2d_data[2]
+cdef void *gufunc_recsumsw2d_data[2]
+cdef char gufunc_lsumsw2d_types[2 * 8]
 
 gufunc_lsumsw2d_loops[0] = <np.PyUFuncGenericFunction>loop_lsumsw2d_d
 gufunc_lsumsw2d_loops[1] = <np.PyUFuncGenericFunction>loop_lsumsw2d_D
@@ -1190,6 +1281,10 @@ gufunc_lsumsw2d_types[14] = <char>np.NPY_CDOUBLE
 gufunc_lsumsw2d_types[15] = <char>np.NPY_CDOUBLE
 gufunc_lsumsw2d_data[0] = <void*>_esum.lsumsw2d[double]
 gufunc_lsumsw2d_data[1] = <void*>_esum.lsumsw2d[double_complex]
+gufunc_realsumsw2d_data[0] = <void*>_esum.realsumsw2d[double]
+gufunc_realsumsw2d_data[1] = <void*>_esum.realsumsw2d[double_complex]
+gufunc_recsumsw2d_data[0] = <void*>_esum.recsumsw2d[double]
+gufunc_recsumsw2d_data[1] = <void*>_esum.recsumsw2d[double_complex]
 
 lsumsw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumsw2d_loops,
@@ -1235,12 +1330,44 @@ lsumsw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(2),(2,2),(2),()->()',  # signature
-    )
+)
+realsumsw2d = np.PyUFunc_FromFuncAndDataAndSignature(
+    gufunc_lsumsw2d_loops,
+    gufunc_realsumsw2d_data,
+    gufunc_lsumsw2d_types,
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'realsumsw2d',  # function name
+    r"""
+    realsumsw2d(l, m, k, kpar, a, r, eta)
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(2),(2,2),(2),()->()',  # signature
+)
+recsumsw2d = np.PyUFunc_FromFuncAndDataAndSignature(
+    gufunc_lsumsw2d_loops,
+    gufunc_recsumsw2d_data,
+    gufunc_lsumsw2d_types,
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'recsumsw2d',  # function name
+    r"""
+    recsumsw2d(l, m, k, kpar, a, r, eta)
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(2),(2,2),(2),()->()',  # signature
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_lsumsw2d_shift_loops[2]
 cdef void *gufunc_lsumsw2d_shift_data[2]
-cdef char gufunc_lsumsw2d_shift_types[2*8]
+cdef void *gufunc_realsumsw2d_shift_data[2]
+cdef void *gufunc_recsumsw2d_shift_data[2]
+cdef char gufunc_lsumsw2d_shift_types[2 * 8]
 
 gufunc_lsumsw2d_shift_loops[0] = <np.PyUFuncGenericFunction>loop_lsumsw2d_shift_d
 gufunc_lsumsw2d_shift_loops[1] = <np.PyUFuncGenericFunction>loop_lsumsw2d_shift_D
@@ -1262,6 +1389,10 @@ gufunc_lsumsw2d_shift_types[14] = <char>np.NPY_CDOUBLE
 gufunc_lsumsw2d_shift_types[15] = <char>np.NPY_CDOUBLE
 gufunc_lsumsw2d_shift_data[0] = <void*>_esum.lsumsw2d_shift[double]
 gufunc_lsumsw2d_shift_data[1] = <void*>_esum.lsumsw2d_shift[double_complex]
+gufunc_realsumsw2d_shift_data[0] = <void*>_esum.realsumsw2d_shift[double]
+gufunc_realsumsw2d_shift_data[1] = <void*>_esum.realsumsw2d_shift[double_complex]
+gufunc_recsumsw2d_shift_data[0] = <void*>_esum.recsumsw2d_shift[double]
+gufunc_recsumsw2d_shift_data[1] = <void*>_esum.recsumsw2d_shift[double_complex]
 
 lsumsw2d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumsw2d_shift_loops,
@@ -1307,12 +1438,44 @@ lsumsw2d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(2),(2,2),(3),()->()',  # signature
-    )
+)
+realsumsw2d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
+    gufunc_lsumsw2d_shift_loops,
+    gufunc_realsumsw2d_shift_data,
+    gufunc_lsumsw2d_shift_types,
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'realsumsw2d_shift',  # function name
+    r"""
+    realsumsw2d_shift(l, m, k, kpar, a, r, eta)
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(2),(2,2),(3),()->()',  # signature
+)
+recsumsw2d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
+    gufunc_lsumsw2d_shift_loops,
+    gufunc_recsumsw2d_shift_data,
+    gufunc_lsumsw2d_shift_types,
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'recsumsw2d_shift',  # function name
+    r"""
+    recsumsw2d_shift(l, m, k, kpar, a, r, eta)
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(2),(2,2),(3),()->()',  # signature
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_lsumsw1d_shift_loops[2]
 cdef void *gufunc_lsumsw1d_shift_data[2]
-cdef char gufunc_lsumsw1d_shift_types[2*8]
+cdef void *gufunc_realsumsw1d_shift_data[2]
+cdef void *gufunc_recsumsw1d_shift_data[2]
+cdef char gufunc_lsumsw1d_shift_types[2 * 8]
 
 gufunc_lsumsw1d_shift_loops[0] = <np.PyUFuncGenericFunction>loop_lsumsw1d_shift_d
 gufunc_lsumsw1d_shift_loops[1] = <np.PyUFuncGenericFunction>loop_lsumsw1d_shift_D
@@ -1334,6 +1497,10 @@ gufunc_lsumsw1d_shift_types[14] = <char>np.NPY_CDOUBLE
 gufunc_lsumsw1d_shift_types[15] = <char>np.NPY_CDOUBLE
 gufunc_lsumsw1d_shift_data[0] = <void*>_esum.lsumsw1d_shift[double]
 gufunc_lsumsw1d_shift_data[1] = <void*>_esum.lsumsw1d_shift[double_complex]
+gufunc_realsumsw1d_shift_data[0] = <void*>_esum.realsumsw1d_shift[double]
+gufunc_realsumsw1d_shift_data[1] = <void*>_esum.realsumsw1d_shift[double_complex]
+gufunc_recsumsw1d_shift_data[0] = <void*>_esum.recsumsw1d_shift[double]
+gufunc_recsumsw1d_shift_data[1] = <void*>_esum.recsumsw1d_shift[double_complex]
 
 lsumsw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumsw1d_shift_loops,
@@ -1379,12 +1546,44 @@ lsumsw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(),(),(3),()->()',  # signature
-    )
+)
+realsumsw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
+    gufunc_lsumsw1d_shift_loops,
+    gufunc_realsumsw1d_shift_data,
+    gufunc_lsumsw1d_shift_types,
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'realsumsw1d_shift',  # function name
+    r"""
+    realsumsw1d_shift(l, m, k, kpar, a, r, eta)
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),(),(3),()->()',  # signature
+)
+recsumsw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
+    gufunc_lsumsw1d_shift_loops,
+    gufunc_recsumsw1d_shift_data,
+    gufunc_lsumsw1d_shift_types,
+    2,  # number of supported input types
+    7,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'recsumsw1d_shift',  # function name
+    r"""
+    recsumsw1d_shift(l, m, k, kpar, a, r, eta)
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),(),(3),()->()',  # signature
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_lsumcw1d_shift_loops[2]
 cdef void *gufunc_lsumcw1d_shift_data[2]
-cdef char gufunc_lsumcw1d_shift_types[2*7]
+cdef void *gufunc_realsumcw1d_shift_data[2]
+cdef void *gufunc_recsumcw1d_shift_data[2]
+cdef char gufunc_lsumcw1d_shift_types[2 * 7]
 
 gufunc_lsumcw1d_shift_loops[0] = <np.PyUFuncGenericFunction>loop_lsumcw1d_shift_d
 gufunc_lsumcw1d_shift_loops[1] = <np.PyUFuncGenericFunction>loop_lsumcw1d_shift_D
@@ -1404,6 +1603,10 @@ gufunc_lsumcw1d_shift_types[12] = <char>np.NPY_CDOUBLE
 gufunc_lsumcw1d_shift_types[13] = <char>np.NPY_CDOUBLE
 gufunc_lsumcw1d_shift_data[0] = <void*>_esum.lsumcw1d_shift[double]
 gufunc_lsumcw1d_shift_data[1] = <void*>_esum.lsumcw1d_shift[double_complex]
+gufunc_realsumcw1d_shift_data[0] = <void*>_esum.realsumcw1d_shift[double]
+gufunc_realsumcw1d_shift_data[1] = <void*>_esum.realsumcw1d_shift[double_complex]
+gufunc_recsumcw1d_shift_data[0] = <void*>_esum.recsumcw1d_shift[double]
+gufunc_recsumcw1d_shift_data[1] = <void*>_esum.recsumcw1d_shift[double_complex]
 
 lsumcw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumcw1d_shift_loops,
@@ -1448,12 +1651,44 @@ lsumcw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(),(2),()->()',  # signature
-    )
+)
+realsumcw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
+    gufunc_lsumcw1d_shift_loops,
+    gufunc_realsumcw1d_shift_data,
+    gufunc_lsumcw1d_shift_types,
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'realsumcw1d_shift',  # function name
+    r"""
+    realsumcw1d_shift(l, k, kpar, a, r, eta)
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),(2),()->()',  # signature
+)
+recsumcw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
+    gufunc_lsumcw1d_shift_loops,
+    gufunc_recsumcw1d_shift_data,
+    gufunc_lsumcw1d_shift_types,
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'recsumcw1d_shift',  # function name
+    r"""
+    recsumcw1d_shift(l, k, kpar, a, r, eta)
+    """,  # docstring
+    0,  # unused
+    '(),(),(),(),(2),()->()',  # signature
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_lsumcw1d_loops[2]
 cdef void *gufunc_lsumcw1d_data[2]
-cdef char gufunc_lsumcw1d_types[2*7]
+cdef void *gufunc_realsumcw1d_data[2]
+cdef void *gufunc_recsumcw1d_data[2]
+cdef char gufunc_lsumcw1d_types[2 * 7]
 
 gufunc_lsumcw1d_loops[0] = <np.PyUFuncGenericFunction>loop_lsum1d_d
 gufunc_lsumcw1d_loops[1] = <np.PyUFuncGenericFunction>loop_lsum1d_D
@@ -1473,8 +1708,12 @@ gufunc_lsumcw1d_types[12] = <char>np.NPY_CDOUBLE
 gufunc_lsumcw1d_types[13] = <char>np.NPY_CDOUBLE
 gufunc_lsumcw1d_data[0] = <void*>_esum.lsumcw1d[double]
 gufunc_lsumcw1d_data[1] = <void*>_esum.lsumcw1d[double_complex]
+gufunc_realsumcw1d_data[0] = <void*>_esum.realsumcw1d[double]
+gufunc_realsumcw1d_data[1] = <void*>_esum.realsumcw1d[double_complex]
+gufunc_recsumcw1d_data[0] = <void*>_esum.recsumcw1d[double]
+gufunc_recsumcw1d_data[1] = <void*>_esum.recsumcw1d[double_complex]
 
-lsumcw1d = np.PyUFunc_FromFuncAndDataAndSignature(
+lsumcw1d = np.PyUFunc_FromFuncAndData(
     gufunc_lsumcw1d_loops,
     gufunc_lsumcw1d_data,
     gufunc_lsumcw1d_types,
@@ -1516,13 +1755,42 @@ lsumcw1d = np.PyUFunc_FromFuncAndDataAndSignature(
         complex
     """,  # docstring
     0,  # unused
-    '(),(),(),(),(),()->()',  # signature
-    )
+)
+realsumcw1d = np.PyUFunc_FromFuncAndData(
+    gufunc_lsumcw1d_loops,
+    gufunc_realsumcw1d_data,
+    gufunc_lsumcw1d_types,
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'realsumcw1d',  # function name
+    r"""
+    realsumcw1d(l, k, kpar, a, r, eta)
+    """,  # docstring
+    0,  # unused
+)
+recsumcw1d = np.PyUFunc_FromFuncAndData(
+    gufunc_lsumcw1d_loops,
+    gufunc_recsumcw1d_data,
+    gufunc_lsumcw1d_types,
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'recsumcw1d',  # function name
+    r"""
+    recsumcw1d(l, k, kpar, a, r, eta)
+    """,  # docstring
+    0,  # unused
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_lsumsw1d_loops[2]
 cdef void *gufunc_lsumsw1d_data[2]
-cdef char gufunc_lsumsw1d_types[2*7]
+cdef void *gufunc_realsumsw1d_data[2]
+cdef void *gufunc_recsumsw1d_data[2]
+cdef char gufunc_lsumsw1d_types[2 * 7]
 
 gufunc_lsumsw1d_loops[0] = <np.PyUFuncGenericFunction>loop_lsum1d_d
 gufunc_lsumsw1d_loops[1] = <np.PyUFuncGenericFunction>loop_lsum1d_D
@@ -1542,8 +1810,12 @@ gufunc_lsumsw1d_types[12] = <char>np.NPY_CDOUBLE
 gufunc_lsumsw1d_types[13] = <char>np.NPY_CDOUBLE
 gufunc_lsumsw1d_data[0] = <void*>_esum.lsumsw1d[double]
 gufunc_lsumsw1d_data[1] = <void*>_esum.lsumsw1d[double_complex]
+gufunc_realsumsw1d_data[0] = <void*>_esum.realsumsw1d[double]
+gufunc_realsumsw1d_data[1] = <void*>_esum.realsumsw1d[double_complex]
+gufunc_recsumsw1d_data[0] = <void*>_esum.recsumsw1d[double]
+gufunc_recsumsw1d_data[1] = <void*>_esum.recsumsw1d[double_complex]
 
-lsumsw1d = np.PyUFunc_FromFuncAndDataAndSignature(
+lsumsw1d = np.PyUFunc_FromFuncAndData(
     gufunc_lsumsw1d_loops,
     gufunc_lsumsw1d_data,
     gufunc_lsumsw1d_types,
@@ -1585,13 +1857,40 @@ lsumsw1d = np.PyUFunc_FromFuncAndDataAndSignature(
         complex
     """,  # docstring
     0,  # unused
-    '(),(),(),(),(),()->()',  # signature
-    )
+)
+realsumsw1d = np.PyUFunc_FromFuncAndData(
+    gufunc_lsumsw1d_loops,
+    gufunc_realsumsw1d_data,
+    gufunc_lsumsw1d_types,
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'realsumsw1d',  # function name
+    r"""
+    realsumsw1d(l, k, kpar, a, r, eta)
+    """,  # docstring
+    0,  # unused
+)
+recsumsw1d = np.PyUFunc_FromFuncAndData(
+    gufunc_lsumsw1d_loops,
+    gufunc_recsumsw1d_data,
+    gufunc_lsumsw1d_types,
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'recsumsw1d',  # function name
+    r"""
+    recsumsw1d(l, k, kpar, a, r, eta)
+    """,  # docstring
+    0,  # unused
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_dsumcw2d_loops[2]
 cdef void *gufunc_dsumcw2d_data[2]
-cdef char gufunc_dsumcw2d_types[2*7]
+cdef char gufunc_dsumcw2d_types[2 * 7]
 
 gufunc_dsumcw2d_loops[0] = <np.PyUFuncGenericFunction>loop_dsumcw2d_d
 gufunc_dsumcw2d_loops[1] = <np.PyUFuncGenericFunction>loop_dsumcw2d_D
@@ -1653,12 +1952,12 @@ dsumcw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(2),(2,2),(2),()->()',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_dsumsw3d_loops[2]
 cdef void *gufunc_dsumsw3d_data[2]
-cdef char gufunc_dsumsw3d_types[2*8]
+cdef char gufunc_dsumsw3d_types[2 * 8]
 
 gufunc_dsumsw3d_loops[0] = <np.PyUFuncGenericFunction>loop_dsumsw3d_d
 gufunc_dsumsw3d_loops[1] = <np.PyUFuncGenericFunction>loop_dsumsw3d_D
@@ -1723,12 +2022,12 @@ dsumsw3d = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(3),(3,3),(3),()->()',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_dsumsw2d_loops[2]
 cdef void *gufunc_dsumsw2d_data[2]
-cdef char gufunc_dsumsw2d_types[2*8]
+cdef char gufunc_dsumsw2d_types[2 * 8]
 
 gufunc_dsumsw2d_loops[0] = <np.PyUFuncGenericFunction>loop_dsumsw2d_d
 gufunc_dsumsw2d_loops[1] = <np.PyUFuncGenericFunction>loop_dsumsw2d_D
@@ -1793,12 +2092,12 @@ dsumsw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(2),(2,2),(2),()->()',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_dsumsw2d_shift_loops[2]
 cdef void *gufunc_dsumsw2d_shift_data[2]
-cdef char gufunc_dsumsw2d_shift_types[2*8]
+cdef char gufunc_dsumsw2d_shift_types[2 * 8]
 
 gufunc_dsumsw2d_shift_loops[0] = <np.PyUFuncGenericFunction>loop_dsumsw2d_shift_d
 gufunc_dsumsw2d_shift_loops[1] = <np.PyUFuncGenericFunction>loop_dsumsw2d_shift_D
@@ -1863,12 +2162,12 @@ dsumsw2d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(2),(2,2),(3),()->()',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_dsumsw1d_shift_loops[2]
 cdef void *gufunc_dsumsw1d_shift_data[2]
-cdef char gufunc_dsumsw1d_shift_types[2*8]
+cdef char gufunc_dsumsw1d_shift_types[2 * 8]
 
 gufunc_dsumsw1d_shift_loops[0] = <np.PyUFuncGenericFunction>loop_dsumsw1d_shift_d
 gufunc_dsumsw1d_shift_loops[1] = <np.PyUFuncGenericFunction>loop_dsumsw1d_shift_D
@@ -1933,12 +2232,12 @@ dsumsw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(),(),(3),()->()',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_dsumcw1d_shift_loops[2]
 cdef void *gufunc_dsumcw1d_shift_data[2]
-cdef char gufunc_dsumcw1d_shift_types[2*7]
+cdef char gufunc_dsumcw1d_shift_types[2 * 7]
 
 gufunc_dsumcw1d_shift_loops[0] = <np.PyUFuncGenericFunction>loop_dsumcw1d_shift_d
 gufunc_dsumcw1d_shift_loops[1] = <np.PyUFuncGenericFunction>loop_dsumcw1d_shift_D
@@ -2000,12 +2299,12 @@ dsumcw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     """,  # docstring
     0,  # unused
     '(),(),(),(),(2),()->()',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_dsumcw1d_loops[2]
 cdef void *gufunc_dsumcw1d_data[2]
-cdef char gufunc_dsumcw1d_types[2*7]
+cdef char gufunc_dsumcw1d_types[2 * 7]
 
 gufunc_dsumcw1d_loops[0] = <np.PyUFuncGenericFunction>loop_dsum1d_d
 gufunc_dsumcw1d_loops[1] = <np.PyUFuncGenericFunction>loop_dsum1d_D
@@ -2026,7 +2325,7 @@ gufunc_dsumcw1d_types[13] = <char>np.NPY_CDOUBLE
 gufunc_dsumcw1d_data[0] = <void*>_dsum.dsumcw1d[double]
 gufunc_dsumcw1d_data[1] = <void*>_dsum.dsumcw1d[double_complex]
 
-dsumcw1d = np.PyUFunc_FromFuncAndDataAndSignature(
+dsumcw1d = np.PyUFunc_FromFuncAndData(
     gufunc_dsumcw1d_loops,
     gufunc_dsumcw1d_data,
     gufunc_dsumcw1d_types,
@@ -2066,13 +2365,12 @@ dsumcw1d = np.PyUFunc_FromFuncAndDataAndSignature(
         complex
     """,  # docstring
     0,  # unused
-    '(),(),(),(),(),()->()',  # signature
-    )
+)
 
 
 cdef np.PyUFuncGenericFunction gufunc_dsumsw1d_loops[2]
 cdef void *gufunc_dsumsw1d_data[2]
-cdef char gufunc_dsumsw1d_types[2*7]
+cdef char gufunc_dsumsw1d_types[2 * 7]
 
 gufunc_dsumsw1d_loops[0] = <np.PyUFuncGenericFunction>loop_dsum1d_d
 gufunc_dsumsw1d_loops[1] = <np.PyUFuncGenericFunction>loop_dsum1d_D
@@ -2093,7 +2391,7 @@ gufunc_dsumsw1d_types[13] = <char>np.NPY_CDOUBLE
 gufunc_dsumsw1d_data[0] = <void*>_dsum.dsumsw1d[double]
 gufunc_dsumsw1d_data[1] = <void*>_dsum.dsumsw1d[double_complex]
 
-dsumsw1d = np.PyUFunc_FromFuncAndDataAndSignature(
+dsumsw1d = np.PyUFunc_FromFuncAndData(
     gufunc_dsumsw1d_loops,
     gufunc_dsumsw1d_data,
     gufunc_dsumsw1d_types,
@@ -2135,5 +2433,58 @@ dsumsw1d = np.PyUFunc_FromFuncAndDataAndSignature(
         complex
     """,  # docstring
     0,  # unused
-    '(),(),(),(),(),()->()',  # signature
-    )
+)
+
+
+cdef void loop_D_D(char **args, np.npy_intp *dims, np.npy_intp *steps, void *data) nogil:
+    cdef np.npy_intp i, n = dims[0]
+    cdef void *func = <void*>data
+    cdef char *ip0 = args[0]
+    cdef char *op0 = args[1]
+    cdef double complex ov0
+    for i in range(n):
+        ov0 = (<double complex(*)(double complex) nogil>func)(<double complex>(<double complex*>ip0)[0])
+        (<double complex*>op0)[0] = <double complex>ov0
+        ip0 += steps[0]
+        op0 += steps[1]
+
+
+cdef np.PyUFuncGenericFunction ufunc_zero_loops[1]
+cdef void *ufunc_zero3d_data[1]
+cdef void *ufunc_zero2d_data[1]
+cdef char ufunc_zero_types[2]
+
+ufunc_zero_loops[0] = <np.PyUFuncGenericFunction>loop_D_D
+ufunc_zero_types[0] = <char>np.NPY_CDOUBLE
+ufunc_zero_types[1] = <char>np.NPY_CDOUBLE
+ufunc_zero3d_data[0] = <void*>_esum.zero3d
+ufunc_zero2d_data[0] = <void*>_esum.zero2d
+
+zero3d = np.PyUFunc_FromFuncAndData(
+    ufunc_zero_loops,
+    ufunc_zero3d_data,
+    ufunc_zero_types,
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'zero3d',  # function name
+    r"""
+    zero3d(eta)
+    """,  # docstring
+    0,  # unused
+)
+zero2d = np.PyUFunc_FromFuncAndData(
+    ufunc_zero_loops,
+    ufunc_zero2d_data,
+    ufunc_zero_types,
+    2,  # number of supported input types
+    6,  # number of input args
+    1,  # number of output args
+    0,  # `identity` element, never mind this
+    'zero2d',  # function name
+    r"""
+    zero2d(eta)
+    """,  # docstring
+    0,  # unused
+)

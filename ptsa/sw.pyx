@@ -576,7 +576,7 @@ _translate_periodic_p = np.PyUFunc_FromFuncAndDataAndSignature(
 )
 
 
-def translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, helicity=True, eta=0):
+def translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, helicity=True, eta=0, func=lattice.lsumsw):
     """
     translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, helicity=True, eta=0)
 
@@ -638,13 +638,11 @@ def translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, helicity=True,
     if rsin.ndim == 1:
         rsin = rsin.reshape((1, -1))
     rsdiff = -rs[:, None, None, None, :] + rsin[:, None, None, :]
+
+    dim = 1 if kpar.ndim == 0 else kpar.shape[-1]
     # The result has the shape (n_rs, n_rs, n_ks, n_modes)
-    if kpar.ndim == 0 or kpar.shape[-1] == 1:
-        dlms = lattice.lsumsw1d_shift(modes[:, 0], modes[:, 1], ks, kpar, a, rsdiff, eta)
-    elif kpar.shape[-1] == 2:
-        dlms = lattice.lsumsw2d_shift(modes[:, 0], modes[:, 1], ks, kpar, a, rsdiff, eta)
-    else:
-        dlms = lattice.lsumsw3d(modes[:, 0], modes[:, 1], ks, kpar, a, rsdiff, eta)
+    dlms = func(dim, modes[:, 0], modes[:, 1], ks, kpar, a, rsdiff, eta)
+
     if helicity:
         return _translate_periodic_h(
             *(o[:, None] for o in out[1:]),
