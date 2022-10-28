@@ -9,6 +9,7 @@ import numpy as np
 
 class AnnotatedArrayWarning(UserWarning):
     """Custom warning for AnnotatedArrays"""
+
     pass
 
 
@@ -114,12 +115,12 @@ class AnnotatedArray(np.ndarray):
     def _property_get(self, name):
         if self.ndim == 0:
             warnings.warn(
-                f"'{name}' undefined for PhysicsArray of dimension 0",
-                PhysicsArrayWarning,
+                f"'{name}' undefined for AnnotatedArray of dimension 0",
+                AnnotatedArrayWarning,
             )
-            return
+            return None
         val = [a.get(name) for a in self.annotations]
-        if all([v == val[0] for v in val[1:]]):
+        if all((v == val[0] for v in val[1:])):
             return val[0]
         return tuple(val)
 
@@ -127,7 +128,7 @@ class AnnotatedArray(np.ndarray):
         if not isinstance(val, tuple):
             val = (val,) * self.ndim
         if len(val) != self.ndim:
-            warnings.warn(f"non-matching property size", AnnotatedArrayWarning)
+            warnings.warn("non-matching property size", AnnotatedArrayWarning)
         for a, v in zip(self.annotations, val):
             if v is None:
                 a.pop(name, None)
@@ -141,7 +142,7 @@ class AnnotatedArray(np.ndarray):
 
     def _property_del(self, name):
         for a in self.annotations:
-            a.pop("name", None)
+            a.pop(name, None)
 
     @staticmethod
     def register_property(name, vtype=object):
@@ -239,11 +240,11 @@ class AnnotatedArray(np.ndarray):
             elif k is None:
                 dest += 1
             elif isinstance(k, slice):
-                for key, val in self.annotations[source].items():
-                    if key in self._scales:
-                        res.annotations[dest][key] = val[k]
+                for kk, val in self.annotations[source].items():
+                    if kk in self._scales:
+                        res.annotations[dest][kk] = val[k]
                     else:
-                        res.annotations[dest][key] = val
+                        res.annotations[dest][kk] = val
                 dest += 1
                 source += 1
             elif k is Ellipsis:
@@ -262,11 +263,11 @@ class AnnotatedArray(np.ndarray):
                         else self.annotations[source]
                     )
                     pos += int(consecutive_intfancy <= 2) * dest + fancy_ndim - k.ndim
-                    for key, val in ann.items():
-                        if key in self._scales:
-                            res.annotations[pos][key] = val[ksq]
+                    for kk, val in ann.items():
+                        if kk in self._scales:
+                            res.annotations[pos][kk] = val[ksq]
                         else:
-                            res.annotations[pos][key] = val
+                            res.annotations[pos][kk] = val
 
                 source += k.ndim if k.dtype == bool else 1
 
@@ -350,7 +351,11 @@ class AnnotatedArray(np.ndarray):
         out = res[0]  # reduce only allowed for single output functions
         if isinstance(out, np.generic):
             return
-        axis = tuple(range(-1, -1 - inputs[0].ndim, -1)) if axis is None else axis
+        axis = (
+            tuple(range(-1, -1 - inputs_and_where[0].ndim, -1))
+            if axis is None
+            else axis
+        )
         axis = axis if isinstance(axis, collections.abc.Iterable) else (axis,)
         axis = [a % inputs_and_where[0].ndim - inputs_and_where[0].ndim for a in axis]
         dim_in = 0
@@ -434,11 +439,11 @@ class AnnotatedArray(np.ndarray):
                 self._ufunc_reduce(inputs_and_where, res, kwargs.get("axis", 0))
             elif method == "at":
                 self._ufunc_at(inputs)
-                return
+                return res
             elif method == "outer":
                 self._ufunc_outer(inputs, res, kwargs.get("where", True))
             else:
-                warinings.warn("unrecognized ufunc method", AnnotatedArrayWarning)
+                warnings.warn("unrecognized ufunc method", AnnotatedArrayWarning)
 
         else:
             sigin, sigout = _parse_signature(ufunc.signature, inputs_ndarray)
@@ -490,7 +495,7 @@ class AnnotatedArray(np.ndarray):
                     dest = inout[idest].annotations[dimdest]
                     if not _match(source, dest):
                         warnings.warn(
-                            f"incompatible annotations at core dimensions",
+                            "incompatible annotations at core dimensions",
                             AnnotatedArrayWarning,
                         )
                     if isource < ufunc.nin <= idest:
@@ -511,7 +516,7 @@ class AnnotatedArray(np.ndarray):
                         source = in_.annotations[iterdim[idim]]
                         if not _match(source, destination):
                             warnings.warn(
-                                f"incompatible annotations at broadcasted dimension",
+                                "incompatible annotations at broadcasted dimension",
                                 AnnotatedArrayWarning,
                             )
                         destination.update(source)
@@ -631,7 +636,7 @@ class AnnotatedArray(np.ndarray):
         )  # Needed for backward compatibility
         out = np.asarray(self).argmax(axis, out, *kwargs)
         if isinstance(out, np.generic):
-            return
+            return out
         keepdims = False if keepdims is np._NoValue else keepdims
         out = out.view(type(self))
         axis = axis % self.ndim - self.ndim
@@ -654,7 +659,7 @@ class AnnotatedArray(np.ndarray):
         )  # Needed for backward compatibility
         out = np.asarray(self).argmin(axis, out, *kwargs)
         if isinstance(out, np.generic):
-            return
+            return out
         keepdims = False if keepdims is np._NoValue else keepdims
         out = out.view(type(self))
         axis = axis % self.ndim - self.ndim
@@ -689,11 +694,11 @@ def _parse_signature(signature, inputs):
     sigin = [i.split(",") for i in sigin]
     sigout = sigout[1:-1].split("),(")  # split output
     sigout = [i.split(",") for i in sigout]
-    for i in range(len(sigin)):
+    for i, si in enumerate(sigin):
         j = 0
-        while j < len(sigin[i]):
-            d = sigin[i][j]
-            if d.endswith("?") and len(sigin[i]) > inputs[i].ndim:
+        while j < len(si):
+            d = si[j]
+            if d.endswith("?") and len(si) > inputs[i].ndim:
                 sigin = [[i for i in s if i != d] for s in sigin]
                 sigout = [[i for i in s if i != d] for s in sigout]
             j += 1
