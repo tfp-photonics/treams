@@ -43,8 +43,8 @@ __all__ = [
     'recsumsw3d',
     'reciprocal',
     'volume',
-    'zero2d',
-    'zero3d',
+#    'zero2d',
+#    'zero3d',
 ]
 
 cdef void loop_volume_l(char **args, np.npy_intp *dims, np.npy_intp *steps, void *data) nogil:
@@ -2464,8 +2464,8 @@ zero3d = np.PyUFunc_FromFuncAndData(
     ufunc_zero_loops,
     ufunc_zero3d_data,
     ufunc_zero_types,
-    2,  # number of supported input types
-    6,  # number of input args
+    1,  # number of supported input types
+    1,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
     'zero3d',  # function name
@@ -2478,8 +2478,8 @@ zero2d = np.PyUFunc_FromFuncAndData(
     ufunc_zero_loops,
     ufunc_zero2d_data,
     ufunc_zero_types,
-    2,  # number of supported input types
-    6,  # number of input args
+    1,  # number of supported input types
+    1,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
     'zero2d',  # function name
@@ -2488,3 +2488,4 @@ zero2d = np.PyUFunc_FromFuncAndData(
     """,  # docstring
     0,  # unused
 )
+

@@ -1286,12 +1286,12 @@ cdef double complex recsumsw1d_shift(long l, long m, number_t k, double kpar, do
             return recsumsw1d(l, k, kpar, a, r[2], eta)
         return 0
     cdef double complex recsum = 0, prev = INFINITY, pprev
-    cdef number_t krho = k * rho
     cdef long point[1]
     cdef long i
     cdef double vec
     cdef double b = 2 * pi / a
     cdef double rz = r[2], rho = hypot(r[0], r[1])
+    cdef number_t krho = k * rho
     for i in range(200):
         pprev = prev
         prev = recsum
