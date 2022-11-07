@@ -187,3 +187,20 @@ def recsumcw(dim, l, k, kpar, a, r, eta, out=None, **kwargs):
     elif dim == 2:
        return recsumcw2d(l, m, k, kpar, a, r, eta, out=out, **kwargs)
     raise ValueError(f"invalid dimension '{dim}'")
+
+
+def dsumsw(dim, l, m, k, kpar, a, r, i, out=None, **kwargs):
+    if dim == 1:
+       return dsumsw1d_shift(l, m, k, kpar, a, r, i, out=out, **kwargs)
+    elif dim == 2:
+       return dsumsw2d_shift(l, m, k, kpar, a, r, i, out=out, **kwargs)
+    elif dim == 3:
+       return dsumsw3d(l, m, k, kpar, a, r, i, out=out, **kwargs)
+    raise ValueError(f"invalid dimension '{dim}'")
+
+def dsumcw(dim, l, k, kpar, a, r, i, out=None, **kwargs):
+    if dim == 1:
+       return dsumcw1d_shift(l, m, k, kpar, a, r, i, out=out, **kwargs)
+    elif dim == 2:
+       return dsumcw2d(l, m, k, kpar, a, r, i, out=out, **kwargs)
+    raise ValueError(f"invalid dimension '{dim}'")
