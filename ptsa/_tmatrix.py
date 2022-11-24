@@ -229,8 +229,8 @@ class TMatrix(TMatrixBase):
         _, spm, _ = np.linalg.svd(self.t[np.ix_(selections[1], selections[0])])
         _, smp, _ = np.linalg.svd(self.t[np.ix_(selections[0], selections[1])])
         _, smm, _ = np.linalg.svd(self.t[np.ix_(selections[0], selections[0])])
-        plus = np.concatenate((spp, spm))
-        minus = np.concatenate((smm, smp))
+        plus = np.concatenate((spp, smp))
+        minus = np.concatenate((smm, spm))
         return np.linalg.norm(plus - minus) / np.sqrt(
             np.sum(np.power(np.abs(self.t), 2))
         )
