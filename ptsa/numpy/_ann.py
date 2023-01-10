@@ -162,8 +162,6 @@ class ArrayAnnotations(collections.abc.Sequence):
     def __repr__(self):
         return "ArrayAnnotations(" + ", ".join(repr(a) for a in self._ann) + ")"
 
-    __str__ = __repr__
-
 
 class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
     _scales = set()
@@ -206,9 +204,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
 
         istuple, res = (True, res) if isinstance(res, tuple) else (False, (res,))
         if out == (None,):
-            res = tuple(
-                r if isinstance(r, np.generic) else AnnotatedArray(r) for r in res
-            )
+            res = tuple(r if isinstance(r, np.generic) else type(self)(r) for r in res)
         for a, r in zip(ann_out, res):
             if a is not None:
                 r.ann.update(a)
@@ -271,8 +267,8 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         inout = tuple(inputs) + res
         for val in coredims.values():
             for (isrc, dimsrc), (idest, dimdest) in itertools.combinations(val, 2):
-                source = inout[isrc].ann[dimsrc]
-                dest = inout[idest].ann[dimdest]
+                source = getattr(inout[isrc], "ann", {dimsrc: {}})[dimsrc]
+                dest = getattr(inout[idest], "ann", {dimdest: {}})[dimdest]
                 if not _match(source, dest):
                     warnings.warn(
                         "incompatible annotations at core dimensions",
@@ -290,7 +286,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
                 for in_, iterdim in zip(inputs, iterdims):
                     if idim >= len(iterdim) or getattr(in_, "ann", None) is None:
                         continue
-                    source = in_.ann[iterdim[idim]]
+                    source = getattr(in_, "ann", {iterdim[idim]: {}})[iterdim[idim]]
                     if not _match(source, dest):
                         warnings.warn(
                             "incompatible annotations at broadcasted dimensions",
@@ -364,7 +360,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         return HANDLED_FUNCTIONS[func](*args, **kwargs)
 
     def __getitem__(self, key):
-        res = AnnotatedArray(self._array[key])
+        res = type(self)(self._array[key])
         if isinstance(res, np.generic):
             return res
 
@@ -512,7 +508,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         return np.multiply.accumulate(self, axis, dtype, out)
 
     def flatten(self, order="C"):
-        res = AnnotatedArray(self._array.flatten(order))
+        res = type(self)(self._array.flatten(order))
         if res.shape == self.shape:
             res.ann.update(self.ann)
         elif len(tuple(filter(lambda x: x != 1, self.shape))) == 1:
@@ -540,12 +536,12 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
     @property
     @implements(np.imag)
     def imag(self):
-        return AnnotatedArray(self._array.imag, self.ann)
+        return type(self)(self._array.imag, self.ann)
 
     @property
     @implements(np.real)
     def real(self):
-        return AnnotatedArray(self._array.real, self.ann)
+        return type(self)(self._array.real, self.ann)
 
 
 # a.argmax(

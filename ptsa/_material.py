@@ -1,6 +1,7 @@
+import numpy as np
+
 from ptsa import misc
 
-import numpy as np
 
 class Material:
     def __init__(self, epsilon=1, mu=1, kappa=0):
@@ -84,9 +85,10 @@ class Material:
         return self.kappa != 0
 
     def __str__(self):
-        return '(' + ', '.join([str(i) for i in self()]) + ')'
+        return "(" + ", ".join([str(i) for i in self()]) + ")"
 
     def __repr__(self):
         return self.__class__.__name__ + str(self)
+
 
 vacuum = Material()

@@ -4,9 +4,11 @@ import abc
 import copy
 import warnings
 from collections.abc import Sequence, Set
+from functools import partial
 
 import numpy as np
 
+import ptsa.lattice as la
 import ptsa.special as sc
 from ptsa import config, cw, misc, pw, sw
 from ptsa._lattice import Lattice
@@ -37,6 +39,7 @@ class BasisSet(OrderedSet, metaclass=abc.ABCMeta):
     are required to rotate or translate the basis set, to change the polarization types,
     and to expand into a different basis, when possible.
     """
+
     _names = ()
 
     def __str__(self):
@@ -117,7 +120,7 @@ class SphericalWaveBasis(BasisSet):
         modes = tmp
         if len(modes) == 0:
             pidx = []
-            l = []
+            l = []  # noqa: E741
             m = []
             pol = []
         elif len(modes[0]) == 3:
@@ -258,10 +261,10 @@ class SphericalWaveBasis(BasisSet):
         if res is None:
             raise ValueError("invalid parameters")
         res = AnnotatedArray(sc.vsph2car(res, rsph[..., self.pidx, :]))
-        res.annotations[-2, "basis"] = self
-        res.annotations[-2, "material"] = material
-        res.annotations[-2, "poltype"] = poltype
-        res.annotations[-2, "modetype"] = modetype
+        res.ann[-2, "basis"] = self
+        res.ann[-2, "material"] = material
+        res.ann[-2, "poltype"] = poltype
+        res.ann[-2, "modetype"] = modetype
         return res
 
     @classmethod
@@ -282,7 +285,7 @@ class SphericalWaveBasis(BasisSet):
         modes = [
             [n, l, m, p]
             for n in range(0, nmax)
-            for l in range(1, lmax + 1)
+            for l in range(1, lmax + 1)  # noqa: E741
             for m in range(-l, l + 1)
             for p in range(1, -1, -1)
         ]
@@ -309,7 +312,7 @@ class SphericalWaveBasis(BasisSet):
             [n, l, m, p]
             for n in range(0, nmax)
             for m in range(-mmax, mmax + 1)
-            for l in range(max(abs(m), 1), lmax + 1)
+            for l in range(max(abs(m), 1), lmax + 1)  # noqa: E741
             for p in range(1, -1, -1)
         ]
         return cls(modes, *args, **kwargs)
@@ -392,7 +395,7 @@ class SphericalWaveBasis(BasisSet):
         where = np.logical_and(where, basis.pidx[:, None] == self.pidx)
         r = np.asanyarray(r).squeeze()
         if r.shape[-1] != (3,):
-            raise ValueError(f"invalid 'r'")
+            raise ValueError("invalid 'r'")
         ks = k0 * material.nmp
         r = sc.car2sph(r)
         res = sw.translate(
@@ -425,7 +428,7 @@ class SphericalWaveBasis(BasisSet):
         poltype = config.POLTYPE if poltype is None else poltype
         material = Material() if material is None else Material(material)
         if modetype not in (None, "same", "regular", "singular"):
-            raise ValueError(f"invalid mode '{mode}'")
+            raise ValueError(f"invalid mode '{modetype}'")
 
         ks = k0 * material.nmp
         if isinstance(basis, SphericalWaveBasis):
@@ -719,11 +722,11 @@ class CylindricalWaveBasis(BasisSet):
                 )
         if res is None:
             raise ValueError("invalid parameters")
-        res = AnnotatedArray(sc.vcyl2car(res, rsph[..., self.pidx, :]))
-        res.annotations[-2, "basis"] = self
-        res.annotations[-2, "material"] = material
-        res.annotations[-2, "poltype"] = poltype
-        res.annotations[-2, "modetype"] = modetype
+        res = AnnotatedArray(sc.vcyl2car(res, rcyl[..., self.pidx, :]))
+        res.ann[-2, "basis"] = self
+        res.ann[-2, "material"] = material
+        res.ann[-2, "poltype"] = poltype
+        res.ann[-2, "modetype"] = modetype
         return res
 
     @staticmethod
@@ -825,10 +828,7 @@ class CylindricalWaveBasis(BasisSet):
             raise ValueError("can only rotate within CylindricalWaveBasis")
         where = np.logical_and(where, basis.pidx[:, None] == self.pidx)
         res = cw.rotate(
-            *(m[:, None] for m in basis["kzmp"]),
-            *self["kzmp"],
-            phi,
-            where=where,
+            *(m[:, None] for m in basis["kzmp"]), *self["kzmp"], phi, where=where,
         )
         res[np.logical_not(where)] = 0
         return PhysicsArray(res, basis=(basis, self))
@@ -841,7 +841,7 @@ class CylindricalWaveBasis(BasisSet):
         where = np.logical_and(where, basis.pidx[:, None] == self.pidx)
         r = np.asanyarray(r)
         if r.shape[-1] != 3:
-            raise ValueError(f"invalid 'r'")
+            raise ValueError("invalid 'r'")
         ks = (k0 * material.nmp)[self.pol]
         krhos = np.sqrt(ks * ks - self.kz * self.kz + 0j)
         krhos[krhos.imag < 0] = -krhos[krhos.imag < 0]
@@ -888,7 +888,7 @@ class CylindricalWaveBasis(BasisSet):
         elif kpar is not None:
             raise ValueError("missing definition for 'lattice'")
         if modetype not in (None, "same", "regular", "singular"):
-            raise ValueError(f"invalid mode '{mode}'")
+            raise ValueError(f"invalid mode '{modetype}'")
 
         ks = (k0 * material.nmp)[self.pol]
         krhos = np.sqrt(ks * ks - self.kz * self.kz + 0j)
@@ -1099,7 +1099,7 @@ class PlaneWaveBasis(BasisSet):
     def partial(self, alignment=None, k0=None, material=vacuum):
         if k0 is not None:
             ks = (k0 * material.nmp)[self.pol]
-            test = kx * kx + ky * ky + kz * kz - ks * ks
+            test = self.kx * self.kx + self.ky * self.ky + self.kz * self.kz - ks * ks
             if np.any(
                 np.logical_or(np.abs(test.real) > 1e-10, np.abs(test.imag) > 1e-10)
             ):
@@ -1120,50 +1120,24 @@ class PlaneWaveBasis(BasisSet):
         res = None
         if poltype == "helicity":
             res = sc.vpw_A(
-                self.kx,
-                self.ky,
-                self.kz,
-                r[..., 0],
-                r[..., 1],
-                r[..., 2],
-                self.pol,
+                self.kx, self.ky, self.kz, r[..., 0], r[..., 1], r[..., 2], self.pol,
             )
         elif poltype == "parity":
             res = (
                 self.pol[:, None]
-                * sc.vsw_M(
-                    self.kx,
-                    self.ky,
-                    self.kz,
-                    r[..., 0],
-                    r[..., 1],
-                    r[..., 2],
-                )
+                * sc.vsw_M(self.kx, self.ky, self.kz, r[..., 0], r[..., 1], r[..., 2],)
                 * (1 - self.pol[:, None])
-                * sc.vsw_N(
-                    self.kx,
-                    self.ky,
-                    self.kz,
-                    r[..., 0],
-                    r[..., 1],
-                    r[..., 2],
-                )
+                * sc.vsw_N(self.kx, self.ky, self.kz, r[..., 0], r[..., 1], r[..., 2],)
             )
         if res is None:
             raise ValueError("invalid parameters")
-        res.annotations[-2, "basis"] = self
-        res.annotations[-2, "poltype"] = poltype
+        res.ann[-2, "basis"] = self
+        res.ann[-2, "poltype"] = poltype
         return res
 
     def rotate(self, phi, *, where=True):
         c1, s1 = np.cos(phi), np.sin(phi)
-        r = np.array(
-            [
-                [c1, -s1, 0],
-                [s1, c1, 0],
-                [0, 0, 1],
-            ]
-        )
+        r = np.array([[c1, -s1, 0], [s1, c1, 0], [0, 0, 1]])
         kvecs = r @ np.array([self.kx, self.ky, self.kz])
         modes = zip(*kvecs, self.pol)
         res = np.eye(len(self))
@@ -1178,7 +1152,7 @@ class PlaneWaveBasis(BasisSet):
             warnings.warn(
                 "casting PlaneWavePartial to PlaneWave can cause floating-point errors"
             )
-            basis = basis.complete(k0, material)
+            basis = basis.complete(self.k0, self.material)
         where = np.logical_and(
             where,
             np.logical_and(
@@ -1253,9 +1227,7 @@ class PlaneWaveBasis(BasisSet):
             )
         elif isinstance(basis, CylindricalWaveBasis):
             res = pw.to_cw(
-                *(m[:, None] for m in basis["kzmp"]),
-                *self[()],
-                where=where,
+                *(m[:, None] for m in basis["kzmp"]), *self[()], where=where,
             ) * pw.translate(
                 *self[()],
                 basis.positions[basis.pidx, None, 0],
@@ -1398,7 +1370,7 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         if modetype not in ("up", "down"):
             raise ValueError("modetype not recognized")
         try:
-            ks = np.array(ks[self.pol], complex)
+            ks = np.array(self.ks[self.pol], complex)
         except TypeError:
             pass
         kx = self._kx
@@ -1424,7 +1396,10 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
     def __repr__(self):
         whitespace = "\n" + " " * (len(self.__class__.__name__) + 1)
         string = str(self).replace("\n", whitespace)
-        return f"{self.__class__.__name__}({string},{whitespace}alignment='{self.alignment}')"
+        return (
+            f"{self.__class__.__name__}"
+            f"({string},{whitespace}alignment='{self.alignment}')"
+        )
 
     def permute(self, n=1):
         if n != int(n):
@@ -1437,7 +1412,7 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
             alignment = dct[alignment]
             kpar = kpar[[2, 0, 1]] if kpar is not None else kpar
             n -= 1
-        obj = type(self)(kx, ky, kz, self.pol)
+        obj = type(self)(self.kx, self.ky, self.kz, self.pol)
         if "lattice" in self.hints:
             obj.hints["lattice"] = self.hints["lattice"].permute(n)
         if kpar is not None:
@@ -1464,7 +1439,7 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         return cls(modes, *args, **kwargs)
 
     @classmethod
-    def diffr_orders(kpar, lattice, bmax):
+    def diffr_orders(cls, kpar, lattice, bmax):
         lattice = Lattice(lattice)
         if lattice.dim != 2:
             raise ValueError("todo")
@@ -1485,17 +1460,12 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         if self.alignment != "xy":
             raise ValueError("todo")
         c1, s1 = np.cos(phi), np.sin(phi)
-        r = np.array(
-            [
-                [c1, -s1],
-                [s1, c1],
-            ]
-        )
+        r = np.array([[c1, -s1], [s1, c1]])
         kvecs = r @ np.array([self.kx, self.ky])
         modes = zip(*kvecs, self.pol)
         res = np.eye(len(self))
         res[np.logical_not(where)] = 0
-        return PhysicsArray(res, basis=(PlaneWaveBasisParital(modes), self))
+        return PhysicsArray(res, basis=(PlaneWaveBasisPartial(modes), self))
 
     def translate(
         self, k0, r, basis=None, poltype=None, material=vacuum, *, where=True
@@ -1503,7 +1473,7 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         self_c = self.complete(k0, material)
         if isinstance(basis, PlaneWaveBasisPartial):
             basis_c = basis.complete(k0, material)
-        elif isinstance(basis, PlaneWave):
+        elif isinstance(basis, PlaneWaveBasis):
             basis_c = basis
         elif basis is None:
             basis_c = basis
@@ -1535,6 +1505,45 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         return PhysicsArray(res, basis=(basis, self), poltype=poltype)
 
 
+def _pget(name, arr):
+    if arr.ndim == 0:
+        warnings.warn(
+            f"'{name}' undefined for PhysicsArray of dimension 0", PhysicsArrayWarning,
+        )
+        return None
+    val = [a.get(name) for a in arr.ann]
+    if all(v == val[0] for v in val[1:]):
+        return val[0]
+    return tuple(val)
+
+
+def _pset(name, arr, val, vtype=object):
+    if not isinstance(val, tuple):
+        val = (val,) * arr.ndim
+    if len(val) != arr.ndim:
+        warnings.warn("non-matching property size", PhysicsArrayWarning)
+    for a, v in zip(arr.ann, val):
+        if v is None:
+            a.pop(name, None)
+        elif isinstance(v, vtype):
+            a[name] = v
+        else:
+            warnings.warn(
+                f"invalid type for '{name}': {type(v).__name__}", PhysicsArrayWarning,
+            )
+
+
+def _pdel(name, arr):
+    for a in arr.ann:
+        a.pop(name, None)
+
+
+def _physicsarray_property(name, vtype=(int, float, np.floating, np.integer)):
+    return property(
+        partial(_pget, name), partial(_pset, name, vtype=vtype), partial(_pdel, name)
+    )
+
+
 class PhysicsArrayWarning(AnnotatedArrayWarning):
     pass
 
@@ -1542,8 +1551,8 @@ class PhysicsArrayWarning(AnnotatedArrayWarning):
 class PhysicsArray(AnnotatedArray):
     _scales = {"basis"}
 
-    def __new__(
-        cls,
+    def __init__(
+        self,
         arr,
         k0=None,
         basis=None,
@@ -1553,18 +1562,34 @@ class PhysicsArray(AnnotatedArray):
         lattice=None,
         kpar=None,
     ):
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", PhysicsArrayWarning)
-            obj = super().__new__(cls, arr)
-        obj.k0 = k0
-        obj.basis = basis
-        obj.poltype = poltype
-        obj.material = material
-        obj.modetype = modetype
-        obj.lattice = lattice
-        obj.kpar = kpar
-        obj._check()
-        return obj
+        super().__init__(arr)
+        self.k0 = k0
+        self.basis = basis
+        self.poltype = poltype
+        self.material = material
+        self.modetype = modetype
+        self.lattice = lattice
+        self.kpar = kpar
+        self._check()
+
+    def __repr__(self):
+        repr_arr = "    " + repr(self._array)[6:-1].replace("\n  ", "\n")
+        repr_kwargs = ",\n    ".join(
+            f"{key}={repr(getattr(self, key))}"
+            for key in (
+                "k0",
+                "basis",
+                "poltype",
+                "material",
+                "modetype",
+                "lattice",
+                "kpar",
+            )
+            if getattr(self, key) is not None
+        )
+        if repr_kwargs != "":
+            repr_arr += ",\n    " + repr_kwargs
+        return f"{self.__class__.__name__}(\n{repr_arr}\n)"
 
     def index(self, item):
         if len(item) == 3:
@@ -1575,16 +1600,9 @@ class PhysicsArray(AnnotatedArray):
         return [self.index(i) for i in basis]
 
     def _check(self):
-        self.k0
-        self.basis
-        self.poltype
-        self.material
-        self.modetype
-        self.lattice
-        self.kpar
         total_lat = None
         total_kpar = [np.nan] * 3
-        for a in self.annotations[-2:]:
+        for a in self.ann[-2:]:
             for lat in (
                 a.get("lattice"),
                 getattr(a.get("basis"), "hints", {}).get("lattice"),
@@ -1602,33 +1620,18 @@ class PhysicsArray(AnnotatedArray):
                         elif not np.isnan(y) and x != y:
                             raise ValueError("imcompatible kpar")
 
-    def __array_finalize__(self, obj):
-        if obj is None:
-            return
-        super().__array_finalize__(obj)
-        self._check()
-
-    k0 = AnnotatedArray.register_property("k0", (int, float, np.floating, np.integer))
-    basis = AnnotatedArray.register_property("basis", BasisSet)
-    poltype = AnnotatedArray.register_property("poltype", str)
-    modetype = AnnotatedArray.register_property("modetype", str)
-    material = AnnotatedArray.register_property("material", Material)
-    lattice = AnnotatedArray.register_property("lattice", Lattice)
-    kpar = AnnotatedArray.register_property("kpar", list)
-
-    def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
-        inputs = [np.asanyarray(i) for i in inputs]
-        if np.any([i.ndim > 2 for i in inputs]):
-            inputs = [i.view(AnnotatedArray) for i in inputs]
-            return self.view(AnnotatedArray).__array_ufunc__(
-                ufunc, method, *inputs, **kwargs
-            )
-        return super().__array_ufunc__(ufunc, method, *inputs, **kwargs)
+    k0 = _physicsarray_property("k0", (int, float, np.floating, np.integer))
+    basis = _physicsarray_property("basis", BasisSet)
+    poltype = _physicsarray_property("poltype", str)
+    modetype = _physicsarray_property("modetype", str)
+    material = _physicsarray_property("material", Material)
+    lattice = _physicsarray_property("lattice", Lattice)
+    kpar = _physicsarray_property("kpar", list)
 
     def __matmul__(self, other, *args, **kwargs):
-        other = np.asanyarray(other)
         res = super().__matmul__(other, *args, **kwargs)
-        other_ann = getattr(other, "annotations", [{}])
+        print(type(res))
+        other_ann = getattr(other, "ann", [{}])
         other_ndim = np.ndim(other)
         for name in (
             "k0",
@@ -1638,19 +1641,18 @@ class PhysicsArray(AnnotatedArray):
             "lattice",
             "kpar",
         ):
-            if self.ndim > 1 and self.annotations[-1].get(name) is None:
+            if self.ndim > 1 and self.ann[-1].get(name) is None:
                 if other_ndim == 1:
-                    res.annotations[-1] = other_ann[-1].get(name)
+                    res.ann[-1][name] = other_ann[-1].get(name)
                 else:
-                    res.annotations[-2] = other_ann[-2].get(name)
+                    res.ann[-2][name] = other_ann[-2].get(name)
             if other_ndim > 1 and other_ann[-2].get(name) is None:
-                res.annotations[-1] = self.annotations[-1].get(name)
+                res.ann[-1][name] = self.ann[-1].get(name)
         return res
 
     def __rmatmul__(self, other, *args, **kwargs):
-        other = np.asanyarray(other)
         res = super().__rmatmul__(other, *args, **kwargs)
-        other_ann = getattr(other, "annotations", [{}])
+        other_ann = getattr(other, "ann", [{}])
         other_ndim = np.ndim(other)
         for name in (
             "k0",
@@ -1662,9 +1664,9 @@ class PhysicsArray(AnnotatedArray):
         ):
             if other_ndim > 1 and other_ann[-1].get(name) is None:
                 if self.ndim == 1:
-                    res.annotations[-1] = self.annotations[-1].get(name)
+                    res.ann[-1][name] = self.ann[-1].get(name)
                 else:
-                    res.annotations[-2] = self.annotations[-2].get(name)
-            if self.ndim > 1 and self.annotations[-2].get(name) is None:
-                res.annotations[-1] = other_ann[-1].get(name)
+                    res.ann[-2][name] = self.ann[-2].get(name)
+            if self.ndim > 1 and self.ann[-2].get(name) is None:
+                res.ann[-1][name] = other_ann[-1].get(name)
         return res

@@ -81,11 +81,14 @@ class Lattice:
         )
 
     def __eq__(self, other):
-        return other is not None and (self is other or (
-            self.alignment == other.alignment
-            and self.dim == other.dim
-            and np.all(self[...] == other[...])
-        ))
+        return other is not None and (
+            self is other
+            or (
+                self.alignment == other.alignment
+                and self.dim == other.dim
+                and np.all(self[...] == other[...])
+            )
+        )
 
     @property
     def dim(self):
@@ -250,4 +253,3 @@ class Lattice:
             if c in self.alignment:
                 return False
         return True
-
