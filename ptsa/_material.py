@@ -71,11 +71,12 @@ class Material:
         return self.epsilon, self.mu, self.kappa
 
     def __eq__(self, other):
+        if other is None:
+            return False
         if not isinstance(other, Material):
             other = Material(*other)
         return (
-            super().__eq__(other)
-            and self.epsilon == other.epsilon
+            self.epsilon == other.epsilon
             and self.mu == other.mu
             and self.kappa == other.kappa
         )
