@@ -662,11 +662,11 @@ def translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, eta=0):
     if len(out) < 3 or len(out) > 4:
         raise ValueError(f"invalid length of output modes {len(out)}, must be 3 or 4")
     elif len(out) == 3:
-        out = (np.zeros_like(out[0]),) + out
+        out = (np.zeros_like(out[0], int),) + out
     if len(in_) < 3 or len(in_) > 4:
         raise ValueError(f"invalid length of input modes {len(in_)}, must be 3 or 4")
     elif len(in_) == 3:
-        in_ = (np.zeros_like(in_[0]),) + in_
+        in_ = (np.zeros_like(in_[0], int),) + in_
     if rsin is None:
         rsin = rs
     modes = -out[2][:, None] + in_[2]
