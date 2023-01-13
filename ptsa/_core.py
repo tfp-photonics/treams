@@ -42,13 +42,9 @@ class BasisSet(OrderedSet, metaclass=abc.ABCMeta):
 
     _names = ()
 
-    def __str__(self):
-        return ",\n".join(f"{name}={i}" for name, i in zip(self._names, self[()]))
-
     def __repr__(self):
-        whitespace = "\n" + " " * (len(self.__class__.__name__) + 1)
-        string = str(self).replace("\n", whitespace)
-        return f"{self.__class__.__name__}({string})"
+        string = ",\n    ".join(f"{name}={i}" for name, i in zip(self._names, self[()]))
+        return f"{self.__class__.__name__}(\n    {string},\n)"
 
     def __len__(self):
         return len(self.pol)
@@ -163,9 +159,8 @@ class SphericalWaveBasis(BasisSet):
         return self._positions
 
     def __repr__(self):
-        whitespace = ",\n" + " " * (len(self.__class__.__name__) + 1)
-        positions = whitespace + "positions=" + str(self.positions).replace("\n", ", ")
-        return super().__repr__()[:-1] + positions + ")"
+        positions = "positions=" + str(self.positions).replace("\n", ",")
+        return f"{super().__repr__()[:-1]}    {positions},\n)"
 
     def __getitem__(self, idx):
         if isinstance(idx, str):
@@ -571,9 +566,8 @@ class CylindricalWaveBasis(BasisSet):
     _names = ("pidx", "kz", "m", "pol")
 
     def __repr__(self):
-        whitespace = ",\n" + " " * (len(self.__class__.__name__) + 1)
-        positions = whitespace + "positions=" + str(self.positions).replace("\n", ", ")
-        return super().__repr__()[:-1] + positions + ")"
+        positions = "positions=" + str(self.positions).replace("\n", ",")
+        return f"{super().__repr__()[:-1]}    {positions},\n)"
 
     @property
     def isglobal(self):
@@ -1248,7 +1242,7 @@ class PlaneWaveBasis(BasisSet):
                 poltype=poltype,
                 where=where,
             ) * pw.translate(
-                *self[()],
+                self.kx, self.ky, self.kz,
                 basis.positions[basis.pidx, None, 0],
                 basis.positions[basis.pidx, None, 1],
                 basis.positions[basis.pidx, None, 2],
@@ -1266,8 +1260,6 @@ class PlaneWaveBasis(BasisSet):
 
     def basischange(self, basis=None, poltype=None, *, where=True):
         basis = self if basis is None else basis
-        if isinstance(basis, PlaneWaveBasisPartial):
-            raise ValueError("todo")
         poltype = config.POLTYPE if poltype is None else poltype
         if poltype == "helicity":
             poltype = ("helicity", "parity")
@@ -1275,16 +1267,15 @@ class PlaneWaveBasis(BasisSet):
             poltype = ("parity", "helicity")
         if poltype != ("helicity", "parity") and poltype != ("parity", "helicity"):
             raise ValueError("todo")
-        res = np.array(
-            np.logical_and(
-                np.logical_and(
-                    basis.kx[:, None] == self.kx, basis.ky[:, None] == self.ky
-                ),
-                basis.kz[:, None] == self.kz,
-            ),
-            int,
+        where = (
+            (basis.kx[:, None] == self.kx)
+            & (basis.ky[:, None] == self.ky)
+            & (basis.kz[:, None] == self.kz)
+            & where
         )
-        res[np.logical_and(res, basis.pol[:, None] == self.pol)] = -1
+        res = np.zeros_like(where, float)
+        res[where] = np.sqrt(0.5)
+        res[where & (basis.pol[:, None] == self.pol) & (self.pol == 0)] = -np.sqrt(0.5)
         return PhysicsArray(res, basis=(basis, self), poltype=poltype)
 
 
@@ -1390,14 +1381,6 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         res[-2, "material"] = material
         res[-2, "modetype"] = modetype
         return res
-
-    def __repr__(self):
-        whitespace = "\n" + " " * (len(self.__class__.__name__) + 1)
-        string = str(self).replace("\n", whitespace)
-        return (
-            f"{self.__class__.__name__}"
-            f"({string},{whitespace}alignment='{self.alignment}')"
-        )
 
     def permute(self, n=1):
         if n != int(n):
