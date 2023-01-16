@@ -244,7 +244,7 @@ class TestSWB:
         a = ptsa.SphericalWaveBasis([[1, 0, 0]])
         b = ptsa.SphericalWaveBasis([[1, -1, 0], [1, 1, 0]])
         where = [True, False]
-        x = b.rotate(1, 2, 3, a, where=where)
+        x = b.rotate(1, 2, 3, basis=a, where=where)
         y = ptsa.PhysicsArray(
             [[ptsa.sw.rotate(1, 0, 0, 1, -1, 0, 1, 2, 3), 0]], basis=(a, b)
         )
@@ -260,7 +260,9 @@ class TestSWB:
         a = ptsa.SphericalWaveBasis([[1, 0, 0]])
         b = ptsa.SphericalWaveBasis([[1, -1, 0], [1, 1, 0]])
         where = [True, False]
-        x = b.translate(3, [[0, 0, 0], [0, 1, 1]], a, material=(1, 2, 0), where=where)
+        x = b.translate(
+            [[0, 0, 0], [0, 1, 1]], 3, basis=a, material=(1, 2, 0), where=where
+        )
         y = ptsa.PhysicsArray(
             [
                 [[ptsa.sw.translate(1, 0, 0, 1, -1, 0, 0, 0, 0, singular=False), 0]],
@@ -284,12 +286,12 @@ class TestSWB:
         a = ptsa.SphericalWaveBasis([[1, 0, 0]])
         b = ptsa.CylindricalWaveBasis([[1, -1, 0], [1, 1, 0]])
         with pytest.raises(ValueError):
-            a.translate(1, [1, 0, 0], basis=b)
+            a.translate([1, 0, 0], 1, basis=b)
 
     def test_translate_invalid_r(self):
         b = ptsa.SphericalWaveBasis([[1, -1, 0], [1, 1, 0]])
         with pytest.raises(ValueError):
-            b.translate(1, [1, 0])
+            b.translate([1, 0], 1)
 
     def test_expand_sw(self):
         a = ptsa.SphericalWaveBasis([[2, 0, 0]], [0, 1, 1])
@@ -329,7 +331,7 @@ class TestSWB:
             basis=b,
             poltype="helicity",
             k0=3,
-            material=ptsa._material.vacuum,
+            material=ptsa._material.Material(),
             modetype=("regular", "singular"),
             kpar=[np.nan, np.nan, 0],
             lattice=lattice,
@@ -354,7 +356,7 @@ class TestSWB:
             basis=b,
             poltype="helicity",
             k0=3,
-            material=ptsa._material.vacuum,
+            material=ptsa._material.Material(),
             modetype=("regular", "singular"),
             kpar=[0, 0, np.nan],
             lattice=lattice,
@@ -379,7 +381,7 @@ class TestSWB:
             basis=b,
             poltype="helicity",
             k0=3,
-            material=ptsa._material.vacuum,
+            material=ptsa._material.Material(),
             modetype=("regular", "singular"),
             kpar=[0, 0, 0],
             lattice=lattice,
@@ -432,7 +434,7 @@ class TestSWB:
         a = ptsa.SphericalWaveBasis([[2, 0, 0], [1, 0, 1]])
         b = ptsa.SphericalWaveBasis([[2, 0, 0], [1, 0, 1]])
         where = [True, False]
-        x = b.basischange(a, where=where)
+        x = b.basischange(basis=a, where=where)
         y = ptsa.PhysicsArray(
             [[-np.sqrt(0.5), 0], [0, 0]], basis=(a, b), poltype=("helicity", "parity"),
         )
@@ -664,7 +666,7 @@ class TestCWB:
         a = ptsa.CylindricalWaveBasis([[0.1, 0, 0]])
         b = ptsa.CylindricalWaveBasis([[0.1, 0, 0], [0.1, 1, 0]])
         where = [True, False]
-        x = b.rotate(2, a, where=where)
+        x = b.rotate(2, basis=a, where=where)
         y = ptsa.PhysicsArray(
             [[ptsa.cw.rotate(0.1, 0, 0, 0.1, 0, 0, 2), 0]], basis=(a, b)
         )
@@ -680,7 +682,9 @@ class TestCWB:
         a = ptsa.CylindricalWaveBasis([[0.1, 0, 0]])
         b = ptsa.CylindricalWaveBasis([[0.1, -1, 0], [0.1, 1, 0]])
         where = [True, False]
-        x = b.translate(3, [[0, 0, 0], [0, 1, 1]], a, material=(1, 2, 0), where=where)
+        x = b.translate(
+            [[0, 0, 0], [0, 1, 1]], 3, basis=a, material=(1, 2, 0), where=where
+        )
         y = ptsa.PhysicsArray(
             [
                 [
@@ -719,12 +723,12 @@ class TestCWB:
         a = ptsa.SphericalWaveBasis([[1, 0, 0]])
         b = ptsa.CylindricalWaveBasis([[1, -1, 0], [1, 1, 0]])
         with pytest.raises(ValueError):
-            b.translate(1, [1, 0, 0], basis=a)
+            b.translate([1, 0, 0], 1, basis=a)
 
     def test_translate_invalid_r(self):
         b = ptsa.CylindricalWaveBasis([[1, -1, 0], [1, 1, 0]])
         with pytest.raises(ValueError):
-            b.translate(1, [1, 0])
+            b.translate([1, 0], 1)
 
     def test_expand_cw(self):
         a = ptsa.CylindricalWaveBasis([[0.2, 0, 0]], [0, 1, 1])
@@ -769,7 +773,7 @@ class TestCWB:
             ],
             basis=b,
             k0=3,
-            material=ptsa._material.vacuum,
+            material=ptsa._material.Material(),
             modetype=("regular", "singular"),
             kpar=[0, np.nan, 0.1],
             lattice=lattice,
@@ -793,7 +797,7 @@ class TestCWB:
             ],
             basis=b,
             k0=3,
-            material=ptsa._material.vacuum,
+            material=ptsa._material.Material(),
             modetype=("regular", "singular"),
             kpar=[0, 0, 0.1],
             lattice=lattice,
@@ -1002,7 +1006,7 @@ class TestPWB:
         a = ptsa.PlaneWaveBasis([[0.1, 0, 0, 0]])
         b = ptsa.PlaneWaveBasis([[0.1, 0, 0, 0], [0.1, 1, 0, 0]])
         where = [True, False]
-        x = b.translate([[0, 0, 0], [0, 1, 1]], a, where=where)
+        x = b.translate([[0, 0, 0], [0, 1, 1]], basis=a, where=where)
         y = ptsa.PhysicsArray(
             [
                 [[ptsa.pw.translate(0.1, 0, 0, 0, 0, 0), 0]],
@@ -1071,6 +1075,227 @@ class TestPWB:
 
     def test_basischange(self):
         b = ptsa.PlaneWaveBasis([[2, 0, 0, 0], [1, 0, 0, 1]])
+        where = [True, False]
+        x = b.basischange(where=where)
+        y = ptsa.PhysicsArray(
+            [[-np.sqrt(0.5), 0], [0, 0]], basis=(b, b), poltype=("helicity", "parity"),
+        )
+        assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
+
+    def test_permute(self):
+        a = ptsa.PlaneWaveBasis([[1, 2, 3, 1], [1, 2, 3, 0]])
+        b = ptsa.PlaneWaveBasis([[2, 3, 1, 1], [2, 3, 1, 0]])
+        assert b.permute() == a
+
+    def test_from_iterable(self):
+        a = ptsa.PlaneWaveBasis.default([0, 0, 1])
+        b = ptsa.PlaneWaveBasis.default([[0, 0, 1], [0, 1, 0]])
+        assert a & b == a
+
+    def test_partial(self):
+        a = ptsa.PlaneWaveBasisPartial.default([0, 1], "yz")
+        b = ptsa.PlaneWaveBasis.default([0, 0, 1])
+        assert b.partial("yz", 1) == a
+
+
+class TestPWBP:
+    def test_init_empty(self):
+        b = ptsa.PlaneWaveBasisPartial([])
+        assert b.kx.size == 0 and b.ky.size == 0 and b.kz is None and b.pol.size == 0
+
+    def test_init_numpy(self):
+        b = ptsa.PlaneWaveBasisPartial(np.array([[0.4, 0.2, 0]]), "zx")
+        assert (
+            np.all(b.kz == [0.4])
+            and np.all(b.kx == [0.2])
+            and np.all(b.ky is None)
+            and np.all(b.pol == [0])
+        )
+
+    def test_init_duplicate(self):
+        b = ptsa.PlaneWaveBasisPartial([[0.4, 0.2, 0], [0.4, 0.2, 0]])
+        assert (
+            np.all(b.kx == [0.4])
+            and np.all(b.ky == [0.2])
+            and np.all(b.kz is None)
+            and np.all(b.pol == [0])
+        )
+
+    def test_init_invalid_shape(self):
+        with pytest.raises(ValueError):
+            ptsa.PlaneWaveBasisPartial([[0, 0], [0, 0]])
+
+    def test_init_invalid_pol(self):
+        with pytest.raises(ValueError):
+            ptsa.PlaneWaveBasisPartial([[1, 0, 2]])
+
+    def test_repr(self):
+        b = ptsa.PlaneWaveBasisPartial([[0.0, 1.0, 0], [1, 1, 0]], "yz")
+        assert (
+            repr(b)
+            == """PlaneWaveBasisPartial(
+    ky=[0. 1.],
+    kz=[1. 1.],
+    pol=[0 0],
+)"""
+        )
+
+    def test_from_iterable(self):
+        a = ptsa.PlaneWaveBasisPartial.default([0, 0])
+        b = ptsa.PlaneWaveBasisPartial.default([[0, 0], [0, 1]])
+        assert a & b == a
+
+    def test_getitem_int(self):
+        b = ptsa.PlaneWaveBasisPartial([[1, 0, 0], [1, 0, 1]])
+        assert b[1] == (1, 0, 1)
+
+    def test_getitem_tuple(self):
+        b = ptsa.PlaneWaveBasisPartial([[1, 0, 0], [1, 0, 1]])
+        assert (np.array(b[()]) == ([1, 1], [0, 0], [0, 1])).all()
+
+    def test_getitem_slice(self):
+        a = ptsa.PlaneWaveBasisPartial([[1, 0, 0]])
+        b = ptsa.PlaneWaveBasisPartial([[1, 0, 0], [1, 0, 0, 1]])
+        assert a == b[:1]
+
+    def test_complete(self):
+        a = ptsa.PlaneWaveBasis.default([0, 0, 1])
+        b = ptsa.PlaneWaveBasisPartial.default([0, 1], "yz")
+        assert b.complete(1) == a
+
+    def test_call_h(self):
+        modes = [[0, 3, 0], [0, 4, 1]]
+        b = ptsa.PlaneWaveBasisPartial(modes)
+        r = np.array([[0, 1, 2], [3, 4, 5]])
+        x = b(r, 5, "helicity")
+        y = sc.vpw_A(
+            [0, 0],
+            [3, 4],
+            [4, 3],
+            r[..., None, 0],
+            r[..., None, 1],
+            r[..., None, 2],
+            [0, 1],
+        )
+        assert np.all(y == x)
+
+    def test_call_p(self):
+        modes = [[0, 3, 1], [0, 4, 1]]
+        b = ptsa.PlaneWaveBasisPartial(modes)
+        r = np.array([[0, 1, 2], [3, 4, 5]])
+        x = b(r, 1, "parity", material=(5, 5), modetype="down")
+        y = sc.vpw_N(
+            [0, 0], [3, 4], [-4, -3], r[..., None, 0], r[..., None, 1], r[..., None, 2]
+        )
+        assert np.all(y == x)
+
+    def test_call_invalid(self):
+        b = ptsa.PlaneWaveBasisPartial([[1, 0, 0]])
+        with pytest.raises(ValueError):
+            b([1, 0, 0], 1, modetype="asdf")
+
+    def test_permute(self):
+        a = ptsa.PlaneWaveBasisPartial([[1, 2, 1], [1, 2, 0]], "yz")
+        b = ptsa.PlaneWaveBasisPartial([[1, 2, 1], [1, 2, 0]])
+        assert b.permute() == a
+
+    def test_diffr_orders(self):
+        lattice = ptsa.Lattice(2 * np.pi * np.eye(2))
+        b = ptsa.PlaneWaveBasisPartial.diffr_orders([0, 0], lattice, 1)
+        a = ptsa.PlaneWaveBasisPartial.default(
+            [[0, 0], [0, 1], [1, 0], [-1, 0], [0, -1]]
+        )
+        assert (
+            a <= b
+            and b <= a
+            and b.hints["lattice"] == lattice
+            and b.hints["kpar"] == [0, 0, np.nan]
+        )
+
+    def test_rotate(self):
+        b = ptsa.PlaneWaveBasisPartial([[1, 0, 0], [0, 1, 0]])
+        a = ptsa.PlaneWaveBasisPartial(
+            [[np.cos(2), np.sin(2), 0], [-np.sin(2), np.cos(2), 0]]
+        )
+        where = [True, False]
+        x = b.rotate(2, where=where)
+        y = ptsa.PhysicsArray([[1, 0], [0, 0]], basis=(a, b))
+        assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
+
+    def test_translate(self):
+        a = ptsa.PlaneWaveBasisPartial([[4, 0, 0]])
+        b = ptsa.PlaneWaveBasisPartial([[4, 0, 0], [4, 1, 0]])
+        where = [True, False]
+        x = b.translate([[0, 0, 0], [0, 1, 1]], 5, basis=a, where=where)
+        y = ptsa.PhysicsArray(
+            [
+                [[ptsa.pw.translate(4, 0, 3, 0, 0, 0), 0]],
+                [[ptsa.pw.translate(4, 0, 3, 0, 1, 1), 0]],
+            ],
+            basis=(None, a, b),
+            material=(None, ptsa.Material(), ptsa.Material()),
+            k0=(None, 5, 5),
+        )
+        print(np.array(x))
+        print(np.array(y))
+        print(x.ann)
+        print(y.ann)
+        assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
+
+    # def test_expand_pw(self):
+    #     a = ptsa.PlaneWaveBasis([[0.2, 0, 0, 0], [0, 1, 1, 0]])
+    #     b = ptsa.PlaneWaveBasis([[0.2, 0, 0, 0], [0.2, 1, 0, 0]])
+    #     where = [True, False]
+    #     x = b.expand(3, a, material=(1, 2, 0), modetype="singular", where=where)
+    #     y = ptsa.PhysicsArray(
+    #         [[1, 0], [0, 0]], basis=(a, b), k0=3, material=ptsa.Material(1, 2, 0),
+    #     )
+    #     assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
+
+    # def test_expand_cw(self):
+    #     a = ptsa.CylindricalWaveBasis([[3, 1, 0]], [1, 2, 3])
+    #     b = ptsa.PlaneWaveBasis([[0, 4, 3, 0], [0, 4, 3, 1]])
+    #     where = [True, False]
+    #     x = b.expand(5, a, where=where)
+    #     y = ptsa.PhysicsArray(
+    #         [
+    #             [
+    #                 ptsa.pw.to_cw(3, 1, 0, 0, 4, 3, 0)
+    #                 * ptsa.pw.translate(0, 4, 3, 1, 2, 3),
+    #                 0,
+    #             ]
+    #         ],
+    #         basis=(a, b),
+    #         poltype="helicity",
+    #         k0=5,
+    #         material=ptsa.Material(),
+    #         modetype=("regular", None),
+    #     )
+    #     assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
+
+    # def test_expand_sw(self):
+    #     a = ptsa.SphericalWaveBasis([[3, 1, 0]], [1, 2, 3])
+    #     b = ptsa.PlaneWaveBasis([[0, 4, 3, 0], [0, 4, 3, 1]])
+    #     where = [True, False]
+    #     x = b.expand(5, a, where=where)
+    #     y = ptsa.PhysicsArray(
+    #         [
+    #             [
+    #                 ptsa.pw.to_sw(3, 1, 0, 0, 4, 3, 0)
+    #                 * ptsa.pw.translate(0, 4, 3, 1, 2, 3),
+    #                 0,
+    #             ]
+    #         ],
+    #         basis=(a, b),
+    #         poltype="helicity",
+    #         k0=5,
+    #         material=ptsa.Material(),
+    #         modetype=("regular", None),
+    #     )
+    #     assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
+
+    def test_basischange(self):
+        b = ptsa.PlaneWaveBasisPartial([[2, 0, 0], [1, 0, 1]])
         where = [True, False]
         x = b.basischange(where=where)
         y = ptsa.PhysicsArray(

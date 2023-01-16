@@ -12,7 +12,7 @@ import ptsa.lattice as la
 import ptsa.special as sc
 from ptsa import config, cw, misc, pw, sw
 from ptsa._lattice import Lattice
-from ptsa._material import Material, vacuum
+from ptsa._material import Material
 from ptsa.numpy import AnnotatedArray, AnnotatedArrayWarning
 
 
@@ -50,7 +50,7 @@ class BasisSet(OrderedSet, metaclass=abc.ABCMeta):
         return len(self.pol)
 
     @abc.abstractmethod
-    def __call__(self, r, k0, poltype=None, material=None, modetype=None):
+    def __call__(self, r, *args, poltype=None, **kwargs):
         raise NotImplementedError
 
     @classmethod
@@ -64,18 +64,18 @@ class BasisSet(OrderedSet, metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def rotate(self, phi, theta=0, psi=0, basis=None, *, where=True):
+    def rotate(self, phi, *args, where=True, **kwargs):
         """
-        rotate(self, phi, theta=0, psi=0, basis=None, *, where=True)
+        rotate(self, phi, *args, where=True, **kwargs)
 
         Rotation coefficients for the specified Euler angles.
         """
         raise NotImplementedError
 
     @abc.abstractmethod
-    def translate(self, k0, r, basis=None, poltype=None, material=None, *, where=True):
+    def translate(self, r, *args, basis=None, where=True, **kwargs):
         """
-        translate(self, k0, r, basis=None, poltype=None, material=None, *, where=True)
+        translate(self, r, *args, basis=None, where=True, **kwargs)
 
         Translation coefficients for for angular wave number `k0`, along the
         Cartesian vector `r`.
@@ -84,19 +84,19 @@ class BasisSet(OrderedSet, metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def expand(
-        self, k0, basis=None, material=None, *, where=True
+        self, basis=None, material=Material(), *, where=True
     ):  # poltype, lattice, kpar, mode
         """
-        expand(self, k0, basis=None, material=None, *, where=True)
+        expand(self, k0, basis=None, material=Material(), *, where=True)
 
         Expansion coefficients for the transformation to a different basis.
         """
         raise NotImplementedError
 
     @abc.abstractmethod
-    def basischange(self, basis=None, poltype=None, *, where=True):
+    def basischange(self, poltype=None, *, basis=None, where=True):
         """
-        basischange(self, basis=None, poltype=None, *, where=True)
+        basischange(self, poltype=None, *, basis=None, where=True)
 
         Transformation coefficents for changing the polarization type.
         """
@@ -189,8 +189,8 @@ class SphericalWaveBasis(BasisSet):
         except AttributeError:
             return False
 
-    def __call__(self, r, k0, poltype=None, material=None, modetype="regular"):
-        material = Material() if material is None else Material(material)
+    def __call__(self, r, k0, poltype=None, material=Material(), modetype="regular"):
+        material = Material(material)
         ks = k0 * material.nmp
         poltype = config.POLTYPE if poltype is None else poltype
         r = np.asanyarray(r)
@@ -358,7 +358,7 @@ class SphericalWaveBasis(BasisSet):
     def isglobal(self):
         return len(self) == 0 or np.all(self.pidx == self.pidx[0])
 
-    def rotate(self, phi, theta=0, psi=0, basis=None, *, where=True):
+    def rotate(self, phi, theta=0, psi=0, *, basis=None, where=True):
         basis = self if basis is None else basis
         if not isinstance(basis, SphericalWaveBasis):
             raise ValueError("can only rotate within SphericalWaveBasis")
@@ -374,10 +374,12 @@ class SphericalWaveBasis(BasisSet):
         res[..., np.logical_not(where)] = 0
         return PhysicsArray(res, basis=(basis, self))
 
-    def translate(self, k0, r, basis=None, poltype=None, material=None, *, where=True):
+    def translate(
+        self, r, k0, *, basis=None, poltype=None, material=Material(), where=True
+    ):
         basis = self if basis is None else basis
         poltype = config.POLTYPE if poltype is None else poltype
-        material = Material() if material is None else Material(material)
+        material = Material(material)
         if not isinstance(basis, SphericalWaveBasis):
             raise ValueError("can only translate within SphericalWaveBasis")
         where = np.logical_and(where, basis.pidx[:, None] == self.pidx)
@@ -406,12 +408,136 @@ class SphericalWaveBasis(BasisSet):
             material=prepend + 2 * (material,),
         )
 
+    def _expand_sw(self, k0, basis, poltype, where, material, modetype):
+        if modetype not in (None, "same", "regular", "singular"):
+            raise ValueError(f"invalid mode '{modetype}'")
+        rs = sc.car2sph(basis.positions[:, None, :] - self.positions)
+        ks = k0 * material.nmp
+        res = sw.translate(
+            *(m[:, None] for m in basis["lmp"]),
+            *self["lmp"],
+            ks[self.pol] * rs[basis.pidx[:, None], self.pidx, 0],
+            rs[basis.pidx[:, None], self.pidx, 1],
+            rs[basis.pidx[:, None], self.pidx, 2],
+            poltype=poltype,
+            singular=modetype == "singular",
+            where=where,
+        )
+        res[..., np.logical_not(where)] = 0
+        res = PhysicsArray(
+            res, k0=k0, basis=(basis, self), poltype=poltype, material=material
+        )
+        if modetype == "singular":
+            res.modetype = ("regular", "singular")
+        return res
+
+    def _expand_swl(self, k0, basis, poltype, where, material, modetype, lattice, kpar):
+        ks = k0 * material.nmp
+        lattice = Lattice(lattice)
+        try:
+            kpar = list(kpar)
+        except TypeError:
+            kpar = [0] * lattice.dim if kpar is None else [kpar]
+        if len(kpar) != lattice.dim:
+            raise ValueError("incompatible dimensions of 'lattice' and 'kpar'")
+        if len(kpar) == 1:
+            x = kpar[0]
+            kpar = [np.nan, np.nan, x]
+        elif len(kpar) == 2:
+            x = kpar
+            kpar = kpar + [np.nan]
+        elif len(kpar) == 3:
+            x = kpar
+        res = sw.translate_periodic(
+            ks,
+            x,
+            lattice[...],
+            basis.positions,
+            basis[()],
+            self[()],
+            self.positions,
+            poltype=poltype,
+        )
+        res[..., np.logical_not(where)] = 0
+        return PhysicsArray(
+            res,
+            k0=k0,
+            basis=(basis, self),
+            poltype=poltype,
+            material=material,
+            lattice=lattice,
+            modetype=("regular", "singular"),
+            kpar=kpar,
+        )
+
+    def _expand_cw(self, k0, basis, poltype, where, material, modetype, lattice, kpar):
+        ks = k0 * material.nmp
+        if lattice is None:
+            lattice = basis.hints["lattice"]
+        lattice = Lattice(lattice)
+        if kpar is None:
+            kpar = basis.hints["kpar"]
+        if len(kpar) == 1:
+            kpar = [np.nan, np.nan, kpar]
+        if 3 - np.isnan(kpar).sum() != lattice.dim:
+            raise ValueError("incompatible dimensions of 'lattice' and 'kpar'")
+        where = np.logical_and(where, basis.pidx[:, None] == self.pidx)
+        res = sw.periodic_to_cw(
+            *(m[:, None] for m in basis["kzmp"]),
+            *self["lmp"],
+            ks[self.pol],
+            lattice.volume,
+            poltype=poltype,
+            where=where,
+        )
+        res[..., np.logical_not(where)] = 0
+        return PhysicsArray(
+            res,
+            k0=k0,
+            basis=(basis, self),
+            poltype=poltype,
+            material=material,
+            modetype="singular",
+            lattice=lattice,
+            kpar=kpar,
+        )
+
+    def _expand_pw(self, k0, basis, poltype, where, material, modetype, lattice, kpar):
+        if lattice is None:
+            lattice = basis.hints["lattice"]
+        if kpar is None:
+            kpar = basis.hints["kpar"]
+        if len(kpar) == 2:
+            kpar = [kpar[0], kpar[1], np.nan]
+        if isinstance(basis, PlaneWaveBasis):
+            if modetype is None and isinstance(basis, PlaneWaveBasisPartial):
+                modetype = "up"
+            basis_c = basis.complete(k0, material, modetype)
+        res = sw.periodic_to_pw(
+            *(m[:, None] for m in basis_c["xyzp"]),
+            *self["lmp"],
+            lattice.volume,
+            poltype=poltype,
+            where=where,
+        )
+        res[..., np.logical_not(where)] = 0
+        return PhysicsArray(
+            res,
+            k0=k0,
+            basis=(basis, self),
+            poltype=poltype,
+            material=material,
+            modetype=(modetype, "singular"),
+            lattice=lattice,
+            kpar=kpar,
+        )
+
     def expand(
         self,
         k0,
         basis=None,
         poltype=None,
-        material=None,
+        material=Material(),
         lattice=None,
         kpar=None,
         modetype=None,
@@ -420,128 +546,24 @@ class SphericalWaveBasis(BasisSet):
     ):
         basis = self if basis is None else basis
         poltype = config.POLTYPE if poltype is None else poltype
-        material = Material() if material is None else Material(material)
-        if modetype not in (None, "same", "regular", "singular"):
-            raise ValueError(f"invalid mode '{modetype}'")
-
-        ks = k0 * material.nmp
+        material = Material(material)
         if isinstance(basis, SphericalWaveBasis):
-            rs = sc.car2sph(basis.positions[:, None, :] - self.positions)
             if lattice is None:
-                res = sw.translate(
-                    *(m[:, None] for m in basis["lmp"]),
-                    *self["lmp"],
-                    ks[self.pol] * rs[basis.pidx[:, None], self.pidx, 0],
-                    rs[basis.pidx[:, None], self.pidx, 1],
-                    rs[basis.pidx[:, None], self.pidx, 2],
-                    poltype=poltype,
-                    singular=modetype == "singular",
-                    where=where,
-                )
-                res[..., np.logical_not(where)] = 0
-                res = PhysicsArray(
-                    res, k0=k0, basis=(basis, self), poltype=poltype, material=material
-                )
-                if modetype == "singular":
-                    res.modetype = ("regular", "singular")
-                return res
-            lattice = Lattice(lattice)
-            try:
-                kpar = list(kpar)
-            except TypeError:
-                kpar = [0] * lattice.dim if kpar is None else [kpar]
-            if len(kpar) != lattice.dim:
-                raise ValueError("incompatible dimensions of 'lattice' and 'kpar'")
-            if len(kpar) == 1:
-                x = kpar[0]
-                kpar = [np.nan, np.nan, x]
-            elif len(kpar) == 2:
-                x = kpar
-                kpar = kpar + [np.nan]
-            elif len(kpar) == 3:
-                x = kpar
-            res = sw.translate_periodic(
-                ks,
-                x,
-                lattice[...],
-                basis.positions,
-                basis[()],
-                self[()],
-                self.positions,
-                poltype=poltype,
+                return self._expand_sw(k0, basis, poltype, where, material, modetype)
+            return self._expand_swl(
+                k0, basis, poltype, where, material, modetype, lattice, kpar
             )
-            res[..., np.logical_not(where)] = 0
-            return PhysicsArray(
-                res,
-                k0=k0,
-                basis=(basis, self),
-                poltype=poltype,
-                material=material,
-                lattice=lattice,
-                modetype=("regular", "singular"),
-                kpar=kpar,
-            )
-
         if isinstance(basis, CylindricalWaveBasis):
-            if lattice is None:
-                lattice = basis.hints["lattice"]
-            lattice = Lattice(lattice)
-            if kpar is None:
-                kpar = basis.hints["kpar"]
-            if len(kpar) == 1:
-                kpar = [np.nan, np.nan, kpar]
-            if 3 - np.isnan(kpar).sum() != lattice.dim:
-                raise ValueError("incompatible dimensions of 'lattice' and 'kpar'")
-            where = np.logical_and(where, basis.pidx[:, None] == self.pidx)
-            res = sw.periodic_to_cw(
-                *(m[:, None] for m in basis["kzmp"]),
-                *self["lmp"],
-                ks[self.pol],
-                lattice.volume,
-                poltype=poltype,
-                where=where,
-            )
-            res[..., np.logical_not(where)] = 0
-            return PhysicsArray(
-                res,
-                k0=k0,
-                basis=(basis, self),
-                poltype=poltype,
-                material=material,
-                modetype="singular",
-                lattice=lattice,
-                kpar=kpar,
+            return self._expand_cw(
+                k0, basis, poltype, where, material, modetype, lattice, kpar
             )
         elif isinstance(basis, PlaneWaveBasis):
-            if lattice is None:
-                lattice = basis.hints["lattice"]
-            if kpar is None:
-                kpar = basis.hints["kpar"]
-            if len(kpar) == 2:
-                kpar = [kpar[0], kpar[1], np.nan]
-            if isinstance(basis, PlaneWaveBasisPartial):
-                basis = basis.complete(k0)
-            res = sw.periodic_to_pw(
-                *(m[:, None] for m in basis["xyzp"]),
-                *self["lmp"],
-                lattice.volume,
-                poltype=poltype,
-                where=where,
-            )
-            res[..., np.logical_not(where)] = 0
-            return PhysicsArray(
-                res,
-                k0=k0,
-                basis=(basis, self),
-                poltype=poltype,
-                material=material,
-                modetype=(None, "singular"),
-                lattice=lattice,
-                kpar=kpar,
+            return self._expand_pw(
+                k0, basis, poltype, where, material, modetype, lattice, kpar
             )
         raise ValueError("invalid basis or lattice definitions")
 
-    def basischange(self, basis=None, poltype=None, *, where=True):
+    def basischange(self, poltype=None, *, basis=None, where=True):
         basis = self if basis is None else basis
         poltype = config.POLTYPE if poltype is None else poltype
         if poltype == "helicity":
@@ -652,8 +674,8 @@ class CylindricalWaveBasis(BasisSet):
         except AttributeError:
             return False
 
-    def __call__(self, r, k0, poltype=None, material=None, modetype="regular"):
-        material = Material() if material is None else Material(material)
+    def __call__(self, r, k0, poltype=None, material=Material(), modetype="regular"):
+        material = Material(material)
         ks = (k0 * material.nmp)[self.pol]
         krhos = np.sqrt(ks * ks - self.kz * self.kz)
         krhos[krhos.imag < 0] = -krhos[krhos.imag < 0]
@@ -817,7 +839,7 @@ class CylindricalWaveBasis(BasisSet):
         obj.hints = hints
         return obj
 
-    def rotate(self, phi, basis=None, *, where=True):
+    def rotate(self, phi, *, basis=None, where=True):
         basis = self if basis is None else basis
         if not isinstance(basis, CylindricalWaveBasis):
             raise ValueError("can only rotate within CylindricalWaveBasis")
@@ -828,9 +850,9 @@ class CylindricalWaveBasis(BasisSet):
         res[..., np.logical_not(where)] = 0
         return PhysicsArray(res, basis=(basis, self))
 
-    def translate(self, k0, r, basis=None, material=None, *, where=True):
+    def translate(self, r, k0, *, basis=None, material=Material(), where=True):
         basis = self if basis is None else basis
-        material = Material() if material is None else Material(material)
+        material = Material(material)
         if not isinstance(basis, CylindricalWaveBasis):
             raise ValueError("can only translate within CylindricalWaveBasis")
         where = np.logical_and(where, basis.pidx[:, None] == self.pidx)
@@ -864,7 +886,7 @@ class CylindricalWaveBasis(BasisSet):
         k0,
         basis=None,
         poltype=None,
-        material=None,
+        material=Material(),
         lattice=None,
         kpar=None,
         modetype=None,
@@ -873,7 +895,7 @@ class CylindricalWaveBasis(BasisSet):
     ):
         basis = self if basis is None else basis
         poltype = config.POLTYPE if poltype is None else poltype
-        material = Material() if material is None else Material(material)
+        material = Material(material)
         if modetype not in (None, "same", "regular", "singular"):
             raise ValueError(f"invalid mode '{modetype}'")
 
@@ -982,7 +1004,7 @@ class CylindricalWaveBasis(BasisSet):
             )
         raise ValueError("invalid basis or lattice definitions")
 
-    def basischange(self, basis=None, poltype=None, *, where=True):
+    def basischange(self, poltype=None, *, basis=None, where=True):
         basis = self if basis is None else basis
         poltype = config.POLTYPE if poltype is None else poltype
         if poltype == "helicity":
@@ -1063,7 +1085,7 @@ class PlaneWaveBasis(BasisSet):
             kx, ky, kz = kz, kx, ky
             kpar = kpar[[2, 0, 1]] if kpar is not None else None
             n -= 1
-        obj = type(self)(kx, ky, kz, self.pol)
+        obj = type(self)(zip(kx, ky, kz, self.pol))
         if "lattice" in self.hints:
             obj.hints["lattice"] = self.hints["lattice"].permute(n)
         if kpar is not None:
@@ -1100,7 +1122,7 @@ class PlaneWaveBasis(BasisSet):
         except AttributeError:
             return False
 
-    def partial(self, alignment=None, k0=None, material=vacuum):
+    def partial(self, alignment=None, k0=None, material=Material()):
         if k0 is not None:
             ks = (k0 * material.nmp)[self.pol]
             test = self.kx * self.kx + self.ky * self.ky + self.kz * self.kz - ks * ks
@@ -1148,15 +1170,10 @@ class PlaneWaveBasis(BasisSet):
         res[..., np.logical_not(where)] = 0
         return PhysicsArray(res, basis=(PlaneWaveBasis(modes), self))
 
-    def translate(self, r, basis=None, *, where=True):
+    def translate(self, r, *, basis=None, where=True):
         basis = self if basis is None else basis
-        if not isinstance(basis, PlaneWaveBasis):
+        if type(basis) != PlaneWaveBasis:  # forbid inheritance
             raise ValueError("can only translate within PlaneWaveBasis")
-        elif isinstance(basis, PlaneWaveBasisPartial):
-            warnings.warn(
-                "casting PlaneWavePartial to PlaneWave can cause floating-point errors"
-            )
-            basis = basis.complete(self.k0, self.material)  # TODO
         r = np.asanyarray(r)
         if r.shape[-1] != 3:
             raise ValueError("invalid 'r'")
@@ -1184,7 +1201,7 @@ class PlaneWaveBasis(BasisSet):
         k0,
         basis=None,
         poltype=None,
-        material=vacuum,
+        material=Material(),
         modetype="up",
         *,
         where=True,
@@ -1221,7 +1238,9 @@ class PlaneWaveBasis(BasisSet):
             res = pw.to_cw(
                 *(m[:, None] for m in basis["kzmp"]), *self[()], where=where,
             ) * pw.translate(
-                self.kx, self.ky, self.kz,
+                self.kx,
+                self.ky,
+                self.kz,
                 basis.positions[basis.pidx, None, 0],
                 basis.positions[basis.pidx, None, 1],
                 basis.positions[basis.pidx, None, 2],
@@ -1242,7 +1261,9 @@ class PlaneWaveBasis(BasisSet):
                 poltype=poltype,
                 where=where,
             ) * pw.translate(
-                self.kx, self.ky, self.kz,
+                self.kx,
+                self.ky,
+                self.kz,
                 basis.positions[basis.pidx, None, 0],
                 basis.positions[basis.pidx, None, 1],
                 basis.positions[basis.pidx, None, 2],
@@ -1258,7 +1279,7 @@ class PlaneWaveBasis(BasisSet):
             )
         raise ValueError("invalid basis definition")
 
-    def basischange(self, basis=None, poltype=None, *, where=True):
+    def basischange(self, poltype=None, *, basis=None, where=True):
         basis = self if basis is None else basis
         poltype = config.POLTYPE if poltype is None else poltype
         if poltype == "helicity":
@@ -1277,6 +1298,12 @@ class PlaneWaveBasis(BasisSet):
         res[where] = np.sqrt(0.5)
         res[where & (basis.pol[:, None] == self.pol) & (self.pol == 0)] = -np.sqrt(0.5)
         return PhysicsArray(res, basis=(basis, self), poltype=poltype)
+
+    def complete(self, k0, material=Material(), modetype="up"):
+        ks = (k0 * Material(material).nmp)[self.pol]
+        if (np.sum(self.kx ** 2 + self.ky ** 2 + self.kz ** 2) - ks > 1e-14).any():
+            raise ValueError("incompatible k0 and/or material")
+        return self
 
 
 class PlaneWaveBasisPartial(PlaneWaveBasis):
@@ -1325,10 +1352,10 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         return obj
 
     def __getitem__(self, idx):
-        res = tuple((i[idx] for i in (self._kx, self._ky, self.pol)))
+        res = self._kx[idx], self._ky[idx], self.pol[idx]
         if isinstance(idx, int) or idx == ():
             return res
-        return type(self)(*res, self.alignment)
+        return type(self)(zip(*res))
 
     @property
     def kx(self):
@@ -1354,14 +1381,11 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
             return self._kx
         return None
 
-    def complete(self, k0, material=vacuum, modetype="up"):
-        modetype = modetype.lower()
+    def complete(self, k0, material=Material(), modetype="up"):
         if modetype not in ("up", "down"):
             raise ValueError("modetype not recognized")
-        try:
-            ks = np.array(self.ks[self.pol], complex)
-        except TypeError:
-            pass
+        material = Material(material)
+        ks = k0 * material.nmp[self.pol]
         kx = self._kx
         ky = self._ky
         kz = misc.wave_vec_z(kx, ky, ks) * (2 * (modetype == "up") - 1)
@@ -1369,17 +1393,18 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
             kx, ky, kz = kz, kx, ky
         elif self.alignment == "zy":
             kx, ky, kz = ky, kz, kx
+        print(kx, ky, kz)
         obj = PlaneWaveBasis(zip(kx, ky, kz, self.pol))
         obj.hints = copy.deepcopy(self.hints)
         return obj
 
-    def __call__(self, r, k0, poltype=None, material=vacuum, modetype="up"):
+    def __call__(self, r, k0, poltype=None, material=Material(), modetype="up"):
         basis = self.complete(k0, material, modetype)
         res = basis(r, poltype)
-        res[-2, "basis"] = self
-        res[-2, "k0"] = k0
-        res[-2, "material"] = material
-        res[-2, "modetype"] = modetype
+        res.ann[-2, "basis"] = self
+        res.ann[-2, "k0"] = k0
+        res.ann[-2, "material"] = material
+        res.ann[-2, "modetype"] = modetype
         return res
 
     def permute(self, n=1):
@@ -1393,7 +1418,7 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
             alignment = dct[alignment]
             kpar = kpar[[2, 0, 1]] if kpar is not None else kpar
             n -= 1
-        obj = type(self)(self.kx, self.ky, self.kz, self.pol)
+        obj = type(self)(zip(self._kx, self._ky, self.pol), alignment)
         if "lattice" in self.hints:
             obj.hints["lattice"] = self.hints["lattice"].permute(n)
         if kpar is not None:
@@ -1402,10 +1427,12 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
 
     def __eq__(self, other):
         try:
+            skx, sky, skz = self.kx, self.ky, self.kz
+            okx, oky, okz = other.kx, other.ky, other.kz
             return self is other or (
-                np.array_equal(self.kx, other.kx)
-                and np.array_equal(self.ky, other.ky)
-                and np.array_equal(self.kz, other.kz)
+                (np.array_equal(skx, okx) or (skx is None and okx is None))
+                and (np.array_equal(sky, oky) or (sky is None and oky is None))
+                and (np.array_equal(skz, okz) or (skz is None and okz is None))
                 and np.array_equal(self.pol, other.pol)
             )
         except AttributeError:
@@ -1428,7 +1455,7 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
             raise ValueError("todo")
         latrec = lattice.reciprocal
         kpars = kpar + la.diffr_orders_circle(latrec, bmax) @ latrec
-        obj = cls(kpars, alignment=lattice.alignment)
+        obj = cls.default(kpars, alignment=lattice.alignment)
         obj.hints["lattice"] = lattice
         if lattice.alignment == "xy":
             kpar = list(kpar) + [np.nan]
@@ -1440,35 +1467,43 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         return obj
 
     def rotate(self, phi, *, where=True):
-        if self.alignment != "xy":
-            raise ValueError("todo")
         c1, s1 = np.cos(phi), np.sin(phi)
         r = np.array([[c1, -s1], [s1, c1]])
-        kvecs = r @ np.array([self.kx, self.ky])
-        modes = zip(*kvecs, self.pol)
+        kx, ky, pol = self[()]
+        modes = zip(*(r @ np.array([kx, ky])), pol)
         res = np.eye(len(self))
         res[..., np.logical_not(where)] = 0
-        return PhysicsArray(res, basis=(PlaneWaveBasisPartial(modes), self))
+        return PhysicsArray(
+            res, basis=(PlaneWaveBasisPartial(modes, self.alignment), self)
+        )
 
     def translate(
-        self, k0, r, basis=None, poltype=None, material=vacuum, *, where=True
+        self, r, k0, *, basis=None, material=Material(), modetype="up", where=True
     ):
-        self_c = self.complete(k0, material)
-        if isinstance(basis, PlaneWaveBasisPartial):
-            basis_c = basis.complete(k0, material)
-        elif isinstance(basis, PlaneWaveBasis):
-            basis_c = basis
-        elif basis is None:
-            basis_c = basis
-        res = self_c.translate(r, basis_c, poltype, where=where)
-        res.basis = (basis, self)
-        res.material = material
-        res.k0 = k0
+        self_c = self.complete(k0, material, modetype)
+        res = self_c.translate(
+            r, basis=basis.complete(k0, material, modetype), where=where
+        )
+        prepend = (res.ndim - 2) * (None,)
+        res.basis = prepend + (basis, self)
+        res.material = prepend + (material, material)
+        res.k0 = prepend + (k0, k0)
         return res
 
-    def basischange(self, basis=None, poltype=None, *, where=True):
+    def expand(self, k0, basis=None, material=Material(), *, where=True):
+        self_c = self.complete(k0, material)
+        res = self_c.expand(basis, where=where)
+        prepend = (res.ndim - 2) * (None,)
+        res.basis = prepend + (basis, self)
+        res.material = prepend + (material, material)
+        res.k0 = prepend + (k0, k0)
+        return res
+
+    def basischange(self, poltype=None, *, basis=None, where=True):
         basis = self if basis is None else basis
         if not isinstance(basis, PlaneWaveBasisPartial):
+            raise ValueError("todo")
+        if self.alignment != basis.alignment:
             raise ValueError("todo")
         poltype = config.POLTYPE if poltype is None else poltype
         if poltype == "helicity":
@@ -1478,13 +1513,10 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         if poltype != ("helicity", "parity") and poltype != ("parity", "helicity"):
             raise ValueError("todo")
         bkx, bky, bpol = basis[()]
-        res = np.array(
-            np.logical_and(
-                np.logical_and(bkx[:, None] == self._kx, bky[:, None] == self._ky),
-            ),
-            int,
-        )
-        res[np.logical_and(res, bpol[:, None] == self.pol)] = -1
+        where = (bkx[:, None] == self._kx) & (bky[:, None] == self._ky) & where
+        res = np.zeros_like(where, float)
+        res[where] = np.sqrt(0.5)
+        res[where & (basis.pol[:, None] == self.pol) & (self.pol == 0)] = -np.sqrt(0.5)
         return PhysicsArray(res, basis=(basis, self), poltype=poltype)
 
 
