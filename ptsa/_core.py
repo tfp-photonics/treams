@@ -1405,7 +1405,6 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
             kx, ky, kz = kz, kx, ky
         elif self.alignment == "zy":
             kx, ky, kz = ky, kz, kx
-        print(kx, ky, kz)
         obj = PlaneWaveBasis(zip(kx, ky, kz, self.pol))
         obj.hints = copy.deepcopy(self.hints)
         return obj
@@ -1534,9 +1533,6 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
 
 def _pget(name, arr):
     if arr.ndim == 0:
-        warnings.warn(
-            f"'{name}' undefined for PhysicsArray of dimension 0", PhysicsArrayWarning,
-        )
         return None
     val = [a.get(name) for a in arr.ann]
     if all(v == val[0] for v in val[1:]):
@@ -1550,9 +1546,7 @@ def _pset(name, arr, val, vtype=object):
     if len(val) != arr.ndim:
         warnings.warn("non-matching property size", PhysicsArrayWarning)
     for a, v in zip(arr.ann, val):
-        if v is None:
-            a.pop(name, None)
-        elif isinstance(v, vtype):
+        if isinstance(v, vtype):
             a[name] = v
         else:
             warnings.warn(
@@ -1585,22 +1579,10 @@ class PhysicsArray(AnnotatedArray):
     def __init__(
         self,
         arr,
-        k0=None,
-        basis=None,
-        poltype=None,
-        material=None,
-        modetype=None,
-        lattice=None,
-        kpar=None,
+        ann=None,
+        **kwargs,
     ):
-        super().__init__(arr)
-        self.k0 = k0
-        self.basis = basis
-        self.poltype = poltype
-        self.material = material
-        self.modetype = modetype
-        self.lattice = lattice
-        self.kpar = kpar
+        super().__init__(arr, ann, **kwargs)
         self._check()
 
     def __repr__(self):
@@ -1634,8 +1616,14 @@ class PhysicsArray(AnnotatedArray):
         total_lat = None
         total_kpar = [np.nan] * 3
         for a in self.ann[-2:]:
+            k0 = a.get("k0")
+            material = a.get("material")
+            modetype = a.get("modetype")
+            poltype = a.get("poltype")
+            basis = a.get("basis")
+            lattice = a.get("lattice")
             for lat in (
-                a.get("lattice"),
+                lattice,
                 getattr(a.get("basis"), "hints", {}).get("lattice"),
             ):
                 if lat is not None:
@@ -1650,12 +1638,10 @@ class PhysicsArray(AnnotatedArray):
                             total_kpar[i] = y
                         elif not np.isnan(y) and x != y:
                             raise ValueError("imcompatible kpar")
-            k0 = a.get("k0")
-            material = a.get("material")
-            modetype = a.get("modetype")
-            basis = a.get("basis")
             if type(basis) == PlaneWaveBasis and None not in (k0, material):
                 basis.complete(k0, material, modetype)
+            if poltype == "parity" and getattr(material, "ischiral", False):
+                raise ValueError("poltype 'parity' not possible for chiral material")
 
     k0 = _physicsarray_property("k0", (int, float, np.floating, np.integer))
     basis = _physicsarray_property("basis", BasisSet)

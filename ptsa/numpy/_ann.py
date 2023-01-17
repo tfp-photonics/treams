@@ -166,13 +166,17 @@ class ArrayAnnotations(collections.abc.Sequence):
 class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
     _scales = set()
 
-    def __init__(self, array, ann=None):
+    def __init__(self, array, ann=None, **kwargs):
         self._array = np.asarray(array)
         self._ann = ArrayAnnotations(self.ndim)
         if isinstance(array, AnnotatedArray):
             self._ann.update(array.ann)
         if ann is not None:
             self._ann.update(ann)
+        for key, val in kwargs.items():
+            if not isinstance(val, tuple):
+                val = (val,) * self.ndim
+            self._ann.update([{} if v is None else {key: v} for v in val])
 
     def __repr__(self):
         repr_arr = "    " + repr(self._array)[6:-1].replace("\n  ", "\n")
@@ -204,7 +208,9 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
 
         istuple, res = (True, res) if isinstance(res, tuple) else (False, (res,))
         if out == (None,):
-            res = tuple(r if isinstance(r, np.generic) else type(self)(r) for r in res)
+            res = tuple(
+                r if isinstance(r, np.generic) else AnnotatedArray(r) for r in res
+            )
         for a, r in zip(ann_out, res):
             if a is not None:
                 r.ann.update(a)
@@ -229,6 +235,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
                 warnings.warn("unrecognized ufunc method", AnnotatedArrayWarning)
         else:
             res = self._gufunc_call(ufunc, inputs, kwargs, res)
+        res = tuple(r if isinstance(r, np.generic) else type(self)(r) for r in res)
         return res if istuple else res[0]
 
     @staticmethod
@@ -514,6 +521,11 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         elif len(tuple(filter(lambda x: x != 1, self.shape))) == 1:
             res.ann[0].update(self.ann[self.shape.index(res.size)])
         return res
+
+    @implements(np.trace)
+    def trace(self, offset=0, axis1=0, axis2=1, dtype=None, out=None):
+        ann = [a for i, a in enumerate(self.ann[:]) if i not in (axis1, axis2)]
+        return type(self)(self._array.trace(offset, axis1, axis2, dtype, out), ann)
 
     def astype(self, *args, **kwargs):
         return type(self)(self._array.astype(*args, **kwargs), self.ann)
