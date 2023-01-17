@@ -411,18 +411,18 @@ class TestSWB:
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
     def test_expand_pw(self):
-        a = ptsa.PlaneWaveBasis([[0.3, 0.2, 1, 0]])
+        a = ptsa.PlaneWaveBasis([[3, 0, 4, 0]])
         b = ptsa.SphericalWaveBasis([[1, -1, 0], [1, 1, 0]])
         where = [True, False]
         lattice = ptsa.Lattice([[2, 0], [0, 2]])
         x = b.expand(
-            3, a, lattice=lattice, kpar=[0.3, 0.2], material=(1, 4, 0), where=where
+            2.5, a, lattice=lattice, kpar=[0.3, 0.2], material=(1, 4, 0), where=where
         )
         y = ptsa.PhysicsArray(
-            [[ptsa.sw.periodic_to_pw(0.3, 0.2, 1, 0, 1, -1, 0, 4), 0]],
+            [[ptsa.sw.periodic_to_pw(3, 0, 4, 0, 1, -1, 0, 4), 0]],
             basis=(a, b),
             poltype="helicity",
-            k0=3,
+            k0=2.5,
             material=ptsa.Material(1, 4, 0),
             modetype=(None, "singular"),
             lattice=lattice,
@@ -825,21 +825,21 @@ class TestCWB:
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
     def test_expand_pw(self):
-        a = ptsa.PlaneWaveBasis([[0.3, 0.2, 1, 0]])
+        a = ptsa.PlaneWaveBasis([[3, 0, 4, 0]])
         b = ptsa.CylindricalWaveBasis([[1, -1, 0], [1, 1, 0]])
         where = [True, False]
         lattice = ptsa.Lattice(2, "x")
         x = b.expand(
-            3, a, lattice=lattice, kpar=[0.3, 0.2], material=(1, 4, 0), where=where
+            2.5, a, lattice=lattice, kpar=[3, 0], material=(1, 4, 0), where=where
         )
         y = ptsa.PhysicsArray(
-            [[ptsa.cw.periodic_to_pw(0.3, 0.2, 1, 0, 1, -1, 0, 2), 0]],
+            [[ptsa.cw.periodic_to_pw(3, 0, 4, 0, 1, -1, 0, 2), 0]],
             basis=(a, b),
-            k0=3,
+            k0=2.5,
             material=ptsa.Material(1, 4, 0),
             modetype=(None, "singular"),
             lattice=lattice,
-            kpar=[0.3, 0.2, np.nan],
+            kpar=[3, 0, np.nan],
         )
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
@@ -1022,12 +1022,12 @@ class TestPWB:
             b.translate([1, 0])
 
     def test_expand_pw(self):
-        a = ptsa.PlaneWaveBasis([[0.2, 0, 0, 0], [0, 1, 1, 0]])
-        b = ptsa.PlaneWaveBasis([[0.2, 0, 0, 0], [0.2, 1, 0, 0]])
+        a = ptsa.PlaneWaveBasis([[3, 0, 4, 0], [0, 0, 5, 0]])
+        b = ptsa.PlaneWaveBasis([[3, 0, 4, 0], [0, 5, 0, 0]])
         where = [True, False]
-        x = b.expand(3, a, material=(1, 2, 0), modetype="singular", where=where)
+        x = b.expand(2.5, a, material=(2, 2, 0), where=where)
         y = ptsa.PhysicsArray(
-            [[1, 0], [0, 0]], basis=(a, b), k0=3, material=ptsa.Material(1, 2, 0),
+            [[1, 0], [0, 0]], basis=(a, b), k0=2.5, material=ptsa.Material(2, 2, 0),
         )
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
@@ -1045,7 +1045,6 @@ class TestPWB:
                 ]
             ],
             basis=(a, b),
-            poltype="helicity",
             k0=5,
             material=ptsa.Material(),
             modetype=("regular", None),
@@ -1236,10 +1235,6 @@ class TestPWBP:
             material=(None, ptsa.Material(), ptsa.Material()),
             k0=(None, 5, 5),
         )
-        print(np.array(x))
-        print(np.array(y))
-        print(x.ann)
-        print(y.ann)
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
     # def test_expand_pw(self):

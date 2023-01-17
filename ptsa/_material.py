@@ -91,5 +91,13 @@ class Material:
     def __repr__(self):
         return self.__class__.__name__ + str(self)
 
+    def ks(self, k0):
+        return k0 * self.nmp
 
-vacuum = Material()
+    def krhos(self, k0, kz, pol):
+        ks = self.ks(k0)[pol]
+        return misc.wave_vec_z(kz, 0, ks)
+
+    def kzs(self, k0, kx, ky, pol):
+        ks = self.ks(k0)[pol]
+        return misc.wave_vec_z(kx, ky, ks)
