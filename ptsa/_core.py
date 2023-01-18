@@ -13,7 +13,7 @@ import ptsa.special as sc
 from ptsa import config, cw, pw, sw
 from ptsa._lattice import Lattice
 from ptsa._material import Material
-from ptsa.numpy import AnnotatedArray, AnnotatedArrayWarning
+from ptsa.numpy import AnnotatedArray, AnnotatedArrayWarning, AnnotatedArrayError
 
 
 class OrderedSet(Sequence, Set):
@@ -900,9 +900,7 @@ class CylindricalWaveBasis(BasisSet):
     def _expand_cwl(self, k0, basis, material, lattice, kpar, where):
         ks = material.ks(k0)
         alignment = (
-            "x"
-            if not isinstance(lattice, Lattice) and np.size(lattice) == 1
-            else None
+            "x" if not isinstance(lattice, Lattice) and np.size(lattice) == 1 else None
         )
         lattice = Lattice(lattice, alignment)
         if "z" in lattice.alignment:
@@ -920,13 +918,7 @@ class CylindricalWaveBasis(BasisSet):
             x = kpar
             kpar = kpar + [basis.hints["kpar"][2]]
         res = cw.translate_periodic(
-            ks,
-            x,
-            lattice[...],
-            basis.positions,
-            basis[()],
-            self[()],
-            self.positions,
+            ks, x, lattice[...], basis.positions, basis[()], self[()], self.positions,
         )
         res[..., np.logical_not(where)] = 0
         return PhysicsArray(
@@ -1217,10 +1209,7 @@ class PlaneWaveBasis(BasisSet):
             & (basis_c.pol[:, None] == self.pol),
             int,
         )
-        return PhysicsArray(
-            res,
-            modetype=modetype,
-        )
+        return PhysicsArray(res, modetype=modetype,)
 
     def _expand_cw(self, basis, where, modetype):
         res = pw.to_cw(
@@ -1234,10 +1223,7 @@ class PlaneWaveBasis(BasisSet):
             basis.positions[basis.pidx, None, 2],
         )
         res[..., np.logical_not(where)] = 0
-        return PhysicsArray(
-            res,
-            modetype=("regular", modetype),
-        )
+        return PhysicsArray(res, modetype=("regular", modetype),)
 
     def _expand_sw(self, basis, poltype, modetype, where):
         res = pw.to_sw(
@@ -1254,11 +1240,7 @@ class PlaneWaveBasis(BasisSet):
             basis.positions[basis.pidx, None, 2],
         )
         res[..., np.logical_not(where)] = 0
-        return PhysicsArray(
-            res,
-            poltype=poltype,
-            modetype=("regular", modetype),
-        )
+        return PhysicsArray(res, poltype=poltype, modetype=("regular", modetype),)
 
     def expand(
         self,
@@ -1540,7 +1522,7 @@ def _pget(name, arr):
     return tuple(val)
 
 
-def _pset(name, arr, val, vtype=object):
+def _pset(name, arr, val, vtype=object, cast=None):
     if not isinstance(val, tuple):
         val = (val,) * arr.ndim
     if len(val) != arr.ndim:
@@ -1548,10 +1530,10 @@ def _pset(name, arr, val, vtype=object):
     for a, v in zip(arr.ann, val):
         if isinstance(v, vtype):
             a[name] = v
+        elif cast is not None:
+            a[name] = cast(v)
         else:
-            warnings.warn(
-                f"invalid type for '{name}': {type(v).__name__}", PhysicsArrayWarning,
-            )
+            raise PhysicsArrayError(f"invalid type for '{name}': {type(v).__name__}")
 
 
 def _pdel(name, arr):
@@ -1559,9 +1541,11 @@ def _pdel(name, arr):
         a.pop(name, None)
 
 
-def _physicsarray_property(name, vtype=(int, float, np.floating, np.integer)):
+def _physicsarray_property(name, vtype=object, cast=None):
     return property(
-        partial(_pget, name), partial(_pset, name, vtype=vtype), partial(_pdel, name)
+        partial(_pget, name),
+        partial(_pset, name, vtype=vtype, cast=cast),
+        partial(_pdel, name),
     )
 
 
@@ -1569,7 +1553,7 @@ class PhysicsArrayWarning(AnnotatedArrayWarning):
     pass
 
 
-class PhysicsArrayError(Exception):
+class PhysicsArrayError(AnnotatedArrayError):
     pass
 
 
@@ -1577,12 +1561,11 @@ class PhysicsArray(AnnotatedArray):
     _scales = {"basis"}
 
     def __init__(
-        self,
-        arr,
-        ann=None,
-        **kwargs,
+        self, arr, ann=None, **kwargs,
     ):
-        super().__init__(arr, ann, **kwargs)
+        super().__init__(arr, ann)
+        for key, val in kwargs.items():
+            setattr(self, key, val)
         self._check()
 
     def __repr__(self):
@@ -1643,13 +1626,13 @@ class PhysicsArray(AnnotatedArray):
             if poltype == "parity" and getattr(material, "ischiral", False):
                 raise ValueError("poltype 'parity' not possible for chiral material")
 
-    k0 = _physicsarray_property("k0", (int, float, np.floating, np.integer))
-    basis = _physicsarray_property("basis", BasisSet)
-    poltype = _physicsarray_property("poltype", str)
-    modetype = _physicsarray_property("modetype", str)
-    material = _physicsarray_property("material", Material)
-    lattice = _physicsarray_property("lattice", Lattice)
-    kpar = _physicsarray_property("kpar", list)
+    k0 = _physicsarray_property("k0", (int, float, np.floating, np.integer), float)
+    basis = _physicsarray_property("basis", BasisSet, BasisSet)
+    poltype = _physicsarray_property("poltype", str, str)
+    modetype = _physicsarray_property("modetype", str, str)
+    material = _physicsarray_property("material", Material, Material)
+    lattice = _physicsarray_property("lattice", Lattice, Lattice)
+    kpar = _physicsarray_property("kpar", list, list)
 
     def __matmul__(self, other, *args, **kwargs):
         res = super().__matmul__(other, *args, **kwargs)

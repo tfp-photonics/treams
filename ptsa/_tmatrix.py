@@ -5,12 +5,16 @@ import numpy as np
 import ptsa.lattice as la
 import ptsa.special as sc
 from ptsa import config, cw, io, misc, pw, sw
-from ptsa._core import PhysicsArray
+from ptsa._core import PhysicsArray, PhysicsArrayError
 from ptsa._core import SphericalWaveBasis as SWB
 from ptsa._material import Material
 from ptsa.coeffs import mie
 
-DECAY_FUNCTIONS = {np.trace}
+DECAY_FUNCTIONS = set()
+
+
+class TMatrixError(PhysicsArrayError):
+    pass
 
 
 def decays(np_func):
@@ -78,16 +82,29 @@ class TMatrix(PhysicsArray):
     def _check(self):
         super()._check()
         if not isinstance(self.k0, (int, float, np.floating, np.integer)):
-            raise ValueError("invalid k0")
+            raise TMatrixError("invalid k0")
         if self.poltype is None:
             self.poltype = config.POLTYPE
         if self.poltype not in ("parity", "helicity"):
-            raise ValueError("invalid poltype")
+            raise TMatrixError("invalid poltype")
         shape = np.shape(self)
         if len(shape) != 2 or shape[0] != shape[1]:
-            raise ValueError(f"invalid shape: '{shape}'")
+            raise TMatrixError(f"invalid shape: '{shape}'")
         if self.basis is None:
             self.basis = SWB.default(SWB.defaultlmax(shape[0]))
+        if self.material is None:
+            self.material = Material()
+
+    def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+        if (
+            ufunc.signature is not None
+            and any(map(lambda x: x not in " (),->", ufunc.signature))
+        ) or (
+            method not in ("__call__", "accumulate", "at")
+        ):
+            inputs = [PhysicsArray(a) if isinstance(a, TMatrix) else a for a in inputs]
+            return PhysicsArray(self).__array_ufunc__(ufunc, method, *inputs, **kwargs)
+        return super().__array_ufunc__(ufunc, method, *inputs, **kwargs)
 
     def __array_function__(self, func, types, args, kwargs):
         if func in DECAY_FUNCTIONS:
@@ -98,6 +115,10 @@ class TMatrix(PhysicsArray):
             }
         return super().__array_function__(func, types, args, kwargs)
 
+    @property
+    def ks(self):
+        return self.material.ks(self.k0)
+
     @decays(np.trace)
     def trace(self, *args, **kwargs):
         return PhysicsArray(self).trace(*args, **kwargs)
@@ -107,7 +128,7 @@ class TMatrix(PhysicsArray):
         return PhysicsArray(self).sum(*args, **kwargs)
 
     @classmethod
-    def sphere(cls, lmax, k0, radii, materials=(Material(),)):
+    def sphere(cls, lmax, k0, radii, materials):
         """
         T-Matrix of a sphere
 
@@ -165,14 +186,14 @@ class TMatrix(PhysicsArray):
         if not self.isglobal:
             raise NotImplementedError
         if not self.material.ischiral:
-            k = self.material.ks(self.k0)[0]
+            k = self.ks[0]
             res = -2 * np.pi * self.trace().real / (k * k)
         else:
             res = 0
             diag = np.diag(self)
             for pol in [0, 1]:
                 choice = self.basis.pol == pol
-                k = self.material.ks(self.k0)[pol]
+                k = self.ks[pol]
                 res += -2 * np.pi * diag[choice].sum().real / (k * k)
         if res.imag == 0:
             return res.real
@@ -192,9 +213,9 @@ class TMatrix(PhysicsArray):
             raise NotImplementedError
         re, im = self.real, self.imag
         if not self.material.ischiral:
-            ks = self.material.ks(self.k0)[0]
+            ks = self.ks[0]
         else:
-            ks = self.material.ks(self.k0)[self.pol, None]
+            ks = self.ks[self.pol, None]
         res = 2 * np.pi * np.sum((re * re + im * im) / (ks * ks))
         if res.imag == 0:
             return res.real
@@ -207,16 +228,15 @@ class TMatrix(PhysicsArray):
 
         Only implemented for global T-matrices.
         """
-        if self.positions.shape[0] > 1:
+        if not (self.isglobal and self.poltype == "helicity" and self.material.isreal):
             raise NotImplementedError
-        if not self.helicity:
-            raise NotImplementedError
-        selections = self.pol == 0, self.pol == 1
-        plus = -np.sum(np.real(self.t[selections[1], selections[1]]))
-        plus -= np.sum(np.power(np.abs(self.t[:, selections[1]]), 2))
+        sel = np.array(self.basis.pol, bool)
+        plus = -np.sum(np.real(self[sel, sel]))
+        plus -= np.sum(np.power(np.abs(self[:, sel]), 2))
         plus /= self.ks[1]
-        minus = -np.sum(np.real(self.t[selections[0], selections[0]]))
-        minus -= np.sum(np.power(np.abs(self.t[:, selections[0]]), 2))
+        sel = ~sel
+        minus = -np.sum(np.real(self[sel, sel]))
+        minus -= np.sum(np.power(np.abs(self[:, sel]), 2))
         minus /= self.ks[0]
         return np.real((plus - minus) / (plus + minus))
 
@@ -230,19 +250,17 @@ class TMatrix(PhysicsArray):
         Returns:
             float
         """
-        if self.positions.shape[0] > 1:
+        if not (self.isglobal and self.poltype == "helicity"):
             raise NotImplementedError
-        if not self.helicity:
-            raise NotImplementedError
-        selections = self.pol == 0, self.pol == 1
-        _, spp, _ = np.linalg.svd(self.t[np.ix_(selections[1], selections[1])])
-        _, spm, _ = np.linalg.svd(self.t[np.ix_(selections[1], selections[0])])
-        _, smp, _ = np.linalg.svd(self.t[np.ix_(selections[0], selections[1])])
-        _, smm, _ = np.linalg.svd(self.t[np.ix_(selections[0], selections[0])])
-        plus = np.concatenate((spp, spm))
-        minus = np.concatenate((smm, smp))
+        sel = self.basis.pol == 0, self.basis.pol == 1
+        spp = np.linalg.svd(self[np.ix_(sel[1], sel[1])], compute_uv=False)
+        spm = np.linalg.svd(self[np.ix_(sel[1], sel[0])], compute_uv=False)
+        smp = np.linalg.svd(self[np.ix_(sel[0], sel[1])], compute_uv=False)
+        smm = np.linalg.svd(self[np.ix_(sel[0], sel[0])], compute_uv=False)
+        plus = np.concatenate((np.asarray(spp), np.asarray(spm)))
+        minus = np.concatenate((np.asarray(smm), np.asarray(smp)))
         return np.linalg.norm(plus - minus) / np.sqrt(
-            np.sum(np.power(np.abs(self.t), 2))
+            np.sum(np.power(np.abs(self), 2))
         )
 
     @property
@@ -255,31 +273,17 @@ class TMatrix(PhysicsArray):
         Returns:
             float
         """
-        if self.positions.shape[0] > 1:
+        if not (self.isglobal and self.poltype == "helicity"):
             raise NotImplementedError
-        if not self.helicity:
-            raise NotImplementedError
-        selections = self.pol == 0, self.pol == 1
-        tpm = self.t[np.ix_(selections[1], selections[0])]
-        tmp = self.t[np.ix_(selections[0], selections[1])]
+        sel = self.basis.pol == 0, self.basis.pol == 1
+        tpm = np.asarray(self[np.ix_(sel[1], sel[0])])
+        tmp = np.asarray(self[np.ix_(sel[0], sel[1])])
         return np.sum(
             tpm.real * tpm.real
             + tpm.imag * tpm.imag
             + tmp.real * tmp.real
             + tmp.imag * tmp.imag
-        ) / (np.sum(np.power(np.abs(self.t), 2)))
-
-    @property
-    def modes(self):
-        """
-        Modes of the T-matrix
-
-        Degree, order, and polarization of each row/column in the T-matrix
-
-        Returns:
-            3-tuple
-        """
-        return self.l, self.m, self.pol
+        ) / (np.sum(np.power(np.abs(self), 2)))
 
     def xs(self, illu, flux=0.5):
         r"""
@@ -298,44 +302,17 @@ class TMatrix(PhysicsArray):
         Returns:
             float, (2,)-tuple
         """
-        if np.any(np.imag(self.ks) != 0):
+        if not self.material.isreal:
             raise NotImplementedError
-        illu = np.array(illu)
-        if illu.ndim == 1:
-            illu = illu[:, None]
-        p = self.t @ illu
-        rs = sc.car2sph(self.positions[:, None, :] - self.positions)
-        m = sw.translate(
-            *(m[:, None] for m in self.modes),
-            *self.modes,
-            self.ks[self.pol] * rs[self.pidx[:, None], self.pidx, 0],
-            rs[self.pidx[:, None], self.pidx, 1],
-            rs[self.pidx[:, None], self.pidx, 2],
-            self.helicity,
-            singular=False,
-        ) / np.power(self.ks[self.pol], 2)
+        illu = PhysicsArray(illu)
+        p = self @ illu
+        m = self.basis.expand(self.k0) / np.power(self.ks[self.basis.pol], 2)
         return (
             0.5 * np.sum(np.real(p.conjugate() * (m @ p)), axis=-2) / flux,
             -0.5 * np.sum(np.real(illu.conjugate() * (m @ p)), axis=-2) / flux,
         )
 
-    def pick(self, modes):
-        """
-        Pick modes from the T-Matrix
-
-        Args:
-            modes (array): Modes of the new T-matrix
-
-        Returns:
-            TMatrixC
-        """
-        modes = self._check_modes(modes)
-        mat = misc.pickmodes(self.fullmodes, modes)
-        self.t = mat.T @ self.t @ mat
-        self.pidx, self.l, self.m, self.pol = modes
-        return self
-
-    def rotate(self, phi, theta, psi, modes=None):
+    def rotate(self, phi, theta=0, psi=0, *, basis=None):
         """
         Rotate the T-Matrix by the euler angles
 
@@ -354,15 +331,8 @@ class TMatrix(PhysicsArray):
         Returns:
             TMatrix
         """
-        if modes is None:
-            modes = self.modes
-        modes = self._check_modes(modes)
-        if self.positions.shape[0] > 1 and np.any(modes[0] != 0):
-            raise NotImplementedError
-        mat = sw.rotate(*(m[:, None] for m in self.modes), *modes[1:], phi, theta, psi)
-        self.t = mat @ self.t @ mat.conjugate().T
-        self.pidx, self.l, self.m, self.pol = modes
-        return self
+        mat = self.basis.rotate(phi, theta, psi, basis=basis)
+        return TMatrix(mat @ self @ mat.conjugate().T)
 
     def translate(self, rvec, modes=None):
         """

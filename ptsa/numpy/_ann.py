@@ -13,6 +13,10 @@ class AnnotatedArrayWarning(UserWarning):
     pass
 
 
+class AnnotatedArrayError(Exception):
+    pass
+
+
 warnings.simplefilter("always", AnnotatedArrayWarning)
 
 HANDLED_FUNCTIONS = {}
@@ -36,8 +40,11 @@ def _match(a, b):
     """
     for key, val in a.items():
         if key in b and val != b[key]:
-            return False
-    return True
+            warnings.warn(f"incompatible annotation '{key}'", AnnotatedArrayWarning)
+            return
+        # if key in b and val != b[key]:
+        #     return False
+    # return True
 
 
 def _cast_annarray(arr):
@@ -143,7 +150,7 @@ class ArrayAnnotations(collections.abc.Sequence):
     def update(self, other):
         if len(other) > len(self):
             warnings.warn(
-                f"argument contains {len(self)} given: "
+                f"argument of length {len(self)} given: "
                 f"ignore leading {len(other) - len(self)} dimensions",
                 AnnotatedArrayWarning,
             )
@@ -151,10 +158,18 @@ class ArrayAnnotations(collections.abc.Sequence):
             self[i].update(other[i])
 
     def match(self, other):
-        for i in range(-1, -1 - min(len(self), len(other)), -1):
-            if not _match(self[i], other[i]):
-                return False
-        return True
+        with warnings.catch_warnings():
+            warnings.simplefilter("error", category=AnnotatedArrayWarning)
+            for i in range(-1, -1 - min(len(self), len(other)), -1):
+                try:
+                    _match(self[i], other[i])
+                except AnnotatedArrayWarning as err:
+                    warnings.simplefilter("always", category=AnnotatedArrayWarning)
+                    warnings.warn(
+                        f"at dimension {self.ndim + i}: " + err.args[0],
+                        AnnotatedArrayWarning,
+                    )
+                    return
 
     def __eq__(self, other):
         return self[:] == other[:]
@@ -276,11 +291,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
             for (isrc, dimsrc), (idest, dimdest) in itertools.combinations(val, 2):
                 source = getattr(inout[isrc], "ann", {dimsrc: {}})[dimsrc]
                 dest = getattr(inout[idest], "ann", {dimdest: {}})[dimdest]
-                if not _match(source, dest):
-                    warnings.warn(
-                        "incompatible annotations at core dimensions",
-                        AnnotatedArrayWarning,
-                    )
+                _match(source, dest)
                 if isrc < ufunc.nin <= idest:
                     dest.update(source)
 
@@ -294,11 +305,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
                     if idim >= len(iterdim) or getattr(in_, "ann", None) is None:
                         continue
                     source = getattr(in_, "ann", {iterdim[idim]: {}})[iterdim[idim]]
-                    if not _match(source, dest):
-                        warnings.warn(
-                            "incompatible annotations at broadcasted dimensions",
-                            AnnotatedArrayWarning,
-                        )
+                    _match(source, dest)
                     dest.update(source)
         return res
 
@@ -308,8 +315,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
             if not isinstance(out, AnnotatedArray):
                 continue
             in_ann = getattr(in_, "ann", [])
-            if not out.ann.match(in_ann):
-                warnings.warn("incompatible annotations", AnnotatedArrayWarning)
+            out.ann.match(in_ann)
             out.ann.update(in_ann)
 
     @staticmethod
@@ -318,12 +324,10 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
             if not isinstance(out, AnnotatedArray):
                 continue
             in_ann = [i for a in inputs for i in getattr(a, "ann", np.ndim(a) * [{}])]
-            if not out.ann.match(in_ann):
-                warnings.warn("incompatible annotations", AnnotatedArrayWarning)
+            out.ann.match(in_ann)
             out.ann.update(in_ann)
             where_ann = getattr(where, "ann", [])
-            if not out.ann.match(where_ann):
-                warnings.warn("incompatible annotations", AnnotatedArrayWarning)
+            out.ann.match(where_ann)
             out.ann.update(where_ann)
 
     @staticmethod
@@ -335,8 +339,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
             warnings.warn("annotations in indices are ignored", AnnotatedArrayWarning)
         for in_ in inputs[2:]:
             ann = getattr(in_, "ann", [])
-            if not out.ann.match(ann):
-                warnings.warn("incompatible annotations", AnnotatedArrayWarning)
+            out.ann.match(ann)
             out.ann.update(ann)
 
     @staticmethod
@@ -355,8 +358,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
                         del ann[a]
                     except IndexError:
                         pass
-            if not out.ann.match(ann):
-                warnings.warn("incompatible annotations", AnnotatedArrayWarning)
+            out.ann.match(ann)
             out.ann.update(ann)
 
     def __array_function__(self, func, types, args, kwargs):
@@ -367,12 +369,8 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         return HANDLED_FUNCTIONS[func](*args, **kwargs)
 
     def __getitem__(self, key):
-        res = type(self)(self._array[key])
-        if isinstance(res, np.generic):
-            return res
-
-        res.annotations = None
-        if res.ndim == 0:
+        res = AnnotatedArray(self._array[key])
+        if isinstance(res, np.generic) or res.ndim == 0:
             return res
 
         key = key if isinstance(key, tuple) else (key,)
@@ -415,7 +413,13 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
                 if not prepend_fancy:
                     dest += fancy_ndim
                     fancy_ndim = 0
-
+        for atype in type(self).__mro__:
+            if atype == AnnotatedArray:
+                break
+            try:
+                return atype(res)
+            except AnnotatedArrayError:
+                pass
         return res
 
     def __setitem__(self, key, value):
@@ -443,8 +447,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
                 source += 1
             elif k is Ellipsis:
                 for _ in range(lenellipsis):
-                    if not _match(self.ann[source], value.ann[dest]):
-                        warnings.warn("incompatible annotations", AnnotatedArrayWarning)
+                    _match(self.ann[source], value.ann[dest])
                     dest += 1
                     source += 1
             else:
@@ -555,6 +558,16 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
     def real(self):
         return type(self)(self._array.real, self.ann)
 
+    def conjugate(self, *args, **kwargs):
+        return np.conjugate(self, *args, **kwargs)
+
+    @implements(np.diagonal)
+    def diagonal(self, offset=0, axis1=0, axis2=1):
+        ann = [a for i, a in enumerate(self.ann[:]) if i not in (axis1, axis2)]
+        return type(self)(self._array.diagonal(offset, axis1, axis2), ann)
+
+    conj = conjugate
+
 
 # a.argmax(
 # a.argmin(
@@ -565,8 +578,6 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
 # a.choose(
 # a.clip(
 # a.compress(
-# a.conj(
-# a.conjugate(
 # a.copy(
 # a.ctypes
 # a.data
@@ -619,13 +630,11 @@ def solve(a, b):
     a_ann = getattr(a, "ann", [{}, {}])[:]
     b_ann = getattr(b, "ann", [{}, {}])[:]
     if np.ndim(b) == np.ndim(a) - 1:
-        if not all(map(lambda x: _match(*x), zip(a_ann[-2::-1], b_ann[-1::-1]))):
-            warnings.warn("incompatible annotations", AnnotatedArrayWarning)
+        map(lambda x: _match(*x), zip(a_ann[-2::-1], b_ann[-1::-1]))
         del a_ann[-2]
         del b_ann[-1]
     else:
-        if not all(map(lambda x: _match(*x), zip(a_ann[-2::-1], b_ann[-2::-1]))):
-            warnings.warn("incompatible annotations", AnnotatedArrayWarning)
+        map(lambda x: _match(*x), zip(a_ann[-2::-1], b_ann[-2::-1]))
         del a_ann[-2]
         del b_ann[-2]
         a_ann += [{}]
@@ -640,9 +649,34 @@ def lstsq(a, b, rcond="warn"):
     res[0] = AnnotatedArray(res[0])
     a_ann = getattr(a, "ann", [{}])
     b_ann = getattr(b, "ann", [{}])
-    if not _match(a_ann[0], b_ann[0]):
-        warnings.warn("incompatible annotations", AnnotatedArrayWarning)
+    _match(a_ann[0], b_ann[0])
     res[0].ann[0].update(a_ann[-1])
     if np.ndim(b) == 2:
         res[0].ann[1].update(b_ann[-1])
     return tuple(res)
+
+
+@implements(np.linalg.svd)
+def svd(a, full_matrices=True, compute_uv=True, hermitian=False):
+    res = list(np.linalg.svd(np.asanyarray(a), full_matrices, compute_uv, hermitian))
+    ann = getattr(a, "ann", [{}])
+    if compute_uv:
+        res[0] = AnnotatedArray(res[0], ann[:-1] + [{}])
+        res[1] = AnnotatedArray(res[1], ann[:-2] + [{}])
+        res[2] = AnnotatedArray(res[2], ann[:-2] + [{}, ann[-1]])
+        return res
+    return AnnotatedArray(res, ann[:-2] + [{}])
+
+
+@implements(np.diag)
+def diag(a, k=0):
+    res = np.diag(np.asanyarray(a), k)
+    ann = getattr(a, "ann", [{}])[:]
+    if a.ndim == 1:
+        ann = [ann[0], ann[0].copy()]
+    elif k == 0:
+        _match(*ann)
+        ann = ann[0].copy().update(ann[1])
+    else:
+        ann = None
+    return AnnotatedArray(res, ann)

@@ -85,6 +85,10 @@ class Material:
     def ischiral(self):
         return self.kappa != 0
 
+    @property
+    def isreal(self):
+        return all(i.imag == 0 for i in self)
+
     def __str__(self):
         return "(" + ", ".join([str(i) for i in self()]) + ")"
 
