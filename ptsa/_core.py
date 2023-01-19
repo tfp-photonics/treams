@@ -171,7 +171,7 @@ class SphericalWaveBasis(BasisSet):
                 return self.l, self.m
             raise IndexError(f"unrecognized key '{idx}'")
         res = self.pidx[idx], self.l[idx], self.m[idx], self.pol[idx]
-        if isinstance(idx, int) or idx == ():
+        if isinstance(idx, int) or (isinstance(idx, tuple) and len(idx) == 0):
             return res
         return type(self)(zip(*res), self.positions)
 
@@ -1528,7 +1528,9 @@ def _pset(name, arr, val, vtype=object, cast=None):
     if len(val) != arr.ndim:
         warnings.warn("non-matching property size", PhysicsArrayWarning)
     for a, v in zip(arr.ann, val):
-        if isinstance(v, vtype):
+        if v is None:
+            a.pop(name, None)
+        elif isinstance(v, vtype):
             a[name] = v
         elif cast is not None:
             a[name] = cast(v)
@@ -1559,6 +1561,15 @@ class PhysicsArrayError(AnnotatedArrayError):
 
 class PhysicsArray(AnnotatedArray):
     _scales = {"basis"}
+    _properties = {"k0", "basis", "poltype", "modetype", "material", "lattice", "kpar"}
+
+    k0 = _physicsarray_property("k0", (int, float, np.floating, np.integer), float)
+    basis = _physicsarray_property("basis", BasisSet, BasisSet)
+    poltype = _physicsarray_property("poltype", str, str)
+    modetype = _physicsarray_property("modetype", str, str)
+    material = _physicsarray_property("material", Material, Material)
+    lattice = _physicsarray_property("lattice", Lattice, Lattice)
+    kpar = _physicsarray_property("kpar", list, list)
 
     def __init__(
         self, arr, ann=None, **kwargs,
@@ -1572,15 +1583,7 @@ class PhysicsArray(AnnotatedArray):
         repr_arr = "    " + repr(self._array)[6:-1].replace("\n  ", "\n")
         repr_kwargs = ",\n    ".join(
             f"{key}={repr(getattr(self, key))}"
-            for key in (
-                "k0",
-                "basis",
-                "poltype",
-                "material",
-                "modetype",
-                "lattice",
-                "kpar",
-            )
+            for key in self._properties
             if getattr(self, key) is not None
         )
         if repr_kwargs != "":
@@ -1626,52 +1629,32 @@ class PhysicsArray(AnnotatedArray):
             if poltype == "parity" and getattr(material, "ischiral", False):
                 raise ValueError("poltype 'parity' not possible for chiral material")
 
-    k0 = _physicsarray_property("k0", (int, float, np.floating, np.integer), float)
-    basis = _physicsarray_property("basis", BasisSet, BasisSet)
-    poltype = _physicsarray_property("poltype", str, str)
-    modetype = _physicsarray_property("modetype", str, str)
-    material = _physicsarray_property("material", Material, Material)
-    lattice = _physicsarray_property("lattice", Lattice, Lattice)
-    kpar = _physicsarray_property("kpar", list, list)
-
     def __matmul__(self, other, *args, **kwargs):
         res = super().__matmul__(other, *args, **kwargs)
-        other_ann = getattr(other, "ann", [{}])
+        other_ann = getattr(other, "ann", ({},))
         other_ndim = np.ndim(other)
-        for name in (
-            "k0",
-            "poltype",
-            "modetype",
-            "material",
-            "lattice",
-            "kpar",
-        ):
+        for name in self._properties:
             if self.ndim > 1 and self.ann[-1].get(name) is None:
-                if other_ndim == 1:
-                    res.ann[-1][name] = other_ann[-1].get(name)
-                else:
-                    res.ann[-2][name] = other_ann[-2].get(name)
-            if other_ndim > 1 and other_ann[-2].get(name) is None:
-                res.ann[-1][name] = self.ann[-1].get(name)
+                dim = -1 - (other_ndim != 1)
+                val = other_ann[dim].get(name)
+                if val is not None:
+                    res.ann[dim][name] = val
+            val = self.ann[-1].get(name)
+            if other_ndim > 1 and other_ann[-2].get(name) is None and val is not None:
+                res.ann[-1][name] = val
         return res
 
     def __rmatmul__(self, other, *args, **kwargs):
         res = super().__rmatmul__(other, *args, **kwargs)
-        other_ann = getattr(other, "ann", [{}])
+        other_ann = getattr(other, "ann", ({},))
         other_ndim = np.ndim(other)
-        for name in (
-            "k0",
-            "poltype",
-            "modetype",
-            "material",
-            "lattice",
-            "kpar",
-        ):
+        for name in self._properties:
             if other_ndim > 1 and other_ann[-1].get(name) is None:
-                if self.ndim == 1:
-                    res.ann[-1][name] = self.ann[-1].get(name)
-                else:
-                    res.ann[-2][name] = self.ann[-2].get(name)
-            if self.ndim > 1 and self.ann[-2].get(name) is None:
-                res.ann[-1][name] = other_ann[-1].get(name)
+                dim = -1 - (self.ndim != 1)
+                val = self.ann[dim].get(name)
+                if val is not None:
+                    res.ann[dim][name] = val
+            val = other_ann[-1].get(name)
+            if self.ndim > 1 and self.ann[-2].get(name) is None and val is not None:
+                res.ann[-1][name] = val
         return res

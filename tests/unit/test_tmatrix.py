@@ -64,79 +64,69 @@ class TestSphere:
 
 class TestProperties:
     def test_xs_ext_avg(self):
-        tm = TMatrix.sphere(2, 3, [4], [2 + 1j, 9], kappa=[1, 2])
+        tm = TMatrix.sphere(2, 3, [4], [(2 + 1j, 1, 1), (9, 1, 2)])
         assert isclose(tm.xs_ext_avg, 2.9294930236877077)
 
     def test_xs_ext_avg_kappa_zero(self):
-        tm = TMatrix.sphere(2, 3, [4], [2 + 1j, 9], [3, 4])
+        tm = TMatrix.sphere(2, 3, [4], [(2 + 1j, 3), (9, 4)])
         assert isclose(tm.xs_ext_avg, 0.15523595021864234)
 
     def test_xs_sca_avg(self):
-        tm = TMatrix.sphere(2, 3, [4], [2 + 1j, 9], kappa=[1, 2])
+        tm = TMatrix.sphere(2, 3, [4], [(2 + 1j, 1, 1), (9, 1, 2)])
         assert isclose(tm.xs_sca_avg, 1.6603264386283758)
 
     def test_xs_sca_avg_kappa_zero(self):
-        tm = TMatrix.sphere(2, 3, [4], [2 + 1j, 9], [3, 4])
+        tm = TMatrix.sphere(2, 3, [4], [(2 + 1j, 3), (9, 4)])
         assert isclose(tm.xs_sca_avg, 0.08434021223849283)
 
     def test_cd(self):
-        tm = TMatrix.sphere(2, 3, [4], [2 + 1j, 9], kappa=[1, 2])
-        assert isclose(tm.cd, 78.6846845551069)
+        tm = TMatrix.sphere(2, 3, [4], [(2 + 1j, 1, 1), (9, 1, 2)])
+        assert isclose(tm.cd, -0.9230263013362784)
 
     def test_chi(self):
-        tm = TMatrix.sphere(2, 3, [4], [2 + 1j, 9], kappa=[1, 2])
+        tm = TMatrix.sphere(2, 3, [4], [(2 + 1j, 1, 1), (9, 1, 2)])
         assert isclose(tm.chi, 0.7483463517622965)
 
     def test_db(self):
-        tm = TMatrix.sphere(2, 3, [4], [2 + 1j, 9], kappa=[1, 2])
-        assert isclose(tm.db, 1.9550276337620118)
+        tm = TMatrix.sphere(2, 3, [4], [(2 + 1j, 1, 1), (9, 1, 2)])
+        assert isclose(tm.db, 0.6085814346536764)
 
     def test_modes(self):
-        tm = TMatrix.sphere(2, 3, [4], [2 + 1j, 9], kappa=[1, 2])
-        l, m, pol = tm.modes
+        tm = TMatrix.sphere(2, 3, [4], [(2 + 1j, 1, 1), (9, 1, 2)])
+        l, m, pol = tm.basis["lmp"]
         assert (
             np.all(l == 6 * [1] + 10 * [2])
             and np.all(m == [-1, -1, 0, 0, 1, 1, -2, -2, -1, -1, 0, 0, 1, 1, 2, 2])
             and np.all(pol == [int((i + 1) % 2) for i in range(16)])
-        )
-
-    def test_fullmodes(self):
-        tm = TMatrix.sphere(2, 3, [4], [2 + 1j, 9], kappa=[1, 2])
-        pidx, l, m, pol = tm.fullmodes
-        assert (
-            np.all(l == 6 * [1] + 10 * [2])
-            and np.all(m == [-1, -1, 0, 0, 1, 1, -2, -2, -1, -1, 0, 0, 1, 1, 2, 2])
-            and np.all(pol == [int((i + 1) % 2) for i in range(16)])
-            and np.all(pidx == 16 * [0])
         )
 
 
 class TestXs:
     def test(self):
-        tm = TMatrix.sphere(2, 3, [4], [2 + 1j, 9], kappa=[1, 2])
-        illu = 0.5 * tm.illuminate_pw(0, 0, tm.ks[0], 0)
+        tm = TMatrix.sphere(2, 3, [4], [(2 + 1j, 1, 1), (9, 1, 2)])
+        illu = ptsa.PlaneWaveBasis([[0, 0, tm.ks[0], 0]]).expand(k0=3, basis=tm.basis) * 0.5
         xs = tm.xs(illu, 0.125)
         assert isclose(xs[0][0], 3.194830855171616,) and isclose(xs[1][0], 5.63547158)
 
 
 class TestTranslate:
     def test(self):
-        tm = TMatrix.sphere(3, 0.1, [0.2], [2 + 1j, 9], [1.1, 1], [1, 2])
-        m = copy.deepcopy(tm.t)
+        tm = TMatrix.sphere(3, 0.1, [0.2], [(2 + 1j, 1.1, 1), (9, 1, 2)])
+        m = copy.deepcopy(tm)
         rs = np.array([[0.1, 0.2, 0.3], [-0.4, -0.5, -0.4]])
-        tm.translate(rs[0])
-        tm.translate(rs[1])
-        tm.translate(-rs[0] - rs[1])
-        assert np.all(np.abs(tm.t - m) < 1e-8)
+        tm = tm.translate(rs[0])
+        tm = tm.translate(rs[1])
+        tm = tm.translate(-rs[0] - rs[1])
+        assert np.all(np.abs(tm - m) < 1e-8)
 
     def test_kappa_zero(self):
-        tm = TMatrix.sphere(3, 0.1, [0.2], [2 + 1j, 9], [1.1, 1])
-        m = copy.deepcopy(tm.t)
+        tm = TMatrix.sphere(3, 0.1, [0.2], [(2 + 1j, 1.1), (9, 1)])
+        m = copy.deepcopy(tm)
         rs = np.array([[0.1, 0.2, 0.3], [-0.4, -0.5, -0.4]])
         tm.translate(rs[0])
         tm.translate(rs[1])
         tm.translate(-rs[0] - rs[1])
-        assert np.all(np.abs(tm.t - m) < 1e-8)
+        assert np.all(np.abs(tm - m) < 1e-8)
 
 
 class TestClusterRotate:

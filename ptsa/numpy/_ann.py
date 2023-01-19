@@ -116,7 +116,7 @@ def _parse_key(key, ndim):
 
 class ArrayAnnotations(collections.abc.Sequence):
     def __init__(self, ndim=1, ann=None):
-        self._ann = [{} for _ in range(ndim)]
+        self._ann = tuple({} for _ in range(ndim))
         if ann is not None:
             self.update(ann)
 
@@ -191,7 +191,10 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         for key, val in kwargs.items():
             if not isinstance(val, tuple):
                 val = (val,) * self.ndim
-            self._ann.update([{} if v is None else {key: v} for v in val])
+            self._ann.update(tuple({} if v is None else {key: v} for v in val))
+
+    def __str__(self):
+        return str(self._array)
 
     def __repr__(self):
         repr_arr = "    " + repr(self._array)[6:-1].replace("\n  ", "\n")
@@ -314,7 +317,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         for out, in_ in itertools.product(res, inputs_and_where):
             if not isinstance(out, AnnotatedArray):
                 continue
-            in_ann = getattr(in_, "ann", [])
+            in_ann = getattr(in_, "ann", ())
             out.ann.match(in_ann)
             out.ann.update(in_ann)
 
@@ -323,10 +326,12 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         for out in res:
             if not isinstance(out, AnnotatedArray):
                 continue
-            in_ann = [i for a in inputs for i in getattr(a, "ann", np.ndim(a) * [{}])]
+            in_ann = tuple(
+                i for a in inputs for i in getattr(a, "ann", np.ndim(a) * ({},))
+            )
             out.ann.match(in_ann)
             out.ann.update(in_ann)
-            where_ann = getattr(where, "ann", [])
+            where_ann = getattr(where, "ann", ())
             out.ann.match(where_ann)
             out.ann.update(where_ann)
 
@@ -335,10 +340,10 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         out = inputs[0]
         if not isinstance(out, AnnotatedArray):
             return
-        if any(d != {} for d in getattr(inputs[1], "ann", [])):
+        if any(d != {} for d in getattr(inputs[1], "ann", ())):
             warnings.warn("annotations in indices are ignored", AnnotatedArrayWarning)
         for in_ in inputs[2:]:
-            ann = getattr(in_, "ann", [])
+            ann = getattr(in_, "ann", ())
             out.ann.match(ann)
             out.ann.update(ann)
 
@@ -351,7 +356,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         in_ = inputs_and_where[0]
         axis = sorted(map(lambda x: x % np.ndim(in_) - np.ndim(in_), axis))
         for in_ in inputs_and_where:
-            ann = getattr(in_, "ann", [])[:]
+            ann = list(getattr(in_, "ann", []))
             if not keepdims:
                 for a in axis:
                     try:
@@ -392,7 +397,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
                 source += 1
             elif k is Ellipsis:
                 for _ in range(lenellipsis):
-                    res.ann[dest] = self.ann[source]
+                    res.ann[dest].update(self.ann[source])
                     dest += 1
                     source += 1
             else:
@@ -527,7 +532,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
 
     @implements(np.trace)
     def trace(self, offset=0, axis1=0, axis2=1, dtype=None, out=None):
-        ann = [a for i, a in enumerate(self.ann[:]) if i not in (axis1, axis2)]
+        ann = tuple(a for i, a in enumerate(self.ann[:]) if i not in (axis1, axis2))
         return type(self)(self._array.trace(offset, axis1, axis2, dtype, out), ann)
 
     def astype(self, *args, **kwargs):
@@ -563,7 +568,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
 
     @implements(np.diagonal)
     def diagonal(self, offset=0, axis1=0, axis2=1):
-        ann = [a for i, a in enumerate(self.ann[:]) if i not in (axis1, axis2)]
+        ann = tuple(a for i, a in enumerate(self.ann[:]) if i not in (axis1, axis2))
         return type(self)(self._array.diagonal(offset, axis1, axis2), ann)
 
     conj = conjugate
@@ -627,8 +632,8 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
 @implements(np.linalg.solve)
 def solve(a, b):
     res = AnnotatedArray(np.linalg.solve(np.asanyarray(a), np.asanyarray(b)))
-    a_ann = getattr(a, "ann", [{}, {}])[:]
-    b_ann = getattr(b, "ann", [{}, {}])[:]
+    a_ann = list(getattr(a, "ann", [{}, {}]))
+    b_ann = list(getattr(b, "ann", [{}, {}]))
     if np.ndim(b) == np.ndim(a) - 1:
         map(lambda x: _match(*x), zip(a_ann[-2::-1], b_ann[-1::-1]))
         del a_ann[-2]
@@ -647,8 +652,8 @@ def solve(a, b):
 def lstsq(a, b, rcond="warn"):
     res = list(np.linalg.lstsq(np.asanyarray(a), np.asanyarray(b), rcond))
     res[0] = AnnotatedArray(res[0])
-    a_ann = getattr(a, "ann", [{}])
-    b_ann = getattr(b, "ann", [{}])
+    a_ann = getattr(a, "ann", ({},))
+    b_ann = getattr(b, "ann", ({},))
     _match(a_ann[0], b_ann[0])
     res[0].ann[0].update(a_ann[-1])
     if np.ndim(b) == 2:
@@ -659,24 +664,36 @@ def lstsq(a, b, rcond="warn"):
 @implements(np.linalg.svd)
 def svd(a, full_matrices=True, compute_uv=True, hermitian=False):
     res = list(np.linalg.svd(np.asanyarray(a), full_matrices, compute_uv, hermitian))
-    ann = getattr(a, "ann", [{}])
+    ann = getattr(a, "ann", ({},))
     if compute_uv:
-        res[0] = AnnotatedArray(res[0], ann[:-1] + [{}])
-        res[1] = AnnotatedArray(res[1], ann[:-2] + [{}])
-        res[2] = AnnotatedArray(res[2], ann[:-2] + [{}, ann[-1]])
+        res[0] = AnnotatedArray(res[0], ann[:-1] + ({},))
+        res[1] = AnnotatedArray(res[1], ann[:-2] + ({},))
+        res[2] = AnnotatedArray(res[2], ann[:-2] + ({}, ann[-1]))
         return res
-    return AnnotatedArray(res, ann[:-2] + [{}])
+    return AnnotatedArray(res, ann[:-2] + ({},))
 
 
 @implements(np.diag)
 def diag(a, k=0):
     res = np.diag(np.asanyarray(a), k)
-    ann = getattr(a, "ann", [{}])[:]
+    ann = getattr(a, "ann", ({},))[:]
     if a.ndim == 1:
-        ann = [ann[0], ann[0].copy()]
+        ann = (ann[0],) * 2
     elif k == 0:
         _match(*ann)
-        ann = ann[0].copy().update(ann[1])
+        ann = ({**ann[0], **ann[1]},)
     else:
         ann = None
     return AnnotatedArray(res, ann)
+
+
+@implements(np.tril)
+def tril(a, k=0):
+    res = np.tril(np.asanyarray(a), k)
+    return AnnotatedArray(res, getattr(a, "ann", ({},))[:])
+
+
+@implements(np.triu)
+def triu(a, k=0):
+    res = np.triu(np.asanyarray(a), k)
+    return AnnotatedArray(res, getattr(a, "ann", ({},))[:])

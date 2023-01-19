@@ -4,7 +4,7 @@ import numpy as np
 
 import ptsa.lattice as la
 import ptsa.special as sc
-from ptsa import config, cw, io, misc, pw, sw
+from ptsa import _core, config, io, misc, pw, sw
 from ptsa._core import PhysicsArray, PhysicsArrayError
 from ptsa._core import SphericalWaveBasis as SWB
 from ptsa._material import Material
@@ -75,6 +75,9 @@ class TMatrix(PhysicsArray):
         ks (float or complex (2,)-array): Wave numbers in the medium for both
             polarizations
     """
+    _properties = PhysicsArray._properties | {"interacted"}
+
+    interacted = _core._physicsarray_property("interacted", bool, bool)
 
     def __str__(self):
         return str(self._array)
@@ -183,7 +186,7 @@ class TMatrix(PhysicsArray):
         Returns:
             float or complex
         """
-        if not self.isglobal:
+        if not self.isglobal or not self.material.isreal:
             raise NotImplementedError
         if not self.material.ischiral:
             k = self.ks[0]
@@ -209,17 +212,15 @@ class TMatrix(PhysicsArray):
         Returns:
             float or complex
         """
-        if not self.isglobal:
+        if not self.isglobal or not self.material.isreal:
             raise NotImplementedError
         re, im = self.real, self.imag
         if not self.material.ischiral:
             ks = self.ks[0]
         else:
-            ks = self.ks[self.pol, None]
+            ks = self.ks[self.basis.pol, None]
         res = 2 * np.pi * np.sum((re * re + im * im) / (ks * ks))
-        if res.imag == 0:
-            return res.real
-        return res
+        return res.real
 
     @property
     def cd(self):
@@ -231,13 +232,16 @@ class TMatrix(PhysicsArray):
         if not (self.isglobal and self.poltype == "helicity" and self.material.isreal):
             raise NotImplementedError
         sel = np.array(self.basis.pol, bool)
-        plus = -np.sum(np.real(self[sel, sel]))
-        plus -= np.sum(np.power(np.abs(self[:, sel]), 2))
-        plus /= self.ks[1]
+        re, im = self.real, self.imag
+        plus = -np.sum(re[sel, sel]) / (self.ks[1] * self.ks[1])
+        re_part = re[:, sel] / self.ks[self.basis.pol, None]
+        im_part = im[:, sel] / self.ks[self.basis.pol, None]
+        plus -= np.sum(re_part * re_part + im_part * im_part)
         sel = ~sel
-        minus = -np.sum(np.real(self[sel, sel]))
-        minus -= np.sum(np.power(np.abs(self[:, sel]), 2))
-        minus /= self.ks[0]
+        minus = -np.sum(re[sel, sel]) / (self.ks[0] * self.ks[0])
+        re_part = re[:, sel] / self.ks[self.basis.pol, None]
+        im_part = im[:, sel] / self.ks[self.basis.pol, None]
+        minus -= np.sum(re_part * re_part + im_part * im_part)
         return np.real((plus - minus) / (plus + minus))
 
     @property
@@ -334,7 +338,7 @@ class TMatrix(PhysicsArray):
         mat = self.basis.rotate(phi, theta, psi, basis=basis)
         return TMatrix(mat @ self @ mat.conjugate().T)
 
-    def translate(self, rvec, modes=None):
+    def translate(self, rvec, basis=None):
         """
         Translate the origin of the T-Matrix
 
@@ -349,58 +353,33 @@ class TMatrix(PhysicsArray):
         Returns:
             TMatrix
         """
-        if modes is None:
-            modes = self.modes
-        modes = self._check_modes(modes)
-        if self.positions.shape[0] > 1 or np.any(modes[0] != 0):
+        if basis is None:
+            basis = self.basis
+        if not (self.basis.isglobal and basis.isglobal):
             raise NotImplementedError
-        rvec = np.array(rvec)
-        if rvec.ndim == 1:
-            rvec = np.reshape(rvec, (1, -1))
-        rs = sc.car2sph(rvec - self.positions)
-        if self.kappa == 0:
-            kr = np.array([self.ks[0] * rs[0, 0]])
-        else:
-            kr = self.ks[self.pol] * rs[0, 0]
-        matin = sw.translate(
-            *(m[:, None] for m in self.modes),
-            *modes[1:],
-            kr[:, None],
-            rs[0, 1],
-            rs[0, 2],
-            self.helicity,
-            False,
-        )
-        matout = sw.translate(
-            *(m[:, None] for m in modes[1:]),
-            *self.modes,
-            kr,
-            np.pi - rs[0, 1],
-            rs[0, 2] + np.pi,
-            self.helicity,
-            False,
-        )
-        self.t = matout @ self.t @ matin
-        self.pidx, self.l, self.m, self.pol = modes
-        return self
+        matin = basis.translate(rvec, self.k0, basis=self.basis, material=self.material, poltype=self.poltype)
+        matout = self.basis.translate(np.negative(rvec), self.k0, basis=basis, material=self.material, poltype=self.poltype)
+        return TMatrix(matout @ self @ matin)
 
-    def coupling(self):
+    def coupling(self, *, lattice=None, kpar=None):
         """
         Calculate the coupling term of a blockdiagonal T-matrix
 
         Returns:
             TMatrix
         """
-        rs = sc.car2sph(self.positions[:, None, :] - self.positions)
-        m = sw.translate(
-            *(m[:, None] for m in self.modes),
-            *self.modes,
-            self.ks[self.pol] * rs[self.pidx[:, None], self.pidx, 0],
-            rs[self.pidx[:, None], self.pidx, 1],
-            rs[self.pidx[:, None], self.pidx, 2],
-            self.helicity,
+        if self.lattice is not None:
+            raise NotImplementedError
+        m = self.basis.expand(
+            self.k0,
+            basis=self.basis,
+            poltype=self.poltype,
+            material=self.material,
+            modetype="singular",
+            lattice=lattice,
+            kpar=kpar,
         )
-        return np.eye(self.t.shape[0]) - self.t @ m
+        return np.eye(self.shape[0]) - self @ m
 
     def globalmat(self, origin=None, modes=None, interacted=True):
         """
@@ -452,42 +431,6 @@ class TMatrix(PhysicsArray):
         self.pidx, self.l, self.m, self.pol = modes
         self.positions = origin
         return self
-
-    def illuminate_pw(self, kx, ky, kz, pol):
-        """
-        Illuminate with a plane wave
-
-        Args:
-            kx (float, scalar or (N,)-array): X component of the wave vector
-            ky (float, scalar or (N,)-array): Y component of the wave vector
-            kz (float or complex, scalar or (N,)-array): Z component of the wave vector
-            pol (int, scalar or (N,)-array): Polarization of wave, corresponding to
-                the attribute `TMatrix.helicity`
-        """
-        pos = (*(i[:, None] for i in self.positions[self.pidx, :].T),)
-        return pw.to_sw(
-            *(m[:, None] for m in self.modes), kx, ky, kz, pol, helicity=self.helicity
-        ) * pw.translate(kx, ky, kz, *pos)
-
-    def illuminate_cw(self, kz, m, pol, l=None):  # noqa: E741
-        """Illuminate with a cylindrical wave"""
-        # The question is how to implement this. Do you specify one cw at the origin,
-        # that is translated to the different places, or do you specify "local" cws.
-        # In the former case, how do you choose the order.
-        # --> Split in local and global part
-        raise NotImplementedError
-
-    def illuminate_cw_local(self, pidx, kz, m, pol):
-        """Illuminate with a local cylindrical wave"""
-        return cw.to_sw(
-            *(m[:, None] for m in self.modes),
-            kz,
-            m,
-            pol,
-            self.ks[pol],
-            helicity=self.helicity,
-            where=self.pidx[:, None] == pidx,
-        )
 
     def field(self, r, scattered=True):
         """
