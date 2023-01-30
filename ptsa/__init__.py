@@ -14,6 +14,12 @@ Classes
    TMatrix
    TMatrixC
    QMatrix
+   PlaneWaveBasis
+   SphericalWaveBasis
+   CylindricalWaveBasis
+   Lattice
+   Material
+   PhysicsArray
 
 
 Modules
