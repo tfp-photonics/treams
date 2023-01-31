@@ -65,6 +65,15 @@ from ptsa._core import (  # noqa: F401
 )
 from ptsa._lattice import Lattice  # noqa: F401
 from ptsa._material import Material  # noqa: F401
+from ptsa._operators import (  # noqa: F401
+    changepoltype,
+    efield,
+    expand,
+    expandlattice,
+    permute,
+    rotate,
+    translate,
+)
 from ptsa._qmatrix import QMatrix  # noqa: F401
 from ptsa._tmatrix import TMatrix  # noqa: F401
 from ptsa._tmatrixc import TMatrixC  # noqa: F401

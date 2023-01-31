@@ -8,7 +8,9 @@ class Material:
         if isinstance(epsilon, Material):
             epsilon, mu, kappa = epsilon()
         elif isinstance(epsilon, (tuple, list, np.ndarray)):
-            if len(epsilon) == 1:
+            if len(epsilon) == 0:
+                epsilon = 1
+            elif len(epsilon) == 1:
                 epsilon = epsilon[0]
             elif len(epsilon) == 2:
                 epsilon, mu = epsilon

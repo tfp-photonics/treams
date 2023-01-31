@@ -89,6 +89,7 @@ class SphericalWaveBasis(BasisSet):
 
         self._positions = positions
         self._positions.flags.writeable = False
+        self.hints = {}
 
     @property
     def positions(self):
@@ -716,7 +717,7 @@ class PhysicsArray(AnnotatedArray):
                         if np.isnan(x):
                             total_kpar[i] = y
                         elif not np.isnan(y) and x != y:
-                            raise ValueError("imcompatible kpar")
+                            raise ValueError("incompatible kpar")
             if type(basis) == PlaneWaveBasis and None not in (k0, material):
                 basis.complete(k0, material, modetype)
             if poltype == "parity" and getattr(material, "ischiral", False):

@@ -17,7 +17,8 @@ __all__ = [
     "AnnotatedArray",
     "OrderedSet",
     "implements",
-    "register_properties",]
+    "register_properties"
+]
 
 
 class OrderedSet(collections.abc.Sequence, collections.abc.Set):
@@ -144,7 +145,12 @@ class AnnotationSequence(collections.abc.Sequence):
                     )
 
     def __eq__(self, other):
-        return self[:] == other[:]
+        if len(self) != len(other):
+            return False
+        for a, b in zip(self, other):
+            if a != b:
+                return False
+        return True
 
     def __repr__(self):
         return f"{type(self).__name__}{repr(self._ann)}"
