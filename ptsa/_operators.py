@@ -14,7 +14,7 @@ class Operator:
         self._kwargs = tuple(
             map(
                 lambda x: {
-                    x[key] for key in self._func.__code__.co_varnames if key in x
+                    key: x[key] for key in self._func.__code__.co_varnames if key in x
                 },
                 kwargs,
             )
@@ -113,7 +113,7 @@ class Rotate(Operator):
     _func = staticmethod(rotate)
 
     def inv(self, *args, **kwargs):
-        args = list(map(lambda x: -x for x in args))
+        args = [-x for x in args]
         if len(args) > 1:
             args[1] = np.pi + args[1]
         if "phi" in kwargs:
@@ -545,8 +545,9 @@ class Expand(Operator):
                 break
             if key in kwargs:
                 raise TypeError(f"__call__ got multiple values for argument '{key}'")
-            kwargs[key] = args.pop(0)
-        return super.__call__(*args, **kwargs)
+            kwargs[key] = args[0]
+            args = args[1:]
+        return super().__call__(*args, **kwargs)
 
     def inv(self, *args, **kwargs):
         for key in ("basis", "modetype"):
@@ -554,8 +555,9 @@ class Expand(Operator):
                 break
             if key in kwargs:
                 raise TypeError(f"__call__ got multiple values for argument '{key}'")
-            kwargs[key] = args.pop(0)
-        return super.inv(*args, **kwargs)
+            kwargs[key] = args[0]
+            args = args[1:]
+        return super().inv(*args, **kwargs)
 
 
 def _swl_expand(basis, to_basis, eta, k0, kpar, lattice, material, poltype, where):

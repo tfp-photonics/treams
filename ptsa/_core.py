@@ -5,6 +5,7 @@ import copy
 
 import numpy as np
 
+import ptsa._operators as op
 import ptsa.lattice as la
 from ptsa._lattice import Lattice
 from ptsa._material import Material
@@ -666,6 +667,14 @@ CAST = {
 class PhysicsArray(AnnotatedArray):
     _scales = {"basis"}
     _cast = CAST
+
+    changepoltype = op.ChangePoltype()
+    efield = op.EField()
+    expand = op.Expand()
+    expandlattice = op.ExpandLattice()
+    permute = op.Permute()
+    rotate = op.Rotate()
+    translate = op.Translate()
 
     def __init__(self, arr, ann=(), **kwargs):
         super().__init__(arr, ann)

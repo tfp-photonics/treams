@@ -81,7 +81,7 @@ class AnnotationDict(collections.abc.MutableMapping):
         return f"{self.__class__.__name__}({repr(self._dct)})"
 
     def match(self, other):
-        for key, val in self.keys():
+        for key, val in self.items():
             if key in other and other[key] != val:
                 warnings.warn(f"incompatible key '{key}'", AnnotationWarning)
 
@@ -102,7 +102,7 @@ class AnnotationSequence(collections.abc.Sequence):
         return len(self)
 
     def __getitem__(self, key):
-        if key == ():
+        if isinstance(key, tuple) and key == ():
             return copy.copy(self._ann)
         if isinstance(key, slice):
             return type(self)(self._ann[key])
@@ -502,7 +502,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
                     ann = (
                         self.ann[source + pos] if k.dtype == bool else self.ann[source]
                     )
-                    pos += int(prepend_fancy) * dest + fancy_ndim - k.ndim
+                    pos += int(not prepend_fancy) * dest + fancy_ndim - k.ndim
                     for kk, val in ann.items():
                         if kk in self._scales:
                             res.ann[pos][kk] = val[ksq]
@@ -706,7 +706,7 @@ def svd(a, full_matrices=True, compute_uv=True, hermitian=False):
         res[1] = AnnotatedArray(res[1], ann[:-2] + ({},))
         res[2] = AnnotatedArray(res[2], ann[:-2] + ({}, ann[-1]))
         return res
-    return AnnotatedArray(res, ann[:-2] + ({},))
+    return AnnotatedArray(res, tuple(ann[:-2]) + ({},))
 
 
 @implements(np.diag)
@@ -714,12 +714,12 @@ def diag(a, k=0):
     res = np.diag(np.asanyarray(a), k)
     ann = getattr(a, "ann", (AnnotationDict(), {}))
     if a.ndim == 1:
-        ann = (ann[0],) * 2
+        ann = (ann[0], AnnotationDict(ann[0]))
     elif k == 0:
         ann[0].match(ann[1])
         ann = ({**ann[0], **ann[1]},)
     else:
-        ann = None
+        ann = ()
     return AnnotatedArray(res, ann)
 
 

@@ -104,10 +104,8 @@ class TestProperties:
 class TestXs:
     def test(self):
         tm = TMatrix.sphere(2, 3, [4], [(2 + 1j, 1, 1), (9, 1, 2)])
-        illu = (
-            ptsa.PlaneWaveBasis([[0, 0, tm.ks[0], 0]]).expand(k0=3, basis=tm.basis, material=(9, 1, 2))
-            * 0.5
-        )
+        illu = ptsa.PhysicsArray([[.5]], basis=ptsa.PlaneWaveBasis([[0, 0, tm.ks[0], 0]]))
+        illu = illu.expand(tm.basis, k0=tm.k0, material=tm.material) @ illu
         xs = tm.xs(illu, 0.125)
         assert isclose(xs[0][0], 3.194830855171616,) and isclose(xs[1][0], 5.63547158)
 
@@ -137,13 +135,12 @@ class TestClusterRotate:
         tms = [TMatrix.sphere(3, 0.1, [0.1], [i * i, 1]) for i in range(1, 5)]
         rs1 = np.array([[0, 0, 0], [0.2, 0, 0], [0, 0.2, 0], [0, 0, 0.2]])
         tm1 = TMatrix.cluster(tms, rs1)
-        tm1 = tm1.globalmat()
-        tm1 = tm1.rotate(1, 2, 3)
+        tm1 = tm1.interact().globalmat()
+        tm1 = tm1.rotate(1, 2, 3) @ tm1 @ tm1.rotate.inv(1, 2, 3)
         a = np.array([[np.cos(1), -np.sin(1), 0], [np.sin(1), np.cos(1), 0], [0, 0, 1]])
         b = np.array([[np.cos(2), 0, np.sin(2)], [0, 1, 0], [-np.sin(2), 0, np.cos(2)]])
         c = np.array([[np.cos(3), -np.sin(3), 0], [np.sin(3), np.cos(3), 0], [0, 0, 1]])
         rs2 = (a @ b @ c @ rs1.T).T
         tm2 = TMatrix.cluster(tms, rs2)
-        tm2 = tm2.globalmat()
+        tm2 = tm2.interact().globalmat()
         assert np.all(np.abs(tm1 - tm2) < 1e-16)
-
