@@ -4,13 +4,36 @@ import itertools
 import numpy as np
 
 import ptsa.special as sc
-from ptsa import misc, pw
+from ptsa import config, misc, pw, util
+from ptsa._core import PhysicsArray
+from ptsa._core import PlaneWaveBasis as PWB
+from ptsa._core import PlaneWaveBasisPartial as PWBP
+from ptsa._lattice import Lattice
+from ptsa._materials import Material
 from ptsa.coeffs import fresnel
 
 
-class QMatrix:
+class _SMatrix(PhysicsArray):
+    def _check(self):
+        super()._check()
+        if not isinstance(self.k0, (int, float, np.floating, np.integer)):
+            raise util.AnnotationError("invalid k0")
+        if self.poltype is None:
+            self.poltype = config.POLTYPE
+        if self.poltype not in ("parity", "helicity"):
+            raise util.AnnotationError("invalid poltype")
+        shape = np.shape(self)
+        if len(shape) != 2 or shape[0] != shape[1]:
+            raise util.AnnotationError(f"invalid shape: '{shape}'")
+        if self.basis is None:
+            self.basis = SWB.default(SWB.defaultlmax(shape[0]))
+        if self.material is None:
+            self.material = Material()
+
+
+class SMatrix:
     r"""
-    Q-matrix (plane wave basis)
+    S-matrix (plane wave basis)
 
     The Q-matrix describes the scattering of incoming into outgoing modes using a plane
     wave basis, with functions :func:`ptsa.special.vsw_A`, :func:`ptsa.special.vsw_M`,
@@ -68,86 +91,17 @@ class QMatrix:
             and both polarizations
     """
 
-    def __init__(
-        self, qmats, k0, modes, epsilon=1, mu=1, kappa=0, helicity=True, kz=None,
-    ):
-        if np.any(kappa != 0) and not helicity:
-            raise ValueError("chiral medium requires helicity modes")
-        qmats = np.array(qmats)
-        epsilon = np.array(epsilon)
-        mu = np.array(mu)
-        kappa = np.array(kappa)
-        if epsilon.ndim == 0 or (epsilon.ndim == 1 and epsilon.shape[0] == 1):
-            epsilon = np.stack((epsilon, epsilon), axis=-1)
-        elif epsilon.ndim == 1 and epsilon.shape[0] == 2:
-            pass
-        else:
-            raise ValueError(f"shape of epsilon f{epsilon.shape} not supported")
-        if mu.ndim == 0 or (mu.ndim == 1 and mu.shape[0] == 1):
-            mu = np.stack((mu, mu), axis=-1)
-        elif mu.ndim == 1 and mu.shape[0] == 2:
-            pass
-        else:
-            raise ValueError(f"shape of mu f{mu.shape} not supported")
-        if kappa.ndim == 0 or (kappa.ndim == 1 and kappa.shape[0] == 1):
-            kappa = np.stack((kappa, kappa), axis=-1)
-        elif kappa.ndim == 1 and kappa.shape[0] == 2:
-            pass
-        else:
-            raise ValueError(f"shape of kappa f{kappa.shape} not supported")
-        modes = self._check_modes(modes)
-        self.kx, self.ky, self.pol = modes
-        self.ks = k0 * misc.refractive_index(epsilon, mu, kappa)  # (2, 2) -> side, pol
-        if kz is None:
-            kz = misc.wave_vec_z(self.kx, self.ky, self.ks[:, self.pol])
-        kz = np.array(kz)
-        if kz.shape != (2, self.kx.shape[0]):
-            raise ValueError(f"shape of kz f{kz.shape} not supported")
-        self.q = qmats
-        self.k0 = np.array(k0).item()
-        self.epsilon = epsilon
-        self.mu = mu
-        self.kappa = kappa
-        self.helicity = helicity
-        self.kz = kz
-
-    @property
-    def modes(self):
-        """
-        Modes of the Q-matrix
-
-        X- and Y-components and polarization of each row/column of the Q-matrix
-
-        Returns:
-            3-tuple
-        """
-        return self.kx, self.ky, self.pol
-
-    @staticmethod
-    def defaultmodes(kpars):
-        """
-        Default sortation of modes
-
-        Default sortation of the Q-matrix entries, including degree `kx`, order `ky` and
-        polarization `p`.
-
-        Args:
-            kpars (float, (N, 2)-array): Tangential components of the wave vector
-
-        Returns:
-            tuple
-        """
-        kpars = np.array(kpars)
-        res = np.empty((2 * kpars.shape[0], 2), np.float64)
-        res[::2, :] = kpars
-        res[1::2, :] = kpars
-        pols = np.empty(2 * kpars.shape[0], int)
-        pols[::2] = 1
-        pols[1::2] = 0
-        return (*res.T, pols)
+    def __init__(self, smats, **kwargs):
+        self._smats = [[SMatrix(s) for s in row] for row in smats]
+        if len(self._smats) != 2 or len(self._smats[0]) != 2 or len(self._smates[1] != 0):
+            raise ValueError("invalid S-matrices")
+        self.basis = self._smats[0][0].basis
+        self.materials = self._smats[0][0].material
+        self.k0 = self._smats[0][0].k0
+        self.poltype = self._smats[0][0].poltype
 
     @classmethod
-    def interface(cls, k0, kpars, epsilon, mu=1, kappa=0):
+    def interface(cls, k0, basis, materials):
         """
         Planar interface between two media
 
@@ -161,21 +115,6 @@ class QMatrix:
         Returns:
             QMatrix
         """
-        epsilon = np.array(epsilon, complex)
-        mu = np.array(mu, complex)
-        kappa = np.array(kappa, complex)
-        if epsilon.ndim == 0:
-            epsilon = np.array([epsilon, epsilon])
-        if mu.ndim == 0:
-            mu = np.array([mu, mu])
-        if kappa.ndim == 0:
-            kappa = np.array([kappa, kappa])
-        kpars = np.array(kpars)
-        if kpars.ndim == 1:
-            kpars = kpars[None, :]
-        ks = k0 * misc.refractive_index(epsilon, mu, kappa)
-        zs = np.sqrt(mu / epsilon)
-        modes = QMatrix.defaultmodes(kpars)
         kzs = misc.wave_vec_z(kpars[:, 0, None, None], kpars[:, 1, None, None], ks)
         qs = np.zeros((2, 2, modes[0].shape[0], modes[0].shape[0]), complex)
         vals = fresnel(ks, kzs, zs)
@@ -290,7 +229,7 @@ class QMatrix:
         return acc
 
     @classmethod
-    def propagation(cls, r, k0, kpars, epsilon=1, mu=1, kappa=0):
+    def propagation(cls, r, k0, basis, material):
         """
         Q-matrix for the propagation along a distance
 

@@ -74,6 +74,5 @@ from ptsa._operators import (  # noqa: F401
     rotate,
     translate,
 )
-from ptsa._qmatrix import QMatrix  # noqa: F401
-from ptsa._tmatrix import TMatrix  # noqa: F401
-from ptsa._tmatrixc import TMatrixC  # noqa: F401
+from ptsa._smatrix import SMatrix  # noqa: F401
+from ptsa._tmatrix import TMatrix, TMatrixC  # noqa: F401

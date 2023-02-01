@@ -29,7 +29,7 @@ smaller ones for each hand:
 
 .. literalinclude:: examples/cluster.py
    :language: python
-   :lines: 7-16
+   :lines: 6-10
 
 Here, we simply set the wavelength to `1000`. For our constant material parameters we
 can choose the scale of wavelength and sphere radii arbitrarily, but for our example we
@@ -39,7 +39,7 @@ convenience we store the T-matrices in a simple list:
 
 .. literalinclude:: examples/cluster.py
    :language: python
-   :lines: 18-20
+   :lines: 12
 
 Examining the call first invocation of `ptsa` in this example shows a simple structure.
 We use the :class:`ptsa.TMatrix` for our object and then define the sphere. As a
@@ -57,7 +57,7 @@ Now, we want to create a cluster of these T-matrices:
 
 .. literalinclude:: examples/cluster.py
    :language: python
-   :lines: 22-29
+   :lines: 14-15
 
 We first create the cluster by giving the T-matrices of all its constituent particles
 and specifying their positions. It is advised to always put the origin in a symmetry
@@ -74,7 +74,7 @@ under a plane wave illumination along the x-axis:
 
 .. literalinclude:: examples/cluster.py
    :language: python
-   :lines: 31-34
+   :lines: 17-19
 
 Next, we can look at the field distribution. For this we first create a grid, that is
 separated into three parts. First, the space occupied by the spheres, here, we cannot
@@ -87,7 +87,7 @@ For the sake of a more diverse example we will do the latter:
 
 .. literalinclude:: examples/cluster.py
    :language: python
-   :lines: 36-48
+   :lines: 21-31
 
 Mostly, we set up here a grid of points and separate the different regions. Finally, we
 take the region in between the spheres and calculate the relation of the expansion

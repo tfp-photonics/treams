@@ -1,8 +1,7 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
 import ptsa
-
 
 k0 = 2 * np.pi / 1000  # Wave number in vacuum
 kz = 0

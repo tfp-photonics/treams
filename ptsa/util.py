@@ -17,7 +17,7 @@ __all__ = [
     "AnnotatedArray",
     "OrderedSet",
     "implements",
-    "register_properties"
+    "register_properties",
 ]
 
 
@@ -46,24 +46,21 @@ warnings.simplefilter("always", AnnotationWarning)
 
 class AnnotationError(Exception):
     """Custom exception for AnnotatedArrays."""
+
     pass
 
 
 class AnnotationDict(collections.abc.MutableMapping):
-    def __init__(self, items=(), *, cast=()):
+    def __init__(self, items=(), /, **kwargs):
         self._dct = {}
-        self._cast = dict(cast)
-        items = items.items() if hasattr(items, "items") else items
-        for key, val in items:
-            self[key] = val
+        for i in (items.items() if hasattr(items, "items") else items, kwargs.items()):
+            for key, val in i:
+                self[key] = val
 
     def __getitem__(self, key):
         return self._dct[key]
 
     def __setitem__(self, key, val):
-        testfunc, castfunc = self._cast.get(key, (lambda x: True, None))
-        if not testfunc(val):
-            val = castfunc(val)
         if key in self and self[key] != val:
             warnings.warn(f"overwriting key '{key}'", AnnotationWarning)
         self._dct[key] = val
@@ -87,30 +84,27 @@ class AnnotationDict(collections.abc.MutableMapping):
 
 
 class AnnotationSequence(collections.abc.Sequence):
-    def __init__(self, ann=(), *, cast=()):
-        self._ann = tuple(AnnotationDict(i, cast=cast) for i in ann)
-
-    @classmethod
-    def from_ndim(cls, ndim, *, cast=()):
-        return cls(({},) * ndim, cast=cast)
+    def __init__(self, *args, container=AnnotationDict):
+        self._ann = tuple(container(i) for i in args)
 
     def __len__(self):
         return len(self._ann)
-
-    @property
-    def ndim(self):
-        return len(self)
 
     def __getitem__(self, key):
         if isinstance(key, tuple) and key == ():
             return copy.copy(self._ann)
         if isinstance(key, slice):
-            return type(self)(self._ann[key])
-        try:
+            return type(self)(*self._ann[key])
+        if isinstance(key, int):
             return self._ann[key]
-        except TypeError:
-            return type(self)(self[int(k)] for k in key)
-        raise TypeError("list index must be integer, slice, list of integers, or '()'")
+        res = []
+        for k in key:
+            if not isinstance(k, int):
+                raise TypeError(
+                    "list index must be integer, slice, list of integers, or '()'"
+                )
+            res.append(self[k])
+        return type(self)(*res)
 
     def update(self, other):
         if len(other) > len(self):
@@ -261,18 +255,22 @@ def _pdel(key, arr):
 
 
 def register_properties(obj):
-    for prop in obj._cast:
-        setattr(obj, prop, property(
-            functools.partial(_pget, prop),
-            functools.partial(_pset, prop),
-            functools.partial(_pdel, prop),
-        ))
+    for prop in obj._properties:
+        setattr(
+            obj,
+            prop,
+            property(
+                functools.partial(_pget, prop),
+                functools.partial(_pset, prop),
+                functools.partial(_pdel, prop),
+            ),
+        )
     return obj
 
 
 class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
     _scales = set()
-    _cast = {}
+    _properties = set()
 
     @classmethod
     def relax(cls, *args, mro=None, **kwargs):
@@ -287,13 +285,12 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
 
     def __init__(self, array, ann=(), **kwargs):
         self._array = np.asarray(array)
-        self._ann = AnnotationSequence.from_ndim(self.ndim, cast=self._cast)
-        self._ann.update(getattr(array, "ann", ()))
-        self._ann.update(ann)
+        self.ann = getattr(array, "ann", ())
+        self.ann.update(ann)
         for key, val in kwargs.items():
             if not isinstance(val, tuple):
                 val = (val,) * self.ndim
-            self.update(tuple({} if v is None else {key: v} for v in val))
+            self.ann.update(tuple({} if v is None else {key: v} for v in val))
 
     def __str__(self):
         return str(self._array)
@@ -311,7 +308,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
 
     @ann.setter
     def ann(self, ann):
-        self._ann = AnnotationSequence.from_ndim(self.ndim, cast=self._cast)
+        self._ann = AnnotationSequence(({},) * self.ndim)
         self._ann.update(ann)
 
     def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
@@ -667,7 +664,13 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
 
 @implements(np.linalg.solve)
 def solve(a, b):
-    res = AnnotatedArray(np.linalg.solve(np.asanyarray(a), np.asanyarray(b)))
+    if issubclass(type(a), type(b)) or (
+        not issubclass(type(b), type(a)) and isinstance(a, AnnotatedArray)
+    ):
+        restype = type(a)
+    else:
+        restype = type(b)
+    res = restype.relax(np.linalg.solve(np.asanyarray(a), np.asanyarray(b)))
     a_ann = list(getattr(a, "ann", [{}, {}]))
     b_ann = list(getattr(b, "ann", [{}, {}]))
     if np.ndim(b) == np.ndim(a) - 1:
@@ -686,8 +689,14 @@ def solve(a, b):
 
 @implements(np.linalg.lstsq)
 def lstsq(a, b, rcond="warn"):
+    if issubclass(type(a), type(b)) or (
+        not issubclass(type(b), type(a)) and isinstance(a, AnnotatedArray)
+    ):
+        restype = type(a)
+    else:
+        restype = type(b)
     res = list(np.linalg.lstsq(np.asanyarray(a), np.asanyarray(b), rcond))
-    res[0] = AnnotatedArray(res[0])
+    res[0] = restype.relax(res[0])
     a_ann = getattr(a, "ann", ({},))
     b_ann = getattr(b, "ann", ({},))
     a_ann[0].match(b_ann[0])
@@ -702,89 +711,34 @@ def svd(a, full_matrices=True, compute_uv=True, hermitian=False):
     res = list(np.linalg.svd(np.asanyarray(a), full_matrices, compute_uv, hermitian))
     ann = getattr(a, "ann", ({},))
     if compute_uv:
-        res[0] = AnnotatedArray(res[0], ann[:-1] + ({},))
-        res[1] = AnnotatedArray(res[1], ann[:-2] + ({},))
-        res[2] = AnnotatedArray(res[2], ann[:-2] + ({}, ann[-1]))
+        res[0] = a.relax(res[0], ann[:-1] + ({},))
+        res[1] = a.realx(res[1], ann[:-2] + ({},))
+        res[2] = a.relax(res[2], ann[:-2] + ({}, ann[-1]))
         return res
-    return AnnotatedArray(res, tuple(ann[:-2]) + ({},))
+    return a.relax(res, tuple(ann[:-2]) + ({},))
 
 
 @implements(np.diag)
 def diag(a, k=0):
     res = np.diag(np.asanyarray(a), k)
-    ann = getattr(a, "ann", (AnnotationDict(), {}))
+    ann = a.ann
     if a.ndim == 1:
-        ann = (ann[0], AnnotationDict(ann[0]))
+        ann = (ann[0], copy.copy(ann[0]))
     elif k == 0:
         ann[0].match(ann[1])
         ann = ({**ann[0], **ann[1]},)
     else:
         ann = ()
-    return AnnotatedArray(res, ann)
+    return a.relax(res, ann)
 
 
 @implements(np.tril)
 def tril(a, k=0):
     res = np.tril(np.asanyarray(a), k)
-    return AnnotatedArray(res, getattr(a, "ann", ({},)))
+    return a.relax(res, getattr(a, "ann", ({},)))
 
 
 @implements(np.triu)
 def triu(a, k=0):
     res = np.triu(np.asanyarray(a), k)
-    return AnnotatedArray(res, getattr(a, "ann", ({},)))
-
-
-# a.argmax(
-# a.argmin(
-# a.argpartition(
-# a.argsort(
-# a.base
-# a.byteswap(
-# a.choose(
-# a.clip(
-# a.compress(
-# a.copy(
-# a.ctypes
-# a.data
-# a.diagonal(
-# a.dot(
-# a.dtype
-# a.dump(
-# a.dumps(
-# a.fill(
-# a.flags
-# a.flat
-# a.getfield(
-# a.item(
-# a.itemset(
-# a.itemsize
-# a.mean(
-# a.nbytes
-# a.newbyteorder(
-# a.nonzero(
-# a.partition(
-# a.ptp(
-# a.put(
-# a.ravel(
-# a.repeat(
-# a.reshape(
-# a.resize(
-# a.round(
-# a.searchsorted(
-# a.setfield(
-# a.setflags(
-# a.sort(
-# a.squeeze(
-# a.std(
-# a.strides
-# a.swapaxes(
-# a.take(
-# a.tobytes(
-# a.tofile(
-# a.tolist(
-# a.tostring(
-# a.trace(
-# a.transpose(
-# a.var(
-# a.view(
+    return a.relax(res, getattr(a, "ann", ({},)))

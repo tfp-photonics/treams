@@ -2,10 +2,10 @@ import warnings
 
 import numpy as np
 
-import ptsa.lattice as la
-from ptsa import config, misc
+from ptsa import config
+from ptsa._core import CylindricalWaveBasis as CWB
 from ptsa._core import PhysicsArray
-from ptsa._core import CylindricalWaveBasis as CWB, SphericalWaveBasis as SWB
+from ptsa._core import SphericalWaveBasis as SWB
 from ptsa._material import Material
 from ptsa.coeffs import mie, mie_cyl
 from ptsa.util import AnnotationError
@@ -29,35 +29,18 @@ class TMatrix(PhysicsArray):
     be specified. Also modes must have as first element a position index.
 
     Args:
-        tmat (float or complex, array): T-matrix itself
+        arr (float or complex, array): T-matrix itself
         k0 (float): Wave number in vacuum
-        epsilon (float or complex, optional): Relative permittivity of the embedding
-            medium
-        mu (float or complex, optional): Relative permeability of the embedding medium
-        kappa (float or complex, optional): Chirality parameter of the embedding medium
-        positions (float, (3,)- or (M,3)-array, optional): Positions for a local
-            T-matrix
-        helicity (bool, optional): Helicity or parity modes
-        modes (iterable, optional): Sorting of the T-matrix entries. Either four entries
-            for local T-Matrices, with the first specifying the corresponding position
-            or three entries only, specifying degree, order, and polarization.
+        basis (SphericalWaveBasis, optional): Basis definition
+        material (Material, optional): Embedding material, defaults to vacuum
+        poltype (str, optional): Helicity or parity basis, defauts to config.POLTYPE
 
     Attributes:
         t (float or complex, (N,N)-array): T-matrix
         k0 (float): Wave number in vacuum
-        positions (float, (3,)- or (M,3)-array): Positions for a local T-matrix
-        epsilon (float or complex, optional): Relative permittivity of the embedding
-            medium
-        mu (complex): Relative permeability of the embedding medium
-        kappa (complex): Chirality parameter of the embedding medium
-        helicity (bool): Helicity or parity modes
-        pidx (int, (N,)-array): Position index for each column/row of the T-matrix
-        l (int, (N,)-array): Degree of the mode for each column/row of the T-matrix
-        m (int, (N,)-array): Order of the mode for each column/row of the T-matrix
-        pol (int, (N,)-array): Polarization of the mode for each column/row of the
-            T-matrix
-        ks (float or complex (2,)-array): Wave numbers in the medium for both
-            polarizations
+        basis (SphericalWaveBasis): Basis modes
+        material (Material): Material definition
+        poltype (str): Helicity or parity basis
     """
 
     def _check(self):
@@ -367,20 +350,18 @@ class TMatrix(PhysicsArray):
             TMatrix
         """
         basis = SWB.default(max(self.basis.l)) if basis is None else basis
-        if not basis.isglobal:
-            raise ValueError("global basis required")
         return TMatrix(self.expand(basis) @ self @ self.expand.inv(basis))
 
-    def latticecouple(self, lattice, kpar, *, eta=0):
+    def couple_lattice(self, lattice, kpar, *, eta=0):
         """
         Calculate the coupling term of a blockdiagonal T-matrix
         """
         return np.eye(self.shape[0]) - self @ self.expandlattice(lattice, kpar, eta=eta)
 
-    def latticeinteracted(self, lattice, kpar):
-        return TMatrix(np.linalg.solve(self.latticecouple(lattice, kpar), self))
+    def interacted_lattice(self, lattice, kpar):
+        return TMatrix(np.linalg.solve(self.couple_lattice(lattice, kpar), self))
 
-    def array1d(self, basis, lattice=None, kpar=None, eta=0):
+    def to_tmatrixc(self, basis, eta=0):
         """
         Convert a one-dimensional array of T-matrices into a (cylindrical) 2D-T-matrix
 
@@ -392,18 +373,13 @@ class TMatrix(PhysicsArray):
         Returns:
             complex, array
         """
-        lattice = basis.hints["lattice"] if lattice is None else lattice
-        kpar = basis.hints["kpar"] if kpar is None else lattice
-        tm = self.interacted(lattice, kpar, eta=eta)
-        ain = self.expandlattice(
-            self.k0, self.basis, material=self.material, poltype=self.poltype
-        )
-        pout = self.basis.expand(
-            self.k0, basis, material=self.material, poltype=self.poltype,
-        )
-        return pout @ tm @ ain
+        if self.lattice is None:
+            tm = self.interacted(basis.hints["lattice"], basis.hints["kpar"], eta=eta)
+        else:
+            tm = self
+        return tm.expandlattice(basis) @ tm @ tm.expand.inv(basis)
 
-    def array2d(self, kx, ky, kz, pwpol, a, origin=None, eta=0):
+    def to_smatrixp(self, basis, eta=0):
         """
         Convert a two-dimensional array of T-matrices into a Q-matrix
 
@@ -422,30 +398,13 @@ class TMatrix(PhysicsArray):
         Returns:
             complex, array
         """
-        kpar = misc.firstbrillouin2d([kx[0], ky[0]], la.reciprocal(a))
-        interaction = np.linalg.solve(self.latticecoupling(kpar, a, eta), self.t)
-        if origin is None:
-            origin = np.zeros((3,))
-        posdiff = self.positions - origin
-        tout = pw.translate(
-            kx[:, None],
-            ky[:, None],
-            kz[:, None],
-            -posdiff[self.pidx, 0],
-            -posdiff[self.pidx, 1],
-            -posdiff[self.pidx, 2],
-        )
-        ain = self.illuminate_pw(kx, ky, kz, pwpol)
-        pout = sw.periodic_to_pw(
-            kx[:, None],
-            ky[:, None],
-            kz[:, None],
-            pwpol[:, None],
-            *self.modes,
-            la.area(a),
-            helicity=self.helicity,
-        )
-        return (tout * pout) @ interaction @ ain
+        if self.lattice is None:
+            tm = self.interacted(basis.hints["lattice"], basis.hints["kpar"], eta=eta)
+        else:
+            tm = self
+        return tm.expandlattice(basis) @ tm @ tm.expand.inv(basis)
+
+    to_smatrix = to_smatrixp
 
 
 class TMatrixC(PhysicsArray):
@@ -727,40 +686,43 @@ class TMatrixC(PhysicsArray):
     def latticeinteracted(self, lattice, kpar):
         return TMatrix(np.linalg.solve(self.latticecouple(lattice, kpar), self))
 
-    def array1d(self, kx, ky, kz, pwpol, a, origin=None, eta=0):
+    def to_smatrixp(self, basis, eta=0):
         """
-        Convert a one-dimensional array of T-matrices into a Q-matrix
+        Convert a two-dimensional array of T-matrices into a Q-matrix
 
-        There is no local Q-matrix used, so the result is taken with respect to the
-        reference origin.
+        Unlike for the 1d-case there is no local Q-matrix used, so the result is taken
+        with respect to the reference origin.
 
         Args:
             kx (float, array_like): X component of the plane wave
             ky (float, array_like): Y component of the plane wave
             kz (float, array_like): Z component of the plane wave
             pwpol (int, array_like): Plane wave polarizations
-            a (float): Lattice pitch
+            a (float, (2,2)-array): Lattice vectors
             origin (float, (3,)-array, optional): Reference origin of the result
             eta (float or complex, optional): Splitting parameter in the lattice sum
 
         Returns:
             complex, array
         """
-        minkx = misc.firstbrillouin1d(kx[0], 2 * np.pi / a)
-        interaction = np.linalg.solve(self.latticecoupling(minkx, a, eta), self.t)
-        if origin is None:
-            origin = np.zeros((3,))
-        posdiff = self.positions - origin
-        tout = pw.translate(
-            kx[:, None],
-            ky[:, None],
-            kz[:, None],
-            -posdiff[self.pidx, 0],
-            -posdiff[self.pidx, 1],
-            -posdiff[self.pidx, 2],
-        )
-        ain = self.illuminate_pw(kx, ky, kz, pwpol)
-        pout = cw.periodic_to_pw(
-            kx[:, None], ky[:, None], kz[:, None], pwpol[:, None], *self.modes, a,
-        )
-        return (tout * pout) @ interaction @ ain
+        if self.lattice is None:
+            tm = self.interacted(basis.hints["lattice"], basis.hints["kpar"], eta=eta)
+        else:
+            tm = self
+        return tm.expandlattice(basis) @ tm @ tm.expand.inv(basis)
+
+
+def plane_wave():
+    raise NotImplementedError
+
+
+def spherical_wave():
+    raise NotImplementedError
+
+
+def cylindrical_wave():
+    raise NotImplementedError
+
+
+def _exclude():
+    raise NotImplementedError

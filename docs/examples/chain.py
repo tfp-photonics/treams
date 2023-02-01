@@ -1,8 +1,7 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
 import ptsa
-
 
 k0 = 2 * np.pi / 700  # Wave number in vacuum
 permittivities = [1, -16.5 + 1j]

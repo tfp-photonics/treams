@@ -7,12 +7,12 @@ import numpy as np
 
 import ptsa._operators as op
 import ptsa.lattice as la
+from ptsa import util
 from ptsa._lattice import Lattice
 from ptsa._material import Material
-from ptsa.util import AnnotatedArray, OrderedSet, register_properties
 
 
-class BasisSet(OrderedSet, metaclass=abc.ABCMeta):
+class BasisSet(util.OrderedSet, metaclass=abc.ABCMeta):
     """
     BasisSet
 
@@ -652,21 +652,31 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         return obj
 
 
-CAST = {
-    "k0": (lambda x: isinstance(x, float), float),
-    "basis": (lambda x: isinstance(x, BasisSet), None),
-    "poltype": (lambda x: isinstance(x, str), str),
-    "modetype": (lambda x: isinstance(x, str), str),
-    "material": (lambda x: isinstance(x, Material), Material),
-    "lattice": (lambda x: isinstance(x, Lattice), Lattice),
-    "kpar": (lambda x: isinstance(x, list), list),
-}
+def _raise_basis_error(*args):
+    raise TypeError("'basis' must be BasisSet")
 
 
-@register_properties
-class PhysicsArray(AnnotatedArray):
+class PhysicsDict(util.AnnotationDict):
+    properties = {
+        "k0": (lambda x: isinstance(x, float), float),
+        "basis": (lambda x: isinstance(x, BasisSet), _raise_basis_error),
+        "poltype": (lambda x: isinstance(x, str), str),
+        "modetype": (lambda x: isinstance(x, str), str),
+        "material": (lambda x: isinstance(x, Material), Material),
+        "lattice": (lambda x: isinstance(x, Lattice), Lattice),
+        "kpar": (lambda x: isinstance(x, list), list),
+    }
+
+    def setitem(self, key, val):
+        testfunc, castfunc = self.properties.get(key, (lambda x: True, None))
+        if not testfunc(val):
+            val = castfunc(val)
+
+
+@util.register_properties
+class PhysicsArray(util.AnnotatedArray):
     _scales = {"basis"}
-    _cast = CAST
+    _properties = PhysicsDict.properties
 
     changepoltype = op.ChangePoltype()
     efield = op.EField()
@@ -681,6 +691,15 @@ class PhysicsArray(AnnotatedArray):
         for key, val in kwargs.items():
             setattr(self, key, val)
         self._check()
+
+    @property
+    def ann(self):
+        return super().ann
+
+    @ann.setter
+    def ann(self, ann):
+        self._ann = util.AnnotationSequence(({},) * self.ndim, container=PhysicsDict)
+        self._ann.update(ann)
 
     def __repr__(self):
         repr_arr = "    " + repr(self._array)[6:-1].replace("\n  ", "\n")
@@ -736,7 +755,7 @@ class PhysicsArray(AnnotatedArray):
         res = super().__matmul__(other, *args, **kwargs)
         other_ann = getattr(other, "ann", ({},))
         other_ndim = np.ndim(other)
-        for name in self._cast:
+        for name in self._properties:
             if self.ndim > 1 and self.ann[-1].get(name) is None:
                 dim = -1 - (other_ndim != 1)
                 val = other_ann[dim].get(name)
@@ -751,7 +770,7 @@ class PhysicsArray(AnnotatedArray):
         res = super().__rmatmul__(other, *args, **kwargs)
         other_ann = getattr(other, "ann", ({},))
         other_ndim = np.ndim(other)
-        for name in self._cast:
+        for name in self._properties:
             if other_ndim > 1 and other_ann[-1].get(name) is None:
                 dim = -1 - (self.ndim != 1)
                 val = self.ann[dim].get(name)
