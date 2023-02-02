@@ -9,7 +9,8 @@ from ptsa._core import PhysicsArray
 from ptsa._core import PlaneWaveBasis as PWB
 from ptsa._core import PlaneWaveBasisPartial as PWBP
 from ptsa._lattice import Lattice
-from ptsa._materials import Material
+from ptsa._material import Material
+from ptsa._operators import translate
 from ptsa.coeffs import fresnel
 
 
@@ -26,28 +27,31 @@ class _SMatrix(PhysicsArray):
         if len(shape) != 2 or shape[0] != shape[1]:
             raise util.AnnotationError(f"invalid shape: '{shape}'")
         if self.basis is None:
-            self.basis = SWB.default(SWB.defaultlmax(shape[0]))
-        if self.material is None:
-            self.material = Material()
+            raise util.AnnotationError("basis not set")
+        elif not isinstance(self.basis, PWBP):
+            self.basis = self.basis.partial()
+        material = (None, None) if self.material is None else self.material
+        if isinstance(material, tuple):
+            self.material = tuple(Material() if m is None else m for m in material)
 
 
 class SMatrix:
     r"""
     S-matrix (plane wave basis)
 
-    The Q-matrix describes the scattering of incoming into outgoing modes using a plane
+    The S-matrix describes the scattering of incoming into outgoing modes using a plane
     wave basis, with functions :func:`ptsa.special.vsw_A`, :func:`ptsa.special.vsw_M`,
     and :func:`ptsa.special.vsw_N`. The primary direction of propagation is parallel or
     anti-parallel to the z-axis. The scattering object itself is infinitely extended in
-    the x- and y-directions. The Q-matrix is divided into four submatrices
-    :math:`Q_{\uparrow \uparrow}`, :math:`Q_{\uparrow \downarrow}`,
-    :math:`Q_{\downarrow \uparrow}`, and :math:`Q_{\downarrow \downarrow}`:
+    the x- and y-directions. The S-matrix is divided into four submatrices
+    :math:`S_{\uparrow \uparrow}`, :math:`S_{\uparrow \downarrow}`,
+    :math:`S_{\downarrow \uparrow}`, and :math:`S_{\downarrow \downarrow}`:
 
     .. math::
 
-        Q = \begin{pmatrix}
-            Q_{\uparrow \uparrow} & Q_{\uparrow \downarrow} \\
-            Q_{\downarrow \uparrow} & Q_{\downarrow \downarrow}
+        S = \begin{pmatrix}
+            S_{\uparrow \uparrow} & S_{\uparrow \downarrow} \\
+            S_{\downarrow \uparrow} & S_{\downarrow \downarrow}
         \end{pmatrix}\,.
 
     These matrices describe the transmission of plane waves propagating into positive
@@ -58,12 +62,12 @@ class SMatrix:
     can be in either helicity of parity basis.
 
     The embedding medium is described by permittivity, permeability, and the chirality
-    parameter. The two sides of the Q-matrix can have different materials.
+    parameter. The two sides of the S-matrix can have different materials.
 
     Args:
-        qmats (float or complex, array): Q-matrices
+        qmats (float or complex, array): S-matrices
         k0 (float): Wave number in vacuum
-        modes (iterable, optional): The modes corresponding to the Q-matrices rows and
+        modes (iterable, optional): The modes corresponding to the S-matrices rows and
             columns. It must contain three arrays of equal length for the wave vectors'
             x- and y-component, and the polarization.
         epsilon (float or complex, optional): Relative permittivity of the medium
@@ -71,34 +75,82 @@ class SMatrix:
         kappa (float or complex, optional): Chirality parameter of the medium
         helicity (bool, optional): Helicity or parity modes
         kz (float or complex, (N, 2)-array, optional): The z-component of the wave
-            vector on both sides of the Q-matrix
+            vector on both sides of the S-matrix
 
     Attributes:
-        q (complex, (2, 2, N, N)-array): Q-matrices for the layer. The first dimension
+        q (complex, (2, 2, N, N)-array): S-matrices for the layer. The first dimension
             corresponds to the output side, the second to the input side, the third one
             to the outgoing modes and the last one to the incoming modes.
         k0 (float): Wave number in vacuum
-        epsilon (float or complex, optional): Relative permittivity of the embedding medium
+        epsilon (float or complex, optional): Relative permittivity of the embedding
+            medium
         mu (complex): Relative permeability of the embedding medium
         kappa (complex): Chirality parameter of the embedding medium
         helicity (bool): Helicity or parity modes
-        kx (float, (N,)-array): X-component of the wave vector for each column/row of the Q-matrix
-        ky (float, (N,)-array): Y-component of the wave vector for each column/row of the Q-matrix
-        kz (float, (2, N)-array): Z-component of the wave vector for each column/row of the Q-matrix
-            and for both sides
-        pol (int, (N,)-array): Polarization of the mode for each column/row of the Q-matrix
+        kx (float, (N,)-array): X-component of the wave vector for each column/row of
+            the S-matrix
+        ky (float, (N,)-array): Y-component of the wave vector for each column/row of
+            the S-matrix
+        kz (float, (2, N)-array): Z-component of the wave vector for each column/row of
+            the S-matrix and for both sides
+        pol (int, (N,)-array): Polarization of the mode for each column/row of the
+            S-matrix
         ks (float or complex (2, 2)-array): Wave numbers in the medium for both sides
             and both polarizations
     """
 
     def __init__(self, smats, **kwargs):
-        self._smats = [[SMatrix(s) for s in row] for row in smats]
-        if len(self._smats) != 2 or len(self._smats[0]) != 2 or len(self._smates[1] != 0):
+        if "material" in kwargs:
+            material = kwargs["material"]
+            if isinstance(material, Material):
+                ma, mb = (material, material)
+            else:
+                ma, mb = material
+            del kwargs["material"]
+            materials = [[(ma, mb), (ma, ma)], [(mb, mb), (mb, ma)]]
+        else:
+            materials = [[None, None], [None, None]]
+        if len(smats) != 2 or len(smats[0]) != 2 or len(smats[1]) != 2:
             raise ValueError("invalid S-matrices")
-        self.basis = self._smats[0][0].basis
-        self.materials = self._smats[0][0].material
-        self.k0 = self._smats[0][0].k0
-        self.poltype = self._smats[0][0].poltype
+        self._sms = [
+            [_SMatrix(s, material=m, **kwargs) for s, m in zip(row, mrow)]
+            for row, mrow in zip(smats, materials)
+        ]
+        self.material = self[0, 0].material
+        if isinstance(self.material, Material):
+            self.material = (self.material, self.material)
+        self[0, 0].modetype = "up"
+        self[0, 1].modetype = ("up", "down")
+        self[0, 1].material = self.material[0]
+        self[1, 0].modetype = ("down", "up")
+        self[1, 0].material = self.material[1]
+        self[1, 1].modetype = "down"
+        self[1, 1].material = (self.material[1], self.material[0])
+        self.basis = self[0, 0].basis
+        self.k0 = self[0, 0].k0
+        self.poltype = self[0, 0].poltype
+        for i in (self[1, 0], self[0, 1], self[1, 1]):
+            i.k0 = self.k0
+            i.basis = self.basis
+            i.poltype = self.poltype
+
+    def __eq__(self, other):
+        return all(
+            (np.abs(self[i, j] - other[i][j]) < 1e-14).all()
+            for i in range(2)
+            for j in range(2)
+        )
+
+    def __getitem__(self, key):
+        keys = {0: 0, "up": 0, 1: 1, "down": 1}
+        if key in keys:
+            return self._sms[keys[key]]
+        if not isinstance(key, tuple) or len(key) not in (1, 2):
+            raise KeyError("invalid key")
+        if len(key) == 1:
+            return self[key[0]]
+        key = tuple(keys[k] for k in key)
+        return self._sms[key[0]][key[1]]
 
     @classmethod
     def interface(cls, k0, basis, materials):
@@ -108,26 +160,33 @@ class SMatrix:
         Args:
             k0 (float): Wave number in vacuum
             kpars (float, (N, 2)-array): Tangential components of the wave vector
-            epsilon (float or complex): Relative permittivity on both sides of the interface
-            mu (float or complex, optional): Relative permittivity on both sides of the interface
-            kappa (float or complex, optional): Relative permittivity on both sides of the interface
+            epsilon (float or complex): Relative permittivity on both sides of the
+                interface
+            mu (float or complex, optional): Relative permittivity on both sides of the
+                interface
+            kappa (float or complex, optional): Relative permittivity on both sides of
+                the interface
 
         Returns:
-            QMatrix
+            SMatrix
         """
-        kzs = misc.wave_vec_z(kpars[:, 0, None, None], kpars[:, 1, None, None], ks)
-        qs = np.zeros((2, 2, modes[0].shape[0], modes[0].shape[0]), complex)
-        vals = fresnel(ks, kzs, zs)
-        for i in range(kpars.shape[0]):
+        materials = tuple(map(Material, materials))
+        ks = k0 * np.array((materials[0].nmp, materials[1].nmp))
+        sel = basis.pol == 0
+        kzs = np.zeros((len(sel) // 2, 2, 2), complex)
+        for i in range(2):
+            _kzs = basis.complete(k0, materials[i], "up").kz
+            kzs[:, i, 0] = _kzs[sel]
+            kzs[:, i, 1] = _kzs[np.logical_not(sel)]
+        qs = np.zeros((2, 2, len(basis), len(basis)), complex)
+        vals = fresnel(ks, kzs, [materials[0].impedance, materials[1].impedance])
+        for i in range(len(sel) // 2):
             qs[:, :, 2 * i : 2 * i + 2, 2 * i : 2 * i + 2] = vals[i, :, :, ::-1, ::-1]
 
-        reshaped_kzs = np.zeros((2, 2 * kzs.shape[0]), kzs.dtype)
-        reshaped_kzs[:, modes[2] == 0] = kzs[:, :, 0].T
-        reshaped_kzs[:, modes[2] == 1] = kzs[:, :, 1].T
-        return cls(qs, k0, modes, epsilon, mu, kappa, True, reshaped_kzs)
+        return cls(qs, k0=k0, basis=basis, material=materials[::-1], poltype="helicity")
 
     @classmethod
-    def slab(cls, k0, kpars, thickness, epsilon, mu=1, kappa=0):
+    def slab(cls, k0, basis, thickness, materials):
         """
         Slab of material
 
@@ -138,102 +197,56 @@ class SMatrix:
         Args:
             k0 (float): Wave number in vacuum
             kpars (float, (N, 2)-array): Tangential components of the wave vector
-            epsilon (float or complex): Relative permittivity on both sides of the interface
-            mu (float or complex, optional): Relative permittivity on both sides of the interface
-            kappa (float or complex, optional): Relative permittivity on both sides of the interface
+            epsilon (float or complex): Relative permittivity on both sides of the
+                interface
+            mu (float or complex, optional): Relative permittivity on both sides of the
+                interface
+            kappa (float or complex, optional): Relative permittivity on both sides of
+                the interface
 
         Returns:
-            QMatrix
+            SMatrix
         """
-        thickness = np.atleast_1d(thickness)
-        epsilon = np.atleast_1d(epsilon)
-        mu = np.atleast_1d(mu)
-        kappa = np.atleast_1d(kappa)
-        nthickness = thickness.shape[0]
-        for name, param in [
-            ("thickness", thickness),
-            ("epsilon", epsilon),
-            ("kappa", kappa),
-            ("mu", mu),
-        ]:
-            if param.ndim > 1:
-                raise ValueError(
-                    f"'{name}' must be scalar or 1D, but was {param.ndim}D"
-                )
-        if len(epsilon) == 1:
-            epsilon = np.repeat(epsilon, nthickness + 2)
-        elif len(epsilon) != nthickness + 2:
-            raise ValueError(
-                f"'epsilon' must be scalar or of length {nthickness}, but was {len(epsilon)}"
-            )
-        if len(mu) == 1:
-            mu = np.repeat(mu, nthickness + 2)
-        elif len(mu) != nthickness + 2:
-            raise ValueError(
-                f"'mu' must be scalar or of length {nthickness}, but was {len(mu)}"
-            )
-        if len(kappa) == 1:
-            kappa = np.repeat(kappa, nthickness + 2)
-        elif len(kappa) != nthickness + 2:
-            raise ValueError(
-                f"'kappa' must be scalar or of length {nthickness}, but was {len(kappa)}"
-            )
-        items = []
-        # Use the truncation of the material parameters by zip due to 'thickness'
-        for (
-            d,
-            epsilon_below,
-            epsilon_above,
-            mu_below,
-            mu_above,
-            kappa_below,
-            kappa_above,
-        ) in zip(thickness, epsilon, epsilon[1:], mu, mu[1:], kappa, kappa[1:]):
-            items.append(
-                QMatrix.interface(
-                    k0,
-                    kpars,
-                    [epsilon_below, epsilon_above],
-                    [mu_below, mu_above],
-                    [kappa_below, kappa_above],
-                )
-            )
-            items.append(
-                QMatrix.propagation(
-                    [0, 0, d], k0, kpars, epsilon_above, mu_above, kappa_above
-                )
-            )
-        items.append(QMatrix.interface(k0, kpars, epsilon[-2:], mu[-2:], kappa[-2:]))
-        return QMatrix.stack(items, check_materials=False, check_modes=False)
+        try:
+            iter(thickness)
+        except TypeError:
+            thickness = [thickness]
+        res = cls.interface(k0, basis, materials[:2])
+        for d, ma, mb in zip(thickness, materials[1:-1], materials[2:]):
+            if np.ndim(d) == 0:
+                d = [0, 0, d]
+            res = res.add(cls.propagation(d, k0, basis, ma))
+            res = res.add(cls.interface(k0, basis, (ma, mb)))
+        return res
 
     @classmethod
-    def stack(cls, items, check_materials=True, check_modes=False):
+    def stack(cls, items):
         """
-        Stack of Q-matrices
+        Stack of S-matrices
 
-        Electromagnetically couple multiple Q-matrices in the order given. Before
+        Electromagnetically couple multiple S-matrices in the order given. Before
         coupling it can be checked for matching materials and modes.
 
         Args:
-            items (QMatrix, array-like): An array of Q-matrices in their intended order
+            items (SMatrix, array-like): An array of S-matrices in their intended order
             check_materials (bool, optional): Check for matching material parameters
-                at each Q-matrix
-            check_materials (bool, optional): Check for matching modes at each Q-matrix
+                at each S-matrix
+            check_materials (bool, optional): Check for matching modes at each S-matrix
 
         Returns:
-            QMatrix
+            SMatrix
         """
-        acc = copy.deepcopy(items[0])
+        acc = items[0]
         for item in items[1:]:
-            acc.add(item, check_materials, check_modes)
+            acc = acc.add(item)
         return acc
 
     @classmethod
     def propagation(cls, r, k0, basis, material):
         """
-        Q-matrix for the propagation along a distance
+        S-matrix for the propagation along a distance
 
-        This Q-matrix translates the reference origin along `r`.
+        This S-matrix translates the reference origin along `r`.
 
         Args:
             r (float, (3,)-array): Translation vector
@@ -244,36 +257,20 @@ class SMatrix:
             kappa (float or complex, optional): Chirality parameter of the medium
 
         Returns:
-            QMatrix
+            SMatrix
         """
-        ks = k0 * misc.refractive_index(epsilon, mu, kappa)
-        kpars = np.array(kpars)
-        if kpars.ndim == 1:
-            kpars = kpars[None, :]
-        modes = QMatrix.defaultmodes(kpars)
-        kzs = misc.wave_vec_z(*modes[:2], ks[modes[2]])
-        qs = np.zeros((2, 2, modes[0].shape[0], modes[0].shape[0]), complex)
-        tangential = np.exp(1j * (r[0] * modes[0] + r[1] * modes[1]))
-        zdir = np.exp(1j * r[2] * kzs)
-        qs[0, 0, :, :] = np.diag(tangential * zdir)
-        qs[1, 1, :, :] = np.diag(tangential.conjugate() * zdir)
-        return cls(
-            qs,
-            k0,
-            modes,
-            np.array([epsilon, epsilon], complex),
-            np.array([mu, mu], complex),
-            np.array([kappa, kappa], complex),
-            True,
-            np.stack((kzs, kzs), axis=0),
-        )
+        sup = translate(r, k0=k0, basis=basis, material=material, modetype="up")
+        sdown = translate(r, k0=k0, basis=basis, material=material, modetype="down")
+        zero = np.zeros_like(sup)
+        material = Material(material)
+        return cls([[sup, zero], [zero, sdown]], k0=k0, basis=basis, material=material)
 
     @classmethod
-    def array(cls, tmat, kpars, a, eta=0):
+    def from_array(cls, tm, basis, *, eta=0):
         """
-        Q-matrix from an array of (cylindrical) T-matrices
+        S-matrix from an array of (cylindrical) T-matrices
 
-        Create a Q-matrix for a two-dimensional array of objects described by the
+        Create a S-matrix for a two-dimensional array of objects described by the
         T-Matrix or an one-dimensional array of objects described by a cylindrical
         T-matrix.
 
@@ -281,140 +278,65 @@ class SMatrix:
             tmat (TMatrix or TMatrixC): (Cylindrical) T-matrix to put in the arry
             kpars (float, (N, 2)-array): Tangential components of the wave vector
             a (array): Definition of the lattice
-            eta (float or complex, optional): Splitting parameter in the lattice summation
+            eta (float or complex, optional): Splitting parameter in the lattice sum
 
         Returns:
-            QMatrix
+            SMatrix
         """
-        modes = QMatrix.defaultmodes(kpars)
-        kzs = misc.wave_vec_z(*modes[:2], tmat.ks[modes[2]])
-        a = np.array(a)
-        allpw = (
-            np.hstack((modes[0], modes[0])),
-            np.hstack((modes[1], modes[1])),
-            np.hstack((kzs, -kzs)),
-            np.hstack((modes[2], modes[2])),
-        )
-        if a.ndim == 0 or (a.ndim == 1 and a.shape[0] == 1):
-            yz = pw.permute_xyz(
-                *(m[:, None] for m in allpw), *allpw, helicity=tmat.helicity,
-            )
-            zy = pw.permute_xyz(
-                *(m[:, None] for m in allpw),
-                *allpw,
-                helicity=tmat.helicity,
-                inverse=True,
-            )
-            res = (
-                zy
-                @ tmat.array1d(allpw[1], allpw[2], allpw[0], allpw[3], a, eta=eta)
-                @ yz
-            )
-        else:
-            res = tmat.array2d(*allpw, a, eta=eta)
-        dim = modes[0].shape[0]
-        qs = np.empty((2, 2, dim, dim), complex)
-        qs[0, 0, :, :] = res[0:dim, 0:dim] + np.eye(dim)
-        qs[0, 1, :, :] = res[0:dim, dim : 2 * dim]
-        qs[1, 0, :, :] = res[dim : 2 * dim, 0:dim]
-        qs[1, 1, :, :] = res[dim : 2 * dim, dim : 2 * dim] + np.eye(dim)
-        epsilon = np.array([tmat.epsilon, tmat.epsilon], complex)
-        mu = np.array([tmat.mu, tmat.mu], complex)
-        kappa = np.array([tmat.kappa, tmat.kappa], complex)
-        return cls(
-            qs,
-            tmat.k0,
-            modes,
-            epsilon,
-            mu,
-            kappa,
-            tmat.helicity,
-            np.stack((kzs, kzs), axis=0),
-        )
+        if tm.lattice is None:
+            lattice = basis.hints["lattice"]
+            kpar = basis.hints["kpar"]
+            tm = tm.interacted_lattice(lattice, kpar, eta=eta)
+        pu, pd = [tm.expandlattice(basis=basis, modetype=i) for i in ("up", "down")]
+        au, ad = [tm.expand.inv(basis=basis, modetype=i) for i in ("up", "down")]
+        eye = np.eye(len(basis))
+        return cls([[eye + pu @ tm @ au, pu @ tm @ ad], [pd @ tm @ au, eye + pd @ tm @ ad]])
 
-    @property
-    def material(self):
+    def add(self, sm):
         """
-        Material parameters of the embedding medium
+        Couple another S-matrix on top of the current one
 
-        The relative permittivity, relative permeability, and the chirality parameter
-        specify the embedding medium.
-
-        Returns:
-            tuple
-        """
-        return self.epsilon, self.mu, self.kappa
-
-    def add(self, qmat, check_materials=True, check_modes=False):
-        """
-        Couple another Q-matrix on top of the current one
-
-        See also :func:`ptsa.QMatrix.stack` for a function that does not change the
-        current Q-matrix but creates a new one.
+        See also :func:`ptsa.SMatrix.stack` for a function that does not change the
+        current S-matrix but creates a new one.
 
         Args:
-            items (QMatrix): Q-matrices in their intended order
+            items (SMatrix): S-matrices in their intended order
             check_materials (bool, optional): Check for matching material parameters
-                at each Q-matrix
-            check_materials (bool, optional): Check for matching modes at each Q-matrix
+                at each S-matrix
+            check_materials (bool, optional): Check for matching modes at each S-matrix
 
         Returns:
-            QMatrix
+            SMatrix
         """
-        if check_materials and (
-            self.epsilon[1] != qmat.epsilon[0]
-            or self.mu[1] != qmat.mu[0]
-            or self.kappa[1] != qmat.kappa[0]
-        ):
-            raise ValueError("materials do not match")
-        if check_modes and (
-            np.any(self.kx != qmat.kx)
-            or np.any(self.ky != qmat.ky)
-            or np.any(self.kz != qmat.kz)
-        ):
-            raise ValueError("modes do not match")
-        dim = self.q.shape[2]
-        qnew = np.empty_like(self.q)
-        q_tmp = np.linalg.solve(
-            np.eye(dim) - self.q[0, 1, :, :] @ qmat.q[1, 0, :, :], self.q[0, 0, :, :]
-        )
-        qnew[0, 0, :, :] = qmat.q[0, 0, :, :] @ q_tmp
-        qnew[1, 0, :, :] = (
-            self.q[1, 0, :, :] + self.q[1, 1, :, :] @ qmat.q[1, 0, :, :] @ q_tmp
-        )
-        q_tmp = np.linalg.solve(
-            np.eye(dim) - qmat.q[1, 0, :, :] @ self.q[0, 1, :, :], qmat.q[1, 1, :, :]
-        )
-        qnew[1, 1, :, :] = self.q[1, 1, :, :] @ q_tmp
-        qnew[0, 1, :, :] = (
-            qmat.q[0, 1, :, :] + qmat.q[0, 0, :, :] @ self.q[0, 1, :, :] @ q_tmp
-        )
-        self.q = qnew
-        self.epsilon[1] = qmat.epsilon[1]
-        self.mu[1] = qmat.mu[1]
-        self.kappa[1] = qmat.kappa[1]
-        self.kz[1, :] = qmat.kz[1, :]
-        self.ks[1, :] = qmat.ks[1, :]
-        return self
+        dim = len(self.basis)
+        snew = [[None, None], [None, None]]
+        s_tmp = np.linalg.solve(np.eye(dim) - self[0, 1] @ sm[1][0], self[0, 0])
+        snew[0][0] = sm[0][0] @ s_tmp
+        snew[1][0] = self[1, 0] + self[1, 1] @ sm[1][0] @ s_tmp
+        s_tmp = np.linalg.solve(np.eye(dim) - sm[1][0] @ self[0, 1], sm[1][1])
+        snew[1][1] = self[1, 1] @ s_tmp
+        snew[0][1] = sm[0][1] + sm[0][0] @ self[0, 1] @ s_tmp
+        return SMatrix(snew)
 
-    def double(self, times=1):
+    def double(self, n=1):
         """
-        Double the Q-matrix
+        Double the S-matrix
 
-        By default this function doubles the Q-matrix but it can also create a
+        By default this function doubles the S-matrix but it can also create a
         :math:`2^n`-fold repetition of itself:
 
         Args:
-            times (int, optional): Number of times to double itself. Defaults to 1.
+            n (int, optional): Number of times to double itself. Defaults to 1.
 
         Returns:
-            QMatrix
+            SMatrix
         """
-        for _ in range(times):
-            self.add(self)
-        return self
+        res = self
+        for _ in range(n):
+            res = res.add(self)
+        return res
 
-    def changebasis(self, modes=None):
+    def changebasis(self, **kwargs):
         """
         Swap between helicity and parity basis
 
@@ -422,61 +344,20 @@ class SMatrix:
             modes (array, optional): Change the number of modes while changing the basis
 
         Returns:
-            QMatrix
+            SMatrix
         """
-        if modes is None:
-            modes = self.modes
-        mat = misc.basischange(self.modes, modes)
-        self.q[0, 0, :, :] = mat.T @ self.q[0, 0, :, :] @ mat
-        self.q[0, 1, :, :] = mat.T @ self.q[0, 1, :, :] @ mat
-        self.q[1, 0, :, :] = mat.T @ self.q[1, 0, :, :] @ mat
-        self.q[1, 1, :, :] = mat.T @ self.q[1, 1, :, :] @ mat
-        self.kx, self.ky, self.pol = modes
-        self.helicity = not self.helicity
-        self.kz = misc.wave_vec_z(*modes[:2], self.ks[:, modes[2]])
-        return self
-
-    def helicitybasis(self, modes=None):
-        """
-        Change to helicity basis
-
-        Args:
-            modes (array, optional): Change the number of modes while changing the basis
-
-        Returns:
-            QMatrix
-        """
-        if not self.helicity:
-            return self.changebasis(modes)
-        if modes is None:
-            return self
-        return self.pick(modes)
-
-    def paritybasis(self, modes=None):
-        """
-        Change to parity basis
-
-        Args:
-            modes (array, optional): Change the number of modes while changing the basis
-
-        Returns:
-            QMatrix
-        """
-        if self.helicity:
-            return self.changebasis(modes)
-        if modes is None:
-            return self
-        return self.pick(modes)
+        sm = [[s.changepoltype() for s in row] for row in self]
+        return SMatrix(sm)
 
     def pick(self, modes):
         """
-        Pick modes from the Q-matrix
+        Pick modes from the S-matrix
 
         Args:
-            modes (array): Modes of the new Q-matrix
+            modes (array): Modes of the new S-matrix
 
         Returns:
-            QMatrix
+            SMatrix
         """
         modes = self._check_modes(modes)
         mat = misc.pickmodes(self.modes, modes)
@@ -492,10 +373,10 @@ class SMatrix:
 
     def field_outside(self, illu):
         """
-        Field coefficients above and below the Q-matrix
+        Field coefficients above and below the S-matrix
 
         Given an illumination defined by the coefficients of each incoming mode
-        calculate the coefficients for the outgoing field above and below the Q-matrix.
+        calculate the coefficients for the outgoing field above and below the S-matrix.
 
         Args:
             illu (tuple): A 2-tuple of arrays, with the entries corresponding to
@@ -511,16 +392,16 @@ class SMatrix:
 
     def field_inside(self, illu, q_above):
         """
-        Field coefficients between two Q-matrices
+        Field coefficients between two S-matrices
 
         Given an illumination defined by the coefficients of each incoming mode
-        calculate the coefficients for the field between the two Q-matrices. The
+        calculate the coefficients for the field between the two S-matrices. The
         coefficients are separated into upwards and downwards propagating modes.
 
         Args:
             illu (tuple): A 2-tuple of arrays, with the entries corresponding to
                 upwards and downwards incoming modes.
-            q_above (QMatrix): Q-matrix above the current one
+            q_above (SMatrix): S-matrix above the current one
 
         Returns:
             tuple
@@ -540,13 +421,13 @@ class SMatrix:
         """
         Calculate the field at specified points
 
-        The mode expansion of the Q-matrix is used. The field direction and the side of
-        the Q-matrix can be specified
+        The mode expansion of the S-matrix is used. The field direction and the side of
+        the S-matrix can be specified
 
         Args:
             r (float, array_like): Array of the positions to probe
             direction (int, optional): The direction of the field, options are `-1` and `1`
-            above (bool, optional): Take the field above or below the Q-matrix
+            above (bool, optional): Take the field above or below the S-matrix
 
         Returns
             complex
@@ -594,13 +475,13 @@ class SMatrix:
 
             \langle S_z \rangle = \frac{1}{2} \Re (\boldsymbol E \times \boldsymbol H^\ast) \boldsymbol{\hat{z}}
 
-        on one side of the Q-matrix with the given coefficients.
+        on one side of the S-matrix with the given coefficients.
 
         Args:
             coeffs (2-tuple): The first entry are the upwards propagating modes the
                 second one the downwards propagating modes
             above (bool, optional): Calculate the Poynting vector above or below the
-                Q-matrix
+                S-matrix
 
         Returns:
             float
@@ -656,7 +537,7 @@ class SMatrix:
 
             \int_{A_\text{unit cell}} \mathrm d A \int_{z_0}^{z_1} \mathrm d z |G_+(\boldsymbol r)|^2 - |G_-(\boldsymbol r)|^2
 
-        on one side of the Q-matrix with the given coefficients. The calculation can
+        on one side of the S-matrix with the given coefficients. The calculation can
         also be done for an infinitely thin sheet. The Riemann-Silberstein vectors are
         :math:`\sqrt{2} \boldsymbol G_\pm(\boldsymbol r) = \boldsymbol E(\boldsymbol r) + \mathrm i Z_0 Z \boldsymbol H(\boldsymbol r)`.
 
@@ -664,7 +545,7 @@ class SMatrix:
             coeffs (2-tuple): The first entry are the upwards propagating modes the
                 second one the downwards propagating modes
             above (bool, optional): Calculate the chirality density above or below the
-                Q-matrix
+                S-matrix
 
         Returns:
             float
@@ -703,7 +584,7 @@ class SMatrix:
         """
         Transmittance and reflectance
 
-        Calculate the transmittance and reflectance for one Q-matrix with the given
+        Calculate the transmittance and reflectance for one S-matrix with the given
         illumination and direction.
 
         Args:
@@ -730,7 +611,7 @@ class SMatrix:
         """
         Transmission and absorption circular dichroism
 
-        Calculate the transmission and absoption CD for one Q-matrix with the given
+        Calculate the transmission and absoption CD for one S-matrix with the given
         illumination and direction.
 
         Args:
@@ -755,17 +636,17 @@ class SMatrix:
 
     def periodic(self):
         r"""
-        Periodic repetition of the Q-Matrix
+        Periodic repetition of the S-matrix
 
-        Transform the Q-matrix to an infinite periodic arrangement of itself defined
+        Transform the S-matrix to an infinite periodic arrangement of itself defined
         by
 
         .. math::
 
             \begin{pmatrix}
-                Q_{\uparrow \uparrow} & Q_{\uparrow \downarrow} \\
-                -Q_{\downarrow \downarrow}^{-1} Q_{\downarrow \uparrow} Q_{\uparrow \uparrow} &
-                Q_{\downarrow \downarrow}^{-1} (\mathbb{1} - Q_{\downarrow \uparrow} Q_{\uparrow \downarrow})
+                S_{\uparrow \uparrow} & S_{\uparrow \downarrow} \\
+                -S_{\downarrow \downarrow}^{-1} S_{\downarrow \uparrow} S_{\uparrow \uparrow} &
+                S_{\downarrow \downarrow}^{-1} (\mathbb{1} - S_{\downarrow \uparrow} S_{\uparrow \downarrow})
             \end{pmatrix}\,.
 
         Returns:
@@ -788,16 +669,16 @@ class SMatrix:
         r"""
         Band structure calculation
 
-        Calculate the band structure for the given Q-matrix, assuming it is periodically
+        Calculate the band structure for the given S-matrix, assuming it is periodically
         repeated along the z-axis. The function returns the z-components of the wave
         vector :math:`k_z` and the corresponding eigenvectors :math:`v` of
 
         .. math::
 
             \begin{pmatrix}
-                Q_{\uparrow \uparrow} & Q_{\uparrow \downarrow} \\
-                -Q_{\downarrow \downarrow}^{-1} Q_{\downarrow \uparrow} Q_{\uparrow \uparrow} &
-                Q_{\downarrow \downarrow}^{-1} (\mathbb{1} - Q_{\downarrow \uparrow} Q_{\uparrow \downarrow})
+                S_{\uparrow \uparrow} & S_{\uparrow \downarrow} \\
+                -S_{\downarrow \downarrow}^{-1} S_{\downarrow \uparrow} S_{\uparrow \uparrow} &
+                S_{\downarrow \downarrow}^{-1} (\mathbb{1} - S_{\downarrow \uparrow} S_{\uparrow \downarrow})
             \end{pmatrix}
             \boldsymbol v
             =
@@ -813,17 +694,6 @@ class SMatrix:
         """
         w, v = np.linalg.eig(self.periodic())
         return -1j * np.log(w) / az, v
-
-    def _check_modes(self, modes):
-        """_check_modes"""
-        if len(modes) != 3:
-            raise ValueError(
-                f"invalid length of variable modes {len(modes)}, must be 3 or 4"
-            )
-        modes = (*(np.array(a) for a in modes),)
-        if not np.all([m.size == modes[0].size for m in modes[1:]]):
-            raise ValueError("all modes need equal size")
-        return modes
 
 
 def _coeff_chirality_density(k, kz, a, dira, b, dirb, z=None, helicity=True):

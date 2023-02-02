@@ -23,11 +23,11 @@ class Operator:
         return self
 
     def __call__(self, *args, **kwargs):
-        kwargsa, kwargsb = self._parse_kwargs(kwargs, self._kwargs[-1])
+        kwargsa, kwargsb = self._parse_kwargs(kwargs, self._kwargs[0])
         return self._func(*args, **kwargsa, **kwargsb)
 
     def inv(self, *args, **kwargs):
-        kwargsa, kwargsb = self._parse_kwargs(self._kwargs[0], kwargs)
+        kwargsa, kwargsb = self._parse_kwargs(self._kwargs[-1], kwargs)
         return self._func(*args, **kwargsa, **kwargsb)
 
     def _parse_kwargs(self, kwargsa, kwargsb):
@@ -532,25 +532,17 @@ def expand(
 class Expand(Operator):
     _func = staticmethod(expand)
 
-    def __call__(self, *args, **kwargs):
-        for key in ("basis", "modetype"):
-            if len(args) == 0:
-                break
-            if key in kwargs:
-                raise TypeError(f"__call__ got multiple values for argument '{key}'")
-            kwargs[key] = args[0]
-            args = args[1:]
-        return super().__call__(*args, **kwargs)
+    def __call__(self, basis, modetype=None, **kwargs):
+        kwargs["basis"] = basis
+        if modetype is not None:
+            kwargs["modetype"] = modetype
+        return super().__call__(**kwargs)
 
-    def inv(self, *args, **kwargs):
-        for key in ("basis", "modetype"):
-            if len(args) == 0:
-                break
-            if key in kwargs:
-                raise TypeError(f"__call__ got multiple values for argument '{key}'")
-            kwargs[key] = args[0]
-            args = args[1:]
-        return super().inv(*args, **kwargs)
+    def inv(self, basis, modetype=None, **kwargs):
+        kwargs["basis"] = basis
+        if modetype is not None:
+            kwargs["modetype"] = modetype
+        return super().inv(**kwargs)
 
 
 def _swl_expand(basis, to_basis, eta, k0, kpar, lattice, material, poltype, where):
@@ -712,17 +704,17 @@ def _pw_cw_expand(basis, to_basis, k0, lattice, kpar, material, modetype, where)
         k0=k0,
         basis=(to_basis, basis),
         material=material,
-        modetype=(None, "singular"),
+        modetype=(modetype, "singular"),
         lattice=lattice,
         kpar=kpar,
     )
 
 
 def expandlattice(
-    basis,
     lattice=None,
     kpar=None,
     *,
+    basis,
     eta=0,
     k0=None,
     material=Material(),
@@ -768,6 +760,8 @@ def expandlattice(
                 basis, to_basis, k0, kpar, lattice, material, poltype, where
             )
         if isinstance(to_basis, core.PlaneWaveBasis):
+            if isinstance(modetype, tuple):
+                modetype = modetype[0]
             return _pw_sw_expand(
                 basis, to_basis, k0, kpar, lattice, material, modetype, poltype, where
             )
@@ -777,6 +771,8 @@ def expandlattice(
                 basis, to_basis, eta, k0, kpar, lattice, material, poltype, where
             )
         if isinstance(to_basis, core.PlaneWaveBasis):
+            if isinstance(modetype, tuple):
+                modetype = modetype[0]
             return _pw_cw_expand(
                 basis, to_basis, k0, lattice, kpar, material, modetype, where
             )
@@ -785,6 +781,13 @@ def expandlattice(
 
 class ExpandLattice(Operator):
     _func = staticmethod(expandlattice)
+
+    def __call__(self, lattice=None, kpar=None, **kwargs):
+        if lattice is not None:
+            kwargs["lattice"] = lattice
+        if kpar is not None:
+            kwargs["kpar"] = kpar
+        return super().__call__(**kwargs)
 
     def inv(self, *args, **kwargs):
         raise NotImplementedError

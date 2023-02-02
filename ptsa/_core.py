@@ -752,7 +752,7 @@ class PhysicsArray(util.AnnotatedArray):
 
     def __matmul__(self, other, *args, **kwargs):
         res = super().__matmul__(other, *args, **kwargs)
-        other_ann = getattr(other, "ann", ({},))
+        other_ann = getattr(other, "ann", ({}, {}))
         other_ndim = np.ndim(other)
         for name in self._properties:
             if self.ndim > 1 and self.ann[-1].get(name) is None:

@@ -121,7 +121,7 @@ class AnnotationSequence(collections.abc.Sequence):
                 except AnnotationWarning as err:
                     warnings.simplefilter("always", category=AnnotationWarning)
                     warnings.warn(
-                        f"at dimension {self.ndim + i}: " + err.args[0],
+                        f"at dimension {len(self) + i}: " + err.args[0],
                         AnnotationWarning,
                     )
 
@@ -134,7 +134,7 @@ class AnnotationSequence(collections.abc.Sequence):
                 except AnnotationWarning as err:
                     warnings.simplefilter("always", category=AnnotationWarning)
                     warnings.warn(
-                        f"at dimension {self.ndim + i}: " + err.args[0],
+                        f"at dimension {len(self) + i}: " + err.args[0],
                         AnnotationWarning,
                     )
 
@@ -746,3 +746,13 @@ def tril(a, k=0):
 def triu(a, k=0):
     res = np.triu(np.asanyarray(a), k)
     return a.relax(res, getattr(a, "ann", ({},)))
+
+
+@implements(np.zeros_like)
+def zeros_like(a, dtype=None, order='K', shape=None):
+    return np.zeros_like(np.asarray(a), dtype=dtype, order=order, shape=shape)
+
+
+@implements(np.ones_like)
+def ones_like(a, dtype=None, order='K', shape=None):
+    return np.ones_like(np.asarray(a), dtype=dtype, order=order, shape=shape)

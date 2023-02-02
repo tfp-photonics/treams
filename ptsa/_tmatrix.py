@@ -6,6 +6,8 @@ from ptsa import config
 from ptsa._core import CylindricalWaveBasis as CWB
 from ptsa._core import PhysicsArray
 from ptsa._core import SphericalWaveBasis as SWB
+from ptsa._core import PlaneWaveBasis as PWB
+from ptsa._core import PlaneWaveBasisPartial as PWBP
 from ptsa._material import Material
 from ptsa.coeffs import mie, mie_cyl
 from ptsa.util import AnnotationError
@@ -51,6 +53,13 @@ class TMatrix(PhysicsArray):
             self.poltype = config.POLTYPE
         if self.poltype not in ("parity", "helicity"):
             raise AnnotationError("invalid poltype")
+        modetype = self.modetype
+        if modetype is None or (
+            modetype[0] in (None, "singular") and modetype[1] in (None, "regular")
+        ):
+            self.modetype = ("singular", "regular")
+        else:
+            raise AnnotationError("invalid modetype")
         shape = np.shape(self)
         if len(shape) != 2 or shape[0] != shape[1]:
             raise AnnotationError(f"invalid shape: '{shape}'")
@@ -358,53 +367,21 @@ class TMatrix(PhysicsArray):
         """
         return np.eye(self.shape[0]) - self @ self.expandlattice(lattice, kpar, eta=eta)
 
-    def interacted_lattice(self, lattice, kpar):
-        return TMatrix(np.linalg.solve(self.couple_lattice(lattice, kpar), self))
+    def interacted_lattice(self, lattice, kpar, *, eta=0):
+        return TMatrix(
+            np.linalg.solve(self.couple_lattice(lattice, kpar, eta=eta), self)
+        )
 
-    def to_tmatrixc(self, basis, eta=0):
-        """
-        Convert a one-dimensional array of T-matrices into a (cylindrical) 2D-T-matrix
-
-        Args:
-            modes (tuple): Cylindrical wave modes
-            a (float): Lattice pitch
-            eta (float or complex, optional): Splitting parameter in the lattice sum
-
-        Returns:
-            complex, array
-        """
-        if self.lattice is None:
-            tm = self.interacted(basis.hints["lattice"], basis.hints["kpar"], eta=eta)
-        else:
-            tm = self
-        return tm.expandlattice(basis) @ tm @ tm.expand.inv(basis)
-
-    def to_smatrixp(self, basis, eta=0):
-        """
-        Convert a two-dimensional array of T-matrices into a Q-matrix
-
-        Unlike for the 1d-case there is no local Q-matrix used, so the result is taken
-        with respect to the reference origin.
-
-        Args:
-            kx (float, array_like): X component of the plane wave
-            ky (float, array_like): Y component of the plane wave
-            kz (float, array_like): Z component of the plane wave
-            pwpol (int, array_like): Plane wave polarizations
-            a (float, (2,2)-array): Lattice vectors
-            origin (float, (3,)-array, optional): Reference origin of the result
-            eta (float or complex, optional): Splitting parameter in the lattice sum
-
-        Returns:
-            complex, array
-        """
-        if self.lattice is None:
-            tm = self.interacted(basis.hints["lattice"], basis.hints["kpar"], eta=eta)
-        else:
-            tm = self
-        return tm.expandlattice(basis) @ tm @ tm.expand.inv(basis)
-
-    to_smatrix = to_smatrixp
+    def grid(self, grid, radii):
+        grid = np.asarray(grid)
+        if grid.shape[-1] != 3:
+            raise ValueError("invalid grid")
+        if len(radii) != len(self.basis.positions):
+            raise ValueError("invalid length of 'radii'")
+        res = np.ones_like(grid, bool)
+        for r, p in zip(radii, self.positions):
+            res &= np.sum(np.power(grid - p, 2), axis=-1) > r * r
+        return res
 
 
 class TMatrixC(PhysicsArray):
@@ -461,6 +438,13 @@ class TMatrixC(PhysicsArray):
             self.poltype = config.POLTYPE
         if self.poltype not in ("parity", "helicity"):
             raise AnnotationError("invalid poltype")
+        modetype = self.modetype
+        if modetype is None or (
+            modetype[0] in (None, "singular") and modetype[1] in (None, "regular")
+        ):
+            self.modetype = ("singular", "regular")
+        else:
+            raise AnnotationError("invalid modetype")
         shape = np.shape(self)
         if len(shape) != 2 or shape[0] != shape[1]:
             raise AnnotationError(f"invalid shape: '{shape}'")
@@ -518,26 +502,16 @@ class TMatrixC(PhysicsArray):
         return cls(tmat, k0=k0, basis=CWB.default(kzs, mmax), material=materials[-1])
 
     @classmethod
-    def from_array1d(cls, tmat, kzs, a, eta=0):
+    def from_array(cls, tm, basis, eta=0):
         """1d array of spherical T-matrices"""
-        allmodes = ([], [], [], [])
-        for i in range(tmat.positions.shape[0]):
-            mmax = np.max(np.abs(tmat.m[tmat.pidx == i]))
-            modes = TMatrixC.defaultmodes(kzs, mmax)
-            modes[0][:] = i
-            for j in range(4):
-                allmodes[j].extend(modes[j])
-        tm = tmat.array1d(allmodes, a, eta)
-        return cls(
-            tm,
-            tmat.k0,
-            tmat.epsilon,
-            tmat.mu,
-            tmat.kappa,
-            tmat.positions,
-            tmat.helicity,
-            allmodes,
-        )
+        if tm.lattice is None:
+            lattice = basis.hints["lattice"]
+            kpar = basis.hints["kpar"]
+            tm = tm.interacted_lattice(lattice, kpar, eta=eta)
+        p = tm.expandlattice(basis=basis)
+        a = tm.expand.inv(basis=basis)
+        return cls(p @ tm @ a)
+
 
     @property
     def xw_ext_avg(self):
@@ -677,52 +651,90 @@ class TMatrixC(PhysicsArray):
             basis = CWB.default(np.unique(self.kz), max(self.basis.l))
         return TMatrix(self.expand(basis) @ self @ self.expand.inv(basis))
 
-    def latticecouple(self, lattice, kpar, *, eta=0):
+    def couple_lattice(self, lattice, kpar, *, eta=0):
         """
         Calculate the coupling term of a blockdiagonal T-matrix
         """
         return np.eye(self.shape[0]) - self @ self.expandlattice(lattice, kpar, eta=eta)
 
-    def latticeinteracted(self, lattice, kpar):
-        return TMatrix(np.linalg.solve(self.latticecouple(lattice, kpar), self))
+    def interacted_lattice(self, lattice, kpar, eta=0):
+        return TMatrix(
+            np.linalg.solve(self.couple_lattice(lattice, kpar, eta=eta), self)
+        )
 
-    def to_smatrixp(self, basis, eta=0):
-        """
-        Convert a two-dimensional array of T-matrices into a Q-matrix
+    def grid(self, grid, radii):
+        grid = np.asarray(grid)
+        if grid.shape[-1] not in (2, 3):
+            raise ValueError("invalid grid")
+        if len(radii) != len(self.basis.positions):
+            raise ValueError("invalid length of 'radii'")
+        res = np.ones_like(grid, bool)
+        for r, p in zip(radii, self.positions):
+            res &= np.sum(np.power(grid[..., :2] - p[:2], 2), axis=-1) > r * r
+        return res
 
-        Unlike for the 1d-case there is no local Q-matrix used, so the result is taken
-        with respect to the reference origin.
 
-        Args:
-            kx (float, array_like): X component of the plane wave
-            ky (float, array_like): Y component of the plane wave
-            kz (float, array_like): Z component of the plane wave
-            pwpol (int, array_like): Plane wave polarizations
-            a (float, (2,2)-array): Lattice vectors
-            origin (float, (3,)-array, optional): Reference origin of the result
-            eta (float or complex, optional): Splitting parameter in the lattice sum
-
-        Returns:
-            complex, array
-        """
-        if self.lattice is None:
-            tm = self.interacted(basis.hints["lattice"], basis.hints["kpar"], eta=eta)
+def plane_wave(*args, basis=None, k0=None, material=None, modetype=None, poltype=None):
+    *args, amp = args
+    if basis is None:
+        if len(args) == 4:
+            basis = PWB.default([args])
         else:
-            tm = self
-        return tm.expandlattice(basis) @ tm @ tm.expand.inv(basis)
+            basis = PWBP.default([args])
+    if isinstance(basis, PWBP):
+        modetype = "up" if modetype is None else modetype
+        material = Material() if material is None else Material(material)
+        if len(args) == 4:
+            basis_c = basis.complete(k0, material, modetype)
+        else:
+            basis_c = basis
+    elif k0 is not None:
+        material = Material() if material is None else Material(material)
+        basis_c = basis.complete(k0, material, modetype)
+    else:
+        basis_c = basis
+    args = np.array(args)
+    res = [np.abs(args - x) < 1e-14 for x in basis_c]
+    if sum(res) != 1:
+        raise ValueError("cannot find matching mode in basis")
+    res = np.array(res, complex) * amp
+    return PhysicsArray(
+        res, basis=basis, k0=k0, material=material, modetype=modetype, poltype=poltype
+    )
 
 
-def plane_wave():
-    raise NotImplementedError
+def spherical_wave(
+    l,  # noqa: E741
+    m,
+    pol,
+    amp,
+    *,
+    k0,
+    basis=None,
+    material=None,
+    modetype=None,
+    poltype=None,
+):
+    if basis is None:
+        basis = SWB.default(l)
+    if not basis.isglobal:
+        raise ValueError("basis must be global")
+    res = [0] * len(basis)
+    res[basis.index((0, l, m, pol))] = amp
+    return PhysicsArray(
+        res, basis=basis, k0=k0, material=material, modetype=modetype, poltype=poltype
+    )
 
 
-def spherical_wave():
-    raise NotImplementedError
-
-
-def cylindrical_wave():
-    raise NotImplementedError
-
-
-def _exclude():
-    raise NotImplementedError
+def cylindrical_wave(
+    kz, m, pol, amp, *, k0, basis=None, material=None, modetype=None, poltype=None
+):
+    if basis is None:
+        basis = CWB.default([kz], abs(m))
+    if not basis.isglobal:
+        raise ValueError("basis must be global")
+    res = [0] * len(basis)
+    res[basis.index((0, kz, m, pol))] = amp
+    return PhysicsArray(
+        res, basis=basis, k0=k0, material=material, modetype=modetype, poltype=poltype
+    )
