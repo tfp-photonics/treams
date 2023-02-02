@@ -10,8 +10,6 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
-import sys
 from importlib.metadata import version
 
 # sys.path.insert(0, os.path.abspath('..'))
@@ -20,7 +18,7 @@ from importlib.metadata import version
 # -- Project information -----------------------------------------------------
 
 project = "ptsa"
-copyright = "2022, Dominik Beutel"
+copyright = "2023, Dominik Beutel"
 author = "Dominik Beutel"
 release = version("ptsa")
 version = ".".join(release.split(".")[:2])
@@ -69,7 +67,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 html_theme = "bizstyle"
 
 html_sidebars = {
-    "**": ["globaltoc.html", "relations.html", "sourcelink.html", "searchbox.html",]
+    "**": ["globaltoc.html", "relations.html", "sourcelink.html", "searchbox.html"]
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
