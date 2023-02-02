@@ -505,3 +505,121 @@ class TestPWBP:
             and b.hints["lattice"] == lattice
             and b.hints["kpar"] == [0, 0, np.nan]
         )
+
+
+class TestPhysicsArray:
+    def test_init(self):
+        b = ptsa.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
+        p = ptsa.PhysicsArray(np.eye(2), basis=b)
+        assert (p == np.eye(2)).all() and p.basis == b
+
+    def test_type_error(self):
+        with pytest.raises(TypeError):
+            ptsa.PhysicsArray(np.eye(2), basis="fail")
+
+    def test_lattice(self):
+        b = ptsa.PlaneWaveBasisPartial.diffr_orders([0, 0], np.eye(2), 4)
+        p = ptsa.PhysicsArray([1, 2], lattice=ptsa.Lattice(1, "x"), basis=b)
+        assert p.lattice == ptsa.Lattice(1, "x")
+
+    def test_lattice_fail(self):
+        b = ptsa.PlaneWaveBasisPartial.diffr_orders([0, 0], np.eye(2), 4)
+        with pytest.raises(ValueError):
+            ptsa.PhysicsArray([1, 2], lattice=ptsa.Lattice(2, "x"), basis=b)
+
+    def test_matmul(self):
+        b = ptsa.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
+        p = ptsa.PhysicsArray([[1, 1], [2, 2]], basis=b)
+        x = p @ [1, 2]
+        assert (x == [3, 6]).all() and x.basis == b
+
+    def test_rmatmul(self):
+        b = ptsa.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
+        p = ptsa.PhysicsArray([[1, 1], [2, 2]], basis=b)
+        x = [1, 2] @ p
+        assert (x == [5, 5]).all() and x.basis == b
+
+    def test_changepoltype(self):
+        b = ptsa.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
+        p = ptsa.PhysicsArray([[1, 0], [0, 1]], basis=b, poltype="helicity")
+        x = p.changepoltype()
+        assert (x == np.sqrt(.5) * np.array([[-1, 1], [1, 1]])).all() and x.poltype == ("parity", "helicity")
+
+    def test_changepoltype_inv(self):
+        b = ptsa.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
+        p = ptsa.PhysicsArray([[1, 0], [0, 1]], basis=b, poltype="helicity")
+        x = p.changepoltype.inv()
+        assert (x == np.sqrt(.5) * np.array([[-1, 1], [1, 1]])).all() and x.poltype == ("helicity", "parity")
+
+    def test_efield(self):
+        b = ptsa.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
+        p = ptsa.PhysicsArray([1, 0], basis=b, k0=1, poltype="helicity")
+        x = p.efield([1, 0, 0])
+        assert (x == (ptsa.special.vsph2car(
+            ptsa.special.vsw_rA(1, 0, 1, np.pi / 2, 0, [0, 1]),
+            [1, np.pi / 2, 0])
+        )).all()
+
+    def test_efield_inv(self):
+        with pytest.raises(NotImplementedError):
+            ptsa.PhysicsArray([0]).efield.inv([0, 0, 0])
+
+    def test_expand(self):
+        b = ptsa.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
+        p = ptsa.PhysicsArray([1, 0], basis=b, k0=1, poltype="helicity")
+        x = p.expand()
+        assert (np.abs(x - np.eye(2)) < 1e-14).all()
+
+    def test_expand_inv(self):
+        b = ptsa.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
+        p = ptsa.PhysicsArray([1, 0], basis=b, k0=1, poltype="helicity")
+        x = p.expand.inv()
+        assert (np.abs(x - np.eye(2)) < 1e-14).all()
+
+    def test_expandlattice(self):
+        b = ptsa.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
+        p = ptsa.PhysicsArray([1, 0], basis=b, k0=1, poltype="helicity")
+        x = p.expandlattice(lattice=[[1, 0], [0, 1]])
+        assert x.modetype == ("regular", "singular")
+
+    def test_expandlattice_inv(self):
+        with pytest.raises(NotImplementedError):
+            ptsa.PhysicsArray([0]).expandlattice.inv(lattice=1)
+
+    def test_permute(self):
+        b = ptsa.PlaneWaveBasis([[1, 0, 0, 0], [1, 0, 0, 1]])
+        c = ptsa.PlaneWaveBasis([[0, 1, 0, 0], [0, 1, 0, 1]])
+        p = ptsa.PhysicsArray([1, 0], basis=b)
+        assert p.permute().basis == (c, b)
+
+    def test_permute_inv(self):
+        b = ptsa.PlaneWaveBasis([[1, 0, 0, 0], [1, 0, 0, 1]])
+        c = ptsa.PlaneWaveBasis([[0, 1, 0, 0], [0, 1, 0, 1]])
+        p = ptsa.PhysicsArray([1, 0], basis=b)
+        assert p.permute.inv().basis == (b, c)
+
+    def test_rotate(self):
+        b = ptsa.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
+        p = ptsa.PhysicsArray([1, 0], basis=b)
+        x = p.rotate(1, 2, 3)
+        y = np.diag([ptsa.special.wignerd(1, 0, 0, 1, 2, 3)] * 2)
+        assert (np.abs(x - y) < 1e-14).all()
+
+    def test_rotate_inv(self):
+        b = ptsa.SphericalWaveBasis([[1, -1, 0], [1, 0, 0], [1, 1, 0]])
+        p = ptsa.PhysicsArray([1, 0, 0], basis=b)
+        x = p.rotate.inv(1, 2, 3)
+        y = ptsa.special.wignerd(1, [[-1], [0], [1]], [-1, 0, 1], 1, 2, 3)
+        assert (np.abs(x - y.conj().T) < 1e-14).all()
+
+    def test_translate(self):
+        b = ptsa.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
+        p = ptsa.PhysicsArray([1, 0], basis=b, k0=1)
+        x = p.translate([0, 0, 0])
+        assert (np.abs(x - np.eye(2)) < 1e-14).all()
+
+    def test_translate_inv(self):
+        b = ptsa.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
+        p = ptsa.PhysicsArray([1, 0], basis=b, k0=1)
+        x = p.translate.inv([0, 0, 0])
+        assert (np.abs(x - np.eye(2)) < 1e-14).all()

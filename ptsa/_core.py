@@ -667,10 +667,11 @@ class PhysicsDict(util.AnnotationDict):
         "kpar": (lambda x: isinstance(x, list), list),
     }
 
-    def setitem(self, key, val):
+    def __setitem__(self, key, val):
         testfunc, castfunc = self.properties.get(key, (lambda x: True, None))
         if not testfunc(val):
             val = castfunc(val)
+        super().__setitem__(key, val)
 
 
 @util.register_properties
@@ -687,9 +688,7 @@ class PhysicsArray(util.AnnotatedArray):
     translate = op.Translate()
 
     def __init__(self, arr, ann=(), **kwargs):
-        super().__init__(arr, ann)
-        for key, val in kwargs.items():
-            setattr(self, key, val)
+        super().__init__(arr, ann, **kwargs)
         self._check()
 
     @property
@@ -698,14 +697,14 @@ class PhysicsArray(util.AnnotatedArray):
 
     @ann.setter
     def ann(self, ann):
-        self._ann = util.AnnotationSequence(({},) * self.ndim, container=PhysicsDict)
+        self._ann = util.AnnotationSequence(*(({},) * self.ndim), container=PhysicsDict)
         self._ann.update(ann)
 
     def __repr__(self):
         repr_arr = "    " + repr(self._array)[6:-1].replace("\n  ", "\n")
         repr_kwargs = ",\n    ".join(
             f"{key}={repr(getattr(self, key))}"
-            for key in self._cast
+            for key in self._properties
             if getattr(self, key) is not None
         )
         if repr_kwargs != "":

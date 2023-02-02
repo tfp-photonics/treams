@@ -3,6 +3,7 @@ import numpy as np
 import ptsa._core as core
 import ptsa.config as config
 import ptsa.special as sc
+import ptsa.util as util
 from ptsa import cw, pw, sw
 from ptsa._lattice import Lattice
 from ptsa._material import Material
@@ -113,16 +114,7 @@ class Rotate(Operator):
     _func = staticmethod(rotate)
 
     def inv(self, *args, **kwargs):
-        args = [-x for x in args]
-        if len(args) > 1:
-            args[1] = np.pi + args[1]
-        if "phi" in kwargs:
-            kwargs["phi"] = -kwargs["phi"]
-        if "psi" in kwargs:
-            kwargs["psi"] = -kwargs["psi"]
-        if "theta" in kwargs:
-            kwargs["theta"] = np.pi - kwargs["theta"]
-        return super().inv(*args, **kwargs)
+        return self(*args, **kwargs).conj().T
 
 
 def _sw_translate(r, basis, to_basis, k0, material, poltype, where):
@@ -232,6 +224,7 @@ class Translate(Operator):
     _func = staticmethod(translate)
 
     def inv(self, *args, **kwargs):
+        args = list(args)
         if len(args) > 0:
             args[0] = np.negative(args[0])
         if "r" in kwargs:
@@ -798,9 +791,6 @@ class ExpandLattice(Operator):
 
 
 def _pwp_permute(basis, n):
-    if n != int(n):
-        raise ValueError("'n' must be integer")
-    n = n % 3
     alignment = basis.alignment
     dct = {"xy": "yz", "yz": "zx", "zx": "xy"}
     kpar = basis.hints.get("kpar")
@@ -817,9 +807,6 @@ def _pwp_permute(basis, n):
 
 
 def _pw_permute(basis, n):
-    if n != int(n):
-        raise ValueError("'n' must be integer")
-    n = n % 3
     kx, ky, kz = basis.kx, basis.ky, basis.kz
     kpar = basis.hints.get("kpar")
     while n > 0:
@@ -835,6 +822,9 @@ def _pw_permute(basis, n):
 
 
 def permute(n=1, *, basis):
+    if n != int(n):
+        raise ValueError("'n' must be integer")
+    n = n % 3
     if isinstance(basis, core.PlaneWaveBasisPartial):
         return _pwp_permute(basis, n)
     if isinstance(basis, core.PlaneWaveBasis):
@@ -844,6 +834,10 @@ def permute(n=1, *, basis):
 
 class Permute(Operator):
     _func = staticmethod(permute)
+
+    def inv(self, *args, **kwargs):
+        x = self(*args, **kwargs)
+        return x.T
 
 
 def _sw_efield(r, basis, k0, material, modetype, poltype):
@@ -900,7 +894,7 @@ def _sw_efield(r, basis, k0, material, modetype, poltype):
             )
     if res is None:
         raise ValueError("invalid parameters")
-    res = core.AnnotatedArray(sc.vsph2car(res, rsph[..., basis.pidx, :]))
+    res = util.AnnotatedArray(sc.vsph2car(res, rsph[..., basis.pidx, :]))
     res.ann[-2]["basis"] = basis
     res.ann[-2]["k0"] = k0
     res.ann[-2]["material"] = material
@@ -971,7 +965,7 @@ def _cw_efield(r, basis, k0, material, modetype, poltype):
             )
     if res is None:
         raise ValueError("invalid parameters")
-    res = core.AnnotatedArray(sc.vcyl2car(res, rcyl[..., basis.pidx, :]))
+    res = util.AnnotatedArray(sc.vcyl2car(res, rcyl[..., basis.pidx, :]))
     res.ann[-2]["basis"] = basis
     res.ann[-2]["k0"] = k0
     res.ann[-2]["material"] = material
@@ -994,7 +988,7 @@ def _pw_efield(r, basis, poltype):
         )
     if res is None:
         raise ValueError("invalid parameters")
-    res = core.AnnotatedArray(res)
+    res = util.AnnotatedArray(res)
     res.ann[-2]["basis"] = basis
     res.ann[-2]["poltype"] = poltype
     return res

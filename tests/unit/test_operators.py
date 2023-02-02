@@ -516,9 +516,10 @@ class TestPermute:
     def test_pw(self):
         a = ptsa.PlaneWaveBasis([[1, 2, 3, 1], [1, 2, 3, 0]])
         b = ptsa.PlaneWaveBasis([[2, 3, 1, 1], [2, 3, 1, 0]])
+        print(repr(ptsa.permute(basis=b)))
         assert ptsa.permute(basis=b).basis[0] == a
 
-    def test_permute(self):
+    def test_pwp(self):
         a = ptsa.PlaneWaveBasisPartial([[1, 2, 1], [1, 2, 0]], "yz")
         b = ptsa.PlaneWaveBasisPartial([[1, 2, 1], [1, 2, 0]])
         assert ptsa.permute(basis=b).basis[0] == a

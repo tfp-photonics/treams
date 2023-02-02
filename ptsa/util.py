@@ -308,8 +308,11 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
 
     @ann.setter
     def ann(self, ann):
-        self._ann = AnnotationSequence(({},) * self.ndim)
+        self._ann = AnnotationSequence(*(({},) * self.ndim))
         self._ann.update(ann)
+
+    def __bool__(self):
+        return bool(self._array)
 
     def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
         # Compute result first to use numpy's comprehensive checks on the arguments
@@ -438,7 +441,9 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         for val in coredims.values():
             for (isrc, dimsrc), (idest, dimdest) in itertools.combinations(val, 2):
                 source = getattr(inout[isrc], "ann", {dimsrc: {}})[dimsrc]
-                dest = getattr(inout[idest], "ann", {dimdest: {}})[dimdest]
+                dest = getattr(inout[idest], "ann", {dimdest: AnnotationDict()})[
+                    dimdest
+                ]
                 if isrc < ufunc.nin <= idest:
                     dest.update(source)
                 else:
@@ -656,8 +661,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
     @implements(np.transpose)
     def transpose(self, axes=None):
         axes = range(self.ndim - 1, -1, -1) if axes is None else axes
-        ann = tuple(np.asarray(self.ann)[axes])
-        return self.relax(self._array.transpose(axes), ann)
+        return self.relax(self._array.transpose(axes), self.ann[axes])
 
     conj = conjugate
 
