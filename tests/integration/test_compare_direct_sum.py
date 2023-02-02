@@ -23,7 +23,7 @@ class TestLSumSW1d:
     @pytest.mark.parametrize("kpar", [-0.2, 0, 0.7])
     @pytest.mark.parametrize("a", [1, 1.1])
     @pytest.mark.parametrize("r", [-0.2, 0, 0.5])
-    def test_regular(self, l, k, kpar, a, r):
+    def test_regular(self, l, k, kpar, a, r):  # noqa: E741
         assert isclose(
             la.lsumsw1d(l, k, kpar, a, r, 0),
             np.sum(la.dsumsw1d(l, k, kpar, a, r, np.arange(100_000))),
@@ -34,7 +34,7 @@ class TestLSumSW1d:
     @pytest.mark.parametrize("l", [0, 1, 2, 7, 8])
     @pytest.mark.parametrize("r", [-0.2, 0, 0.5])
     @pytest.mark.slow
-    def test_singular(self, l, r):
+    def test_singular(self, l, r):  # noqa: E741
         a = 2 * np.pi
         k = 1
         kpar = 0
@@ -52,7 +52,7 @@ class TestLSumCW1d:
     @pytest.mark.parametrize("kpar", [-0.2, 0, 0.7])
     @pytest.mark.parametrize("a", [1, 1.1])
     @pytest.mark.parametrize("r", [-0.2, 0, 0.5])
-    def test_regular(self, l, k, kpar, a, r):
+    def test_regular(self, l, k, kpar, a, r):  # noqa: E741
         assert isclose(
             la.lsumcw1d(l, k, kpar, a, r, 0),
             np.sum(la.dsumcw1d(l, k, kpar, a, r, np.arange(100_000))),
@@ -62,12 +62,12 @@ class TestLSumCW1d:
 
     @pytest.mark.parametrize("l", [-2, -1, 0, 7, 8])
     @pytest.mark.parametrize("r", [-0.2, 0, 0.5])
-    def test_singular(self, l, r):
+    def test_singular(self, l, r):  # noqa: E741
         a = 2 * np.pi
         k = 1
         kpar = 0
         assert isclose(
-            la.lsumcw1d(l, k, kpar, a, r,0),
+            la.lsumcw1d(l, k, kpar, a, r, 0),
             np.sum(la.dsumcw1d(l, k, kpar, a, r, np.arange(250_000))),
             rel_tol=0.05,
             abs_tol=EPSSQ,
@@ -79,11 +79,11 @@ class TestLSumCW2d:
     @pytest.mark.parametrize("k", [2, 1.1 + 0.1j])
     @pytest.mark.parametrize("kpar", [np.zeros(2), np.array([0.1, 0.2])])
     @pytest.mark.parametrize(
-        "a", [np.array([[1, 0], [0, 1.2]]), np.array([[1.1, 0.2], [-0.1, 1]]),]
+        "a", [np.array([[1, 0], [0, 1.2]]), np.array([[1.1, 0.2], [-0.1, 1]])]
     )
     @pytest.mark.parametrize("r", [np.zeros(2), np.array([0.2, 0])])
     @pytest.mark.slow
-    def test_regular(self, l, k, kpar, a, r):
+    def test_regular(self, l, k, kpar, a, r):  # noqa: E741
         assert isclose(
             la.lsumcw2d(l, k, kpar, a, r, 0),
             osscilation_avg(la.dsumcw2d(l, k, kpar, a, r, np.arange(800))),
@@ -94,19 +94,25 @@ class TestLSumCW2d:
     @pytest.mark.parametrize("l", [-2, -1, 0, 7, 8])
     @pytest.mark.parametrize("r", [np.zeros(2), np.array([0.2, 0])])
     @pytest.mark.slow
-    def test_singular(self, l, r):
+    def test_singular(self, l, r):  # noqa: E741
         k = 1
         kpar = np.zeros(2)
         a = np.array([[2 * np.pi, 0], [0, 1]])
         # Here the direct result is too oscillatory
-        if l == -2:
+        if l == -2:  # noqa: E741
             if np.all(r == 0):
-                assert isclose(np.imag(la.lsumcw2d(l, k, kpar, a, r, 0)), 2.9105962449216736)
-        elif l == 0:
+                assert isclose(
+                    np.imag(la.lsumcw2d(l, k, kpar, a, r, 0)), 2.9105962449216736
+                )
+        elif l == 0:  # noqa: E741
             if np.all(r == 0):
-                assert isclose(np.imag(la.lsumcw2d(l, k, kpar, a, r, 0)), 0.9156690769853802)
+                assert isclose(
+                    np.imag(la.lsumcw2d(l, k, kpar, a, r, 0)), 0.9156690769853802
+                )
             else:
-                assert isclose(np.imag(la.lsumcw2d(l, k, kpar, a, r, 0)), -0.15877332685629297)
+                assert isclose(
+                    np.imag(la.lsumcw2d(l, k, kpar, a, r, 0)), -0.15877332685629297
+                )
         else:
             assert isclose(
                 np.imag(la.lsumcw2d(l, k, kpar, a, r, 0)),
@@ -137,7 +143,7 @@ class TestLSumSW2d:
     @pytest.mark.parametrize("k", [2, 1.1 + 0.1j])
     @pytest.mark.parametrize("kpar", [np.zeros(2), np.array([0.1, 0.2])])
     @pytest.mark.parametrize(
-        "a", [np.array([[1, 0], [0, 1.2]]), np.array([[1.1, 0.2], [-0.1, 1]]),]
+        "a", [np.array([[1, 0], [0, 1.2]]), np.array([[1.1, 0.2], [-0.1, 1]])]
     )
     @pytest.mark.parametrize("r", [np.zeros(2), np.array([0.2, 0])])
     @pytest.mark.slow
@@ -309,7 +315,7 @@ class TestLSumSW2dShift:
     @pytest.mark.parametrize("k", [2, 1.1 + 0.1j])
     @pytest.mark.parametrize("kpar", [np.zeros(2), np.array([0.1, 0.2])])
     @pytest.mark.parametrize(
-        "a", [np.array([[1, 0], [0, 1.2]]), np.array([[1.1, 0.2], [-0.1, 1]]),]
+        "a", [np.array([[1, 0], [0, 1.2]]), np.array([[1.1, 0.2], [-0.1, 1]])]
     )
     @pytest.mark.parametrize("r", [np.array([0, 0, 0.1]), np.array([0.2, 0.2, 1.1])])
     @pytest.mark.slow
@@ -321,24 +327,13 @@ class TestLSumSW2dShift:
             abs_tol=EPS,
         )
 
-
     @pytest.mark.parametrize(
         "lm",
-        [
-            (0, 0),
-            (1, 0),
-            (2, -2),
-            (2, 0),
-            (2, 1),
-            (7, 0),
-            (8, -8),
-            (8, 0),
-            (8, 4),
-        ],
+        [(0, 0), (1, 0), (2, -2), (2, 0), (2, 1), (7, 0), (8, -8), (8, 0), (8, 4)],
     )
     @pytest.mark.slow
     def test_singular_r0(self, lm):
-        r = np.array([0, 0, .1])
+        r = np.array([0, 0, 0.1])
         k = 1
         kpar = np.zeros(2)
         a = np.array([[2 * np.pi, 0], [0, 1]])
@@ -350,7 +345,9 @@ class TestLSumSW2dShift:
                 abs_tol=EPS,
             )
         else:
-            dirres = np.cumsum(la.dsumsw2d_shift(*lm, k, kpar, a, r, np.arange(800)))[[1, -1]]
+            dirres = np.cumsum(la.dsumsw2d_shift(*lm, k, kpar, a, r, np.arange(800)))[
+                [1, -1]
+            ]
             assert isclose(
                 np.angle(la.lsumsw2d_shift(*lm, k, kpar, a, r, 0) - dirres[0]),
                 np.angle(dirres[1] - dirres[0]),
@@ -377,7 +374,7 @@ class TestLSumSW2dShift:
     )
     @pytest.mark.slow
     def test_singular_r1(self, lm):
-        r = np.array([.2, .2, 1.1])
+        r = np.array([0.2, 0.2, 1.1])
         k = 1
         kpar = np.zeros(2)
         a = np.array([[2 * np.pi, 0], [0, 1]])
@@ -389,13 +386,16 @@ class TestLSumSW2dShift:
                 abs_tol=EPS,
             )
         else:
-            dirres = np.cumsum(la.dsumsw2d_shift(*lm, k, kpar, a, r, np.arange(1000)))[[11, -1]]
+            dirres = np.cumsum(la.dsumsw2d_shift(*lm, k, kpar, a, r, np.arange(1000)))[
+                [11, -1]
+            ]
             assert isclose(
                 np.angle(la.lsumsw2d_shift(*lm, k, kpar, a, r, 0) - dirres[0]),
                 np.angle(dirres[1] - dirres[0]),
                 rel_tol=1e-1,
                 abs_tol=EPS,
             )
+
 
 class TestLSumSW1dShift:
     @pytest.mark.parametrize(
@@ -427,7 +427,6 @@ class TestLSumSW1dShift:
             abs_tol=EPS,
         )
 
-
     @pytest.mark.parametrize(
         "lm",
         [
@@ -451,7 +450,7 @@ class TestLSumSW1dShift:
         k = 1
         kpar = 0
         a = 2 * np.pi
-        if lm == (2, 0) and np.array_equal(r, [.2, .2, 1.1]):
+        if lm == (2, 0) and np.array_equal(r, [0.2, 0.2, 1.1]):
             assert isclose(
                 la.lsumsw1d_shift(*lm, k, kpar, a, r, 0),
                 la.dsumsw1d_shift(*lm, k, kpar, a, r, np.arange(2_200_000)).sum(),
@@ -473,7 +472,7 @@ class TestLSumCW1dShift:
     @pytest.mark.parametrize("kpar", [-0.2, 0, 0.7])
     @pytest.mark.parametrize("a", [1, 1.1])
     @pytest.mark.parametrize("r", [np.array([0, 0.1]), np.array([0.2, 1.1])])
-    def test_regular(self, l, k, kpar, a, r):
+    def test_regular(self, l, k, kpar, a, r):  # noqa: E741
         assert isclose(
             la.lsumcw1d_shift(l, k, kpar, a, r, 0),
             la.dsumcw1d_shift(l, k, kpar, a, r, np.arange(100_000)).sum(),
@@ -484,7 +483,7 @@ class TestLSumCW1dShift:
     @pytest.mark.parametrize("l", [-2, -1, 0, 7, 8])
     @pytest.mark.parametrize("r", [np.array([0, 0.1]), np.array([0.2, 1.1])])
     @pytest.mark.slow
-    def test_singular(self, l, r):
+    def test_singular(self, l, r):  # noqa: E741
         k = 1
         kpar = 0
         a = 2 * np.pi
