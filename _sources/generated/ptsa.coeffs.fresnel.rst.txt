@@ -1,0 +1,6 @@
+﻿ptsa.coeffs.fresnel
+===================
+
+.. currentmodule:: ptsa.coeffs
+
+.. autodata:: fresnel

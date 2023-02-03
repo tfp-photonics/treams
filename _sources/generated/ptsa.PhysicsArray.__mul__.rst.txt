@@ -1,0 +1,6 @@
+ptsa.PhysicsArray.\_\_mul\_\_
+=============================
+
+.. currentmodule:: ptsa
+
+.. automethod:: PhysicsArray.__mul__

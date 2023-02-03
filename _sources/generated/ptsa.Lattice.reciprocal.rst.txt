@@ -1,0 +1,6 @@
+ptsa.Lattice.reciprocal
+=======================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: Lattice.reciprocal

@@ -1,0 +1,6 @@
+ptsa.TMatrixC.lattice
+=====================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: TMatrixC.lattice

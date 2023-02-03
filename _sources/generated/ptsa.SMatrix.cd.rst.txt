@@ -1,0 +1,6 @@
+ptsa.SMatrix.cd
+===============
+
+.. currentmodule:: ptsa
+
+.. automethod:: SMatrix.cd

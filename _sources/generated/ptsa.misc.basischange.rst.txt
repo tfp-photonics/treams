@@ -1,0 +1,6 @@
+﻿ptsa.misc.basischange
+=====================
+
+.. currentmodule:: ptsa.misc
+
+.. autofunction:: basischange

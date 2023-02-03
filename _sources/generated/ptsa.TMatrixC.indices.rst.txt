@@ -1,0 +1,6 @@
+ptsa.TMatrixC.indices
+=====================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrixC.indices

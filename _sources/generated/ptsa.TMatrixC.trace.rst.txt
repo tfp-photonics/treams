@@ -1,0 +1,6 @@
+ptsa.TMatrixC.trace
+===================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrixC.trace

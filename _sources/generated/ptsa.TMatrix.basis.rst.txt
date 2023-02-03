@@ -1,0 +1,6 @@
+ptsa.TMatrix.basis
+==================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: TMatrix.basis

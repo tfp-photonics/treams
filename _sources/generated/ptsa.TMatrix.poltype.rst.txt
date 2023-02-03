@@ -1,0 +1,6 @@
+ptsa.TMatrix.poltype
+====================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: TMatrix.poltype

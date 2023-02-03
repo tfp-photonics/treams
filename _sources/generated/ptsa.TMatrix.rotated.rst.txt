@@ -1,0 +1,6 @@
+ptsa.TMatrix.rotated
+====================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrix.rotated

@@ -1,0 +1,6 @@
+ptsa.Material.isreal
+====================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: Material.isreal

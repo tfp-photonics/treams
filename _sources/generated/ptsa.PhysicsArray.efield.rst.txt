@@ -1,0 +1,6 @@
+ptsa.PhysicsArray.efield
+========================
+
+.. currentmodule:: ptsa
+
+.. autoattribute:: PhysicsArray.efield

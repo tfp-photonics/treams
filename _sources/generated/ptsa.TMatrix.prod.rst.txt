@@ -1,0 +1,6 @@
+ptsa.TMatrix.prod
+=================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrix.prod

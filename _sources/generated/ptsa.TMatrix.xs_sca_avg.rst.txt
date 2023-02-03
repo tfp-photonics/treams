@@ -1,0 +1,6 @@
+ptsa.TMatrix.xs\_sca\_avg
+=========================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: TMatrix.xs_sca_avg

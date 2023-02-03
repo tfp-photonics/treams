@@ -1,0 +1,6 @@
+ptsa.Material.mu
+================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: Material.mu

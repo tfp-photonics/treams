@@ -1,0 +1,6 @@
+﻿ptsa.lattice.diffr\_orders\_circle
+==================================
+
+.. currentmodule:: ptsa.lattice
+
+.. autofunction:: diffr_orders_circle

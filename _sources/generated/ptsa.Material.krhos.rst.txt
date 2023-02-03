@@ -1,0 +1,6 @@
+ptsa.Material.krhos
+===================
+
+.. currentmodule:: ptsa
+
+.. automethod:: Material.krhos

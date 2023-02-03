@@ -1,0 +1,6 @@
+ptsa.TMatrix.imag
+=================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: TMatrix.imag

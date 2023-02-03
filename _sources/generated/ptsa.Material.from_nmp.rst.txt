@@ -1,0 +1,6 @@
+ptsa.Material.from\_nmp
+=======================
+
+.. currentmodule:: ptsa
+
+.. automethod:: Material.from_nmp

@@ -1,0 +1,6 @@
+ptsa.TMatrixC.flatten
+=====================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrixC.flatten

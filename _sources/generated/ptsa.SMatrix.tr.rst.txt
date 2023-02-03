@@ -1,0 +1,6 @@
+ptsa.SMatrix.tr
+===============
+
+.. currentmodule:: ptsa
+
+.. automethod:: SMatrix.tr

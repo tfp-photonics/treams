@@ -1,0 +1,6 @@
+﻿ptsa.special.spherical\_yn\_d
+=============================
+
+.. currentmodule:: ptsa.special
+
+.. autofunction:: spherical_yn_d

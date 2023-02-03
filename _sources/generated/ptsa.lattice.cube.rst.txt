@@ -1,0 +1,6 @@
+﻿ptsa.lattice.cube
+=================
+
+.. currentmodule:: ptsa.lattice
+
+.. autofunction:: cube

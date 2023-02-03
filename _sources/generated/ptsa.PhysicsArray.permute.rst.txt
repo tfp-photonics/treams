@@ -1,0 +1,6 @@
+ptsa.PhysicsArray.permute
+=========================
+
+.. currentmodule:: ptsa
+
+.. autoattribute:: PhysicsArray.permute

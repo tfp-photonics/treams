@@ -1,0 +1,6 @@
+ptsa.TMatrix.cluster
+====================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrix.cluster

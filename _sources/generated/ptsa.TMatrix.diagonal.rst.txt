@@ -1,0 +1,6 @@
+ptsa.TMatrix.diagonal
+=====================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrix.diagonal

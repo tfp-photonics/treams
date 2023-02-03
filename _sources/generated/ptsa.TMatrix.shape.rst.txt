@@ -1,0 +1,6 @@
+ptsa.TMatrix.shape
+==================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: TMatrix.shape

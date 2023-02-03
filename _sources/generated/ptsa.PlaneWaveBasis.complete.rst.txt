@@ -1,0 +1,6 @@
+ptsa.PlaneWaveBasis.complete
+============================
+
+.. currentmodule:: ptsa
+
+.. automethod:: PlaneWaveBasis.complete

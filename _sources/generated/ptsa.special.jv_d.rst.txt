@@ -1,0 +1,6 @@
+﻿ptsa.special.jv\_d
+==================
+
+.. currentmodule:: ptsa.special
+
+.. autodata:: jv_d

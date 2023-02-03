@@ -1,0 +1,6 @@
+ptsa.Lattice.rectangular
+========================
+
+.. currentmodule:: ptsa
+
+.. automethod:: Lattice.rectangular

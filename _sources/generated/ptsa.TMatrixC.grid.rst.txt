@@ -1,0 +1,6 @@
+ptsa.TMatrixC.grid
+==================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrixC.grid

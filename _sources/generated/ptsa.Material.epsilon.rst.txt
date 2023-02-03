@@ -1,0 +1,6 @@
+ptsa.Material.epsilon
+=====================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: Material.epsilon

@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Welcome to ptsa’s documentation! &#8212; ptsa 0.1.dev1+gb90c023 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting started" href="gettingstarted.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gettingstarted.html" title="Getting started"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">ptsa 0.1.dev1+gb90c023 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Welcome to ptsa’s documentation!</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="welcome-to-ptsa-s-documentation">
+<h1>Welcome to ptsa’s documentation!<a class="headerlink" href="#welcome-to-ptsa-s-documentation" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ptsa.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+</ul>
+</div>
+<p>The package <strong>p</strong>eriodic <strong>T</strong>-matrix <strong>s</strong>cattering <strong>a</strong>lgorithms provides a
+framework to simplify computations of the electromagnetic scattering of waves at finite
+and periodically infinite arrangements of particles. All methods are suitable for the
+use of chiral materials. The periodic systems can have one-, two-, or three-dimensional
+lattices. The lattice computations are accelerated by converting the occurring slowly
+converging summations to exponentially fast convergent series.</p>
+<p>To accommodate the periodic structures of different dimensionalities, three types of
+solutions to the vectorial Helmholtz equation are employed: plane waves, cylindrical
+waves, and spherical waves. For each of those solution sets, the typical manipulations,
+e.g. translations and rotations, are implemented, as well as transformations between
+them.</p>
+<p>The package contains two subpackages: <code class="xref py py-mod docutils literal notranslate"><span class="pre">lattice</span></code> and <code class="xref py py-mod docutils literal notranslate"><span class="pre">special</span></code>. The former
+contains mainly the functions for computing the lattice series. The latter can be seen
+as an addition to the special functions implemented in <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/special.html#module-scipy.special" title="(in SciPy v1.10.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.special</span></code></a>. It
+contains the mathematical functions that are typically necessary in T-Matrix method
+computations.</p>
+<p>Finally, three classes are the main point of interaction for the user. They allow access
+to the underlying functions operating directly on the spherical and cylindrical
+T-matrices or the Q-matrices based on the plane wave solutions.</p>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>T-matrix calculations using a spherical or cylindrical wave basis set</p></li>
+<li><p>Calculations in helicity and parity (TE/TM) basis</p></li>
+<li><p>Scattering from clusters of particles</p></li>
+<li><p>Scattering from particles and clusters arranged in 3d-, 2d-, and 1d-lattices</p></li>
+<li><p>Calculation of light propagation in stratified media</p></li>
+<li><p>Band calculation in crystal structures</p></li>
+</ul>
+</section>
+<section id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="#">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ptsa.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+</ul>
+
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="gettingstarted.html"
+                          title="next chapter">Getting started</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gettingstarted.html" title="Getting started"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">ptsa 0.1.dev1+gb90c023 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Welcome to ptsa’s documentation!</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Dominik Beutel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

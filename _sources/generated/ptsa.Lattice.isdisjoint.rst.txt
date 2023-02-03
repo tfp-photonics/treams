@@ -1,0 +1,6 @@
+ptsa.Lattice.isdisjoint
+=======================
+
+.. currentmodule:: ptsa
+
+.. automethod:: Lattice.isdisjoint

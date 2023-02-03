@@ -1,0 +1,6 @@
+ptsa.SMatrix.chirality\_density
+===============================
+
+.. currentmodule:: ptsa
+
+.. automethod:: SMatrix.chirality_density

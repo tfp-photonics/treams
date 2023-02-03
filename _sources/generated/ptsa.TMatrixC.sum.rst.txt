@@ -1,0 +1,6 @@
+ptsa.TMatrixC.sum
+=================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrixC.sum

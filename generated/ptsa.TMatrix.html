@@ -1,0 +1,369 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>ptsa.TMatrix &#8212; ptsa 0.1.dev1+gb90c023 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ptsa.TMatrix.couple" href="ptsa.TMatrix.couple.html" />
+    <link rel="prev" title="Reference" href="../ptsa.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ptsa.TMatrix.couple.html" title="ptsa.TMatrix.couple"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../ptsa.html" title="Reference"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.1.dev1+gb90c023 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../ptsa.html" accesskey="U">Reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">ptsa.TMatrix</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="ptsa-tmatrix">
+<h1>ptsa.TMatrix<a class="headerlink" href="#ptsa-tmatrix" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ptsa.TMatrix">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ptsa.</span></span><span class="sig-name descname"><span class="pre">TMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ann</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ptsa.TMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>T-matrix for spherical modes</p>
+<p>The T-matrix is square, with the modes defined in the corresponding fields. The
+order of the T-matrix can be arbitrary, but the normalization is fixed to that of
+the modes defined in <a class="reference internal" href="ptsa.special.vsw_A.html#ptsa.special.vsw_A" title="ptsa.special.vsw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_A()</span></code></a>, <a class="reference internal" href="ptsa.special.vsw_M.html#ptsa.special.vsw_M" title="ptsa.special.vsw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_M()</span></code></a>, and
+<a class="reference internal" href="ptsa.special.vsw_N.html#ptsa.special.vsw_N" title="ptsa.special.vsw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_N()</span></code></a>. A default order according to
+<code class="xref py py-func docutils literal notranslate"><span class="pre">TMatrix.defaultmodes()</span></code> is assumed if not specified. Helicity and parity modes
+are possible, but not mixed.</p>
+<p>The embedding medium is described by permittivity, permeability, and the chirality
+parameter.</p>
+<p>The T-matrix can be global or local. For a local T-matrix multiple positions have to
+be specified. Also modes must have as first element a position index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arr</strong> (<em>float</em><em> or </em><em>complex</em><em>, </em><em>array</em>) – T-matrix itself</p></li>
+<li><p><strong>k0</strong> (<em>float</em>) – Wave number in vacuum</p></li>
+<li><p><strong>basis</strong> (<a class="reference internal" href="ptsa.SphericalWaveBasis.html#ptsa.SphericalWaveBasis" title="ptsa.SphericalWaveBasis"><em>SphericalWaveBasis</em></a><em>, </em><em>optional</em>) – Basis definition</p></li>
+<li><p><strong>material</strong> (<a class="reference internal" href="ptsa.Material.html#ptsa.Material" title="ptsa.Material"><em>Material</em></a><em>, </em><em>optional</em>) – Embedding material, defaults to vacuum</p></li>
+<li><p><strong>poltype</strong> (<em>str</em><em>, </em><em>optional</em>) – Helicity or parity basis, defauts to config.POLTYPE</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ptsa.TMatrix.t">
+<span class="sig-name descname"><span class="pre">t</span></span><a class="headerlink" href="#ptsa.TMatrix.t" title="Permalink to this definition">¶</a></dt>
+<dd><p>T-matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or complex, (N,N)-array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ptsa.TMatrix.k0">
+<span class="sig-name descname"><span class="pre">k0</span></span><a class="headerlink" href="#ptsa.TMatrix.k0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wave number in vacuum</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ptsa.TMatrix.basis">
+<span class="sig-name descname"><span class="pre">basis</span></span><a class="headerlink" href="#ptsa.TMatrix.basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basis modes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="ptsa.SphericalWaveBasis.html#ptsa.SphericalWaveBasis" title="ptsa.SphericalWaveBasis">SphericalWaveBasis</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ptsa.TMatrix.material">
+<span class="sig-name descname"><span class="pre">material</span></span><a class="headerlink" href="#ptsa.TMatrix.material" title="Permalink to this definition">¶</a></dt>
+<dd><p>Material definition</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="ptsa.Material.html#ptsa.Material" title="ptsa.Material">Material</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ptsa.TMatrix.poltype">
+<span class="sig-name descname"><span class="pre">poltype</span></span><a class="headerlink" href="#ptsa.TMatrix.poltype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helicity or parity basis</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>T</strong></dt><dd></dd>
+<dt><strong>ann</strong></dt><dd></dd>
+<dt><a class="reference internal" href="ptsa.TMatrix.basis.html#ptsa.TMatrix.basis" title="ptsa.TMatrix.basis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">basis</span></code></a></dt><dd><p>partial(func, <a href="#id1"><span class="problematic" id="id2">*</span></a>args, <a href="#id3"><span class="problematic" id="id4">**</span></a>keywords) - new function with partial application</p>
+</dd>
+<dt><a class="reference internal" href="ptsa.TMatrix.cd.html#ptsa.TMatrix.cd" title="ptsa.TMatrix.cd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cd</span></code></a></dt><dd><p>Circular dichroism</p>
+</dd>
+<dt><a class="reference internal" href="ptsa.TMatrix.chi.html#ptsa.TMatrix.chi" title="ptsa.TMatrix.chi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chi</span></code></a></dt><dd><p>Electromagnetic chirality</p>
+</dd>
+<dt><a class="reference internal" href="ptsa.TMatrix.db.html#ptsa.TMatrix.db" title="ptsa.TMatrix.db"><code class="xref py py-obj docutils literal notranslate"><span class="pre">db</span></code></a></dt><dd><p>Duality breaking</p>
+</dd>
+<dt><strong>imag</strong></dt><dd></dd>
+<dt><strong>isglobal</strong></dt><dd></dd>
+<dt><a class="reference internal" href="ptsa.TMatrix.k0.html#ptsa.TMatrix.k0" title="ptsa.TMatrix.k0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">k0</span></code></a></dt><dd><p>partial(func, <a href="#id5"><span class="problematic" id="id6">*</span></a>args, <a href="#id7"><span class="problematic" id="id8">**</span></a>keywords) - new function with partial application</p>
+</dd>
+<dt><a class="reference internal" href="ptsa.TMatrix.kpar.html#ptsa.TMatrix.kpar" title="ptsa.TMatrix.kpar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kpar</span></code></a></dt><dd><p>partial(func, <a href="#id9"><span class="problematic" id="id10">*</span></a>args, <a href="#id11"><span class="problematic" id="id12">**</span></a>keywords) - new function with partial application</p>
+</dd>
+<dt><strong>ks</strong></dt><dd></dd>
+<dt><a class="reference internal" href="../ptsa.lattice.html#module-ptsa.lattice" title="ptsa.lattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lattice</span></code></a></dt><dd><p>partial(func, <a href="#id13"><span class="problematic" id="id14">*</span></a>args, <a href="#id15"><span class="problematic" id="id16">**</span></a>keywords) - new function with partial application</p>
+</dd>
+<dt><a class="reference internal" href="ptsa.TMatrix.material.html#ptsa.TMatrix.material" title="ptsa.TMatrix.material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">material</span></code></a></dt><dd><p>partial(func, <a href="#id17"><span class="problematic" id="id18">*</span></a>args, <a href="#id19"><span class="problematic" id="id20">**</span></a>keywords) - new function with partial application</p>
+</dd>
+<dt><a class="reference internal" href="ptsa.TMatrix.modetype.html#ptsa.TMatrix.modetype" title="ptsa.TMatrix.modetype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modetype</span></code></a></dt><dd><p>partial(func, <a href="#id21"><span class="problematic" id="id22">*</span></a>args, <a href="#id23"><span class="problematic" id="id24">**</span></a>keywords) - new function with partial application</p>
+</dd>
+<dt><strong>ndim</strong></dt><dd></dd>
+<dt><a class="reference internal" href="ptsa.TMatrix.poltype.html#ptsa.TMatrix.poltype" title="ptsa.TMatrix.poltype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">poltype</span></code></a></dt><dd><p>partial(func, <a href="#id25"><span class="problematic" id="id26">*</span></a>args, <a href="#id27"><span class="problematic" id="id28">**</span></a>keywords) - new function with partial application</p>
+</dd>
+<dt><strong>real</strong></dt><dd></dd>
+<dt><strong>shape</strong></dt><dd></dd>
+<dt><strong>size</strong></dt><dd></dd>
+<dt><a class="reference internal" href="ptsa.TMatrix.xs_ext_avg.html#ptsa.TMatrix.xs_ext_avg" title="ptsa.TMatrix.xs_ext_avg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xs_ext_avg</span></code></a></dt><dd><p>Rotational average of the extinction cross section</p>
+</dd>
+<dt><a class="reference internal" href="ptsa.TMatrix.xs_sca_avg.html#ptsa.TMatrix.xs_sca_avg" title="ptsa.TMatrix.xs_sca_avg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xs_sca_avg</span></code></a></dt><dd><p>Rotational average of the scattering cross section</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.couple.html#ptsa.TMatrix.couple" title="ptsa.TMatrix.couple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">couple</span></code></a>()</p></td>
+<td><p>Calculate the coupling term of a blockdiagonal T-matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.couple_lattice.html#ptsa.TMatrix.couple_lattice" title="ptsa.TMatrix.couple_lattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">couple_lattice</span></code></a>(lattice, kpar, *[, eta])</p></td>
+<td><p>Calculate the coupling term of a blockdiagonal T-matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.globalmat.html#ptsa.TMatrix.globalmat" title="ptsa.TMatrix.globalmat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">globalmat</span></code></a>([basis])</p></td>
+<td><p>Global T-matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.rotated.html#ptsa.TMatrix.rotated" title="ptsa.TMatrix.rotated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotated</span></code></a>(phi[, theta, psi])</p></td>
+<td><p>Rotate the T-Matrix by the euler angles</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.sphere.html#ptsa.TMatrix.sphere" title="ptsa.TMatrix.sphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sphere</span></code></a>(lmax, k0, radii, materials)</p></td>
+<td><p>T-Matrix of a sphere</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.translated.html#ptsa.TMatrix.translated" title="ptsa.TMatrix.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a>(r, **kwargs)</p></td>
+<td><p>Translate the origin of the T-Matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.xs.html#ptsa.TMatrix.xs" title="ptsa.TMatrix.xs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xs</span></code></a>(illu[, flux])</p></td>
+<td><p>Scattering and extinction cross section</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>all</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>any</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>astype</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>changepoltype</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>cluster</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>conj</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>conjugate</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>cumprod</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>cumsum</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>diagonal</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>efield</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>expand</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>expandlattice</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>flatten</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>index</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>indices</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>interacted</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>interacted_lattice</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>max</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>min</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>permute</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>prod</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>relax</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>rotate</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>sum</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>trace</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>translate</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>transpose</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>valid_points</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ptsa.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+</ul>
+
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../ptsa.html"
+                          title="previous chapter">Reference</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="ptsa.TMatrix.couple.html"
+                          title="next chapter">ptsa.TMatrix.couple</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/generated/ptsa.TMatrix.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ptsa.TMatrix.couple.html" title="ptsa.TMatrix.couple"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../ptsa.html" title="Reference"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.1.dev1+gb90c023 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">ptsa.TMatrix</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Dominik Beutel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

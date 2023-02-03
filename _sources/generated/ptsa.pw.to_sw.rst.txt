@@ -1,0 +1,6 @@
+﻿ptsa.pw.to\_sw
+==============
+
+.. currentmodule:: ptsa.pw
+
+.. autofunction:: to_sw

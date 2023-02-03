@@ -1,0 +1,6 @@
+ptsa.SMatrix.interface
+======================
+
+.. currentmodule:: ptsa
+
+.. automethod:: SMatrix.interface

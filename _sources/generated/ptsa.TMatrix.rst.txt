@@ -1,0 +1,87 @@
+﻿ptsa.TMatrix
+============
+
+.. currentmodule:: ptsa
+
+.. autoclass:: TMatrix
+   :no-members:
+   :no-inherited-members:
+   :no-special-members:
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         TMatrix.__getitem__
+         TMatrix.__mul__
+         TMatrix.all
+         TMatrix.any
+         TMatrix.astype
+         TMatrix.cluster
+         TMatrix.conj
+         TMatrix.conjugate
+         TMatrix.couple
+         TMatrix.couple_lattice
+         TMatrix.cumprod
+         TMatrix.cumsum
+         TMatrix.diagonal
+         TMatrix.flatten
+         TMatrix.globalmat
+         TMatrix.index
+         TMatrix.indices
+         TMatrix.interacted
+         TMatrix.interacted_lattice
+         TMatrix.max
+         TMatrix.min
+         TMatrix.prod
+         TMatrix.relax
+         TMatrix.rotated
+         TMatrix.sphere
+         TMatrix.sum
+         TMatrix.trace
+         TMatrix.translated
+         TMatrix.transpose
+         TMatrix.valid_points
+         TMatrix.xs
+      
+         TMatrix.__getitem__
+         TMatrix.__mul__
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         TMatrix.T
+         TMatrix.ann
+         TMatrix.basis
+         TMatrix.cd
+         TMatrix.changepoltype
+         TMatrix.chi
+         TMatrix.db
+         TMatrix.efield
+         TMatrix.expand
+         TMatrix.expandlattice
+         TMatrix.imag
+         TMatrix.isglobal
+         TMatrix.k0
+         TMatrix.kpar
+         TMatrix.ks
+         TMatrix.lattice
+         TMatrix.material
+         TMatrix.modetype
+         TMatrix.ndim
+         TMatrix.permute
+         TMatrix.poltype
+         TMatrix.real
+         TMatrix.rotate
+         TMatrix.shape
+         TMatrix.size
+         TMatrix.translate
+         TMatrix.xs_ext_avg
+         TMatrix.xs_sca_avg
+  
+  

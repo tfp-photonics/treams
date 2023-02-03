@@ -1,0 +1,6 @@
+﻿ptsa.lattice.volume
+===================
+
+.. currentmodule:: ptsa.lattice
+
+.. autodata:: volume

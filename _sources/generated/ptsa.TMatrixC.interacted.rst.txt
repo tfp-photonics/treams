@@ -1,0 +1,6 @@
+ptsa.TMatrixC.interacted
+========================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrixC.interacted

@@ -1,0 +1,6 @@
+ptsa.TMatrix.any
+================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrix.any

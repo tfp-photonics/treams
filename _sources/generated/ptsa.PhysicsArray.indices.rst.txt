@@ -1,0 +1,6 @@
+ptsa.PhysicsArray.indices
+=========================
+
+.. currentmodule:: ptsa
+
+.. automethod:: PhysicsArray.indices

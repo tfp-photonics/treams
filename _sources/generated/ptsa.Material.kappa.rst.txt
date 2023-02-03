@@ -1,0 +1,6 @@
+ptsa.Material.kappa
+===================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: Material.kappa

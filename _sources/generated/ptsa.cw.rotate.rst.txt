@@ -1,0 +1,6 @@
+﻿ptsa.cw.rotate
+==============
+
+.. currentmodule:: ptsa.cw
+
+.. autodata:: rotate

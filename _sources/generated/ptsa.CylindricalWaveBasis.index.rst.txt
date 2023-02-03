@@ -1,0 +1,6 @@
+ptsa.CylindricalWaveBasis.index
+===============================
+
+.. currentmodule:: ptsa
+
+.. automethod:: CylindricalWaveBasis.index

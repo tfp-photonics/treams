@@ -1,0 +1,6 @@
+ptsa.PhysicsArray.trace
+=======================
+
+.. currentmodule:: ptsa
+
+.. automethod:: PhysicsArray.trace

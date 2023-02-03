@@ -1,0 +1,6 @@
+ptsa.Material.kzs
+=================
+
+.. currentmodule:: ptsa
+
+.. automethod:: Material.kzs

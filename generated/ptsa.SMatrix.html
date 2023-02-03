@@ -1,0 +1,363 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>ptsa.SMatrix &#8212; ptsa 0.1.dev1+gb90c023 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ptsa.SMatrix.add" href="ptsa.SMatrix.add.html" />
+    <link rel="prev" title="ptsa.TMatrixC.xw" href="ptsa.TMatrixC.xw.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ptsa.SMatrix.add.html" title="ptsa.SMatrix.add"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ptsa.TMatrixC.xw.html" title="ptsa.TMatrixC.xw"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.1.dev1+gb90c023 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../ptsa.html" accesskey="U">Reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">ptsa.SMatrix</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="ptsa-smatrix">
+<h1>ptsa.SMatrix<a class="headerlink" href="#ptsa-smatrix" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ptsa.SMatrix">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ptsa.</span></span><span class="sig-name descname"><span class="pre">SMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smats</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ptsa.SMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>S-matrix (plane wave basis)</p>
+<p>The S-matrix describes the scattering of incoming into outgoing modes using a plane
+wave basis, with functions <a class="reference internal" href="ptsa.special.vsw_A.html#ptsa.special.vsw_A" title="ptsa.special.vsw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_A()</span></code></a>, <a class="reference internal" href="ptsa.special.vsw_M.html#ptsa.special.vsw_M" title="ptsa.special.vsw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_M()</span></code></a>,
+and <a class="reference internal" href="ptsa.special.vsw_N.html#ptsa.special.vsw_N" title="ptsa.special.vsw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_N()</span></code></a>. The primary direction of propagation is parallel or
+anti-parallel to the z-axis. The scattering object itself is infinitely extended in
+the x- and y-directions. The S-matrix is divided into four submatrices
+<span class="math notranslate nohighlight">\(S_{\uparrow \uparrow}\)</span>, <span class="math notranslate nohighlight">\(S_{\uparrow \downarrow}\)</span>,
+<span class="math notranslate nohighlight">\(S_{\downarrow \uparrow}\)</span>, and <span class="math notranslate nohighlight">\(S_{\downarrow \downarrow}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}S = \begin{pmatrix}
+    S_{\uparrow \uparrow} &amp; S_{\uparrow \downarrow} \\
+    S_{\downarrow \uparrow} &amp; S_{\downarrow \downarrow}
+\end{pmatrix}\,.\end{split}\]</div>
+<p>These matrices describe the transmission of plane waves propagating into positive
+z-direction, reflection of plane waves into the positive z-direction, reflection
+of plane waves into negative z-direction, and the transmission of plane waves
+propagating in negative z-direction, respectively. Each of those for matrices
+contain different diffraction orders and different polarizations. The polarizations
+can be in either helicity of parity basis.</p>
+<p>The embedding medium is described by permittivity, permeability, and the chirality
+parameter. The two sides of the S-matrix can have different materials.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qmats</strong> (<em>float</em><em> or </em><em>complex</em><em>, </em><em>array</em>) – S-matrices</p></li>
+<li><p><strong>k0</strong> (<em>float</em>) – Wave number in vacuum</p></li>
+<li><p><strong>modes</strong> (<em>iterable</em><em>, </em><em>optional</em>) – The modes corresponding to the S-matrices rows and
+columns. It must contain three arrays of equal length for the wave vectors’
+x- and y-component, and the polarization.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em><em> or </em><em>complex</em><em>, </em><em>optional</em>) – Relative permittivity of the medium</p></li>
+<li><p><strong>mu</strong> (<em>float</em><em> or </em><em>complex</em><em>, </em><em>optional</em>) – Relative permeability of the medium</p></li>
+<li><p><strong>kappa</strong> (<em>float</em><em> or </em><em>complex</em><em>, </em><em>optional</em>) – Chirality parameter of the medium</p></li>
+<li><p><strong>helicity</strong> (<em>bool</em><em>, </em><em>optional</em>) – Helicity or parity modes</p></li>
+<li><p><strong>kz</strong> (<em>float</em><em> or </em><em>complex</em><em>, </em><em>(</em><em>N</em><em>, </em><em>2</em><em>)</em><em>-array</em><em>, </em><em>optional</em>) – The z-component of the wave
+vector on both sides of the S-matrix</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ptsa.SMatrix.q">
+<span class="sig-name descname"><span class="pre">q</span></span><a class="headerlink" href="#ptsa.SMatrix.q" title="Permalink to this definition">¶</a></dt>
+<dd><p>S-matrices for the layer. The first dimension
+corresponds to the output side, the second to the input side, the third one
+to the outgoing modes and the last one to the incoming modes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>complex, (2, 2, N, N)-array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ptsa.SMatrix.k0">
+<span class="sig-name descname"><span class="pre">k0</span></span><a class="headerlink" href="#ptsa.SMatrix.k0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wave number in vacuum</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ptsa.SMatrix.epsilon">
+<span class="sig-name descname"><span class="pre">epsilon</span></span><a class="headerlink" href="#ptsa.SMatrix.epsilon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Relative permittivity of the embedding
+medium</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or complex, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ptsa.SMatrix.mu">
+<span class="sig-name descname"><span class="pre">mu</span></span><a class="headerlink" href="#ptsa.SMatrix.mu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Relative permeability of the embedding medium</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>complex</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ptsa.SMatrix.kappa">
+<span class="sig-name descname"><span class="pre">kappa</span></span><a class="headerlink" href="#ptsa.SMatrix.kappa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Chirality parameter of the embedding medium</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>complex</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ptsa.SMatrix.helicity">
+<span class="sig-name descname"><span class="pre">helicity</span></span><a class="headerlink" href="#ptsa.SMatrix.helicity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helicity or parity modes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ptsa.SMatrix.kx">
+<span class="sig-name descname"><span class="pre">kx</span></span><a class="headerlink" href="#ptsa.SMatrix.kx" title="Permalink to this definition">¶</a></dt>
+<dd><p>X-component of the wave vector for each column/row of
+the S-matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float, (N,)-array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ptsa.SMatrix.ky">
+<span class="sig-name descname"><span class="pre">ky</span></span><a class="headerlink" href="#ptsa.SMatrix.ky" title="Permalink to this definition">¶</a></dt>
+<dd><p>Y-component of the wave vector for each column/row of
+the S-matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float, (N,)-array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ptsa.SMatrix.kz">
+<span class="sig-name descname"><span class="pre">kz</span></span><a class="headerlink" href="#ptsa.SMatrix.kz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Z-component of the wave vector for each column/row of
+the S-matrix and for both sides</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float, (2, N)-array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ptsa.SMatrix.pol">
+<span class="sig-name descname"><span class="pre">pol</span></span><a class="headerlink" href="#ptsa.SMatrix.pol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Polarization of the mode for each column/row of the
+S-matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int, (N,)-array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ptsa.SMatrix.ks">
+<span class="sig-name descname"><span class="pre">ks</span></span><a class="headerlink" href="#ptsa.SMatrix.ks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wave numbers in the medium for both sides
+and both polarizations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or complex (2, 2)-array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.SMatrix.add.html#ptsa.SMatrix.add" title="ptsa.SMatrix.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(sm)</p></td>
+<td><p>Couple another S-matrix on top of the current one</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.SMatrix.bands_kz.html#ptsa.SMatrix.bands_kz" title="ptsa.SMatrix.bands_kz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bands_kz</span></code></a>(az)</p></td>
+<td><p>Band structure calculation</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.SMatrix.cd.html#ptsa.SMatrix.cd" title="ptsa.SMatrix.cd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cd</span></code></a>(illu[, direction])</p></td>
+<td><p>Transmission and absorption circular dichroism</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.SMatrix.changebasis.html#ptsa.SMatrix.changebasis" title="ptsa.SMatrix.changebasis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">changebasis</span></code></a>(**kwargs)</p></td>
+<td><p>Swap between helicity and parity basis</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.SMatrix.chirality_density.html#ptsa.SMatrix.chirality_density" title="ptsa.SMatrix.chirality_density"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chirality_density</span></code></a>(coeffs[, z, above])</p></td>
+<td><p>Volume-averaged chirality density</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.SMatrix.double.html#ptsa.SMatrix.double" title="ptsa.SMatrix.double"><code class="xref py py-obj docutils literal notranslate"><span class="pre">double</span></code></a>([n])</p></td>
+<td><p>Double the S-matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.SMatrix.field.html#ptsa.SMatrix.field" title="ptsa.SMatrix.field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">field</span></code></a>(r[, direction, above])</p></td>
+<td><p>Calculate the field at specified points</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.SMatrix.field_inside.html#ptsa.SMatrix.field_inside" title="ptsa.SMatrix.field_inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">field_inside</span></code></a>(illu, q_above)</p></td>
+<td><p>Field coefficients between two S-matrices</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.SMatrix.field_outside.html#ptsa.SMatrix.field_outside" title="ptsa.SMatrix.field_outside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">field_outside</span></code></a>(illu)</p></td>
+<td><p>Field coefficients above and below the S-matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.SMatrix.from_array.html#ptsa.SMatrix.from_array" title="ptsa.SMatrix.from_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_array</span></code></a>(tm, basis, *[, eta])</p></td>
+<td><p>S-matrix from an array of (cylindrical) T-matrices</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.SMatrix.interface.html#ptsa.SMatrix.interface" title="ptsa.SMatrix.interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interface</span></code></a>(k0, basis, materials)</p></td>
+<td><p>Planar interface between two media</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.SMatrix.periodic.html#ptsa.SMatrix.periodic" title="ptsa.SMatrix.periodic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">periodic</span></code></a>()</p></td>
+<td><p>Periodic repetition of the S-matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.SMatrix.pick.html#ptsa.SMatrix.pick" title="ptsa.SMatrix.pick"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pick</span></code></a>(modes)</p></td>
+<td><p>Pick modes from the S-matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.SMatrix.poynting_avg.html#ptsa.SMatrix.poynting_avg" title="ptsa.SMatrix.poynting_avg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">poynting_avg</span></code></a>(coeffs[, above])</p></td>
+<td><p>Time-averaged z-component of the Poynting vector</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.SMatrix.propagation.html#ptsa.SMatrix.propagation" title="ptsa.SMatrix.propagation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">propagation</span></code></a>(r, k0, basis, material)</p></td>
+<td><p>S-matrix for the propagation along a distance</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.SMatrix.slab.html#ptsa.SMatrix.slab" title="ptsa.SMatrix.slab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slab</span></code></a>(k0, basis, thickness, materials)</p></td>
+<td><p>Slab of material</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.SMatrix.stack.html#ptsa.SMatrix.stack" title="ptsa.SMatrix.stack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stack</span></code></a>(items)</p></td>
+<td><p>Stack of S-matrices</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.SMatrix.tr.html#ptsa.SMatrix.tr" title="ptsa.SMatrix.tr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tr</span></code></a>(illu[, direction])</p></td>
+<td><p>Transmittance and reflectance</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ptsa.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+</ul>
+
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="ptsa.TMatrixC.xw.html"
+                          title="previous chapter">ptsa.TMatrixC.xw</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="ptsa.SMatrix.add.html"
+                          title="next chapter">ptsa.SMatrix.add</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/generated/ptsa.SMatrix.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ptsa.SMatrix.add.html" title="ptsa.SMatrix.add"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ptsa.TMatrixC.xw.html" title="ptsa.TMatrixC.xw"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.1.dev1+gb90c023 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">ptsa.SMatrix</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Dominik Beutel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

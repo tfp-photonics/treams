@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>ptsa.pw.to_sw &#8212; ptsa 0.1.dev1+gb90c023 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ptsa.pw.translate" href="ptsa.pw.translate.html" />
+    <link rel="prev" title="ptsa.pw.to_cw" href="ptsa.pw.to_cw.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ptsa.pw.translate.html" title="ptsa.pw.translate"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ptsa.pw.to_cw.html" title="ptsa.pw.to_cw"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.1.dev1+gb90c023 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../ptsa.pw.html" accesskey="U">Plane wave module</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">ptsa.pw.to_sw</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="ptsa-pw-to-sw">
+<h1>ptsa.pw.to_sw<a class="headerlink" href="#ptsa-pw-to-sw" title="Permalink to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="ptsa.pw.to_sw">
+<span class="sig-prename descclassname"><span class="pre">ptsa.pw.</span></span><span class="sig-name descname"><span class="pre">to_sw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polsw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ky</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polpw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">helicity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ptsa.pw.to_sw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Coefficient for the expansion of a plane wave in spherical waves</p>
+<p>Returns the coefficient for the basis change from a plane wave to a spherical wave.
+For multiple positions only diagonal values (with respect to the position) are
+returned.</p>
+<p>The polarization values <cite>0</cite> and <cite>1</cite> refer to negative and positive helicity
+waves or, if <code class="docutils literal notranslate"><span class="pre">helicity</span> <span class="pre">==</span> <span class="pre">False</span></code>, to TE and TM parity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> (<em>int</em><em>, </em><em>array_like</em>) – Degree of the spherical wave</p></li>
+<li><p><strong>m</strong> (<em>int</em><em>, </em><em>array_like</em>) – Order of the spherical wave</p></li>
+<li><p><strong>polsw</strong> (<em>int</em><em>, </em><em>array_like</em>) – Polarization of the destination mode</p></li>
+<li><p><strong>kx</strong> (<em>float</em><em>, </em><em>array_like</em>) – X component of plane wave’s wave vector</p></li>
+<li><p><strong>ky</strong> (<em>float</em><em>, </em><em>array_like</em>) – Y component of plane wave’s wave vector</p></li>
+<li><p><strong>kz</strong> (<em>float</em><em>, </em><em>array_like</em>) – Z component of plane wave’s wave vector</p></li>
+<li><p><strong>polpw</strong> (<em>int</em><em>, </em><em>array_like</em>) – Polarization of the plane wave</p></li>
+<li><p><strong>helicity</strong> (<em>bool</em><em>, </em><em>optional</em>) – If true, helicity basis is assumed, else parity basis.
+Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>complex</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ptsa.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+</ul>
+
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="ptsa.pw.to_cw.html"
+                          title="previous chapter">ptsa.pw.to_cw</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="ptsa.pw.translate.html"
+                          title="next chapter">ptsa.pw.translate</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/generated/ptsa.pw.to_sw.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ptsa.pw.translate.html" title="ptsa.pw.translate"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ptsa.pw.to_cw.html" title="ptsa.pw.to_cw"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.1.dev1+gb90c023 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../ptsa.pw.html" >Plane wave module</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">ptsa.pw.to_sw</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Dominik Beutel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+ptsa.PhysicsArray.expand
+========================
+
+.. currentmodule:: ptsa
+
+.. autoattribute:: PhysicsArray.expand

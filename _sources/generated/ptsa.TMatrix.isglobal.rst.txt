@@ -1,0 +1,6 @@
+ptsa.TMatrix.isglobal
+=====================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: TMatrix.isglobal

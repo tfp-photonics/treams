@@ -1,0 +1,6 @@
+ptsa.Material.impedance
+=======================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: Material.impedance

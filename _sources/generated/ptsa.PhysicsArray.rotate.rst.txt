@@ -1,0 +1,6 @@
+ptsa.PhysicsArray.rotate
+========================
+
+.. currentmodule:: ptsa
+
+.. autoattribute:: PhysicsArray.rotate

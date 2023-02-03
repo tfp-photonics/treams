@@ -1,0 +1,6 @@
+ptsa.PhysicsArray.ndim
+======================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: PhysicsArray.ndim

@@ -1,0 +1,6 @@
+﻿ptsa.special.spherical\_hankel2\_d
+==================================
+
+.. currentmodule:: ptsa.special
+
+.. autodata:: spherical_hankel2_d

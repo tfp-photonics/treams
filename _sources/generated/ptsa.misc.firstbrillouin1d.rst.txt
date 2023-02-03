@@ -1,0 +1,6 @@
+﻿ptsa.misc.firstbrillouin1d
+==========================
+
+.. currentmodule:: ptsa.misc
+
+.. autofunction:: firstbrillouin1d

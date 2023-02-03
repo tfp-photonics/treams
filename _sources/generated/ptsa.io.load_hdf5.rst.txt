@@ -1,0 +1,6 @@
+﻿ptsa.io.load\_hdf5
+==================
+
+.. currentmodule:: ptsa.io
+
+.. autofunction:: load_hdf5

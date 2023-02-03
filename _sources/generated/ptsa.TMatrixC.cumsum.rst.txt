@@ -1,0 +1,6 @@
+ptsa.TMatrixC.cumsum
+====================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrixC.cumsum

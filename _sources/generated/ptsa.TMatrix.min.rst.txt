@@ -1,0 +1,6 @@
+ptsa.TMatrix.min
+================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrix.min

@@ -1,0 +1,6 @@
+ptsa.PhysicsArray.sum
+=====================
+
+.. currentmodule:: ptsa
+
+.. automethod:: PhysicsArray.sum

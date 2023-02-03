@@ -1,0 +1,6 @@
+ptsa.TMatrix.chi
+================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: TMatrix.chi

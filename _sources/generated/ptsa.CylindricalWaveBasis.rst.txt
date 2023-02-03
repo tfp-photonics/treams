@@ -1,0 +1,38 @@
+﻿ptsa.CylindricalWaveBasis
+=========================
+
+.. currentmodule:: ptsa
+
+.. autoclass:: CylindricalWaveBasis
+   :no-members:
+   :no-inherited-members:
+   :no-special-members:
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         CylindricalWaveBasis.__getitem__
+         CylindricalWaveBasis.__len__
+         CylindricalWaveBasis.count
+         CylindricalWaveBasis.default
+         CylindricalWaveBasis.defaultdim
+         CylindricalWaveBasis.defaultmmax
+         CylindricalWaveBasis.index
+         CylindricalWaveBasis.isdisjoint
+         CylindricalWaveBasis.with_periodicity
+      
+         CylindricalWaveBasis.__len__
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         CylindricalWaveBasis.isglobal
+         CylindricalWaveBasis.positions
+  
+  

@@ -1,0 +1,6 @@
+﻿ptsa.lattice.cubeedge
+=====================
+
+.. currentmodule:: ptsa.lattice
+
+.. autofunction:: cubeedge

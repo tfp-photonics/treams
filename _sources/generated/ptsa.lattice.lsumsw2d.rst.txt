@@ -1,0 +1,6 @@
+﻿ptsa.lattice.lsumsw2d
+=====================
+
+.. currentmodule:: ptsa.lattice
+
+.. autodata:: lsumsw2d

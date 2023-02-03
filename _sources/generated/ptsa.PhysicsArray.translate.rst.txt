@@ -1,0 +1,6 @@
+ptsa.PhysicsArray.translate
+===========================
+
+.. currentmodule:: ptsa
+
+.. autoattribute:: PhysicsArray.translate

@@ -1,0 +1,6 @@
+﻿ptsa.sw.rotate
+==============
+
+.. currentmodule:: ptsa.sw
+
+.. autofunction:: rotate

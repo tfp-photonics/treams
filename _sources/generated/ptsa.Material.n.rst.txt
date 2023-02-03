@@ -1,0 +1,6 @@
+ptsa.Material.n
+===============
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: Material.n

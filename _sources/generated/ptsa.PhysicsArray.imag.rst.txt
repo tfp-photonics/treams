@@ -1,0 +1,6 @@
+ptsa.PhysicsArray.imag
+======================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: PhysicsArray.imag

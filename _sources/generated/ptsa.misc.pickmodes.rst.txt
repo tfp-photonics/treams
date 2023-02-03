@@ -1,0 +1,6 @@
+﻿ptsa.misc.pickmodes
+===================
+
+.. currentmodule:: ptsa.misc
+
+.. autofunction:: pickmodes

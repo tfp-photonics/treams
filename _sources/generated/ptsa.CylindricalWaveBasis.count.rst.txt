@@ -1,0 +1,6 @@
+ptsa.CylindricalWaveBasis.count
+===============================
+
+.. currentmodule:: ptsa
+
+.. automethod:: CylindricalWaveBasis.count

@@ -1,0 +1,6 @@
+﻿ptsa.lattice.reciprocal
+=======================
+
+.. currentmodule:: ptsa.lattice
+
+.. autodata:: reciprocal

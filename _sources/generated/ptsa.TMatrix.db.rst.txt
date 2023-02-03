@@ -1,0 +1,6 @@
+ptsa.TMatrix.db
+===============
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: TMatrix.db

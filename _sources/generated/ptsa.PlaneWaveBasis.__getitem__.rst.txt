@@ -1,0 +1,6 @@
+ptsa.PlaneWaveBasis.\_\_getitem\_\_
+===================================
+
+.. currentmodule:: ptsa
+
+.. automethod:: PlaneWaveBasis.__getitem__

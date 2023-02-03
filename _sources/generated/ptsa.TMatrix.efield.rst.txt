@@ -1,0 +1,6 @@
+ptsa.TMatrix.efield
+===================
+
+.. currentmodule:: ptsa
+
+.. autoattribute:: TMatrix.efield

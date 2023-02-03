@@ -1,0 +1,6 @@
+ptsa.Lattice.cubic
+==================
+
+.. currentmodule:: ptsa
+
+.. automethod:: Lattice.cubic

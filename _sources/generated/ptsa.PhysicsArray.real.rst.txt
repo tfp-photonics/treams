@@ -1,0 +1,6 @@
+ptsa.PhysicsArray.real
+======================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: PhysicsArray.real

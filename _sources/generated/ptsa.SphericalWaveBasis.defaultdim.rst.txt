@@ -1,0 +1,6 @@
+ptsa.SphericalWaveBasis.defaultdim
+==================================
+
+.. currentmodule:: ptsa
+
+.. automethod:: SphericalWaveBasis.defaultdim

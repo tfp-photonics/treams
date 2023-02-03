@@ -1,0 +1,6 @@
+ptsa.PhysicsArray.lattice
+=========================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: PhysicsArray.lattice

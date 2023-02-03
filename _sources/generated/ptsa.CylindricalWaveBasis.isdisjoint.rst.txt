@@ -1,0 +1,6 @@
+ptsa.CylindricalWaveBasis.isdisjoint
+====================================
+
+.. currentmodule:: ptsa
+
+.. automethod:: CylindricalWaveBasis.isdisjoint

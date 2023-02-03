@@ -1,0 +1,38 @@
+﻿ptsa.SphericalWaveBasis
+=======================
+
+.. currentmodule:: ptsa
+
+.. autoclass:: SphericalWaveBasis
+   :no-members:
+   :no-inherited-members:
+   :no-special-members:
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         SphericalWaveBasis.__getitem__
+         SphericalWaveBasis.__len__
+         SphericalWaveBasis.count
+         SphericalWaveBasis.default
+         SphericalWaveBasis.defaultdim
+         SphericalWaveBasis.defaultlmax
+         SphericalWaveBasis.ebcm
+         SphericalWaveBasis.index
+         SphericalWaveBasis.isdisjoint
+      
+         SphericalWaveBasis.__len__
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         SphericalWaveBasis.isglobal
+         SphericalWaveBasis.positions
+  
+  

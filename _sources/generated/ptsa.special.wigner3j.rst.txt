@@ -1,0 +1,6 @@
+﻿ptsa.special.wigner3j
+=====================
+
+.. currentmodule:: ptsa.special
+
+.. autodata:: wigner3j

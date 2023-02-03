@@ -1,0 +1,6 @@
+﻿ptsa.special.vsh\_X
+===================
+
+.. currentmodule:: ptsa.special
+
+.. autodata:: vsh_X

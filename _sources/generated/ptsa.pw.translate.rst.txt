@@ -1,0 +1,6 @@
+﻿ptsa.pw.translate
+=================
+
+.. currentmodule:: ptsa.pw
+
+.. autofunction:: translate

@@ -1,0 +1,6 @@
+ptsa.Material.ischiral
+======================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: Material.ischiral

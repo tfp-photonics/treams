@@ -1,0 +1,6 @@
+ptsa.TMatrix.conj
+=================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrix.conj

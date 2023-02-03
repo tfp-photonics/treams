@@ -1,0 +1,6 @@
+ptsa.Lattice.dim
+================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: Lattice.dim

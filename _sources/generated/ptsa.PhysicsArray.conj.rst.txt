@@ -1,0 +1,6 @@
+ptsa.PhysicsArray.conj
+======================
+
+.. currentmodule:: ptsa
+
+.. automethod:: PhysicsArray.conj

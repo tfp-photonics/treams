@@ -1,0 +1,6 @@
+ptsa.PhysicsArray.size
+======================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: PhysicsArray.size

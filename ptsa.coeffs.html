@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>ptsa.coeffs &#8212; ptsa 0.1.dev1+gb90c023 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="ptsa.coeffs.mie" href="generated/ptsa.coeffs.mie.html" />
+    <link rel="prev" title="ptsa.io.load_hdf5" href="generated/ptsa.io.load_hdf5.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="generated/ptsa.coeffs.mie.html" title="ptsa.coeffs.mie"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="generated/ptsa.io.load_hdf5.html" title="ptsa.io.load_hdf5"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.1.dev1+gb90c023 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="ptsa.html" accesskey="U">Reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">ptsa.coeffs</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-ptsa.coeffs">
+<span id="ptsa-coeffs"></span><h1>ptsa.coeffs<a class="headerlink" href="#module-ptsa.coeffs" title="Permalink to this heading">¶</a></h1>
+<p>Calculate the scattering coefficients for cases where they can be obtained analytically
+easily. This is a (multilayered) sphere using spherical waves (Mie coefficients), a
+(multilayered) cylinder using cylindrical waves, and an infinitely extended planar
+interface (Fresnel coefficients).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To accomodate chiral materials, the solution is always calculated in helicity basis,
+which is less commonly used than parity basis.</p>
+</div>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/ptsa.coeffs.mie.html#ptsa.coeffs.mie" title="ptsa.coeffs.mie"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mie</span></code></a>(l, x, epsilon, mu, kappa)</p></td>
+<td><p>Mie coefficient of degree l in helicity basis</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/ptsa.coeffs.mie_cyl.html#ptsa.coeffs.mie_cyl" title="ptsa.coeffs.mie_cyl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mie_cyl</span></code></a>(kz, m, k0, radii, epsilon, mu, kappa)</p></td>
+<td><p>Coefficient for scattering at an infinite cylinder in helicity basis</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/ptsa.coeffs.fresnel.html#ptsa.coeffs.fresnel" title="ptsa.coeffs.fresnel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fresnel</span></code></a>(ks, kzs, zs)</p></td>
+<td><p>Fresnel coefficient for a planar interface</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="ptsa.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+</ul>
+
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="generated/ptsa.io.load_hdf5.html"
+                          title="previous chapter">ptsa.io.load_hdf5</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="generated/ptsa.coeffs.mie.html"
+                          title="next chapter">ptsa.coeffs.mie</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/ptsa.coeffs.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="generated/ptsa.coeffs.mie.html" title="ptsa.coeffs.mie"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="generated/ptsa.io.load_hdf5.html" title="ptsa.io.load_hdf5"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.1.dev1+gb90c023 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="ptsa.html" >Reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">ptsa.coeffs</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Dominik Beutel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

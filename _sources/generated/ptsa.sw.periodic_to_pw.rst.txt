@@ -1,0 +1,6 @@
+﻿ptsa.sw.periodic\_to\_pw
+========================
+
+.. currentmodule:: ptsa.sw
+
+.. autofunction:: periodic_to_pw

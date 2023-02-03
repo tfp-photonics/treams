@@ -1,0 +1,6 @@
+ptsa.TMatrixC.size
+==================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: TMatrixC.size

@@ -1,0 +1,6 @@
+﻿ptsa.special.yv
+===============
+
+.. currentmodule:: ptsa.special
+
+.. autodata:: yv

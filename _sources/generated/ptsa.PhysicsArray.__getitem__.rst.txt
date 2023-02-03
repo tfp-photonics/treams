@@ -1,0 +1,6 @@
+ptsa.PhysicsArray.\_\_getitem\_\_
+=================================
+
+.. currentmodule:: ptsa
+
+.. automethod:: PhysicsArray.__getitem__

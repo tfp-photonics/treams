@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>ptsa.PhysicsArray &#8212; ptsa 0.1.dev1+gb90c023 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Spherical wave module" href="../ptsa.sw.html" />
+    <link rel="prev" title="ptsa.Material.__call__" href="ptsa.Material.__call__.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../ptsa.sw.html" title="Spherical wave module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ptsa.Material.__call__.html" title="ptsa.Material.__call__"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.1.dev1+gb90c023 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../ptsa.html" accesskey="U">Reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">ptsa.PhysicsArray</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="ptsa-physicsarray">
+<h1>ptsa.PhysicsArray<a class="headerlink" href="#ptsa-physicsarray" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ptsa.PhysicsArray">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ptsa.</span></span><span class="sig-name descname"><span class="pre">PhysicsArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ann</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ptsa.PhysicsArray" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>T</strong></dt><dd></dd>
+<dt><strong>ann</strong></dt><dd></dd>
+<dt><a class="reference internal" href="ptsa.PhysicsArray.basis.html#ptsa.PhysicsArray.basis" title="ptsa.PhysicsArray.basis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">basis</span></code></a></dt><dd><p>partial(func, <a href="#id1"><span class="problematic" id="id2">*</span></a>args, <a href="#id3"><span class="problematic" id="id4">**</span></a>keywords) - new function with partial application</p>
+</dd>
+<dt><strong>imag</strong></dt><dd></dd>
+<dt><a class="reference internal" href="ptsa.PhysicsArray.k0.html#ptsa.PhysicsArray.k0" title="ptsa.PhysicsArray.k0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">k0</span></code></a></dt><dd><p>partial(func, <a href="#id5"><span class="problematic" id="id6">*</span></a>args, <a href="#id7"><span class="problematic" id="id8">**</span></a>keywords) - new function with partial application</p>
+</dd>
+<dt><a class="reference internal" href="ptsa.PhysicsArray.kpar.html#ptsa.PhysicsArray.kpar" title="ptsa.PhysicsArray.kpar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kpar</span></code></a></dt><dd><p>partial(func, <a href="#id9"><span class="problematic" id="id10">*</span></a>args, <a href="#id11"><span class="problematic" id="id12">**</span></a>keywords) - new function with partial application</p>
+</dd>
+<dt><a class="reference internal" href="../ptsa.lattice.html#module-ptsa.lattice" title="ptsa.lattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lattice</span></code></a></dt><dd><p>partial(func, <a href="#id13"><span class="problematic" id="id14">*</span></a>args, <a href="#id15"><span class="problematic" id="id16">**</span></a>keywords) - new function with partial application</p>
+</dd>
+<dt><a class="reference internal" href="ptsa.PhysicsArray.material.html#ptsa.PhysicsArray.material" title="ptsa.PhysicsArray.material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">material</span></code></a></dt><dd><p>partial(func, <a href="#id17"><span class="problematic" id="id18">*</span></a>args, <a href="#id19"><span class="problematic" id="id20">**</span></a>keywords) - new function with partial application</p>
+</dd>
+<dt><a class="reference internal" href="ptsa.PhysicsArray.modetype.html#ptsa.PhysicsArray.modetype" title="ptsa.PhysicsArray.modetype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modetype</span></code></a></dt><dd><p>partial(func, <a href="#id21"><span class="problematic" id="id22">*</span></a>args, <a href="#id23"><span class="problematic" id="id24">**</span></a>keywords) - new function with partial application</p>
+</dd>
+<dt><strong>ndim</strong></dt><dd></dd>
+<dt><a class="reference internal" href="ptsa.PhysicsArray.poltype.html#ptsa.PhysicsArray.poltype" title="ptsa.PhysicsArray.poltype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">poltype</span></code></a></dt><dd><p>partial(func, <a href="#id25"><span class="problematic" id="id26">*</span></a>args, <a href="#id27"><span class="problematic" id="id28">**</span></a>keywords) - new function with partial application</p>
+</dd>
+<dt><strong>real</strong></dt><dd></dd>
+<dt><strong>shape</strong></dt><dd></dd>
+<dt><strong>size</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>all</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>any</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>astype</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>changepoltype</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>conj</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>conjugate</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>cumprod</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>cumsum</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>diagonal</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>efield</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>expand</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>expandlattice</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>flatten</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>index</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>indices</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>max</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>min</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>permute</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>prod</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>relax</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>rotate</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>sum</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>trace</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>translate</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>transpose</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ptsa.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+</ul>
+
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="ptsa.Material.__call__.html"
+                          title="previous chapter">ptsa.Material.__call__</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../ptsa.sw.html"
+                          title="next chapter">Spherical wave module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/generated/ptsa.PhysicsArray.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../ptsa.sw.html" title="Spherical wave module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ptsa.Material.__call__.html" title="ptsa.Material.__call__"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.1.dev1+gb90c023 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">ptsa.PhysicsArray</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Dominik Beutel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

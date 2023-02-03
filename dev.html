@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Development and contributing &#8212; ptsa 0.1.dev1+gb90c023 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="About" href="about.html" />
+    <link rel="prev" title="ptsa.special.cython_special" href="ptsa.special.cython_special.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="about.html" title="About"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ptsa.special.cython_special.html" title="ptsa.special.cython_special"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.1.dev1+gb90c023 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Development and contributing</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="development-and-contributing">
+<h1>Development and contributing<a class="headerlink" href="#development-and-contributing" title="Permalink to this heading">¶</a></h1>
+<section id="setting-up-the-development-environment">
+<h2>Setting up the development environment<a class="headerlink" href="#setting-up-the-development-environment" title="Permalink to this heading">¶</a></h2>
+<p>1.
+Clone the repository with</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone git@git.scc.kit.edu/photonics/ptsa.git</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://git.scc.kit.edu/photonics/ptsa.git</span>
+</pre></div>
+</div>
+<p>and enter the directory</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cd ptsa</span>
+</pre></div>
+</div>
+<p>2.
+Create a conda environment with</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conda env create -f environment.yml</span>
+</pre></div>
+</div>
+<p>which installs all packages needed for building and running ptsa, testing, different
+benchmarks, and building the documentation. Activate the environment:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conda activate ptsa-dev</span>
+</pre></div>
+</div>
+<p>3.
+Setup the package with</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install -e .</span>
+</pre></div>
+</div>
+<p>This last step makes the program available in the environment independently of the
+current folder. This is especially necessary for correctly building the documentation.</p>
+</section>
+<section id="running-tests">
+<h2>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this heading">¶</a></h2>
+<p>Tests can be run with</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python -m pytest</span>
+</pre></div>
+</div>
+<p>but for development a more fine grained selection can be made by passing a directory or
+file as an argument. Additionally, the option <code class="docutils literal notranslate"><span class="pre">-k</span></code> allows to define keywords when
+selecting test.</p>
+<p>Some integration tests for the module <a class="reference internal" href="ptsa.lattice.html#ptsa-lattice"><span class="std std-ref">ptsa.lattice module</span></a> take a long time to finish and
+are therefore disabled by default. You can add them with the option <code class="docutils literal notranslate"><span class="pre">--runslow</span></code>.</p>
+<p>If coverage reports should be included on can use the option <code class="docutils literal notranslate"><span class="pre">--cov</span> <span class="pre">ptsa</span></code>. However,
+this will only report on the pure python files. To also get coverage reports for the
+cython part, it is necessary to compile it with linetracing support. This can be
+achieved by setting the environment variable <code class="docutils literal notranslate"><span class="pre">CYTHON_COVERAGE</span></code>, for example with</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">CYTHON_COVERAGE=1 pip install -e .</span>
+</pre></div>
+</div>
+<p>Make sure that new C code files are generated and that those files are compiled.
+Enabling the tracing for getting code coverage slows down the integration tests
+considerably. For the coverage calculation only the unit tests are used.</p>
+</section>
+<section id="building-the-documentation">
+<h2>Building the documentation<a class="headerlink" href="#building-the-documentation" title="Permalink to this heading">¶</a></h2>
+<p>After setting up the development environment run</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sphinx-build -b html docs docs/_build/html</span>
+</pre></div>
+</div>
+<p>from the root directory of the package to build the documentation as html pages.</p>
+</section>
+<section id="building-the-code-on-windows">
+<h2>Building the code on Windows<a class="headerlink" href="#building-the-code-on-windows" title="Permalink to this heading">¶</a></h2>
+<p>The main issue with using ptsa on Windows is the compilation step. For Windows Python is
+usually compiled with MSVC for Visual Studio. However, especially for calculations with
+complex numbers, Cython creates code that conforms to the (C99-) standard.Thus, it is
+not compatible with the non-standard implementation of complex numbers by Microsoft.</p>
+<p>As I understand, even large projects like numpy and scipy do not compile their code with
+MSVC, at least not completely) for the Windows distribution.</p>
+<p>Below you find three tested ways, how one can use ptsa with Windows. The first two ways
+actually use a non-Windows version of Python, but have a more straightforward
+installation procedure. However, the last one works with Windows’ version of Python e.g.
+when installed with conda under Windows.</p>
+<section id="windows-subsystem-for-linux">
+<h3>Windows Subsystem for Linux<a class="headerlink" href="#windows-subsystem-for-linux" title="Permalink to this heading">¶</a></h3>
+<p>The
+<a class="reference external" href="https://docs.microsoft.com/en-us/windows/wsl/install">Windows Subsystem for Linux (WSL)</a>
+exists on recent versions of Windows. To install it, open the command line interpreter
+(cmd.exe) and type <cite>wsl –install</cite>. This step might be enough to be able to run a Linux
+kernel. Within WSL all instructions from the rest of the description can be used, e.g.
+with the distribution’s Python or a conda-installed Python.</p>
+<p>Sometimes it is necessary to use
+<a class="reference external" href="https://docs.microsoft.com/en-us/windows/wsl/install-manual">additional steps</a> to
+install WSL.</p>
+</section>
+<section id="pure-msys2">
+<h3>Pure MSYS2<a class="headerlink" href="#pure-msys2" title="Permalink to this heading">¶</a></h3>
+<p>Using <a class="reference external" href="https://www.msys2.org/">MSYS2</a>, it is also possible to compile and install
+ptsa. First, install MSYS2 and update it according to the instructions. Then, also
+install python and, if you want, the dependencies of ptsa. Otherwise, the dependencies
+are installed by pip.</p>
+</section>
+<section id="compilation-with-mingw-w64-for-msvc-python">
+<h3>Compilation with mingw-w64 for MSVC Python<a class="headerlink" href="#compilation-with-mingw-w64-for-msvc-python" title="Permalink to this heading">¶</a></h3>
+<p>This is approach is different from the others, since it finally combines binaries from
+two different compilers. Although it works and was tested on some systems, it is not
+guaranteed that it will work for all systems. The following part describes, how ptsa can
+be built for Windows. It was initially inspired by
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/building/windows.html">https://docs.scipy.org/doc/scipy/reference/building/windows.html</a>. However, it is
+not completely tested, which steps could possible be omitted.</p>
+<p>The first step is the installation of MSYS2 and components of Microsoft Visual Studio
+The installation of MSYS2 is pretty straightforward. Regarding the Microsoft Visual
+Studio components, it is unclear to me, which one are actually used, so for this part we
+just rely on the description for scipy, which is a sufficient set of components. Feel
+free to test this and adjust here accordingly. I suspect, that it might not be necessary
+to install most components at all. The only requirement so far seems to be the presence
+of <cite>vcruntime140.dll</cite>, which should come shipped with recent versions of Python
+(see also
+<a class="reference external" href="https://stevedower.id.au/blog/building-for-python-3-5-part-two">Steve Dower’s blog post</a>).
+If not present, they can additionally be installed with the pip package <cite>msvc-runtime</cite>.
+Obviously, an installation of Python on Windows is necessary. This can either be pure
+Python or can come with a distribution like Anaconda. In some cases, it might be
+necessary to patch distutils’ <cite>cygwinccompiler.py</cite> to return <cite>vcruntime140</cite> instead of
+<cite>msvcr140</cite>.</p>
+<p>Within MSYS2 install <cite>mingw-w64-x86_64-gcc</cite>.</p>
+<p>The compilation is steered from the command line. First go into the directory of ptsa.
+Then, set up your path by prepending the direction for MSYS2’s mingw64 binaries with
+<code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">PATH=C:\msys64\mingw64\bin;%PATH%</span></code> (adjust accordingly if you have installed
+MSYS2 with non-default parameters). Check that gcc from MSYS2 is recognized correctly
+but make sure that the version of python that is found on the path corresponds to the
+Windows Python. With this setup, building binaries should work with <cite>python -m build</cite>.</p>
+</section>
+</section>
+<section id="other-remarks">
+<h2>Other remarks<a class="headerlink" href="#other-remarks" title="Permalink to this heading">¶</a></h2>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ptsa.html">Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+</ul>
+
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="ptsa.special.cython_special.html"
+                          title="previous chapter">ptsa.special.cython_special</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="about.html"
+                          title="next chapter">About</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/dev.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="about.html" title="About"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ptsa.special.cython_special.html" title="ptsa.special.cython_special"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.1.dev1+gb90c023 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Development and contributing</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Dominik Beutel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

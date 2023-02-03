@@ -1,0 +1,6 @@
+ptsa.SphericalWaveBasis.count
+=============================
+
+.. currentmodule:: ptsa
+
+.. automethod:: SphericalWaveBasis.count

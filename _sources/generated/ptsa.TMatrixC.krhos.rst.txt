@@ -1,0 +1,6 @@
+ptsa.TMatrixC.krhos
+===================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: TMatrixC.krhos

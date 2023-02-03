@@ -1,0 +1,238 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>ptsa.special.yv &#8212; ptsa 0.1.dev1+gb90c023 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ptsa.special.spherical_jn" href="ptsa.special.spherical_jn.html" />
+    <link rel="prev" title="ptsa.special.jv" href="ptsa.special.jv.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ptsa.special.spherical_jn.html" title="ptsa.special.spherical_jn"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ptsa.special.jv.html" title="ptsa.special.jv"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.1.dev1+gb90c023 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../ptsa.special.html" accesskey="U">ptsa.special module</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">ptsa.special.yv</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="ptsa-special-yv">
+<h1>ptsa.special.yv<a class="headerlink" href="#ptsa-special-yv" title="Permalink to this heading">¶</a></h1>
+<dl class="py data">
+<dt class="sig sig-object py" id="ptsa.special.yv">
+<span class="sig-prename descclassname"><span class="pre">ptsa.special.</span></span><span class="sig-name descname"><span class="pre">yv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ufunc</span> <span class="pre">'yv'&gt;</span></em><a class="headerlink" href="#ptsa.special.yv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bessel function of the second kind of real order and complex argument.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>v</strong> (<em>array_like</em>) – Order (float).</p></li>
+<li><p><strong>z</strong> (<em>array_like</em>) – Argument (float or complex).</p></li>
+<li><p><strong>out</strong> (<em>ndarray</em><em>, </em><em>optional</em>) – Optional output array for the function results</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Y</strong> – Value of the Bessel function of the second kind, <span class="math notranslate nohighlight">\(Y_v(x)\)</span>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>scalar or ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>For positive <cite>v</cite> values, the computation is carried out using the
+AMOS <a class="reference internal" href="#r370b690938a3-1" id="id1">[1]</a> <cite>zbesy</cite> routine, which exploits the connection to the Hankel
+Bessel functions <span class="math notranslate nohighlight">\(H_v^{(1)}\)</span> and <span class="math notranslate nohighlight">\(H_v^{(2)}\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[Y_v(z) = \frac{1}{2\imath} (H_v^{(1)} - H_v^{(2)}).\]</div>
+<p>For negative <cite>v</cite> values the formula,</p>
+<div class="math notranslate nohighlight">
+\[Y_{-v}(z) = Y_v(z) \cos(\pi v) + J_v(z) \sin(\pi v)\]</div>
+<p>is used, where <span class="math notranslate nohighlight">\(J_v(z)\)</span> is the Bessel function of the first kind,
+computed using the AMOS routine <cite>zbesj</cite>.  Note that the second term is
+exactly zero for integer <cite>v</cite>; to improve accuracy the second term is
+explicitly omitted for <cite>v</cite> values such that <cite>v = floor(v)</cite>.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">yve</span></code></dt><dd><p><span class="math notranslate nohighlight">\(Y_v\)</span> with leading exponential behavior stripped off.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">y0</span></code></dt><dd><p>faster implementation of this function for order 0</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">y1</span></code></dt><dd><p>faster implementation of this function for order 1</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">References</p>
+<div role="list" class="citation-list">
+<div class="citation" id="r370b690938a3-1" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Donald E. Amos, “AMOS, A Portable Package for Bessel Functions
+of a Complex Argument and Nonnegative Order”,
+<a class="reference external" href="http://netlib.org/amos/">http://netlib.org/amos/</a></p>
+</div>
+</div>
+<p class="rubric">Examples</p>
+<p>Evaluate the function of order 0 at one point.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">yv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">yv</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
+<span class="go">0.088256964215677</span>
+</pre></div>
+</div>
+<p>Evaluate the function at one point for different orders.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">yv</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.</span><span class="p">),</span> <span class="n">yv</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.</span><span class="p">),</span> <span class="n">yv</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
+<span class="go">(0.088256964215677, -0.7812128213002889, -1.102495575160179)</span>
+</pre></div>
+</div>
+<p>The evaluation for different orders can be carried out in one call by
+providing a list or NumPy array as argument for the <cite>v</cite> parameter:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">yv</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="mf">1.</span><span class="p">)</span>
+<span class="go">array([ 0.08825696, -0.78121282, -1.10249558])</span>
+</pre></div>
+</div>
+<p>Evaluate the function at several points for order 0 by providing an
+array for <cite>z</cite>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">yv</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
+<span class="go">array([-0.44451873,  0.37685001,  0.22352149])</span>
+</pre></div>
+</div>
+<p>If <cite>z</cite> is an array, the order parameter <cite>v</cite> must be broadcastable to
+the correct shape if different orders shall be computed in one call.
+To calculate the orders 0 and 1 for an 1D array:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">orders</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orders</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(2, 1)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">yv</span><span class="p">(</span><span class="n">orders</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
+<span class="go">array([[-0.44451873,  0.37685001,  0.22352149],</span>
+<span class="go">       [-1.47147239,  0.32467442, -0.15806046]])</span>
+</pre></div>
+</div>
+<p>Plot the functions of order 0 to 3 from 0 to 10.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">yv</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;$Y_</span><span class="si">{</span><span class="n">i</span><span class="si">!r}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ptsa.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+</ul>
+
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="ptsa.special.jv.html"
+                          title="previous chapter">ptsa.special.jv</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="ptsa.special.spherical_jn.html"
+                          title="next chapter">ptsa.special.spherical_jn</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/generated/ptsa.special.yv.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ptsa.special.spherical_jn.html" title="ptsa.special.spherical_jn"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ptsa.special.jv.html" title="ptsa.special.jv"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.1.dev1+gb90c023 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../ptsa.special.html" >ptsa.special module</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">ptsa.special.yv</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Dominik Beutel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

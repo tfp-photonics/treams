@@ -1,0 +1,84 @@
+﻿ptsa.TMatrixC
+=============
+
+.. currentmodule:: ptsa
+
+.. autoclass:: TMatrixC
+   :no-members:
+   :no-inherited-members:
+   :no-special-members:
+
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         TMatrixC.__getitem__
+         TMatrixC.__mul__
+         TMatrixC.all
+         TMatrixC.any
+         TMatrixC.astype
+         TMatrixC.conj
+         TMatrixC.conjugate
+         TMatrixC.couple
+         TMatrixC.couple_lattice
+         TMatrixC.cumprod
+         TMatrixC.cumsum
+         TMatrixC.cylinder
+         TMatrixC.diagonal
+         TMatrixC.flatten
+         TMatrixC.from_array
+         TMatrixC.globalmat
+         TMatrixC.grid
+         TMatrixC.index
+         TMatrixC.indices
+         TMatrixC.interacted
+         TMatrixC.interacted_lattice
+         TMatrixC.max
+         TMatrixC.min
+         TMatrixC.prod
+         TMatrixC.relax
+         TMatrixC.rotated
+         TMatrixC.sum
+         TMatrixC.trace
+         TMatrixC.translated
+         TMatrixC.transpose
+         TMatrixC.xw
+      
+         TMatrixC.__getitem__
+         TMatrixC.__mul__
+  
+
+  
+  
+   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. autosummary::
+         :toctree:
+      
+         TMatrixC.T
+         TMatrixC.ann
+         TMatrixC.basis
+         TMatrixC.changepoltype
+         TMatrixC.efield
+         TMatrixC.expand
+         TMatrixC.expandlattice
+         TMatrixC.imag
+         TMatrixC.k0
+         TMatrixC.kpar
+         TMatrixC.krhos
+         TMatrixC.ks
+         TMatrixC.lattice
+         TMatrixC.material
+         TMatrixC.modetype
+         TMatrixC.ndim
+         TMatrixC.permute
+         TMatrixC.poltype
+         TMatrixC.real
+         TMatrixC.rotate
+         TMatrixC.shape
+         TMatrixC.size
+         TMatrixC.translate
+         TMatrixC.xw_ext_avg
+         TMatrixC.xw_sca_avg
+  
+  

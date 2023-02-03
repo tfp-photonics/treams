@@ -1,0 +1,6 @@
+ptsa.PlaneWaveBasis.isglobal
+============================
+
+.. currentmodule:: ptsa
+
+.. autoattribute:: PlaneWaveBasis.isglobal

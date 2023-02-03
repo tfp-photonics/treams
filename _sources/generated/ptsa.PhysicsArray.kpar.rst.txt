@@ -1,0 +1,6 @@
+ptsa.PhysicsArray.kpar
+======================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: PhysicsArray.kpar

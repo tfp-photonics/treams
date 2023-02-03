@@ -1,0 +1,6 @@
+ptsa.SMatrix.slab
+=================
+
+.. currentmodule:: ptsa
+
+.. automethod:: SMatrix.slab

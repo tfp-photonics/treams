@@ -1,0 +1,6 @@
+ptsa.PhysicsArray.material
+==========================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: PhysicsArray.material

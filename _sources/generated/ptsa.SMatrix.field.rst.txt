@@ -1,0 +1,6 @@
+ptsa.SMatrix.field
+==================
+
+.. currentmodule:: ptsa
+
+.. automethod:: SMatrix.field
