@@ -27,10 +27,8 @@ tested is using [MSYS2](https://www.msys2.org/) with the ``mingw64`` environment
 Likely, other python versions based on ``mingw-w64`` might also work.
 
 ## Documentation
-The code is documented with docstrings and `sphinx`. Run
-`sphinx-build -b html docs docs/_build/html` and you'll find a nice HTML-page at
-`docs/_build/index.html`. For this to work properly, install the program using the
-development environment method.
+
+The documentation can be found at https://tfp-photonics.github.io/ptsa.
 
 ## Features
 
