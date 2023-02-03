@@ -87,7 +87,7 @@ For the sake of a more diverse example we will do the latter:
 
 .. literalinclude:: examples/cluster.py
    :language: python
-   :lines: 21-28
+   :lines: 21-27
 
 Mostly, we set up here a grid of points and separate the different regions. Finally, we
 take the region outside of the circumscribing sphere of the snowman. Using the global
@@ -99,7 +99,7 @@ T-matrix and mostly repeat the previous steps.
 
 .. literalinclude:: examples/cluster.py
    :language: python
-   :lines: 30-32
+   :lines: 29-31
 
 Now we can plot the full field around our snowman. We only add the illuminating plane
 wave and arrive at:

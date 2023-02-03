@@ -21,7 +21,6 @@ print(f"scattering cross section: {xs[0]}, extinction cross section: {xs[1]}")
 grid = np.mgrid[-300:300:101j, 0:1, -300:300:101j].squeeze().transpose((1, 2, 0))
 field = np.zeros_like(grid, complex)
 
-valid = snowman.valid_points(grid, radii)
 snowman_global = snowman.globalmat(ptsa.SphericalWaveBasis.default(6))
 valid = snowman_global.valid_points(grid, [250])
 sca = snowman_global @ pw.expand(snowman_global.basis) @ pw
