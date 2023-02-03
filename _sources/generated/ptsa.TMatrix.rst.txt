@@ -45,8 +45,8 @@
          TMatrix.valid_points
          TMatrix.xs
       
-         TMatrix.__getitem__
          TMatrix.__mul__
+         TMatrix.__getitem__
   
 
   
