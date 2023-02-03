@@ -4,11 +4,9 @@ import itertools
 import numpy as np
 
 import ptsa.special as sc
-from ptsa import config, misc, pw, util
+from ptsa import config, misc, util
 from ptsa._core import PhysicsArray
-from ptsa._core import PlaneWaveBasis as PWB
 from ptsa._core import PlaneWaveBasisPartial as PWBP
-from ptsa._lattice import Lattice
 from ptsa._material import Material
 from ptsa._operators import translate
 from ptsa.coeffs import fresnel
@@ -290,7 +288,9 @@ class SMatrix:
         pu, pd = [tm.expandlattice(basis=basis, modetype=i) for i in ("up", "down")]
         au, ad = [tm.expand.inv(basis=basis, modetype=i) for i in ("up", "down")]
         eye = np.eye(len(basis))
-        return cls([[eye + pu @ tm @ au, pu @ tm @ ad], [pd @ tm @ au, eye + pd @ tm @ ad]])
+        return cls(
+            [[eye + pu @ tm @ au, pu @ tm @ ad], [pd @ tm @ au, eye + pd @ tm @ ad]]
+        )
 
     def add(self, sm):
         """
@@ -426,7 +426,8 @@ class SMatrix:
 
         Args:
             r (float, array_like): Array of the positions to probe
-            direction (int, optional): The direction of the field, options are `-1` and `1`
+            direction (int, optional): The direction of the field, options are `-1` and
+                `1`
             above (bool, optional): Take the field above or below the S-matrix
 
         Returns
@@ -473,7 +474,9 @@ class SMatrix:
 
         .. math::
 
-            \langle S_z \rangle = \frac{1}{2} \Re (\boldsymbol E \times \boldsymbol H^\ast) \boldsymbol{\hat{z}}
+            \langle S_z \rangle
+            = \frac{1}{2}
+            \Re (\boldsymbol E \times \boldsymbol H^\ast) \boldsymbol{\hat{z}}
 
         on one side of the S-matrix with the given coefficients.
 
@@ -535,11 +538,13 @@ class SMatrix:
 
         .. math::
 
-            \int_{A_\text{unit cell}} \mathrm d A \int_{z_0}^{z_1} \mathrm d z |G_+(\boldsymbol r)|^2 - |G_-(\boldsymbol r)|^2
+            \int_{A_\text{unit cell}} \mathrm d A \int_{z_0}^{z_1} \mathrm d z
+            |G_+(\boldsymbol r)|^2 - |G_-(\boldsymbol r)|^2
 
         on one side of the S-matrix with the given coefficients. The calculation can
         also be done for an infinitely thin sheet. The Riemann-Silberstein vectors are
-        :math:`\sqrt{2} \boldsymbol G_\pm(\boldsymbol r) = \boldsymbol E(\boldsymbol r) + \mathrm i Z_0 Z \boldsymbol H(\boldsymbol r)`.
+        :math:`\sqrt{2} \boldsymbol G_\pm(\boldsymbol r) = \boldsymbol E(\boldsymbol r)
+        + \mathrm i Z_0 Z \boldsymbol H(\boldsymbol r)`.
 
         Args:
             coeffs (2-tuple): The first entry are the upwards propagating modes the
@@ -589,7 +594,8 @@ class SMatrix:
 
         Args:
             illu (complex, array_like): Expansion coefficients for the incoming light
-            direction (int, optional): The direction of the field, options are `-1` and `1`
+            direction (int, optional): The direction of the field, options are `-1` and
+                `1`
 
         Returns:
             tuple
@@ -616,7 +622,8 @@ class SMatrix:
 
         Args:
             illu (complex, array_like): Expansion coefficients for the incoming light
-            direction (int, optional): The direction of the field, options are `-1` and `1`
+            direction (int, optional): The direction of the field, options are `-1` and
+                `1`
 
         Returns:
             tuple
@@ -645,8 +652,10 @@ class SMatrix:
 
             \begin{pmatrix}
                 S_{\uparrow \uparrow} & S_{\uparrow \downarrow} \\
-                -S_{\downarrow \downarrow}^{-1} S_{\downarrow \uparrow} S_{\uparrow \uparrow} &
-                S_{\downarrow \downarrow}^{-1} (\mathbb{1} - S_{\downarrow \uparrow} S_{\uparrow \downarrow})
+                -S_{\downarrow \downarrow}^{-1}
+                S_{\downarrow \uparrow} S_{\uparrow \uparrow} &
+                S_{\downarrow \downarrow}^{-1} (\mathbb{1} - S_{\downarrow \uparrow}
+                S_{\uparrow \downarrow})
             \end{pmatrix}\,.
 
         Returns:
@@ -677,8 +686,10 @@ class SMatrix:
 
             \begin{pmatrix}
                 S_{\uparrow \uparrow} & S_{\uparrow \downarrow} \\
-                -S_{\downarrow \downarrow}^{-1} S_{\downarrow \uparrow} S_{\uparrow \uparrow} &
-                S_{\downarrow \downarrow}^{-1} (\mathbb{1} - S_{\downarrow \uparrow} S_{\uparrow \downarrow})
+                -S_{\downarrow \downarrow}^{-1} S_{\downarrow \uparrow}
+                    S_{\uparrow \uparrow} &
+                S_{\downarrow \downarrow}^{-1} (\mathbb{1} - S_{\downarrow \uparrow}
+                    S_{\uparrow \downarrow})
             \end{pmatrix}
             \boldsymbol v
             =

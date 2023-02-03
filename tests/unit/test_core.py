@@ -543,22 +543,31 @@ class TestPhysicsArray:
         b = ptsa.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
         p = ptsa.PhysicsArray([[1, 0], [0, 1]], basis=b, poltype="helicity")
         x = p.changepoltype()
-        assert (x == np.sqrt(.5) * np.array([[-1, 1], [1, 1]])).all() and x.poltype == ("parity", "helicity")
+        assert (
+            x == np.sqrt(0.5) * np.array([[-1, 1], [1, 1]])
+        ).all() and x.poltype == ("parity", "helicity")
 
     def test_changepoltype_inv(self):
         b = ptsa.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
         p = ptsa.PhysicsArray([[1, 0], [0, 1]], basis=b, poltype="helicity")
         x = p.changepoltype.inv()
-        assert (x == np.sqrt(.5) * np.array([[-1, 1], [1, 1]])).all() and x.poltype == ("helicity", "parity")
+        assert (
+            x == np.sqrt(0.5) * np.array([[-1, 1], [1, 1]])
+        ).all() and x.poltype == ("helicity", "parity")
 
     def test_efield(self):
         b = ptsa.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
         p = ptsa.PhysicsArray([1, 0], basis=b, k0=1, poltype="helicity")
         x = p.efield([1, 0, 0])
-        assert (x == (ptsa.special.vsph2car(
-            ptsa.special.vsw_rA(1, 0, 1, np.pi / 2, 0, [0, 1]),
-            [1, np.pi / 2, 0])
-        )).all()
+        assert (
+            x
+            == (
+                ptsa.special.vsph2car(
+                    ptsa.special.vsw_rA(1, 0, 1, np.pi / 2, 0, [0, 1]),
+                    [1, np.pi / 2, 0],
+                )
+            )
+        ).all()
 
     def test_efield_inv(self):
         with pytest.raises(NotImplementedError):

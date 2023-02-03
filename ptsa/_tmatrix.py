@@ -512,7 +512,6 @@ class TMatrixC(PhysicsArray):
         a = tm.expand.inv(basis=basis)
         return cls(p @ tm @ a)
 
-
     @property
     def xw_ext_avg(self):
         """

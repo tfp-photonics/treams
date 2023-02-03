@@ -749,10 +749,10 @@ def triu(a, k=0):
 
 
 @implements(np.zeros_like)
-def zeros_like(a, dtype=None, order='K', shape=None):
+def zeros_like(a, dtype=None, order="K", shape=None):
     return np.zeros_like(np.asarray(a), dtype=dtype, order=order, shape=shape)
 
 
 @implements(np.ones_like)
-def ones_like(a, dtype=None, order='K', shape=None):
+def ones_like(a, dtype=None, order="K", shape=None):
     return np.ones_like(np.asarray(a), dtype=dtype, order=order, shape=shape)

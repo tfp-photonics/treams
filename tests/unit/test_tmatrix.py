@@ -104,7 +104,9 @@ class TestProperties:
 class TestXs:
     def test(self):
         tm = TMatrix.sphere(2, 3, [4], [(2 + 1j, 1, 1), (9, 1, 2)])
-        illu = ptsa.PhysicsArray([[.5]], basis=ptsa.PlaneWaveBasis([[0, 0, tm.ks[0], 0]]))
+        illu = ptsa.PhysicsArray(
+            [[0.5]], basis=ptsa.PlaneWaveBasis([[0, 0, tm.ks[0], 0]])
+        )
         illu = illu.expand(tm.basis, k0=tm.k0, material=tm.material) @ illu
         xs = tm.xs(illu, 0.125)
         assert isclose(xs[0][0], 3.194830855171616,) and isclose(xs[1][0], 5.63547158)

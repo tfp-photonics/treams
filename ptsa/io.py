@@ -444,7 +444,7 @@ def _write_hdf5(
 
 
 def _convert_to_k0(x, xtype, xunit, k0unit=r"nm^{-1}"):
-    c = 299792458.
+    c = 299792458.0
     k0unit = INVLENGTHS[k0unit]
     if xtype in ("freq", "nu"):
         xunit = FREQUENCIES[xunit]
