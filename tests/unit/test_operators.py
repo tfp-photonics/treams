@@ -287,7 +287,7 @@ class TestExpandLattice:
         b = ptsa.SphericalWaveBasis([[1, -1, 0], [1, 1, 0]])
         where = [[True, False], [False, False]]
         lattice = ptsa.Lattice(1)
-        x = ptsa.expandlattice(b, lattice, k0=3, where=where)
+        x = ptsa.expandlattice(lattice, basis=b, k0=3, where=where)
         y = ptsa.PhysicsArray(
             [
                 [
@@ -312,7 +312,7 @@ class TestExpandLattice:
         b = ptsa.SphericalWaveBasis([[1, -1, 0], [1, 1, 0]])
         where = [[True, False], [False, False]]
         lattice = ptsa.Lattice([[1, 0], [0, 1]])
-        x = ptsa.expandlattice(b, lattice, k0=3, where=where)
+        x = ptsa.expandlattice(lattice, basis=b, k0=3, where=where)
         y = ptsa.PhysicsArray(
             [
                 [
@@ -337,7 +337,7 @@ class TestExpandLattice:
         b = ptsa.SphericalWaveBasis([[1, -1, 0], [1, 1, 0]])
         where = [[True, False], [False, False]]
         lattice = ptsa.Lattice(np.eye(3))
-        x = ptsa.expandlattice(b, lattice, k0=3, where=where)
+        x = ptsa.expandlattice(lattice, basis=b, k0=3, where=where)
         y = ptsa.PhysicsArray(
             [
                 [
@@ -361,13 +361,13 @@ class TestExpandLattice:
     def test_sw_kpar(self):
         b = ptsa.SphericalWaveBasis([[1, -1, 0], [1, 1, 0]])
         with pytest.raises(ValueError):
-            ptsa.expandlattice(b, [[1, 0], [0, 1]], 0, k0=1)
+            ptsa.expandlattice([[1, 0], [0, 1]], 0, basis=b, k0=1)
 
     def test_cw_sw(self):
         a = ptsa.CylindricalWaveBasis([[0.3, 2, 0]])
         b = ptsa.SphericalWaveBasis([[1, -1, 0], [1, 1, 0]])
         where = [True, False]
-        x = ptsa.expandlattice((a, b), 2, k0=3, material=(1, 4, 0), where=where)
+        x = ptsa.expandlattice(2, basis=(a, b), k0=3, material=(1, 4, 0), where=where)
         y = ptsa.PhysicsArray(
             [[ptsa.sw.periodic_to_cw(2, 0, 0, 1, -1, 0, 6, 2), 0]],
             basis=(a, b),
@@ -386,7 +386,7 @@ class TestExpandLattice:
         where = [True, False]
         lattice = ptsa.Lattice([[2, 0], [0, 2]])
         x = ptsa.expandlattice(
-            (a, b), lattice, [3, 0], k0=2.5, material=(1, 4, 0), where=where
+            lattice, [3, 0], basis=(a, b), k0=2.5, material=(1, 4, 0), where=where
         )
         y = ptsa.PhysicsArray(
             [[ptsa.sw.periodic_to_pw(3, 0, 4, 0, 1, -1, 0, 4), 0]],
@@ -404,7 +404,7 @@ class TestExpandLattice:
         b = ptsa.CylindricalWaveBasis([[0.1, -1, 0], [0.1, 1, 0]])
         where = [[True, False], [False, False]]
         lattice = ptsa.Lattice(1, "x")
-        x = ptsa.expandlattice(b, lattice, k0=3, where=where)
+        x = ptsa.expandlattice(lattice, basis=b, k0=3, where=where)
         y = ptsa.PhysicsArray(
             [
                 [
@@ -428,7 +428,7 @@ class TestExpandLattice:
         b = ptsa.CylindricalWaveBasis([[0.1, -1, 0], [0.1, 1, 0]])
         where = [[True, False], [False, False]]
         lattice = ptsa.Lattice([[1, 0], [0, 1]])
-        x = ptsa.expandlattice(b, lattice, k0=3, where=where)
+        x = ptsa.expandlattice(lattice, basis=b, k0=3, where=where)
         y = ptsa.PhysicsArray(
             [
                 [
@@ -451,7 +451,7 @@ class TestExpandLattice:
     def test_cw_kpar(self):
         b = ptsa.CylindricalWaveBasis([[1, -1, 0], [1, 1, 0]])
         with pytest.raises(ValueError):
-            ptsa.expandlattice(b, lattice=[[1, 0], [0, 1]], kpar=0, k0=1)
+            ptsa.expandlattice(lattice=[[1, 0], [0, 1]], basis=b, kpar=0, k0=1)
 
     def test_pw_cw(self):
         a = ptsa.PlaneWaveBasis([[3, 0, 4, 0]])
@@ -459,7 +459,7 @@ class TestExpandLattice:
         where = [True, False]
         lattice = ptsa.Lattice(2, "x")
         x = ptsa.expandlattice(
-            (a, b), lattice, 3, k0=2.5, material=(1, 4, 0), where=where
+            lattice, 3, basis=(a, b), k0=2.5, material=(1, 4, 0), where=where
         )
         y = ptsa.PhysicsArray(
             [[ptsa.cw.periodic_to_pw(3, 0, 4, 0, 4, -1, 0, 2), 0]],
