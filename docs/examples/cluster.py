@@ -14,22 +14,25 @@ snowballs = [ptsa.TMatrix.sphere(lmax, k0, r, [snow, air]) for r in radii]
 positions = [[0, 0, -100], [0, 0, 150], [-85, 145, -5], [-80, -135, -7.5]]
 snowman = ptsa.TMatrix.cluster(snowballs, positions).interacted()
 
-illu = ptsa.plane_wave(k0, 0, 0)
-xs = snowman.xs(illu)
+pw = ptsa.plane_wave(k0, 0, 0, 0)
+xs = snowman.xs(pw)
 print(f"scattering cross section: {xs[0]}, extinction cross section: {xs[1]}")
 
 grid = np.mgrid[-300:300:101j, 0:1, -300:300:101j].squeeze().transpose((1, 2, 0))
 field = np.zeros_like(grid, complex)
-valid = np.logical_and.reduce(
-    [np.linalg.norm(grid - p, axis=-1) > r for p, r in zip(positions, radii)]
-)
-sca = snowman @ illu
+
+valid = snowman.valid_points(grid, radii)
+snowman_global = snowman.globalmat(ptsa.SphericalWaveBasis.default(6))
+valid = snowman_global.valid_points(grid, [250])
+sca = snowman_global @ pw.expand(snowman_global.basis) @ pw
 field[valid, :] = (sca.efield(grid[valid, :]) * sca[:, None]).sum(axis=-2)
 
-snowman = snowman.globalmat(ptsa.SphericalWaveBasis.default(6))
-scattered_field_coeff = snowman.field(grid[outside, :])
-field[outside, :] = np.sum(scattered_field_coeff * (snowman @ illu), axis=-2)
-field[valid] += illu.efield(grid[valid, :])
+sca = snowman @ pw.expand(snowman.basis) @ pw
+valid = valid ^ snowman.valid_points(grid, radii)
+field[valid, :] = (sca.efield(grid[valid, :]) * sca[:, None]).sum(axis=-2)
+
+valid = snowman.valid_points(grid, radii)
+field[valid, :] += (pw.efield(grid[valid, :]) * pw[:, None]).sum(axis=-2)
 
 fig, ax = plt.subplots()
 pcm = ax.pcolormesh(

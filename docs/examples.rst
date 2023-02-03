@@ -87,7 +87,7 @@ For the sake of a more diverse example we will do the latter:
 
 .. literalinclude:: examples/cluster.py
    :language: python
-   :lines: 21-31
+   :lines: 21-28
 
 Mostly, we set up here a grid of points and separate the different regions. Finally, we
 take the region in between the spheres and calculate the relation of the expansion
@@ -103,7 +103,7 @@ expansion:
 
 .. literalinclude:: examples/cluster.py
    :language: python
-   :lines: 50-56
+   :lines: 30-32
 
 Now we can plot the full field around our snowman. We only add the illuminating plane
 wave and arrive at:
@@ -157,7 +157,7 @@ global T-matrix for the computation of the field outside of the T-matrix.
    :language: python
    :lines: 20-27
 
-.. plot:: examples/cylindercluster.py
+.. .. plot:: examples/cylindercluster.py
 
 1D-arrays of particles
 ----------------------
@@ -194,7 +194,7 @@ Having the definition of the different areas out of the way, one can do the calc
 now for the different points. First, we have to define the expansion modes around the
 point, where we probe the field at. 
 
-.. plot:: examples/chain.py
+.. .. plot:: examples/chain.py
 
 Q-matrix examples
 =================

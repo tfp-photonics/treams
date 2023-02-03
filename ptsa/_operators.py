@@ -532,8 +532,9 @@ def expand(
 class Expand(Operator):
     _func = staticmethod(expand)
 
-    def __call__(self, basis, modetype=None, **kwargs):
-        kwargs["basis"] = basis
+    def __call__(self, basis=None, modetype=None, **kwargs):
+        if basis is not None:
+            kwargs["basis"] = basis
         if modetype is not None:
             kwargs["modetype"] = modetype
         return super().__call__(**kwargs)

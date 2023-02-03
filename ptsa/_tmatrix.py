@@ -5,9 +5,9 @@ import numpy as np
 from ptsa import config
 from ptsa._core import CylindricalWaveBasis as CWB
 from ptsa._core import PhysicsArray
-from ptsa._core import SphericalWaveBasis as SWB
 from ptsa._core import PlaneWaveBasis as PWB
 from ptsa._core import PlaneWaveBasisPartial as PWBP
+from ptsa._core import SphericalWaveBasis as SWB
 from ptsa._material import Material
 from ptsa.coeffs import mie, mie_cyl
 from ptsa.util import AnnotationError
@@ -286,11 +286,17 @@ class TMatrix(PhysicsArray):
         if not self.material.isreal:
             raise NotImplementedError
         illu = PhysicsArray(illu)
+        illu_basis = illu.basis
+        illu_basis = illu_basis[-2] if isinstance(illu_basis, tuple) else illu_basis
+        if not isinstance(illu_basis, SWB):
+            illu = illu.expand(self.basis) @ illu
         p = self @ illu
-        m = self.expand(modetype="regular") / np.power(self.ks[self.basis.pol], 2)
+        invksq = np.power(self.ks[self.basis.pol], -2)
+        m = self.expand() * invksq
+        del illu.modetype
         return (
-            0.5 * np.sum(np.real(p.conjugate() * (m @ p)), axis=-2) / flux,
-            -0.5 * np.sum(np.real(illu.conjugate() * (m @ p)), axis=-2) / flux,
+            0.5 * np.real(p.conjugate().T @ (m @ p)) / flux,
+            -0.5 * np.real(illu.conjugate().T @ (p * invksq)) / flux,
         )
 
     def rotated(self, phi, theta=0, psi=0, **kwargs):
@@ -372,14 +378,14 @@ class TMatrix(PhysicsArray):
             np.linalg.solve(self.couple_lattice(lattice, kpar, eta=eta), self)
         )
 
-    def grid(self, grid, radii):
+    def valid_points(self, grid, radii):
         grid = np.asarray(grid)
         if grid.shape[-1] != 3:
             raise ValueError("invalid grid")
         if len(radii) != len(self.basis.positions):
             raise ValueError("invalid length of 'radii'")
-        res = np.ones_like(grid, bool)
-        for r, p in zip(radii, self.positions):
+        res = np.ones(grid.shape[:-1], bool)
+        for r, p in zip(radii, self.basis.positions):
             res &= np.sum(np.power(grid - p, 2), axis=-1) > r * r
         return res
 
@@ -673,13 +679,14 @@ class TMatrixC(PhysicsArray):
         return res
 
 
-def plane_wave(*args, basis=None, k0=None, material=None, modetype=None, poltype=None):
-    *args, amp = args
+def plane_wave(
+    *args, amp=1, basis=None, k0=None, material=None, modetype=None, poltype=None
+):
     if basis is None:
         if len(args) == 4:
-            basis = PWB.default([args])
+            basis = PWB.default([args[:3]])
         else:
-            basis = PWBP.default([args])
+            basis = PWBP.default([args[:2]])
     if isinstance(basis, PWBP):
         modetype = "up" if modetype is None else modetype
         material = Material() if material is None else Material(material)
@@ -693,7 +700,7 @@ def plane_wave(*args, basis=None, k0=None, material=None, modetype=None, poltype
     else:
         basis_c = basis
     args = np.array(args)
-    res = [np.abs(args - x) < 1e-14 for x in basis_c]
+    res = [(np.abs(args - x) < 1e-14).all() for x in basis_c]
     if sum(res) != 1:
         raise ValueError("cannot find matching mode in basis")
     res = np.array(res, complex) * amp

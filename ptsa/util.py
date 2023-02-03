@@ -322,12 +322,12 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         out = kwargs.get("out")
         out = out if isinstance(out, tuple) else (out,)
         ann_out = tuple(getattr(i, "ann", None) for i in out)
-        if out != (None,):
+        if len(out) != 1 or out[0] is not None:
             kwargs["out"] = tuple(map(_cast_nparray, out))
 
         res = getattr(ufunc, method)(*inputs_noaa, **kwargs)
         istuple, res = (True, res) if isinstance(res, tuple) else (False, (res,))
-        if out == (None,):
+        if len(out) == 1 and out[0] is None:
             res = tuple(map(_cast_annarray, res))
         for a, r in zip(ann_out, res):
             if a is not None:
