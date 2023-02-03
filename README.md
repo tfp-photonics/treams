@@ -2,8 +2,7 @@
 
 The package "**p**eriodic **T**-matrix **s**cattering **a**lgorithms" provides a
 framework to simplify computations of the electromagnetic scattering of waves at finite
-and periodically infinite arrangements of particles. All methods are suitable for the
-use of chiral materials.
+and at periodic arrangements of particles.
 
 ## Installation
 
@@ -12,52 +11,11 @@ use of chiral materials.
 To install the package with pip, use
 
 ```sh
-pip install git+https://git.scc.kit.edu/photonics/ptsa.git
+pip install git+https://github.com/tfp-photonics/ptsa.git
 ```
 
 If you're using the system wide installed version of python, you might consider the
 ``--user`` option.
-
-### Installation for development
-
-1. Clone the repository with
-
-```sh
-git clone git@git.scc.kit.edu/photonics/ptsa.git
-```
-
-or
-
-```sh
-git clone https://git.scc.kit.edu/photonics/ptsa.git
-```
-
-and enter the directory
-```sh
-cd ptsa
-```
-
-2. Create a conda environment with
-
-```sh
-conda env create -f environment.yml
-```
-
-which installs all packages needed for building and running ptsa, testing, different
-benchmarks, and building the documentation. Activate the environment:
-
-```sh
-conda activate ptsa-dev
-```
-
-3. Setup the package with
-
-```sh
-pip install -e .
-```
-
-This last step makes the program available in the environment independently of the
-current folder. This is especially necessary for correctly building the documentation.
 
 ### Running on Windows
 
@@ -76,8 +34,8 @@ development environment method.
 
 ## Features
 
-* [x] T-matrices using a spherical and using a cylindrical basis set
-* [x] Calculations in helicity basis, enabling the use of chiral media throughout
+* [x] T-matrix calculations using a spherical or cylindrical wave basis set
+* [x] Calculations in helicity and parity (TE/TM) basis
 * [x] Scattering from clusters of particles
 * [x] Scattering from particles and clusters arranged in 3d-, 2d-, and 1d-lattices
 * [x] Calculation of light propagation in stratified media
