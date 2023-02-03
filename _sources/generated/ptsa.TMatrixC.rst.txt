@@ -45,8 +45,8 @@
          TMatrixC.transpose
          TMatrixC.xw
       
-         TMatrixC.__getitem__
          TMatrixC.__mul__
+         TMatrixC.__getitem__
   
 
   
