@@ -13,7 +13,13 @@ Classes
 
    TMatrix
    TMatrixC
-   QMatrix
+   SMatrix
+   PlaneWaveBasis
+   SphericalWaveBasis
+   CylindricalWaveBasis
+   Lattice
+   Material
+   PhysicsArray
 
 
 Modules
@@ -50,6 +56,23 @@ tasks.
    ptsa.misc
 """
 
-from ptsa._qmatrix import QMatrix
-from ptsa._tmatrix import TMatrix
-from ptsa._tmatrixc import TMatrixC
+from ptsa._core import (  # noqa: F401
+    CylindricalWaveBasis,
+    PhysicsArray,
+    PlaneWaveBasis,
+    PlaneWaveBasisPartial,
+    SphericalWaveBasis,
+)
+from ptsa._lattice import Lattice  # noqa: F401
+from ptsa._material import Material  # noqa: F401
+from ptsa._operators import (  # noqa: F401
+    changepoltype,
+    efield,
+    expand,
+    expandlattice,
+    permute,
+    rotate,
+    translate,
+)
+from ptsa._smatrix import SMatrix  # noqa: F401
+from ptsa._tmatrix import TMatrix, TMatrixC, plane_wave  # noqa: F401

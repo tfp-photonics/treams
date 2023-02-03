@@ -2,23 +2,27 @@ import warnings
 
 import numpy as np
 
-import ptsa.lattice as la
-import ptsa.special as sc
-from ptsa import cw, ebcm, misc, pw, sw
-from ptsa._tmatrix_base import TMatrixBase
-from ptsa.coeffs import mie
-from ptsa import io
+from ptsa import config
+from ptsa._core import CylindricalWaveBasis as CWB
+from ptsa._core import PhysicsArray
+from ptsa._core import PlaneWaveBasis as PWB
+from ptsa._core import PlaneWaveBasisPartial as PWBP
+from ptsa._core import SphericalWaveBasis as SWB
+from ptsa._material import Material
+from ptsa.coeffs import mie, mie_cyl
+from ptsa.util import AnnotationError
 
 
-class TMatrix(TMatrixBase):
+class TMatrix(PhysicsArray):
     """
     T-matrix for spherical modes
 
     The T-matrix is square, with the modes defined in the corresponding fields. The
     order of the T-matrix can be arbitrary, but the normalization is fixed to that of
     the modes defined in :func:`ptsa.special.vsw_A`, :func:`ptsa.special.vsw_M`, and
-    :func:`ptsa.special.vsw_N`. A default order according to :func:`TMatrix.defaultmodes`
-    is assumed if not specified. Helicity and parity modes are possible, but not mixed.
+    :func:`ptsa.special.vsw_N`. A default order according to
+    :func:`TMatrix.defaultmodes` is assumed if not specified. Helicity and parity modes
+    are possible, but not mixed.
 
     The embedding medium is described by permittivity, permeability, and the chirality
     parameter.
@@ -27,56 +31,49 @@ class TMatrix(TMatrixBase):
     be specified. Also modes must have as first element a position index.
 
     Args:
-        tmat (float or complex, array): T-matrix itself
+        arr (float or complex, array): T-matrix itself
         k0 (float): Wave number in vacuum
-        epsilon (float or complex, optional): Relative permittivity of the embedding medium
-        mu (float or complex, optional): Relative permeability of the embedding medium
-        kappa (float or complex, optional): Chirality parameter of the embedding medium
-        positions (float, (3,)- or (M,3)-array, optional): Positions for a local T-matrix
-        helicity (bool, optional): Helicity or parity modes
-        modes (iterable, optional): Sorting of the T-matrix entries. Either four entries for
-            local T-Matrices, with the first specifying the corresponding position
-            or three entries only, specifying degree, order, and polarization.
+        basis (SphericalWaveBasis, optional): Basis definition
+        material (Material, optional): Embedding material, defaults to vacuum
+        poltype (str, optional): Helicity or parity basis, defauts to config.POLTYPE
 
     Attributes:
         t (float or complex, (N,N)-array): T-matrix
         k0 (float): Wave number in vacuum
-        positions (float, (3,)- or (M,3)-array): Positions for a local T-matrix
-        epsilon (float or complex, optional): Relative permittivity of the embedding medium
-        mu (complex): Relative permeability of the embedding medium
-        kappa (complex): Chirality parameter of the embedding medium
-        helicity (bool): Helicity or parity modes
-        pidx (int, (N,)-array): Position index for each column/row of the T-matrix
-        l (int, (N,)-array): Degree of the mode for each column/row of the T-matrix
-        m (int, (N,)-array): Order of the mode for each column/row of the T-matrix
-        pol (int, (N,)-array): Polarization of the mode for each column/row of the T-matrix
-        ks (float or complex (2,)-array): Wave numbers in the medium for both polarizations
+        basis (SphericalWaveBasis): Basis modes
+        material (Material): Material definition
+        poltype (str): Helicity or parity basis
     """
 
-    def __init__(
-        self,
-        tmat,
-        k0,
-        epsilon=1,
-        mu=1,
-        kappa=0,
-        positions=None,
-        helicity=True,
-        modes=None,
-    ):
-        super().__init__(tmat, k0, epsilon, mu, kappa, positions, helicity, modes)
-        if modes is None:
-            modes = TMatrix.defaultmodes(
-                TMatrix.defaultlmax(self.t.shape[0], self.positions.shape[0]),
-                self.positions.shape[0],
-            )
-        modes = self._check_modes(modes)
-        if modes[0].size != self.t.shape[0]:
-            raise ValueError("dimensions of modes and T-matrix do not match")
-        self.pidx, self.l, self.m, self.pol = modes
+    def _check(self):
+        super()._check()
+        if not isinstance(self.k0, (int, float, np.floating, np.integer)):
+            raise AnnotationError("invalid k0")
+        if self.poltype is None:
+            self.poltype = config.POLTYPE
+        if self.poltype not in ("parity", "helicity"):
+            raise AnnotationError("invalid poltype")
+        modetype = self.modetype
+        if modetype is None or (
+            modetype[0] in (None, "singular") and modetype[1] in (None, "regular")
+        ):
+            self.modetype = ("singular", "regular")
+        else:
+            raise AnnotationError("invalid modetype")
+        shape = np.shape(self)
+        if len(shape) != 2 or shape[0] != shape[1]:
+            raise AnnotationError(f"invalid shape: '{shape}'")
+        if self.basis is None:
+            self.basis = SWB.default(SWB.defaultlmax(shape[0]))
+        if self.material is None:
+            self.material = Material()
+
+    @property
+    def ks(self):
+        return self.material.ks(self.k0)
 
     @classmethod
-    def sphere(cls, lmax, k0, radii, epsilon, mu=None, kappa=None):
+    def sphere(cls, lmax, k0, radii, materials):
         """
         T-Matrix of a sphere
 
@@ -91,44 +88,72 @@ class TMatrix(TMatrixBase):
         Returns:
             TMatrix
         """
-        epsilon = np.array(epsilon)
-        if mu is None:
-            mu = np.ones_like(epsilon)
-        if kappa is None:
-            kappa = np.zeros_like(epsilon)
-        mu = np.array(mu)
-        kappa = np.array(kappa)
+        materials = [Material(m) for m in materials]
         radii = np.atleast_1d(radii)
-        if (
-            np.any([i.ndim != 1 for i in (epsilon, mu, kappa, radii)])
-            or not epsilon.size == mu.size == kappa.size == radii.size + 1
-        ):
-            raise ValueError(
-                f"dimensions of radii and material parameters do not match: {radii.size}, {epsilon.size}, {mu.size}, and {kappa.size}"
-            )
-        dim = TMatrix.defaultdim(lmax)
+        if radii.size != len(materials) - 1:
+            raise ValueError("incompatible lengths of radii and materials")
+        dim = SWB.defaultdim(lmax)
         tmat = np.zeros((dim, dim), np.complex128)
-        for l in range(1, lmax + 1):
-            miecoeffs = mie(l, k0 * radii, epsilon, mu, kappa)
-            pos = TMatrix.defaultdim(l - 1)
+        for l in range(1, lmax + 1):  # noqa: E741
+            miecoeffs = mie(l, k0 * radii, *zip(*materials))
+            pos = SWB.defaultdim(l - 1)
             for i in range(2 * l + 1):
                 tmat[
                     pos + 2 * i : pos + 2 * i + 2, pos + 2 * i : pos + 2 * i + 2
                 ] = miecoeffs[::-1, ::-1]
-        return cls(
-            tmat, k0, epsilon[-1], mu[-1], kappa[-1], modes=TMatrix.defaultmodes(lmax)
-        )
+        return cls(tmat, k0=k0, basis=SWB.default(lmax), material=materials[-1])
 
     @classmethod
-    def ebcm(cls, lmax, k0, r, dr, epsilon, mu=1, kappa=0, lint=None):
-        ks = k0 * misc.refractive_index(epsilon, mu, kappa)
-        zs = np.sqrt(np.array(mu) / epsilon)
-        modes = cls.ebcmmodes(lmax)
-        modes_int = modes if lint is None else cls.ebcmmodes(lint, mmax=lmax)
-        qm = ebcm.qmat(r, dr, ks, zs, modes_int[1:], modes[1:])
-        rqm = ebcm.qmat(r, dr, ks, zs, modes_int[1:], modes[1:], singular=False)
-        tm = -np.linalg.lstsq(qm, rqm, rcond=None)[0]
-        return cls(tm, k0, epsilon[-1], mu[-1], kappa[-1], modes=modes)
+    def cluster(cls, tmats, positions):
+        for tm in tmats:
+            if not tm.basis.isglobal:
+                raise ValueError("global basis required")
+        positions = np.array(positions)
+        if len(tmats) < positions.shape[0]:
+            warnings.warn("specified more positions than T-matrices")
+        elif len(tmats) > positions.shape[0]:
+            raise ValueError(
+                f"'{len(tmats)}' T-matrices "
+                f"but only '{positions.shape[0]}' positions given"
+            )
+        mat = tmats[0].material
+        k0 = tmats[0].k0
+        poltype = tmats[0].poltype
+        modes = [], [], []
+        pidx = []
+        dim = sum([tmat.shape[0] for tmat in tmats])
+        tres = np.zeros((dim, dim), complex)
+        i = 0
+        for j, tm in enumerate(tmats):
+            if tm.material != mat:
+                raise ValueError(f"incompatible materials: '{mat}' and '{tm.material}'")
+            if tm.k0 != k0:
+                raise ValueError(f"incompatible k0: '{k0}' and '{tm.k0}'")
+            if tm.poltype != poltype:
+                raise ValueError(f"incompatible modetypes: '{poltype}', '{tm.poltype}'")
+            dim = tm.shape[0]
+            for m, n in zip(modes, tm.basis["lmp"]):
+                m.extend(list(n))
+            pidx += [j] * dim
+            tres[i : i + dim, i : i + dim] = tm
+            i += dim
+        basis = SWB(zip(pidx, *modes), positions)
+        return cls(tres, k0=k0, material=mat, basis=basis, poltype=poltype)
+
+    # @classmethod
+    # def ebcm(cls, lmax, k0, r, dr, epsilon, mu=1, kappa=0, lint=None):
+    #     ks = k0 * misc.refractive_index(epsilon, mu, kappa)
+    #     zs = np.sqrt(np.array(mu) / epsilon)
+    #     modes = cls.ebcmmodes(lmax)
+    #     modes_int = modes if lint is None else cls.ebcmmodes(lint, mmax=lmax)
+    #     qm = ebcm.qmat(r, dr, ks, zs, modes_int[1:], modes[1:])
+    #     rqm = ebcm.qmat(r, dr, ks, zs, modes_int[1:], modes[1:], singular=False)
+    #     tm = -np.linalg.lstsq(qm, rqm, rcond=None)[0]
+    #     return cls(tm, k0, epsilon[-1], mu[-1], kappa[-1], modes=modes)
+
+    @property
+    def isglobal(self):
+        return self.basis.isglobal and self.lattice is None and self.kpar is None
 
     @property
     def xs_ext_avg(self):
@@ -140,20 +165,18 @@ class TMatrix(TMatrixBase):
         Returns:
             float or complex
         """
-        if self.positions.shape[0] > 1:
+        if not self.isglobal or not self.material.isreal:
             raise NotImplementedError
-        if self.kappa == 0:
-            res = -2 * np.pi * np.real(np.trace(self.t)) / (self.ks[0] * self.ks[0])
+        if not self.material.ischiral:
+            k = self.ks[0]
+            res = -2 * np.pi * self.trace().real / (k * k)
         else:
             res = 0
+            diag = np.diag(self)
             for pol in [0, 1]:
-                choice = self.pol == pol
-                res += (
-                    -2
-                    * np.pi
-                    * np.real(np.trace(self.t[choice, :][:, choice]))
-                    / (self.ks[pol] * self.ks[pol])
-                )
+                choice = self.basis.pol == pol
+                k = self.ks[pol]
+                res += -2 * np.pi * diag[choice].sum().real / (k * k)
         if res.imag == 0:
             return res.real
         return res
@@ -168,27 +191,15 @@ class TMatrix(TMatrixBase):
         Returns:
             float or complex
         """
-        if self.positions.shape[0] > 1:
+        if not self.isglobal or not self.material.isreal:
             raise NotImplementedError
-        if self.kappa == 0:
-            res = (
-                2
-                * np.pi
-                * np.sum(self.t.real * self.t.real + self.t.imag * self.t.imag)
-                / (self.ks[0] * self.ks[0])
-            )
+        if not self.material.ischiral:
+            ks = self.ks[0]
         else:
-            res = (
-                2
-                * np.pi
-                * np.sum(
-                    (self.t.real * self.t.real + self.t.imag * self.t.imag)
-                    / (self.ks[self.pol, None] * self.ks[self.pol, None])
-                )
-            )
-        if res.imag == 0:
-            return res.real
-        return res
+            ks = self.ks[self.basis.pol, None]
+        re, im = self.real, self.imag
+        res = 2 * np.pi * np.sum((re * re + im * im) / (ks * ks))
+        return res.real
 
     @property
     def cd(self):
@@ -197,17 +208,19 @@ class TMatrix(TMatrixBase):
 
         Only implemented for global T-matrices.
         """
-        if self.positions.shape[0] > 1:
+        if not (self.isglobal and self.poltype == "helicity" and self.material.isreal):
             raise NotImplementedError
-        if not self.helicity:
-            raise NotImplementedError
-        selections = self.pol == 0, self.pol == 1
-        plus = -np.sum(np.real(self.t[selections[1], selections[1]]))
-        plus -= np.sum(np.power(np.abs(self.t[:, selections[1]]), 2))
-        plus /= self.ks[1] * self.ks[1]
-        minus = -np.sum(np.real(self.t[selections[0], selections[0]]))
-        minus -= np.sum(np.power(np.abs(self.t[:, selections[0]]), 2))
-        minus /= self.ks[0] * self.ks[0]
+        sel = np.array(self.basis.pol, bool)
+        re, im = self.real, self.imag
+        plus = -np.sum(re[sel, sel]) / (self.ks[1] * self.ks[1])
+        re_part = re[:, sel] / self.ks[self.basis.pol, None]
+        im_part = im[:, sel] / self.ks[self.basis.pol, None]
+        plus -= np.sum(re_part * re_part + im_part * im_part)
+        sel = ~sel
+        minus = -np.sum(re[sel, sel]) / (self.ks[0] * self.ks[0])
+        re_part = re[:, sel] / self.ks[self.basis.pol, None]
+        im_part = im[:, sel] / self.ks[self.basis.pol, None]
+        minus -= np.sum(re_part * re_part + im_part * im_part)
         return np.real((plus - minus) / (plus + minus))
 
     @property
@@ -220,20 +233,16 @@ class TMatrix(TMatrixBase):
         Returns:
             float
         """
-        if self.positions.shape[0] > 1:
+        if not (self.isglobal and self.poltype == "helicity"):
             raise NotImplementedError
-        if not self.helicity:
-            raise NotImplementedError
-        selections = self.pol == 0, self.pol == 1
-        _, spp, _ = np.linalg.svd(self.t[np.ix_(selections[1], selections[1])])
-        _, spm, _ = np.linalg.svd(self.t[np.ix_(selections[1], selections[0])])
-        _, smp, _ = np.linalg.svd(self.t[np.ix_(selections[0], selections[1])])
-        _, smm, _ = np.linalg.svd(self.t[np.ix_(selections[0], selections[0])])
-        plus = np.concatenate((spp, smp))
-        minus = np.concatenate((smm, spm))
-        return np.linalg.norm(plus - minus) / np.sqrt(
-            np.sum(np.power(np.abs(self.t), 2))
-        )
+        sel = self.basis.pol == 0, self.basis.pol == 1
+        spp = np.linalg.svd(self[np.ix_(sel[1], sel[1])], compute_uv=False)
+        spm = np.linalg.svd(self[np.ix_(sel[1], sel[0])], compute_uv=False)
+        smp = np.linalg.svd(self[np.ix_(sel[0], sel[1])], compute_uv=False)
+        smm = np.linalg.svd(self[np.ix_(sel[0], sel[0])], compute_uv=False)
+        plus = np.concatenate((np.asarray(spp), np.asarray(spm)))
+        minus = np.concatenate((np.asarray(smm), np.asarray(smp)))
+        return np.linalg.norm(plus - minus) / np.sqrt(np.sum(np.power(np.abs(self), 2)))
 
     @property
     def db(self):
@@ -245,31 +254,17 @@ class TMatrix(TMatrixBase):
         Returns:
             float
         """
-        if self.positions.shape[0] > 1:
+        if not (self.isglobal and self.poltype == "helicity"):
             raise NotImplementedError
-        if not self.helicity:
-            raise NotImplementedError
-        selections = self.pol == 0, self.pol == 1
-        tpm = self.t[np.ix_(selections[1], selections[0])]
-        tmp = self.t[np.ix_(selections[0], selections[1])]
+        sel = self.basis.pol == 0, self.basis.pol == 1
+        tpm = np.asarray(self[np.ix_(sel[1], sel[0])])
+        tmp = np.asarray(self[np.ix_(sel[0], sel[1])])
         return np.sum(
             tpm.real * tpm.real
             + tpm.imag * tpm.imag
             + tmp.real * tmp.real
             + tmp.imag * tmp.imag
-        ) / np.sqrt(np.sum(np.power(np.abs(self.t), 2)))
-
-    @property
-    def modes(self):
-        """
-        Modes of the T-matrix
-
-        Degree, order, and polarization of each row/column in the T-matrix
-
-        Returns:
-            3-tuple
-        """
-        return self.l, self.m, self.pol
+        ) / (np.sum(np.power(np.abs(self), 2)))
 
     def xs(self, illu, flux=0.5):
         r"""
@@ -288,56 +283,32 @@ class TMatrix(TMatrixBase):
         Returns:
             float, (2,)-tuple
         """
-        if np.any(np.imag(self.ks) != 0):
+        if not self.material.isreal:
             raise NotImplementedError
-        illu = np.array(illu)
-        if illu.ndim == 1:
-            illu = illu[:, None]
-        p = self.t @ illu
-        rs = sc.car2sph(self.positions[:, None, :] - self.positions)
-        ksq = np.power(self.ks[self.pol], 2)
-        m = sw.translate(
-            *(m[:, None] for m in self.modes),
-            *self.modes,
-            self.ks[self.pol] * rs[self.pidx[:, None], self.pidx, 0],
-            rs[self.pidx[:, None], self.pidx, 1],
-            rs[self.pidx[:, None], self.pidx, 2],
-            self.helicity,
-            singular=False,
-        ) / ksq
-        if p.ndim == 2:
-            ksq = ksq[:, None]
+        illu = PhysicsArray(illu)
+        illu_basis = illu.basis
+        illu_basis = illu_basis[-2] if isinstance(illu_basis, tuple) else illu_basis
+        if not isinstance(illu_basis, SWB):
+            illu = illu.expand(self.basis) @ illu
+        p = self @ illu
+        invksq = np.power(self.ks[self.basis.pol], -2)
+        m = self.expand() * invksq
+        del illu.modetype
         return (
-            0.5 * np.sum(np.real(p.conjugate() * (m @ p)), axis=-2) / flux,
-            -0.5 * np.sum(np.real(illu.conjugate() * p / ksq), axis=-2) / flux,
+            0.5 * np.real(p.conjugate().T @ (m @ p)) / flux,
+            -0.5 * np.real(illu.conjugate().T @ (p * invksq)) / flux,
         )
 
-    def pick(self, modes):
-        """
-        Pick modes from the T-Matrix
-
-        Args:
-            modes (array): Modes of the new T-matrix
-
-        Returns:
-            TMatrixC
-        """
-        modes = self._check_modes(modes)
-        mat = misc.pickmodes(self.fullmodes, modes)
-        self.t = mat.T @ self.t @ mat
-        self.pidx, self.l, self.m, self.pol = modes
-        return self
-
-    def rotate(self, phi, theta, psi, modes=None):
+    def rotated(self, phi, theta=0, psi=0, **kwargs):
         """
         Rotate the T-Matrix by the euler angles
 
-        Rotation is done in-place. If you need the original T-Matrix make a deepcopy first.
-        Rotations can only be applied to global T-Matrices. The angles are given in the
-        zyz-convention. In the intrinsic (object fixed coordinate system) convention the
-        rotations are applied in the order phi first, theta second, psi third. In the
-        extrinsic (global or reference frame fixed coordinate system) the rotations are
-        applied psi first, theta second, phi third.
+        Rotation is done in-place. If you need the original T-Matrix make a deepcopy
+        first. Rotations can only be applied to global T-Matrices. The angles are given
+        in the zyz-convention. In the intrinsic (object fixed coordinate system)
+        convention the rotations are applied in the order phi first, theta second, psi
+        third. In the extrinsic (global or reference frame fixed coordinate system) the
+        rotations are applied psi first, theta second, phi third.
 
         Args:
             phi, theta, psi (float): Euler angles
@@ -347,22 +318,15 @@ class TMatrix(TMatrixBase):
         Returns:
             TMatrix
         """
-        if modes is None:
-            modes = self.modes
-        modes = self._check_modes(modes)
-        if self.positions.shape[0] > 1 and np.any(modes[0] != 0):
-            raise NotImplementedError
-        mat = sw.rotate(*(m[:, None] for m in self.modes), *modes[1:], phi, theta, psi)
-        self.t = mat @ self.t @ mat.conjugate().T
-        self.pidx, self.l, self.m, self.pol = modes
-        return self
+        r = self.rotate(phi, theta, psi, **kwargs)
+        return TMatrix(r @ self @ r.conjugate().T)
 
-    def translate(self, rvec, modes=None):
+    def translated(self, r, **kwargs):
         """
         Translate the origin of the T-Matrix
 
-        Translation is done in-place. If you need the original T-Matrix make a copy first.
-        Translations can only be applied to global T-Matrices.
+        Translation is done in-place. If you need the original T-Matrix make a copy
+        first. Translations can only be applied to global T-Matrices.
 
         Args:
             rvec (float array): Translation vector
@@ -372,60 +336,18 @@ class TMatrix(TMatrixBase):
         Returns:
             TMatrix
         """
-        if modes is None:
-            modes = self.modes
-        modes = self._check_modes(modes)
-        if self.positions.shape[0] > 1 or np.any(modes[0] != 0):
-            raise NotImplementedError
-        rvec = np.array(rvec)
-        if rvec.ndim == 1:
-            rvec = np.reshape(rvec, (1, -1))
-        rs = sc.car2sph(rvec - self.positions)
-        if self.kappa == 0:
-            kr = np.array([self.ks[0] * rs[0, 0]])
-        else:
-            kr = self.ks[self.pol] * rs[0, 0]
-        matin = sw.translate(
-            *(m[:, None] for m in self.modes),
-            *modes[1:],
-            kr[:, None],
-            rs[0, 1],
-            rs[0, 2],
-            self.helicity,
-            False,
-        )
-        matout = sw.translate(
-            *(m[:, None] for m in modes[1:]),
-            *self.modes,
-            kr,
-            np.pi - rs[0, 1],
-            rs[0, 2] + np.pi,
-            self.helicity,
-            False,
-        )
-        self.t = matout @ self.t @ matin
-        self.pidx, self.l, self.m, self.pol = modes
-        return self
+        return TMatrix(self.expand(r, **kwargs) @ self @ self.inv.expand(r, **kwargs))
 
-    def coupling(self):
+    def couple(self):
         """
         Calculate the coupling term of a blockdiagonal T-matrix
-
-        Returns:
-            TMatrix
         """
-        rs = sc.car2sph(self.positions[:, None, :] - self.positions)
-        m = sw.translate(
-            *(m[:, None] for m in self.modes),
-            *self.modes,
-            self.ks[self.pol] * rs[self.pidx[:, None], self.pidx, 0],
-            rs[self.pidx[:, None], self.pidx, 1],
-            rs[self.pidx[:, None], self.pidx, 2],
-            self.helicity,
-        )
-        return np.eye(self.t.shape[0]) - self.t @ m
+        return np.eye(self.shape[0]) - self @ self.expand(modetype="regular")
 
-    def globalmat(self, origin=None, modes=None, interacted=True):
+    def interacted(self):
+        return TMatrix(np.linalg.solve(self.couple(), self))
+
+    def globalmat(self, basis=None):
         """
         Global T-matrix
 
@@ -434,562 +356,391 @@ class TMatrix(TMatrixBase):
 
         Args:
             origin (array, optional): The origin of the new T-matrix
-            modes (array, optional): The modes that are considered for the global T-matrix
-            interacted (bool, optional): If set to `False` the interaction is calulated first.
+            modes (array, optional): The modes that are considered for the global
+                T-matrix
+            interacted (bool, optional): If set to `False` the interaction is calulated
+                first.
 
         Returns
             TMatrix
         """
-        if origin is None:
-            origin = np.zeros((3,))
-        origin = np.reshape(origin, (1, 3))
-        if modes is None:
-            zeroth = self.pidx == 0
-            modes = self.l[zeroth], self.m[zeroth], self.pol[zeroth]
-        modes = self._check_modes(modes)
-        rs = sc.car2sph(self.positions - origin)
-        ain = sw.translate(
-            *(m[:, None] for m in self.modes),
-            *modes[1:],
-            self.ks[self.pol[:, None]] * rs[self.pidx, :1],
-            rs[self.pidx, 1:2],
-            rs[self.pidx, 2:],
-            self.helicity,
-            False,
-        )
-        pout = sw.translate(
-            *(m[:, None] for m in modes[1:]),
-            *self.modes,
-            self.ks[self.pol] * rs[self.pidx, 0],
-            np.pi - rs[self.pidx, 1],
-            rs[self.pidx, 2] + np.pi,
-            self.helicity,
-            False,
-        )
-        if interacted:
-            self.t = pout @ self.t @ ain
-        else:
-            self.t = pout @ np.linalg.solve(self.coupling(), self.t @ ain)
-        self.pidx, self.l, self.m, self.pol = modes
-        self.positions = origin
-        return self
+        basis = SWB.default(max(self.basis.l)) if basis is None else basis
+        return TMatrix(self.expand(basis) @ self @ self.expand.inv(basis))
 
-    def illuminate_pw(self, kx, ky, kz, pol):
+    def couple_lattice(self, lattice, kpar, *, eta=0):
         """
-        Illuminate with a plane wave
-
-        Args:
-            kx (float, scalar or (N,)-array): X component of the wave vector
-            ky (float, scalar or (N,)-array): Y component of the wave vector
-            kz (float or complex, scalar or (N,)-array): Z component of the wave vector
-            pol (int, scalar or (N,)-array): Polarization of wave, corresponding to
-                the attribute `TMatrix.helicity`
+        Calculate the coupling term of a blockdiagonal T-matrix
         """
-        pos = (*(i[:, None] for i in self.positions[self.pidx, :].T),)
-        return pw.to_sw(
-            *(m[:, None] for m in self.modes), kx, ky, kz, pol, helicity=self.helicity
-        ) * pw.translate(kx, ky, kz, *pos)
+        return np.eye(self.shape[0]) - self @ self.expandlattice(lattice, kpar, eta=eta)
 
-    def illuminate_cw(self, kz, m, pol, l=None):
-        """Illuminate with a cylindrical wave"""
-        # The question is how to implement this. Do you specify one cw at the origin,
-        # that is translated to the different places, or do you specify "local" cws.
-        # In the former case, how do you choose the order.
-        # --> Split in local and global part
-        raise NotImplementedError
-
-    def illuminate_cw_local(self, pidx, kz, m, pol):
-        """Illuminate with a local cylindrical wave"""
-        return cw.to_sw(
-            *(m[:, None] for m in self.modes),
-            kz,
-            m,
-            pol,
-            self.ks[pol],
-            posout=self.pidx[:, None],
-            posin=pidx,
-            helicity=self.helicity,
+    def interacted_lattice(self, lattice, kpar, *, eta=0):
+        return TMatrix(
+            np.linalg.solve(self.couple_lattice(lattice, kpar, eta=eta), self)
         )
 
-    def field(self, r, scattered=True):
-        """
-        Calculate the scattered or incident field at specified points
+    def valid_points(self, grid, radii):
+        grid = np.asarray(grid)
+        if grid.shape[-1] != 3:
+            raise ValueError("invalid grid")
+        if len(radii) != len(self.basis.positions):
+            raise ValueError("invalid length of 'radii'")
+        res = np.ones(grid.shape[:-1], bool)
+        for r, p in zip(radii, self.basis.positions):
+            res &= np.sum(np.power(grid - p, 2), axis=-1) > r * r
+        return res
 
-        The mode expansion of the T-matrix is used
 
-        Args:
-            r (float, array_like): Array of the positions to probe
-            scattered (bool, optional): Select the scattered (default) or incident field
+class TMatrixC(PhysicsArray):
+    """
+    T-matrix for cylindrical modes
 
-        Returns
-            complex
-        """
-        r = np.array(r)
-        if r.ndim == 1:
-            r = np.reshape(r, (1, -1))
-        r_sph = sc.car2sph(r[..., None, :] - self.positions)
-        if scattered:
-            wave_A = sc.vsw_A
-            wave_M = sc.vsw_M
-            wave_N = sc.vsw_N
+    The T-matrix is square, with the modes defined in the corresponding fields. The
+    order of the T-matrix can be arbitrary, but the normalization is fixed to that of
+    the modes defined in :func:`ptsa.special.vcw_A`, :func:`ptsa.special.vcw_M`, and
+    :func:`ptsa.special.vcw_N`. Helicity and parity modes are possible, but not mixed.
+
+    The embedding medium is described by permittivity, permeability and the chirality
+    parameter.
+
+    The T-matrix can be global or local. For a local T-matrix multiple positions have to
+    be specified. Also modes must have as first element a position index.
+
+    Args:
+        tmat (float or complex, array): T-matrix itself
+        k0 (float): Wave number in vacuum
+        epsilon (float or complex, optional): Relative permittivity of the embedding
+            medium
+        mu (complex): Relative permeability of the embedding medium
+        kappa (complex): Chirality parameter of the embedding medium
+        positions (float, (3,)- or (M,3)-array): Positions for a local T-matrix
+        helicity (bool): Helicity or parity modes
+        modes (iterable): Sorting of the T-matrix entries. Either four entries for
+            local T-Matrices, with the first specifying the corresponding position
+            or three entries only, specifying degree, order, and polarization.
+
+    Attributes:
+        t (float or complex, (N,N)-array): T-matrix
+        k0 (float): Wave number in vacuum
+        positions (float, (3,)- or (M,3)-array): Positions for a local T-matrix
+        epsilon (float or complex, optional): Relative permittivity of the embedding
+            medium
+        mu (complex): Relative permeability of the embedding medium
+        kappa (complex): Chirality parameter of the embedding medium
+        helicity (bool): Helicity or parity modes
+        pidx (int, (N,)-array): Position index for each column/row of the T-matrix
+        l (int, (N,)-array): Degree of the mode for each column/row of the T-matrix
+        m (int, (N,)-array): Order of the mode for each column/row of the T-matrix
+        pol (int, (N,)-array): Polarization of the mode for each column/row of the
+            T-matrix
+        ks (float or complex (2,)-array): Wave numbers in the medium for both
+            polarizations
+    """
+
+    def _check(self):
+        super()._check()
+        if not isinstance(self.k0, (int, float, np.floating, np.integer)):
+            raise AnnotationError("invalid k0")
+        if self.poltype is None:
+            self.poltype = config.POLTYPE
+        if self.poltype not in ("parity", "helicity"):
+            raise AnnotationError("invalid poltype")
+        modetype = self.modetype
+        if modetype is None or (
+            modetype[0] in (None, "singular") and modetype[1] in (None, "regular")
+        ):
+            self.modetype = ("singular", "regular")
         else:
-            wave_A = sc.vsw_rA
-            wave_M = sc.vsw_rM
-            wave_N = sc.vsw_rN
-        if self.helicity:
-            res = wave_A(
-                *self.modes[:2],
-                self.ks[self.pol] * r_sph[..., self.pidx, 0],
-                r_sph[..., self.pidx, 1],
-                r_sph[..., self.pidx, 2],
-                self.pol,
-            )
-        else:
-            res = (1 - self.pol[:, None]) * wave_M(
-                *self.modes[:2],
-                self.ks[self.pol] * r_sph[..., self.pidx, 0],
-                r_sph[..., self.pidx, 1],
-                r_sph[..., self.pidx, 2],
-            ) + self.pol[:, None] * wave_N(
-                *self.modes[:2],
-                self.ks[self.pol] * r_sph[..., self.pidx, 0],
-                r_sph[..., self.pidx, 1],
-                r_sph[..., self.pidx, 2],
-            )
-        return sc.vsph2car(res, r_sph[..., self.pidx, :])
+            raise AnnotationError("invalid modetype")
+        shape = np.shape(self)
+        if len(shape) != 2 or shape[0] != shape[1]:
+            raise AnnotationError(f"invalid shape: '{shape}'")
+        if self.basis is None:
+            self.basis = CWB.default([0], CWB.defaultmmax(shape[0]))
+        if self.material is None:
+            self.material = Material()
 
-    def latticecoupling(self, kpar, a, eta=0):
+    @property
+    def ks(self):
+        return self.material.ks(self.k0)
+
+    @property
+    def krhos(self):
         r"""
-        The coupling of the T-matrix in a lattice
+        Radial part of the wave
 
-        Returns
+        Calculate :math:`\sqrt{k^2 - k_z^2}`.
 
-        .. math::
+        Returns:
+            float or complex, array
+        """
+        return self.material.krhos(self.k0, self.basis.kz, self.basis.pol)
 
-            \mathbb 1 - T C
-
-        The inverse of this multiplied to the T-matrix in `latticeinteract`. The lattice
-        type is inferred from `kpar`.
+    @classmethod
+    def cylinder(cls, kzs, mmax, k0, radii, materials):
+        """
+        T-Matrix of a cylinder
 
         Args:
-            kpar (float): The parallel component of the T-matrix
-            a (array): Definition of the lattice
-            eta (float or complex, optional): Splitting parameter in the lattice summation
+            kzs (float, array_like): Z component of the cylindrical wave
+            mmax (int): Positive integer for the maximum order of the T-matrix
+            k0 (int): Wave number in vacuum
+            radii (float array): Radii from inside to outside of the sphere and
+                multiple shells
+            epsilon, mu, kappa (complex arrays): Relative permittivity, permeability
+                and chirality parameter from inside to outside
 
         Returns:
-            complex, array
+            T-Matrix object
         """
-        m = sw.translate_periodic(
-            self.ks,
-            kpar,
-            a,
-            self.positions,
-            self.fullmodes,
-            helicity=self.helicity,
-            eta=eta,
-        )
-        return np.eye(self.t.shape[0]) - self.t @ m
+        materials = [Material(m) for m in materials]
+        kzs = np.atleast_1d(kzs)
+        radii = np.atleast_1d(radii)
+        if radii.size != len(materials) - 1:
+            raise ValueError("incompatible lengths of radii and materials")
+        dim = CWB.defaultdim(len(kzs), mmax)
+        tmat = np.zeros((dim, dim), np.complex128)
+        idx = 0
+        for kz in kzs:
+            for m in range(-mmax, mmax + 1):
+                miecoeffs = mie_cyl(kz, m, k0, radii, *zip(*materials))
+                tmat[idx : idx + 2, idx : idx + 2] = miecoeffs[::-1, ::-1]
+                idx += 2
+        return cls(tmat, k0=k0, basis=CWB.default(kzs, mmax), material=materials[-1])
 
-    def lattice_field(self, r, modes, kpar, a, eta=0):
+    @classmethod
+    def from_array(cls, tm, basis, eta=0):
+        """1d array of spherical T-matrices"""
+        if tm.lattice is None:
+            lattice = basis.hints["lattice"]
+            kpar = basis.hints["kpar"]
+            tm = tm.interacted_lattice(lattice, kpar, eta=eta)
+        p = tm.expandlattice(basis=basis)
+        a = tm.expand.inv(basis=basis)
+        return cls(p @ tm @ a)
+
+    @property
+    def xw_ext_avg(self):
         """
-        Field expansion at a specified point in a lattice
+        Rotational average of the extinction cross width
 
-        Args:
-            r (float, array_like): Positions
-            modes (tuple): Modes of the expansion
-            kpar (float, array_like: Parallel component of the wave vector
-            a (float, array_like): Lattice vectors
-            eta (float or complex, optional): Splitting parameter in the lattice summation
+        Only implemented for global T-matrices.
 
         Returns:
-            complex
+            float or complex
         """
-        r = np.array(r)
-        if r.ndim == 1:
-            r = r.reshape((1, -1))
-        return sw.translate_periodic(
-            self.ks,
-            kpar,
-            a,
-            r,
-            modes,
-            in_=self.fullmodes,
-            rsin=self.positions,
-            helicity=self.helicity,
-            eta=eta,
-        )
-
-    def array1d(self, modes, a, eta=0):
-        """
-        Convert a one-dimensional array of T-matrices into a (cylindrical) 2D-T-matrix
-
-        Args:
-            modes (tuple): Cylindrical wave modes
-            a (float): Lattice pitch
-            eta (float or complex, optional): Splitting parameter in the lattice summation
-
-        Returns:
-            complex, array
-        """
-        pidx, kz, ms, pol = self._check_modes(modes)
-        minkz = misc.firstbrillouin1d(kz[0], 2 * np.pi / a)
-        interaction = np.linalg.solve(self.latticecoupling(minkz, a, eta), self.t)
-        ain = self.illuminate_cw_local(pidx, kz, ms, pol)
-        pout = sw.periodic_to_cw(
-            kz[:, None],
-            ms[:, None],
-            pol[:, None],
-            *self.modes,
-            self.ks[self.pol],
-            a,
-            pidx[:, None],
-            self.pidx,
-            self.helicity,
-        )
-        return pout @ interaction @ ain
-
-    def array2d(self, kx, ky, kz, pwpol, a, origin=None, eta=0):
-        """
-        Convert a two-dimensional array of T-matrices into a Q-matrix
-
-        Unlike for the 1d-case there is no local Q-matrix used, so the result is taken
-        with respect to the reference origin.
-
-        Args:
-            kx (float, array_like): X component of the plane wave
-            ky (float, array_like): Y component of the plane wave
-            kz (float, array_like): Z component of the plane wave
-            pwpol (int, array_like): Plane wave polarizations
-            a (float, (2,2)-array): Lattice vectors
-            origin (float, (3,)-array, optional): Reference origin of the result
-            eta (float or complex, optional): Splitting parameter in the lattice summation
-
-        Returns:
-            complex, array
-        """
-        kpar = misc.firstbrillouin2d([kx[0], ky[0]], la.reciprocal(a))
-        interaction = np.linalg.solve(self.latticecoupling(kpar, a, eta), self.t)
-        if origin is None:
-            origin = np.zeros((3,))
-        posdiff = self.positions - origin
-        tout = pw.translate(
-            kx[:, None],
-            ky[:, None],
-            kz[:, None],
-            -posdiff[self.pidx, 0],
-            -posdiff[self.pidx, 1],
-            -posdiff[self.pidx, 2],
-        )
-        ain = self.illuminate_pw(kx, ky, kz, pwpol)
-        pout = sw.periodic_to_pw(
-            kx[:, None],
-            ky[:, None],
-            kz[:, None],
-            pwpol[:, None],
-            *self.modes,
-            la.area(a),
-            helicity=self.helicity,
-        )
-        return (tout * pout) @ interaction @ ain
-
-    @staticmethod
-    def defaultmodes(lmax, nmax=1):
-        """
-        Default sortation of modes
-
-        Default sortation of the T-Matrix entries, including degree `l`, order `m` and
-        polarization `p`.
-
-        Args:
-            lmax (int): Maximal value of `l`
-            nmax (int, optional): Number of particles, defaults to `1`
-
-        Returns:
-            tuple
-        """
-        return (
-            *np.array(
-                [
-                    [n, l, m, p]
-                    for n in range(0, nmax)
-                    for l in range(1, lmax + 1)
-                    for m in range(-l, l + 1)
-                    for p in range(1, -1, -1)
-                ]
-            ).T,
-        )
-
-
-    @staticmethod
-    def ebcmmodes(lmax, nmax=1, mmax=None):
-        """
-        Default sortation of modes
-
-        Default sortation of the T-Matrix entries, including degree `l`, order `m` and
-        polarization `p`.
-
-        Args:
-            lmax (int): Maximal value of `l`
-            nmax (int, optional): Number of particles, defaults to `1`
-
-        Returns:
-            tuple
-        """
-        mmax = lmax if mmax is None else mmax
-        return (
-            *np.array(
-                [
-                    [n, l, m, p]
-                    for n in range(0, nmax)
-                    for m in range(-mmax, mmax + 1)
-                    for l in range(max(abs(m), 1), lmax + 1)
-                    for p in range(1, -1, -1)
-                ]
-            ).T,
-        )
-
-    @staticmethod
-    def defaultlmax(dim, nmax=1):
-        """
-        Default maximal degree
-
-        Given the dimension of the T-matrix return the estimated maximal value of `l`. This
-        is the inverse of defaultdim. A value of zero is allowed for empty T-matrices.
-
-        Args:
-            dim (int): Dimension of the T-matrix, respectively number of modes
-            nmax (int, optional): Number of particles, defaults to `1`
-
-        Returns:
-            int
-        """
-        res = np.sqrt(1 + dim * 0.5 / nmax) - 1
-        res_int = int(np.rint(res))
-        if np.abs(res - res_int) > 1e-8 * np.maximum(np.abs(res), np.abs(res_int)):
-            raise ValueError("cannot estimate the default lmax")
-        return res_int
-
-    @staticmethod
-    def defaultdim(lmax, nmax=1):
-        """
-        Default dimension
-
-        Given the maximal value of `l` return the size of the corresponding T-matrix. This
-        is the inverse of defaultlmax. A value of zero is allowed.
-
-        Args:
-            lmax (int): Maximal value of `l`
-            nmax (int, optional): Number of particles, defaults to `1`
-
-        Returns:
-            int
-        """
-        # zero is allowed and won't give an error
-        if lmax < 0 or nmax < 0:
-            raise ValueError("maximal order must be positive")
-        return 2 * lmax * (lmax + 2) * nmax
-
-    def to_clsT(self, unit_wavelength="nm"):
-        """
-        Convert T-matrix to an object of class clsT (Xavi's code)
-
-        Returns:
-            object of class clsCluster
-        """
-
-        from clsT import clsT
-
-        if self.positions.shape[0] > 1:
-            warnings.warn(
-                """
-                    This T-matrix can not be converted into an object of class clsT as
-                    it contains more than one scatterer. An object of class clsCluster
-                    will be returned instead
-                """
-            )
-            return self.to_clsCluster()
-        if self.helicity:
-            basis = "helicity"
+        if not self.isglobal or not self.material.isreal:
+            raise NotImplementedError
+        nk = np.unique(self.kz).size
+        if not self.material.ischiral:
+            res = -2 * np.real(np.trace(self.t)) / (self.ks[0] * nk)
         else:
-            basis = "electric-magnetic"
-        n_max = int(np.max(self.modes[0]))
-        modes = (
-            *np.array(
-                [
-                    [n, m, p]
-                    for p in range(1, -1, -1)
-                    for n in range(1, n_max + 1)
-                    for m in range(-n, n + 1)
-                ]
-            ).T,
-        )
-        mat = misc.pickmodes(self.modes, modes)
-        tmatrix = mat.T @ self.t @ mat
-        return clsT(
-            tmatrix,
-            basis,
-            wavelength=2 * np.pi / self.k0,
-            refr_index=np.sqrt(self.epsilon * self.mu),
-            wavelength_units=unit_wavelength,
-        )
+            res = 0
+            diag = np.diag(self)
+            for pol in [0, 1]:
+                choice = self.pol == pol
+                res += -2 * np.real(diag[choice].sum()) / (self.ks[pol] * nk)
+        if res.imag == 0:
+            return res.real
+        return res
 
-    def to_clsCluster(self):
+    @property
+    def xw_sca_avg(self):
         """
-        Convert T-matrix to an object of class clsCluster (Xavi's code)
+        Rotational average of the scattering cross width
+
+        Only implemented for global T-matrices.
 
         Returns:
-            object of class clsCluster
+            float or complex
         """
-
-        from clsCluster import clsCluster
-        from clsT import clsT
-
-        if self.helicity:
-            basis = "helicity"
+        if not self.isglobal or not self.material.isreal:
+            raise NotImplementedError
+        if not self.material.ischiral:
+            ks = self.ks[0]
         else:
-            basis = "electric-magnetic"
-        number_particles = self.positions.shape[0]
-        max_n = np.zeros((number_particles,), int)
-        for i_particle in range(number_particles):
-            max_n[i_particle] = np.max(self.l[self.pidx == i_particle])
-        modes = (
-            *np.array(
-                [
-                    [np, n, m, p]
-                    for np in range(number_particles)
-                    for p in range(1, -1, -1)
-                    for n in range(1, max_n[np] + 1)
-                    for m in range(-n, n + 1)
-                ]
-            ).T,
-        )
-        mat = misc.pickmodes(self.fullmodes, modes)
-        tmatrix = mat.T @ self.t @ mat
-        ts = []
-        for i_particle in range(number_particles):
-            entries = modes[0] == i_particle
-            ts.append(
-                clsT(
-                    tmatrix[entries, :][:, entries],
-                    basis,
-                    wavelength=2 * np.pi / self.k0,
-                    refr_index=np.sqrt(self.epsilon * self.mu),
-                )
-            )
-        cluster = clsCluster(self.positions, ts)
-        return cluster
+            ks = self.ks[self.basis.pol, None]
+        re, im = self.real, self.imag
+        nk = np.unique(self.kz).size
+        res = 2 * np.sum(re * re + im * im) / (ks * nk)
+        return res.real
 
-    def effective_optical_parameters(self, concentration, units="nm"):
-        """
-        Computes the effective optical parameters of a medium with immersed scatterers
-        given by their T-matrix. The effective parameters are obtained using
-        Clausius-Mosotti homegenization equations.
+    def xw(self, illu, flux=0.5):
+        r"""
+        Scattering and extinction cross width
 
-        Authors: This code is an adaptation made by Xavi from an original script
-        created by Benedikt Zerulla.
+        Possible for all T-matrices (global and local) in non-absorbing embedding.
 
         Args:
-            self (_tmatrix): object of class _tmatrix
-            concentration (float): concentration of scatterers per cubic meter of host
-                medium.
-            units (string): units in which k0 is given in the _tmatrix object. By
-                default it is assumed to be in nm^{-1}.
+            illu (complex, array): Illumination coefficients
+            flux (optional): Ingoing flux corresponding to the illumination. Used for
+                the result's normalization. The flux is given in units of
+                :math:`\frac{\text{V}^2}{{l^2}} \frac{1}{Z_0 Z}` where :math:`l` is the
+                unit of length used in the wave number (and positions). A plane wave
+                has the flux `0.5` in this normalization, which is used as default.
 
         Returns:
-            tuple: tuple containing three float numbers corresponding to the relative
-                permittivity, relative permeability and relative chirality parameter.
-                (eff_eps, eff_mu, eff_kappa)
+            float, (2,)-tuple
         """
+        if not self.material.isreal:
+            raise NotImplementedError
+        illu = PhysicsArray(illu)
+        p = self @ illu
+        m = self.expand(modetype="regular") / self.ks[self.basis.pol]
+        return (
+            2 * np.sum(np.real(p.conjugate() * (m @ p)), axis=-2) / flux,
+            -2 * np.sum(np.real(illu.conjugate() * (m @ p)), axis=-2) / flux,
+        )
 
-        eps0 = 8.8541878128 * 1e-12
-        mu0 = 1.2566370621 * 1e-6
-        epsilon = self.epsilon * eps0
-        mu = self.mu * mu0
-        c = 1 / np.sqrt(eps0 * self.epsilon * mu0 * self.mu)
-        Z = np.sqrt(mu / epsilon)
-        if self.helicity:
-            self.changebasis()
-        modes = (
-            *np.array(
-                [
-                    [n, m, p]
-                    for p in range(1, -1, -1)
-                    for n in range(1, 2)
-                    for m in range(-n, n + 1)
-                ]
-            ).T,
+    def rotated(self, phi, **kwargs):
+        """
+        Rotate the T-Matrix around the z-axis
+
+        Rotation is done in-place. If you need the original T-Matrix make a deepcopy
+        first. Rotations can only be applied to global T-Matrices.
+
+        Args:
+            phi (float): Rotation angle
+            modes (array): While rotating also take only specific output modes into
+            account
+
+        Returns:
+            T-MatrixC
+        """
+        r = self.rotate(phi, **kwargs)
+        return TMatrixC(r @ self @ r.conjugate().T)
+
+    def translated(self, r, **kwargs):
+        """
+        Translate the origin of the T-Matrix
+
+        Translation is done in-place. If you need the original T-Matrix make a copy
+        first. Translations can only be applied to global T-Matrices.
+
+        Args:
+            rvec (float array): Translation vector
+            modes (array): While translating also take only specific output modes into
+            account
+
+        Returns:
+            TMatrixC
+        """
+        return TMatrixC(self.expand(r, **kwargs) @ self @ self.inv.expand(r, **kwargs))
+
+    def couple(self):
+        """
+        Calculate the coupling term of a blockdiagonal T-matrix
+        """
+        return np.eye(self.shape[0]) - self @ self.expand(modetype="regular")
+
+    def interacted(self):
+        return TMatrixC(np.linalg.solve(self.couple(), self))
+
+    def globalmat(self, basis=None):
+        """
+        Global T-matrix
+
+        Calculate the global T-matrix starting from a local one. This changes the
+        T-matrix.
+
+        Args:
+            origin (array, optional): The origin of the new T-matrix
+            modes (array, optional): The modes that are considered for the global
+                T-matrix
+            interacted (bool, optional): If set to `False` the interaction is calulated
+                first.
+
+        """
+        if not basis.isglobal:
+            raise ValueError("global basis required")
+        if basis is None:
+            basis = CWB.default(np.unique(self.kz), max(self.basis.l))
+        return TMatrix(self.expand(basis) @ self @ self.expand.inv(basis))
+
+    def couple_lattice(self, lattice, kpar, *, eta=0):
+        """
+        Calculate the coupling term of a blockdiagonal T-matrix
+        """
+        return np.eye(self.shape[0]) - self @ self.expandlattice(lattice, kpar, eta=eta)
+
+    def interacted_lattice(self, lattice, kpar, eta=0):
+        return TMatrix(
+            np.linalg.solve(self.couple_lattice(lattice, kpar, eta=eta), self)
         )
-        mat = misc.pickmodes(self.modes, modes)
-        T = mat.T @ self.t @ mat
-        k0 = io._convert_to_k0(np.copy(self.k0), "k0", units + r"^{-1}", r"nm^{-1}")
-        k_mod = 1e9 * k0 * np.sqrt(self.epsilon * self.mu)
-        scaling = (
-            -1j
-            * 6
-            * np.pi
-            / (c * Z * k_mod**3)
-            * np.array([1, 1j * Z, -1j * c, c * Z])
-        )
-        vector = np.array(
-            [
-                [1 / np.sqrt(2), 1j / np.sqrt(2), 0],
-                [0, 0, 1],
-                [-1 / np.sqrt(2), 1j / np.sqrt(2), 0],
-            ]
-        )
-        alpha_mean = []
-        size_t = int(T.shape[0] / 2)
-        index = np.array(
-            [
-                [0, size_t, 0, size_t],
-                [0, size_t, size_t, 2 * size_t],
-                [size_t, 2 * size_t, 0, size_t],
-                [size_t, 2 * size_t, size_t, 2 * size_t],
-            ]
-        )
-        for i_pol in range(4):
-            alphaSI = (
-                scaling[i_pol]
-                * T[
-                    index[i_pol, 0] : index[i_pol, 1], index[i_pol, 2] : index[i_pol, 3]
-                ]
-            )
-            alpha = vector.T.conjugate() @ (alphaSI @ vector)
-            alpha_mean.append(np.sum(np.diag(alpha)) / 3)
-        delta_alpha = (
-            alpha_mean[0] * alpha_mean[3] * mu - alpha_mean[1] * alpha_mean[2] * mu
-        )
-        D = (
-            1
-            - concentration * alpha_mean[0] / (3 * epsilon)
-            - concentration * alpha_mean[3] / 3
-            + concentration**2 * delta_alpha / (9 * mu * epsilon)
-        )
-        epsilon_eff = (
-            1
-            / eps0
-            * (
-                epsilon
-                + 1
-                / D
-                * (
-                    concentration * alpha_mean[0]
-                    - concentration**2 * delta_alpha / (3 * mu)
-                )
-            )
-        )
-        mu_eff = (
-            1
-            / mu0
-            * (
-                mu
-                + 1
-                / D
-                * (
-                    concentration * alpha_mean[3] * mu
-                    - concentration**2 * delta_alpha / (3 * epsilon)
-                )
-            )
-        )
-        kappa_eff = -1j * concentration * alpha_mean[1] / np.sqrt(mu0 * eps0) / D
-        return epsilon_eff, mu_eff, kappa_eff
+
+    def grid(self, grid, radii):
+        grid = np.asarray(grid)
+        if grid.shape[-1] not in (2, 3):
+            raise ValueError("invalid grid")
+        if len(radii) != len(self.basis.positions):
+            raise ValueError("invalid length of 'radii'")
+        res = np.ones_like(grid, bool)
+        for r, p in zip(radii, self.positions):
+            res &= np.sum(np.power(grid[..., :2] - p[:2], 2), axis=-1) > r * r
+        return res
+
+
+def plane_wave(
+    *args, amp=1, basis=None, k0=None, material=None, modetype=None, poltype=None
+):
+    if basis is None:
+        if len(args) == 4:
+            basis = PWB.default([args[:3]])
+        else:
+            basis = PWBP.default([args[:2]])
+    if isinstance(basis, PWBP):
+        modetype = "up" if modetype is None else modetype
+        material = Material() if material is None else Material(material)
+        if len(args) == 4:
+            basis_c = basis.complete(k0, material, modetype)
+        else:
+            basis_c = basis
+    elif k0 is not None:
+        material = Material() if material is None else Material(material)
+        basis_c = basis.complete(k0, material, modetype)
+    else:
+        basis_c = basis
+    args = np.array(args)
+    res = [(np.abs(args - x) < 1e-14).all() for x in basis_c]
+    if sum(res) != 1:
+        raise ValueError("cannot find matching mode in basis")
+    res = np.array(res, complex) * amp
+    return PhysicsArray(
+        res, basis=basis, k0=k0, material=material, modetype=modetype, poltype=poltype
+    )
+
+
+def spherical_wave(
+    l,  # noqa: E741
+    m,
+    pol,
+    amp,
+    *,
+    k0,
+    basis=None,
+    material=None,
+    modetype=None,
+    poltype=None,
+):
+    if basis is None:
+        basis = SWB.default(l)
+    if not basis.isglobal:
+        raise ValueError("basis must be global")
+    res = [0] * len(basis)
+    res[basis.index((0, l, m, pol))] = amp
+    return PhysicsArray(
+        res, basis=basis, k0=k0, material=material, modetype=modetype, poltype=poltype
+    )
+
+
+def cylindrical_wave(
+    kz, m, pol, amp, *, k0, basis=None, material=None, modetype=None, poltype=None
+):
+    if basis is None:
+        basis = CWB.default([kz], abs(m))
+    if not basis.isglobal:
+        raise ValueError("basis must be global")
+    res = [0] * len(basis)
+    res[basis.index((0, kz, m, pol))] = amp
+    return PhysicsArray(
+        res, basis=basis, k0=k0, material=material, modetype=modetype, poltype=poltype
+    )

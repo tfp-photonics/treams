@@ -10,8 +10,6 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
-import sys
 from importlib.metadata import version
 
 # sys.path.insert(0, os.path.abspath('..'))
@@ -20,7 +18,7 @@ from importlib.metadata import version
 # -- Project information -----------------------------------------------------
 
 project = "ptsa"
-copyright = "2022, Dominik Beutel"
+copyright = "2023, Dominik Beutel"
 author = "Dominik Beutel"
 release = version("ptsa")
 version = ".".join(release.split(".")[:2])
@@ -40,7 +38,7 @@ extensions = [
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
     "sphinx.ext.todo",
-    'matplotlib.sphinxext.plot_directive',
+    "matplotlib.sphinxext.plot_directive",
     "numpydoc",
 ]
 
@@ -51,7 +49,7 @@ intersphinx_mapping = {
 
 autosectionlabel_prefix_document = True
 
-todo_include_todos = True
+todo_include_todos = False
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
@@ -66,10 +64,10 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "bizstyle"
+html_theme = "pyramid"
 
 html_sidebars = {
-    "**": ["globaltoc.html", "relations.html", "sourcelink.html", "searchbox.html",]
+    "**": ["globaltoc.html", "relations.html", "sourcelink.html", "searchbox.html"]
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

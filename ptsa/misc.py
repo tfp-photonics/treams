@@ -32,8 +32,10 @@ def refractive_index(epsilon=1, mu=1, kappa=0):
     Args:
         epsilon (float or complex, array_like, optional): Relative permittivity,
             defaults to 1.
-        mu (float or complex, array_like, optional): Relative permeability, defaults to 1.
-        kappa (float or complex, array_like, optional): Chirality parameter, defaults to 0.
+        mu (float or complex, array_like, optional): Relative permeability,
+            defaults to 1.
+        kappa (float or complex, array_like, optional): Chirality parameter,
+            defaults to 0.
 
     Returns:
         float or complex, (2,)-array
@@ -124,9 +126,9 @@ def wave_vec_z(kx, ky, k):
     Returns:
         complex
     """
-    kx = np.array(kx)
-    ky = np.array(ky)
-    k = np.array(k, complex)
+    kx = np.asarray(kx)
+    ky = np.asarray(ky)
+    k = np.asarray(k, complex)
     res = np.sqrt(k * k - kx * kx - ky * ky)
     if res.ndim == 0 and res.imag < 0:
         res = -res

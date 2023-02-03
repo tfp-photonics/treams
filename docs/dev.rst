@@ -124,10 +124,10 @@ not completely tested, which steps could possible be omitted.
 The first step is the installation of MSYS2 and components of Microsoft Visual Studio
 The installation of MSYS2 is pretty straightforward. Regarding the Microsoft Visual
 Studio components, it is unclear to me, which one are actually used, so for this part we
-just rely on the description for scipy, which is sufficient set. Feel free to test this
-and adjust here accordingly. I suspect, that it might not be necessary to install most
-components at all. The only requirement so far seems to be the presence of
-`vcruntime140.dll`, which should come shipped with recent versions of Python
+just rely on the description for scipy, which is a sufficient set of components. Feel
+free to test this and adjust here accordingly. I suspect, that it might not be necessary
+to install most components at all. The only requirement so far seems to be the presence
+of `vcruntime140.dll`, which should come shipped with recent versions of Python
 (see also
 `Steve Dower's blog post <https://stevedower.id.au/blog/building-for-python-3-5-part-two>`_).
 If not present, they can additionally be installed with the pip package `msvc-runtime`.
@@ -140,10 +140,10 @@ Within MSYS2 install `mingw-w64-x86_64-gcc`.
 
 The compilation is steered from the command line. First go into the directory of ptsa.
 Then, set up your path by prepending the direction for MSYS2's mingw64 binaries with
-``set PATH=C:\msys2\mingw64\bin;%PATH%`` (adjust accordingly if you have installed MSYS2
-with non-default parameters). Check that gcc from MSYS2 is recognized correctly but
-make sure that the version of python that is found on the path corresponds to the
-Windows Python. With this setup building binaries should work with `python -m build`.
+``set PATH=C:\msys64\mingw64\bin;%PATH%`` (adjust accordingly if you have installed
+MSYS2 with non-default parameters). Check that gcc from MSYS2 is recognized correctly
+but make sure that the version of python that is found on the path corresponds to the
+Windows Python. With this setup, building binaries should work with `python -m build`.
 
 Other remarks
 =============

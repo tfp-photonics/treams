@@ -5,8 +5,10 @@ import numpy as np
 import ptsa
 from ptsa import TMatrixC
 
+
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
-    return abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
+    return abs(a - b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
+
 
 class TestInit:
     def test_simple(self):
@@ -25,6 +27,7 @@ class TestInit:
             and np.all(tm.pidx == [0, 0, 0, 0, 0, 0])
             and np.all(tm.ks == [1, 1])
         )
+
     def test_complex(self):
         tm = TMatrixC(
             np.diag([1, 2]),
@@ -55,7 +58,7 @@ class TestCylinder:
     def test(self):
         tm = TMatrixC.cylinder([1], 2, 3, [4], [2, 9], kappa=[1, 2])
         m = ptsa.coeffs.mie_cyl(1, [-2, -1, 0, 1, 2], 3, [4], [2, 9], [1, 1], [1, 2])
-        assert  (
+        assert (
             tm.t[0, 0] == m[0, 1, 1]
             and tm.t[1, 1] == m[0, 0, 0]
             and tm.t[0, 1] == m[0, 1, 0]
@@ -94,18 +97,25 @@ class TestProperties:
     def test_xw_ext_avg(self):
         tm = TMatrixC.cylinder([-1, 1], 1, 3, [4], [2 + 1j, 9], kappa=[1, 2])
         assert isclose(tm.xw_ext_avg, 2.4094468914696026)
+
     def test_xw_ext_avg_kappa_zero(self):
         tm = TMatrixC.cylinder([-1, 1], 1, 3, [4], [2 + 1j, 9], [3, 4])
         assert isclose(tm.xw_ext_avg, 0.6659898461255899,)
+
     def test_xw_sca_avg(self):
         tm = TMatrixC.cylinder([-1, 1], 1, 3, [4], [2 + 1j, 9], kappa=[1, 2])
         assert isclose(tm.xw_sca_avg, 1.3695972664542702,)
+
     def test_xw_sca_avg_kappa_zero(self):
         tm = TMatrixC.cylinder([-1, 1], 1, 3, [4], [2 + 1j, 9], [3, 4])
         assert isclose(tm.xw_sca_avg, 0.3613566165936713,)
+
     def test_krho(self):
         tm = TMatrixC.cylinder([0, 5], 1, 3, [1], [2 + 1j, 1])
-        assert np.all(np.abs(tm.krho - [3, 3, 3, 3, 3, 3, 4j, 4j, 4j, 4j, 4j, 4j]) < 1e-16)
+        assert np.all(
+            np.abs(tm.krho - [3, 3, 3, 3, 3, 3, 4j, 4j, 4j, 4j, 4j, 4j]) < 1e-16
+        )
+
     def test_modes(self):
         tm = TMatrixC.cylinder([-1, 1], 1, 3, [4], [2 + 1j, 9], kappa=[1, 2])
         kz, m, pol = tm.modes
@@ -114,6 +124,7 @@ class TestProperties:
             and np.all(m == [-1, -1, 0, 0, 1, 1, -1, -1, 0, 0, 1, 1])
             and np.all(pol == [int((i + 1) % 2) for i in range(12)])
         )
+
     def test_fullmodes(self):
         tm = TMatrixC.cylinder([-1, 1], 1, 3, [4], [2 + 1j, 9], kappa=[1, 2])
         pidx, kz, m, pol = tm.fullmodes

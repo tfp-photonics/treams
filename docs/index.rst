@@ -39,12 +39,12 @@ T-matrices or the Q-matrices based on the plane wave solutions.
 Features
 ========
 
-* [x] T-matrices using a spherical and using a cylindrical basis set
-* [x] Calculations in helicity basis, enabling the use of chiral media throughout
-* [x] Scattering from clusters of particles
-* [x] Scattering from particles and clusters arranged in 3d-, 2d-, and 1d-lattices
-* [x] Calculation of light propagation in stratified media
-* [x] Band calculation in crystal structures
+* T-matrix calculations using a spherical or cylindrical wave basis set
+* Calculations in helicity and parity (TE/TM) basis
+* Scattering from clusters of particles
+* Scattering from particles and clusters arranged in 3d-, 2d-, and 1d-lattices
+* Calculation of light propagation in stratified media
+* Band calculation in crystal structures
 
 
 Indices and tables

@@ -1099,7 +1099,7 @@ lsumcw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     using the Ewald summation.
 
     The cut between the real and reciprocal space summation is defined by `eta`. Larger
-    values weight the reciprocal strength stronger. In `a` the lattice vectors are
+    values increase the weight of the real sum. In `a` the lattice vectors are
     given as rows.
 
     Args:
@@ -1205,7 +1205,7 @@ lsumsw3d = np.PyUFunc_FromFuncAndDataAndSignature(
     using the Ewald summation.
 
     The cut between the real and reciprocal space summation is defined by `eta`. Larger
-    values weight the reciprocal strength stronger. In `a` the lattice vectors are
+    values increase the weight of the real sum. In `a` the lattice vectors are
     given as rows.
 
     Args:
@@ -1313,7 +1313,7 @@ lsumsw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     using the Ewald summation.
 
     The cut between the real and reciprocal space summation is defined by `eta`. Larger
-    values weight the reciprocal strength stronger. In `a` the lattice vectors are
+    values increase the weight of the real sum. In `a` the lattice vectors are
     given as rows. The lattice is in the x-y-plane.
 
     Args:
@@ -1421,7 +1421,7 @@ lsumsw2d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     using the Ewald summation.
 
     The cut between the real and reciprocal space summation is defined by `eta`. Larger
-    values weight the reciprocal strength stronger. In `a` the lattice vectors are
+    values increase the weight of the real sum. In `a` the lattice vectors are
     given as rows. The lattice is in the x-y-plane.
 
     Args:
@@ -1529,7 +1529,7 @@ lsumsw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     using the Ewald summation.
 
     The cut between the real and reciprocal space summation is defined by `eta`. Larger
-    values weight the reciprocal strength stronger. In `a` the lattice vectors are
+    values increase the weight of the real sum. In `a` the lattice vectors are
     given as rows. The lattice is along the z axis.
 
     Args:
@@ -1635,7 +1635,7 @@ lsumcw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     using the Ewald summation.
 
     The cut between the real and reciprocal space summation is defined by `eta`. Larger
-    values weight the reciprocal strength stronger. In `a` the lattice vectors are
+    values increase the weight of the real sum. In `a` the lattice vectors are
     given as rows. The lattice is along the x axis.
 
     Args:
@@ -1740,7 +1740,7 @@ lsumcw1d = np.PyUFunc_FromFuncAndData(
     using the Ewald summation.
 
     The cut between the real and reciprocal space summation is defined by `eta`. Larger
-    values weight the reciprocal strength stronger. In `a` the lattice vectors are
+    values increase the weight of the real sum. In `a` the lattice vectors are
     given as rows. The lattice is along the x axis.
 
     Args:
@@ -1842,7 +1842,7 @@ lsumsw1d = np.PyUFunc_FromFuncAndData(
     using the Ewald summation.
 
     The cut between the real and reciprocal space summation is defined by `eta`. Larger
-    values weight the reciprocal strength stronger. The lattice is along the z-axis.
+    values increase the weight of the real sum. The lattice is along the z-axis.
     Therefore only :math:`m = 0` contributes.
 
     Args:
