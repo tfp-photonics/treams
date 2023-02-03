@@ -10,7 +10,7 @@ Examples
    :local:
 
 The computations implemented in ptsa mainly revolve around three different types of
-matrices: the (spherical) T-matrix, the cylindrical T-matrix and the Q-matrices. These
+matrices: the (spherical) T-matrix, the cylindrical T-matrix and the S-matrices. These
 three types of matrices emerge from using either spherical, cylindrical, or plane waves
 as solutions to Maxwell's equations. The examples are sorted into these three topics.
 Each of these topics start with a short introduction on the particular type of matrix
@@ -41,11 +41,11 @@ convenience we store the T-matrices in a simple list:
    :language: python
    :lines: 12
 
-Examining the call first invocation of `ptsa` in this example shows a simple structure.
-We use the :class:`ptsa.TMatrix` for our object and then define the sphere. As a
-minimum the maximal multipole order has to be given, then the vacuum wave number. Then,
-we define the radius and finally the relative permittivities. The materials are given
-from the inside to the outside.
+Examining the call of `ptsa` in this example shows a simple structure. We use the
+:class:`ptsa.TMatrix` for our object and then define the sphere. As a minimum the
+maximal multipole order has to be given, then the vacuum wave number. Then, we define
+the radius and finally the relative permittivities. The materials are given from the
+inside to the outside.
 
 .. note::
 
@@ -64,7 +64,7 @@ and specifying their positions. It is advised to always put the origin in a symm
 point if possible. The invocation of :func:`ptsa.TMatrix.cluster` does create a
 block-diagonal T-matrix from all its constituents. However, the interaction between all
 these particles has to computed in a separate step by using the method
-:func:`ptsa.TMatrix.interact`. Now, ``snowman`` contains the *local* T-matrix. This
+:func:`ptsa.TMatrix.interacted`. Now, ``snowman`` contains the *local* T-matrix. This
 means that the full scattered field is described by spherical waves at multiple origins.
 This has the benefit, that one can usually obtain correct fields closer to the geometric
 object.
@@ -90,16 +90,12 @@ For the sake of a more diverse example we will do the latter:
    :lines: 21-28
 
 Mostly, we set up here a grid of points and separate the different regions. Finally, we
-take the region in between the spheres and calculate the relation of the expansion
-coefficients to the field at different point. In the last line, we calculate the
-scattered field by multiplying the illumination with the T-matrix and then summing up
-the contributions of all modes.
+take the region outside of the circumscribing sphere of the snowman. Using the global
+T-Matrix we calculate the scattererd field coefficients. In the last line, we multiply
+those coefficients with the corresponding values of the efield of those modes.
 
-Now we want to calculate the field at outside the circumscribing sphere of the snowman.
-As already mentioned, this is also possible for the local T-matrix, but we can create
-also the global T-matrix first. We choose a higher expansion order for this matrix.
-Then we have to recalculate the illumination and the field coefficients for the new
-expansion:
+Now we want to calculate the field between the spheres for which we work with the local
+T-matrix and mostly repeat the previous steps.
 
 .. literalinclude:: examples/cluster.py
    :language: python
