@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v4
     - name: Build ptsa
-      run: pip install -e .
+      run: pip install --user -e .
     - name: Build html
       uses: ammaraskar/sphinx-action@master
       with:
