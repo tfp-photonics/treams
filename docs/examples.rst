@@ -168,7 +168,7 @@ nontrivial unit cell for our system, resulting finally in a local cylindrical T-
 
 .. literalinclude:: examples/chain.py
    :language: python
-   :lines: 7-16
+   :lines: 6-15
 
 The definition of the unit cell is exactly the same to the definition of a regular
 cluster. Now, one only needs to call the interaction calculation within the lattice,
@@ -184,13 +184,13 @@ cylinder with infinite length in z-direction.
 
 .. literalinclude:: examples/chain.py
    :language: python
-   :lines: 18-29
+   :lines: 17-19
 
 Having the definition of the different areas out of the way, one can do the calculation
 now for the different points. First, we have to define the expansion modes around the
 point, where we probe the field at. 
 
-.. .. plot:: examples/chain.py
+.. plot:: examples/chain.py
 
 Q-matrix examples
 =================

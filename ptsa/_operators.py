@@ -547,6 +547,7 @@ class Expand(Operator):
 
 
 def _swl_expand(basis, to_basis, eta, k0, kpar, lattice, material, poltype, where):
+    lattice = Lattice(lattice)
     ks = k0 * material.nmp
     if len(kpar) == 1:
         x = kpar[0]
@@ -910,7 +911,7 @@ def _sw_efield(r, basis, k0, material, modetype, poltype):
 def _cw_efield(r, basis, k0, material, modetype, poltype):
     material = Material(material)
     ks = material.ks(k0)[basis.pol]
-    krhos = np.sqrt(ks * ks - basis.kz * basis.kz)
+    krhos = material.krhos(k0, basis.kz, basis.pol)
     krhos[krhos.imag < 0] = -krhos[krhos.imag < 0]
     poltype = config.POLTYPE if poltype is None else poltype
     rcyl = sc.car2cyl(r - basis.positions)

@@ -75,4 +75,4 @@ from ptsa._operators import (  # noqa: F401
     translate,
 )
 from ptsa._smatrix import SMatrix  # noqa: F401
-from ptsa._tmatrix import TMatrix, TMatrixC, plane_wave  # noqa: F401
+from ptsa._tmatrix import TMatrix, TMatrixC, plane_wave, spherical_wave  # noqa: F401

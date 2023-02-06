@@ -4,51 +4,37 @@ import numpy as np
 import ptsa
 
 k0 = 2 * np.pi / 700  # Wave number in vacuum
-permittivities = [1, -16.5 + 1j]
-lmax = 2  # Multipole order
+materials = [ptsa.Material(-16.5 + 1j), ptsa.Material()]
+lmax = 2
 radii = [75, 75]
-spheres = [ptsa.TMatrix.sphere(lmax, k0, r, permittivities) for r in radii]
+spheres = [ptsa.TMatrix.sphere(lmax, k0, r, materials) for r in radii]
 positions = [[-25, 0, -73], [25, 0, 73]]
 chain_sph = ptsa.TMatrix.cluster(spheres, positions)
 pitch = 300
 kz = 0
-chain_sph.latticeinteract(kz, pitch)
+chain_sph = chain_sph.interacted_lattice(pitch, kz)
 
-illu = chain_sph.illuminate_pw(k0, 0, 0, 0)
+pw = ptsa.plane_wave(k0, 0, 0, 0)
 grid = np.mgrid[-150:150:51j, 0:1, -150:150:51j].squeeze().transpose((1, 2, 0))
 field = np.zeros_like(grid, complex)
-outside = np.sum(np.power(grid[:, :, :2], 2), axis=-1) > 100 ** 2
-in_between = np.logical_and(
-    np.logical_not(outside),
-    np.logical_and(
-        np.sum(np.power(grid - positions[0], 2), axis=-1) > radii[0] * radii[0],
-        np.sum(np.power(grid - positions[1], 2), axis=-1) > radii[1] * radii[1],
-    ),
-)
-valid = np.logical_or(outside, in_between)
 
-modes = ptsa.TMatrix.defaultmodes(1, np.sum(in_between))
-field_expansion = chain_sph.lattice_field(grid[in_between, :], modes, kz, pitch)
-field_per_mode = ptsa.special.vsph2car(
-    ptsa.special.vsw_rA(*modes[1:3], 0, 0, 0, modes[3]), [0, 0, 0]
-)
-sca_field_coeff = np.sum(
-    np.reshape(
-        field_per_mode[:, None, :] * field_expansion[:, :, None],
-        (-1, 6, chain_sph.t.shape[0], 3),
-    ),
-    axis=1,
-)
-field[in_between, :] = np.sum(sca_field_coeff * (chain_sph.t @ illu), axis=-2)
+valid = chain_sph.valid_points(grid, radii) & (np.abs(grid[:, :, 0]) < 100)
+sca = chain_sph @ pw.expand(chain_sph.basis) @ pw
+for i, ii in zip(*np.where(valid)):
+    probe = ptsa.SphericalWaveBasis.default(1, positions=grid[i, ii, :])
+    field[i, ii, :] = (
+        ptsa.efield(grid[i, ii, :], basis=probe, k0=k0).T
+        @ sca.expandlattice(basis=probe)
+        @ sca
+    )
 
-kzs = kz + np.arange(-3, 4) * 2 * np.pi / pitch
-chain_cyl = ptsa.TMatrixC.array(ptsa.TMatrix.cluster(spheres, positions), kzs, pitch)
-illu = chain_cyl.illuminate_pw(k0, 0, 0, 0)
-scattered_field_coeff = chain_cyl.field(grid[outside, :])
-field[outside, :] = np.sum(scattered_field_coeff * (chain_cyl.t @ illu), axis=-2)
-
-field[valid] += ptsa.special.vpw_A(
-    k0, 0, 0, grid[valid, 0], grid[valid, 1], grid[valid, 2], 0
+cwb = ptsa.CylindricalWaveBasis.with_periodicity(
+    0, 2, pitch, 13 / pitch, nmax=2, positions=positions
+)
+chain = ptsa.TMatrixC.from_array(chain_sph, cwb)
+valid = chain.valid_points(grid, radii)
+field[valid, :] = np.sum(
+    chain.efield(grid[valid]) * (chain @ pw.expand(chain.basis) @ pw)[:, None], axis=-2
 )
 
 fig, ax = plt.subplots()
@@ -57,7 +43,7 @@ pcm = ax.pcolormesh(
     grid[0, :, 2],
     np.sum(np.power(np.abs(field), 2), axis=-1).T,
     shading="nearest",
-    vmax=30,
+    vmax=3,
 )
 ax.plot([-100, -100], [-150, 150], c="r", linestyle=(0, (1, 10)))
 ax.plot([100, 100], [-150, 150], c="r", linestyle=(0, (1, 10)))

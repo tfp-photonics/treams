@@ -667,14 +667,14 @@ class TMatrixC(PhysicsArray):
             np.linalg.solve(self.couple_lattice(lattice, kpar, eta=eta), self)
         )
 
-    def grid(self, grid, radii):
+    def valid_points(self, grid, radii):
         grid = np.asarray(grid)
         if grid.shape[-1] not in (2, 3):
             raise ValueError("invalid grid")
         if len(radii) != len(self.basis.positions):
             raise ValueError("invalid length of 'radii'")
-        res = np.ones_like(grid, bool)
-        for r, p in zip(radii, self.positions):
+        res = np.ones(grid.shape[:-1], bool)
+        for r, p in zip(radii, self.basis.positions):
             res &= np.sum(np.power(grid[..., :2] - p[:2], 2), axis=-1) > r * r
         return res
 

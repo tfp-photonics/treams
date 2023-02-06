@@ -66,7 +66,7 @@ class SphericalWaveBasis(BasisSet):
 
         if positions is None:
             positions = np.zeros((1, 3))
-        positions = np.array(positions)
+        positions = np.array(positions, float)
         if positions.ndim == 1:
             positions = positions[None, :]
         if positions.ndim != 2 or positions.shape[1] != 3:
@@ -265,7 +265,7 @@ class CylindricalWaveBasis(BasisSet):
 
         if positions is None:
             positions = np.zeros((1, 3))
-        positions = np.array(positions)
+        positions = np.array(positions, float)
         if positions.ndim == 1:
             positions = positions[None, :]
         if positions.ndim != 2 or positions.shape[1] != 3:
