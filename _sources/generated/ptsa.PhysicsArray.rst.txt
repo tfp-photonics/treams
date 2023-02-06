@@ -34,8 +34,8 @@
          PhysicsArray.trace
          PhysicsArray.transpose
       
-         PhysicsArray.__mul__
          PhysicsArray.__getitem__
+         PhysicsArray.__mul__
   
 
   
