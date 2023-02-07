@@ -455,40 +455,39 @@ lpmv = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'lpmv',  # function name
-    r"""
-    lpmv(m, v, z)
+    r"""lpmv(m, v, z)
 
-    Associated legendre polynomials of real and complex argument
+Associated legendre polynomials of real and complex argument
 
-    For complex arguments the branch cut is at `|x| > 1`. Additionally, only integer
-    orders and degrees are possible when using a complex argument. The computation is
-    using a recursion relation in this case. For a real argument
-    :py:data:`scipy.special.lpmv` is called.
+For complex arguments the branch cut is at `|x| > 1`. Additionally, only integer
+orders and degrees are possible when using a complex argument. The computation is
+using a recursion relation in this case. For a real argument
+:py:data:`scipy.special.lpmv` is called.
 
-    The function is defined as
+The function is defined as
 
-    .. math::
+.. math::
 
-       P_v^m (z) = \frac{(-1)^m}{2^\nu \nu!} (1 - z^2)^\frac{m}{2} \frac{\mathrm d^{\nu + m}}{\mathrm d z^{\nu + m}} (z^2 - 1)^\nu
+    P_v^m (z) = \frac{(-1)^m}{2^\nu \nu!} (1 - z^2)^\frac{m}{2} \frac{\mathrm d^{\nu + m}}{\mathrm d z^{\nu + m}} (z^2 - 1)^\nu
 
-    for integer degree and order.
+for integer degree and order.
 
-    Warning:
-        Please note the order of the arguments. It is kept this way to stay in line with
-        Scipy. Most of the other functions, with :data:`sph_harm` as a notable exception
-        for the same reason, use degree and order swapped around.
+Warning:
+    Please note the order of the arguments. It is kept this way to stay in line with
+    Scipy. Most of the other functions, with :data:`sph_harm` as a notable exception
+    for the same reason, use degree and order swapped around.
 
-    Args:
-        m (float, array_like): Order
-        v (float, array_like): Degree
-        z (float or complex, array_like): Argument
+Args:
+    m (float, array_like): Order
+    v (float, array_like): Degree
+    z (float or complex, array_like): Argument
 
-    Returns:
-        float or complex
+Returns:
+    float or complex
 
-    References:
-        - `Wikipedia: Associated Legendre polynomials <https://en.wikipedia.org/wiki/Associated_Legendre_polynomials>`_
-    """,  # docstring
+References:
+    - `Wikipedia: Associated Legendre polynomials <https://en.wikipedia.org/wiki/Associated_Legendre_polynomials>`_
+""",  # docstring
     0,  # unused
 )
 
@@ -521,32 +520,31 @@ sph_harm = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'sph_harm',  # function name
-    r"""
-    sph_harm(m, l, phi, theta)
+    r"""sph_harm(m, l, phi, theta)
 
-    Spherical harmonics of real and complex argument
+Spherical harmonics of real and complex argument
 
-    Warning:
-        In order to stay consistent with Scipy, the order of the arguments is kept the
-        same. For most other functions, the postion of degree and order are swapped.
+Warning:
+    In order to stay consistent with Scipy, the order of the arguments is kept the
+    same. For most other functions, the postion of degree and order are swapped.
 
-    For complex argument the spherical harmonics are computed with
+For complex argument the spherical harmonics are computed with
 
-    .. math::
+.. math::
 
-        Y_{lm}(\theta, \varphi) = \sqrt{\frac{2l + 1}{4\pi}\frac{(l - m)!}{(l + m)!}} P_l^m(\cos\theta) \mathrm e^{\mathrm i m \varphi}
+    Y_{lm}(\theta, \varphi) = \sqrt{\frac{2l + 1}{4\pi}\frac{(l - m)!}{(l + m)!}} P_l^m(\cos\theta) \mathrm e^{\mathrm i m \varphi}
 
-    for real arguments :py:data:`scipy.special.sph_harm` is used.
+for real arguments :py:data:`scipy.special.sph_harm` is used.
 
-    Args:
-        m (integer, array_like): Order
-        l (integer, array_like): Degree, non-negative
-        phi (float or complex, array_like): Azimuthal angle
-        theta (float or complex, array_like): Polar angle
+Args:
+    m (integer, array_like): Order
+    l (integer, array_like): Degree, non-negative
+    phi (float or complex, array_like): Azimuthal angle
+    theta (float or complex, array_like): Polar angle
 
-    Returns:
-        complex
-    """,  # docstring
+Returns:
+    complex
+""",  # docstring
     0,  # unused
 )
 
@@ -575,30 +573,29 @@ incgamma = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'incgamma',  # function name
-    r"""
-    incgamma(l, z)
+    r"""incgamma(l, z)
 
-    Upper incomplete Gamma function of integer and half-integer degree and real and complex
-    argument
+Upper incomplete Gamma function of integer and half-integer degree and real and complex
+argument
 
-    This function is defined as
+This function is defined as
 
-    .. math
+.. math
 
-        Gamma(n, z) = \int_z^\infty t^{n - 1} \mathrm e^{-t} \mathrm dt
+    Gamma(n, z) = \int_z^\infty t^{n - 1} \mathrm e^{-t} \mathrm dt
 
-    The negative real axis is the branch cut of the implemented function.
+The negative real axis is the branch cut of the implemented function.
 
-    Args:
-        l (integer or float): Integer or half-integer order
-        z (float or complex): Argument
+Args:
+    l (integer or float): Integer or half-integer order
+    z (float or complex): Argument
 
-    Returns:
-        float or complex
+Returns:
+    float or complex
 
-    References:
-        - `DLMF: 8.2 <https://dlmf.nist.gov/8.2>`_
-    """,  # docstring
+References:
+    - `DLMF: 8.2 <https://dlmf.nist.gov/8.2>`_
+""",  # docstring
     0,  # unused
 )
 
@@ -629,35 +626,34 @@ intkambe = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'intkambe',  # function name
-    r"""
-    intkambe(n, z, eta)
+    r"""intkambe(n, z, eta)
 
-    Integral appearing in the accelerated lattice summations
+Integral appearing in the accelerated lattice summations
 
-    Named here after its appearance (in a slightly different form) in equation (3.16),
-    in Kambe's paper [#]_.
+Named here after its appearance (in a slightly different form) in equation (3.16),
+in Kambe's paper [#]_.
 
-    This function is defined as
+This function is defined as
 
-    .. math::
+.. math::
 
-       I_n(\eta, z)
-       = \int_\eta^\infty t^n \mathrm e^{-\frac{z^2t^2}{2} + \frac{1}{2t^2}}
-       \mathrm d t
+    I_n(\eta, z)
+    = \int_\eta^\infty t^n \mathrm e^{-\frac{z^2t^2}{2} + \frac{1}{2t^2}}
+    \mathrm d t
 
-    and is calculated via recursion.
+and is calculated via recursion.
 
-    Args:
-        n (integer, array_like): Order
-        z (float or complex, array_like): Argument
-        eta (float or complex, array_like): Integral cutoff
+Args:
+    n (integer, array_like): Order
+    z (float or complex, array_like): Argument
+    eta (float or complex, array_like): Integral cutoff
 
-    Returns:
-        float or complex
+Returns:
+    float or complex
 
-    References:
-        .. [#] `K. Kambe, Zeitschrift Fuer Naturforschung A 23, 9 (1968). <https://doi.org/10.1515/zna-1968-0908>`_
-    """,  # docstring
+References:
+    .. [#] `K. Kambe, Zeitschrift Fuer Naturforschung A 23, 9 (1968). <https://doi.org/10.1515/zna-1968-0908>`_
+""",  # docstring
     0,  # unused
 )
 
@@ -690,33 +686,32 @@ wignersmalld = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'wignersmalld',  # function name
-    r"""
-    wignersmalld(l, m, k, theta)
+    r"""wignersmalld(l, m, k, theta)
 
-    Wigner-d matrix element
+Wigner-d matrix element
 
-    Wigner-(small)-d symbol :math:`d^l_{mk}(\theta)` calculated via forward or backward
-    recursion for integer arguments. The decision is based on the number of
-    recursive function calls necessary. The function return values are cached
-    during recursion.
+Wigner-(small)-d symbol :math:`d^l_{mk}(\theta)` calculated via forward or backward
+recursion for integer arguments. The decision is based on the number of
+recursive function calls necessary. The function return values are cached
+during recursion.
 
-    Note:
-        Mathematica and Dachsela use a different sign convention, which means taking
-        the negative angle.
+Note:
+    Mathematica and Dachsela use a different sign convention, which means taking
+    the negative angle.
 
-    Args:
-        l (integer): Degree :math:`l \geq 0`
-        m (integer): Order :math:`|m| \leq l`
-        k (integer): Order :math:`|k| \leq l`
-        theta (float or complex) Azimuthal angle
+Args:
+    l (integer): Degree :math:`l \geq 0`
+    m (integer): Order :math:`|m| \leq l`
+    k (integer): Order :math:`|k| \leq l`
+    theta (float or complex) Azimuthal angle
 
-    Returns:
-        float or complex
+Returns:
+    float or complex
 
-    References:
-        - `Wikipedia: Wigner D-matrix <https://en.wikipedia.org/wiki/Wigner_D-matrix>`_
-        - `H. Dachsela, J. Chem. Phys. 142, 144115 (2006) <https://doi.org/10.1063/1.2194548>`_
-    """,  # docstring
+References:
+    - `Wikipedia: Wigner D-matrix <https://en.wikipedia.org/wiki/Wigner_D-matrix>`_
+    - `H. Dachsela, J. Chem. Phys. 142, 144115 (2006) <https://doi.org/10.1063/1.2194548>`_
+""",  # docstring
     0,  # unused
 )
 
@@ -753,8 +748,7 @@ wignerd = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'wignerd',  # function name
-    r"""
-    wignerd(l, m, k, phi, theta, psi)
+    r"""wignerd(l, m, k, phi, theta, psi)
 
     Wigner-D matrix element
 
@@ -807,8 +801,7 @@ wigner3j = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'wigner3j',  # function name
-    r"""
-    wigner3j(j1, j2, j3, m1, m2, m3)
+    r"""wigner3j(j1, j2, j3, m1, m2, m3)
 
     Wigner-3j symbol
 
@@ -862,8 +855,7 @@ jv_d = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'jv_d',  # function name
-    r"""
-    jv_d(v, z)
+    r"""jv_d(v, z)
 
     Derivative of the Bessel function of the first kind
 
@@ -911,8 +903,7 @@ yv_d = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'yv_d',  # function name
-    r"""
-    yv_d(v, z)
+    r"""yv_d(v, z)
 
     Derivative of the Bessel function of the second kind
 
@@ -955,8 +946,7 @@ spherical_hankel1 = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'spherical_hankel1',  # function name
-    r"""
-    spherical_hankel1(n, z)
+    r"""spherical_hankel1(n, z)
 
     Spherical Hankel function of the first kind
 
@@ -1002,8 +992,7 @@ spherical_hankel2 = np.PyUFunc_FromFuncAndData(
     0,  # identity element
     'spherical_hankel2',  # function name
 
-    r"""
-    spherical_hankel2(n, z)
+    r"""spherical_hankel2(n, z)
 
     Spherical Hankel function of the second kind
 
@@ -1048,10 +1037,9 @@ spherical_hankel1_d = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'spherical_hankel1_d',  # function name
-    r"""
-    spherical_hankel1_d(n, z)
+    r"""spherical_hankel1_d(n, z)
 
-    Derivative of the spherical Hankel function of the first kind
+    Derivative of the spherical Hankel function of the first kind.
 
     Computed by
 
@@ -1092,8 +1080,7 @@ spherical_hankel2_d = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'spherical_hankel2_d',  # function name
-    r"""
-    spherical_hankel2_d(n, z)
+    r"""spherical_hankel2_d(n, z)
 
     Derivative of the spherical Hankel function of the second kind
 
@@ -1136,27 +1123,26 @@ hankel1_d = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'hankel1_d',  # function name
-    r"""
-    hankel1_d(v, z)
+    r"""hankel1_d(v, z)
 
-    Derivative of the Hankel function of the first kind
+Derivative of the Hankel function of the first kind.
 
-    Computed by
+Computed by
 
-    .. math::
+.. math::
 
-       H_\nu^{(1)}(z) = \frac{H_{\nu - 1}^{(1)}(z) - H_{\nu + 1}^{(1)}(z)}{2}
+    H_\nu^{(1)}(z) = \frac{H_{\nu - 1}^{(1)}(z) - H_{\nu + 1}^{(1)}(z)}{2}
 
-    Args:
-        v (float, array_like): Order
-        z (complex, array_like): Argument
+Args:
+    v (float, array_like): Order
+    z (complex, array_like): Argument
 
-    Returns:
-        complex
+Returns:
+    complex
 
-    References:
-        - `DLMF: 10.6 <https://dlmf.nist.gov/10.6>`_
-    """,  # docstring
+References:
+    - `DLMF: 10.6 <https://dlmf.nist.gov/10.6>`_
+""",  # docstring
     0,  # unused
 )
 
@@ -1180,27 +1166,26 @@ hankel2_d = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'hankel2_d',  # function name
-    r"""
-    hankel2_d(v, z)
+    r"""hankel2_d(v, z)
 
-    Derivative of the Hankel function of the second kind
+Derivative of the Hankel function of the second kind
 
-    Computed by
+Computed by
 
-    .. math::
+.. math::
 
-       H_\nu^{(2)}(z) = \frac{H_{\nu - 1}^{(1)}(z) - H_{\nu + 1}^{(2)}(z)}{2}
+    H_\nu^{(2)}(z) = \frac{H_{\nu - 1}^{(1)}(z) - H_{\nu + 1}^{(2)}(z)}{2}
 
-    Args:
-        v (float, array_like): Order
-        z (complex, array_like): Argument
+Args:
+    v (float, array_like): Order
+    z (complex, array_like): Argument
 
-    Returns:
-        complex
+Returns:
+    complex
 
-    References:
-        - `DLMF: 10.6 <https://dlmf.nist.gov/10.6>`_
-    """,  # docstring
+References:
+    - `DLMF: 10.6 <https://dlmf.nist.gov/10.6>`_
+""",  # docstring
     0,  # unused
 )
 
@@ -1231,25 +1216,24 @@ pi_fun = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'pi_fun',  # function name
-    r"""
-    pi_fun(l, m, x)
+    r"""pi_fun(l, m, x)
 
-    Angular function pi
+Angular function pi
 
-    .. math::
+.. math::
 
-        \pi^l_m(x) = \frac{m P_l^m(x)}{\sqrt{1 - x^2}}
+    \pi^l_m(x) = \frac{m P_l^m(x)}{\sqrt{1 - x^2}}
 
-    where :math:`P^l_m` is the associated Legendre polynomial.
+where :math:`P^l_m` is the associated Legendre polynomial.
 
-    Args:
-        l (integer, array_like): degree :math:`l \geq 0`
-        m (integer, array_like): order :math:`|m| \leq l`
-        x (float or complex, array_like): argument
+Args:
+    l (integer, array_like): degree :math:`l \geq 0`
+    m (integer, array_like): order :math:`|m| \leq l`
+    x (float or complex, array_like): argument
 
-    Returns:
-        float or complex
-    """,  # docstring
+Returns:
+    float or complex
+""",  # docstring
     0,  # unused
 )
 
@@ -1280,25 +1264,24 @@ tau_fun = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'tau_fun',  # function name
-    r"""
-    tau_fun(l, m, x)
+    r"""tau_fun(l, m, x)
 
-    Angular function tau
+Angular function tau
 
-    .. math::
+.. math::
 
-        \tau^l_m(x) = \left.\frac{\mathrm d}{\mathrm d \theta}P_l^m(\cos\theta)\right|_{x = \cos\theta}
+    \tau^l_m(x) = \left.\frac{\mathrm d}{\mathrm d \theta}P_l^m(\cos\theta)\right|_{x = \cos\theta}
 
-    where :math:`P^l_m` is the associated Legendre polynomial.
+where :math:`P^l_m` is the associated Legendre polynomial.
 
-    Args:
-        l (integer, array_like): degree :math:`l \geq 0`
-        m (integer, array_like): order :math:`|m| \leq l`
-        x (float or complex, array_like): argument
+Args:
+    l (integer, array_like): degree :math:`l \geq 0`
+    m (integer, array_like): order :math:`|m| \leq l`
+    x (float or complex, array_like): argument
 
-    Returns:
-        float or complex
-    """,  # docstring
+Returns:
+    float or complex
+""",  # docstring
     0,  # unused
 )
 
@@ -1337,59 +1320,58 @@ tl_vsw_rA = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'tl_vsw_rA',  # function name
-    r"""
-    tl_vsw_rA(lambda, mu, l, m, x, theta, phi)
+    r"""tl_vsw_rA(lambda, mu, l, m, x, theta, phi)
 
-    Translation coefficient for vector spherical waves with the same parity
+Translation coefficient for vector spherical waves with the same parity
 
-    Definded by [#]_
+Definded by [#]_
 
-    .. math::
+.. math::
 
-        A_{\lambda\mu lm}^{(1)}(x, \theta, \varphi) =
-        \frac{\gamma_{lm}}{\gamma_{\lambda\mu}}
-        (-1)^m \frac{2\lambda + 1}{\lambda (\lambda + 1)} \mathrm i^{\lambda - l}
-        \sqrt{\pi \frac{(l + m)!(\lambda - \mu)!}{(l - m)!(\lambda + \mu)!}} \\ \cdot
-        \sum_{p} \mathrm i^p\sqrt{2p + 1}
-        j_p(kr) Y_{p, m - \mu}(\theta, \varphi)
-        \begin{pmatrix}
-            l & \lambda & p \\
-            m & -\mu & -m + \mu
-        \end{pmatrix} \\ \cdot
-        \begin{pmatrix}
-            l & \lambda & p \\
-            0 & 0 & 0
-        \end{pmatrix}
-        \left[l (l + 1) + \lambda (\lambda + 1) - p (p + 1)\right]
+    A_{\lambda\mu lm}^{(1)}(x, \theta, \varphi) =
+    \frac{\gamma_{lm}}{\gamma_{\lambda\mu}}
+    (-1)^m \frac{2\lambda + 1}{\lambda (\lambda + 1)} \mathrm i^{\lambda - l}
+    \sqrt{\pi \frac{(l + m)!(\lambda - \mu)!}{(l - m)!(\lambda + \mu)!}} \\ \cdot
+    \sum_{p} \mathrm i^p\sqrt{2p + 1}
+    j_p(kr) Y_{p, m - \mu}(\theta, \varphi)
+    \begin{pmatrix}
+        l & \lambda & p \\
+        m & -\mu & -m + \mu
+    \end{pmatrix} \\ \cdot
+    \begin{pmatrix}
+        l & \lambda & p \\
+        0 & 0 & 0
+    \end{pmatrix}
+    \left[l (l + 1) + \lambda (\lambda + 1) - p (p + 1)\right]
 
-    with
+with
 
-    .. math::
+.. math::
 
-       \gamma_{lm} = \mathrm i \sqrt{\frac{2l + 1}{4\pi l (l + 1)}\frac{(l - m)!}{(l + m)!}}
+    \gamma_{lm} = \mathrm i \sqrt{\frac{2l + 1}{4\pi l (l + 1)}\frac{(l - m)!}{(l + m)!}}
 
-    and the Wigner 3j-symbols (:func:`ptsa.special.wigner3j`) and the spherical Bessel
-    functions. The summation runs over all
-    :math:`p \in \{\lambda + l, \lambda + l - 2, \dots, \max(|\lambda - l|, |\mu - m|)\}`.
+and the Wigner 3j-symbols (:func:`ptsa.special.wigner3j`) and the spherical Bessel
+functions. The summation runs over all
+:math:`p \in \{\lambda + l, \lambda + l - 2, \dots, \max(|\lambda - l|, |\mu - m|)\}`.
 
-    These coefficients are used to translate from incident to incident modes and from
-    scattered to scattered modes.
+These coefficients are used to translate from incident to incident modes and from
+scattered to scattered modes.
 
-    Args:
-        lambda (integer, array_like): Degree of the destination mode
-        mu (integer, array_like): Order of the destination mode
-        l (integer, array_like): Degree of the source mode
-        m (integer, array_like): Order of the source mode
-        x (complex, array_like): Translation in units of the wave number
-        theta (float or complex, array_like): Polar angle
-        phi (float, array_like): Azimuthal angel
+Args:
+    lambda (integer, array_like): Degree of the destination mode
+    mu (integer, array_like): Order of the destination mode
+    l (integer, array_like): Degree of the source mode
+    m (integer, array_like): Order of the source mode
+    x (complex, array_like): Translation in units of the wave number
+    theta (float or complex, array_like): Polar angle
+    phi (float, array_like): Azimuthal angel
 
-    Returns:
-        complex
+Returns:
+    complex
 
-    References:
-        .. [#] L. Tsang, J. A. Kong, and R. T. Shi, Theory of Microwave Remote Sensing (Wiley Series in Remote Sensing and Image Processing) (Wiley-Interscience, 1985).
-    """,  # docstring
+References:
+    .. [#] L. Tsang, J. A. Kong, and R. T. Shi, Theory of Microwave Remote Sensing (Wiley Series in Remote Sensing and Image Processing) (Wiley-Interscience, 1985).
+""",  # docstring
     0,  # unused
 )
 
@@ -1428,59 +1410,58 @@ tl_vsw_rB = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'tl_vsw_rB',  # function name
-    r"""
-    tl_vsw_rB(lambda, mu, l, m, x, theta, phi)
+    r"""tl_vsw_rB(lambda, mu, l, m, x, theta, phi)
 
-    Translation coefficient for vector spherical waves with opposite parity
+Translation coefficient for vector spherical waves with opposite parity
 
-    Definded by [#]_
+Definded by [#]_
 
-    .. math::
+.. math::
 
-        B_{\lambda\mu lm}^{(1)}(x, \theta, \varphi) =
-        \frac{\gamma_{lm}}{\gamma_{\lambda\mu}}
-        (-1)^m \frac{2\lambda + 1}{\lambda (\lambda + 1)} \mathrm i^{\lambda - l}
-        \sqrt{\pi \frac{(l + m)!(\lambda - \mu)!}{(l - m)!(\lambda + \mu)!}} \\ \cdot
-        \sum_{p} \mathrm i^p\sqrt{2p + 1}
-        j_p(kr) Y_{p, m - \mu}(\theta, \varphi)
-        \begin{pmatrix}
-            l & \lambda & p \\
-            m & -\mu & -m + \mu
-        \end{pmatrix} \\ \cdot
-        \begin{pmatrix}
-            l & \lambda & p - 1 \\
-            0 & 0 & 0
-        \end{pmatrix}
-        \sqrt{\left[(l + \lambda + 1)^2 - p^2\right]\left[p^2 - (l - \lambda)^2\right]}
+    B_{\lambda\mu lm}^{(1)}(x, \theta, \varphi) =
+    \frac{\gamma_{lm}}{\gamma_{\lambda\mu}}
+    (-1)^m \frac{2\lambda + 1}{\lambda (\lambda + 1)} \mathrm i^{\lambda - l}
+    \sqrt{\pi \frac{(l + m)!(\lambda - \mu)!}{(l - m)!(\lambda + \mu)!}} \\ \cdot
+    \sum_{p} \mathrm i^p\sqrt{2p + 1}
+    j_p(kr) Y_{p, m - \mu}(\theta, \varphi)
+    \begin{pmatrix}
+        l & \lambda & p \\
+        m & -\mu & -m + \mu
+    \end{pmatrix} \\ \cdot
+    \begin{pmatrix}
+        l & \lambda & p - 1 \\
+        0 & 0 & 0
+    \end{pmatrix}
+    \sqrt{\left[(l + \lambda + 1)^2 - p^2\right]\left[p^2 - (l - \lambda)^2\right]}
 
-    with
+with
 
-    .. math::
+.. math::
 
-       \gamma_{lm} = \mathrm i \sqrt{\frac{2l + 1}{4\pi l (l + 1)}\frac{(l - m)!}{(l + m)!}}
+    \gamma_{lm} = \mathrm i \sqrt{\frac{2l + 1}{4\pi l (l + 1)}\frac{(l - m)!}{(l + m)!}}
 
-    and the Wigner 3j-symbols (:func:`ptsa.special.wigner3j`) and the spherical Bessel
-    functions. The summation runs over all
-    :math:`p \in \{\lambda + l - 1, \lambda + l - 3, \dots, \max(|\lambda - l| + 1, |\mu - m|)\}`.
+and the Wigner 3j-symbols (:func:`ptsa.special.wigner3j`) and the spherical Bessel
+functions. The summation runs over all
+:math:`p \in \{\lambda + l - 1, \lambda + l - 3, \dots, \max(|\lambda - l| + 1, |\mu - m|)\}`.
 
-    These coefficients are used to translate from incident to incident modes and from
-    scattered to scattered modes.
+These coefficients are used to translate from incident to incident modes and from
+scattered to scattered modes.
 
-    Args:
-        lambda (integer, array_like): Degree of the destination mode
-        mu (integer, array_like): Order of the destination mode
-        l (integer, array_like): Degree of the source mode
-        m (integer, array_like): Order of the source mode
-        x (complex, array_like): Translation in units of the wave number
-        theta (float or complex, array_like): Polar angle
-        phi (float, array_like): Azimuthal angel
+Args:
+    lambda (integer, array_like): Degree of the destination mode
+    mu (integer, array_like): Order of the destination mode
+    l (integer, array_like): Degree of the source mode
+    m (integer, array_like): Order of the source mode
+    x (complex, array_like): Translation in units of the wave number
+    theta (float or complex, array_like): Polar angle
+    phi (float, array_like): Azimuthal angel
 
-    Returns:
-        complex
+Returns:
+    complex
 
-    References:
-        .. [#] L. Tsang, J. A. Kong, and R. T. Shi, Theory of Microwave Remote Sensing (Wiley Series in Remote Sensing and Image Processing) (Wiley-Interscience, 1985).
-    """,  # docstring
+References:
+    .. [#] L. Tsang, J. A. Kong, and R. T. Shi, Theory of Microwave Remote Sensing (Wiley Series in Remote Sensing and Image Processing) (Wiley-Interscience, 1985).
+""",  # docstring
     0,  # unused
 )
 
@@ -1519,58 +1500,57 @@ tl_vsw_A = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'tl_vsw_A',  # function name
-    r"""
-    tl_vsw_A(lambda, mu, l, m, x, theta, phi)
+    r"""tl_vsw_A(lambda, mu, l, m, x, theta, phi)
 
-    Translation coefficient for vector spherical waves with the same parity
+Translation coefficient for vector spherical waves with the same parity
 
-    Definded by [#]_
+Definded by [#]_
 
-    .. math::
+.. math::
 
-        A_{\lambda\mu lm}^{(3)}(x, \theta, \varphi) =
-        \frac{\gamma_{lm}}{\gamma_{\lambda\mu}}
-        (-1)^m \frac{2\lambda + 1}{\lambda (\lambda + 1)} \mathrm i^{\lambda - l}
-        \sqrt{\pi \frac{(l + m)!(\lambda - \mu)!}{(l - m)!(\lambda + \mu)!}} \\ \cdot
-        \sum_{p} \mathrm i^p\sqrt{2p + 1}
-        h_p^{(1)}(kr) Y_{p, m - \mu}(\theta, \varphi)
-        \begin{pmatrix}
-            l & \lambda & p \\
-            m & -\mu & -m + \mu
-        \end{pmatrix} \\ \cdot
-        \begin{pmatrix}
-            l & \lambda & p \\
-            0 & 0 & 0
-        \end{pmatrix}
-        \left[l (l + 1) + \lambda (\lambda + 1) - p (p + 1)\right]
+    A_{\lambda\mu lm}^{(3)}(x, \theta, \varphi) =
+    \frac{\gamma_{lm}}{\gamma_{\lambda\mu}}
+    (-1)^m \frac{2\lambda + 1}{\lambda (\lambda + 1)} \mathrm i^{\lambda - l}
+    \sqrt{\pi \frac{(l + m)!(\lambda - \mu)!}{(l - m)!(\lambda + \mu)!}} \\ \cdot
+    \sum_{p} \mathrm i^p\sqrt{2p + 1}
+    h_p^{(1)}(kr) Y_{p, m - \mu}(\theta, \varphi)
+    \begin{pmatrix}
+        l & \lambda & p \\
+        m & -\mu & -m + \mu
+    \end{pmatrix} \\ \cdot
+    \begin{pmatrix}
+        l & \lambda & p \\
+        0 & 0 & 0
+    \end{pmatrix}
+    \left[l (l + 1) + \lambda (\lambda + 1) - p (p + 1)\right]
 
-    with
+with
 
-    .. math::
+.. math::
 
-       \gamma_{lm} = \mathrm i \sqrt{\frac{2l + 1}{4\pi l (l + 1)}\frac{(l - m)!}{(l + m)!}}
+    \gamma_{lm} = \mathrm i \sqrt{\frac{2l + 1}{4\pi l (l + 1)}\frac{(l - m)!}{(l + m)!}}
 
-    and the Wigner 3j-symbols (:func:`ptsa.special.wigner3j`) and the spherical Hankel
-    functions. The summation runs over all
-    :math:`p \in \{\lambda + l, \lambda + l - 2, \dots, \max(|\lambda - l|, |\mu - m|)\}`.
+and the Wigner 3j-symbols (:func:`ptsa.special.wigner3j`) and the spherical Hankel
+functions. The summation runs over all
+:math:`p \in \{\lambda + l, \lambda + l - 2, \dots, \max(|\lambda - l|, |\mu - m|)\}`.
 
-    These coefficients are used to translate from scattered to incident modes.
+These coefficients are used to translate from scattered to incident modes.
 
-    Args:
-        lambda (integer, array_like): Degree of the destination mode
-        mu (integer, array_like): Order of the destination mode
-        l (integer, array_like): Degree of the source mode
-        m (integer, array_like): Order of the source mode
-        x (complex, array_like): Translation in units of the wave number
-        theta (float or complex, array_like): Polar angle
-        phi (float, array_like): Azimuthal angel
+Args:
+    lambda (integer, array_like): Degree of the destination mode
+    mu (integer, array_like): Order of the destination mode
+    l (integer, array_like): Degree of the source mode
+    m (integer, array_like): Order of the source mode
+    x (complex, array_like): Translation in units of the wave number
+    theta (float or complex, array_like): Polar angle
+    phi (float, array_like): Azimuthal angel
 
-    Returns:
-        complex
+Returns:
+    complex
 
-    References:
-        .. [#] L. Tsang, J. A. Kong, and R. T. Shi, Theory of Microwave Remote Sensing (Wiley Series in Remote Sensing and Image Processing) (Wiley-Interscience, 1985).
-    """,  # docstring
+References:
+    .. [#] L. Tsang, J. A. Kong, and R. T. Shi, Theory of Microwave Remote Sensing (Wiley Series in Remote Sensing and Image Processing) (Wiley-Interscience, 1985).
+""",  # docstring
     0,  # unused
 )
 
@@ -1609,58 +1589,57 @@ tl_vsw_B = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'tl_vsw_B',  # function name
-    r"""
-    tl_vsw_B(lambda, mu, l, m, x, theta, phi)
+    r"""tl_vsw_B(lambda, mu, l, m, x, theta, phi)
 
-    Translation coefficient for vector spherical waves with opposite parity
+Translation coefficient for vector spherical waves with opposite parity
 
-    Definded by [#]_
+Definded by [#]_
 
-    .. math::
+.. math::
 
-        B_{\lambda\mu lm}^{(3)}(x, \theta, \varphi) =
-        \frac{\gamma_{lm}}{\gamma_{\lambda\mu}}
-        (-1)^m \frac{2\lambda + 1}{\lambda (\lambda + 1)} \mathrm i^{\lambda - l}
-        \sqrt{\pi \frac{(l + m)!(\lambda - \mu)!}{(l - m)!(\lambda + \mu)!}} \\ \cdot
-        \sum_{p} \mathrm i^p\sqrt{2p + 1}
-        h_p^{(1)}(kr) Y_{p, m - \mu}(\theta, \varphi)
-        \begin{pmatrix}
-            l & \lambda & p \\
-            m & -\mu & -m + \mu
-        \end{pmatrix} \\ \cdot
-        \begin{pmatrix}
-            l & \lambda & p - 1 \\
-            0 & 0 & 0
-        \end{pmatrix}
-        \sqrt{\left[(l + \lambda + 1)^2 - p^2\right]\left[p^2 - (l - \lambda)^2\right]}
+    B_{\lambda\mu lm}^{(3)}(x, \theta, \varphi) =
+    \frac{\gamma_{lm}}{\gamma_{\lambda\mu}}
+    (-1)^m \frac{2\lambda + 1}{\lambda (\lambda + 1)} \mathrm i^{\lambda - l}
+    \sqrt{\pi \frac{(l + m)!(\lambda - \mu)!}{(l - m)!(\lambda + \mu)!}} \\ \cdot
+    \sum_{p} \mathrm i^p\sqrt{2p + 1}
+    h_p^{(1)}(kr) Y_{p, m - \mu}(\theta, \varphi)
+    \begin{pmatrix}
+        l & \lambda & p \\
+        m & -\mu & -m + \mu
+    \end{pmatrix} \\ \cdot
+    \begin{pmatrix}
+        l & \lambda & p - 1 \\
+        0 & 0 & 0
+    \end{pmatrix}
+    \sqrt{\left[(l + \lambda + 1)^2 - p^2\right]\left[p^2 - (l - \lambda)^2\right]}
 
-    with
+with
 
-    .. math::
+.. math::
 
-       \gamma_{lm} = \mathrm i \sqrt{\frac{2l + 1}{4\pi l (l + 1)}\frac{(l - m)!}{(l + m)!}}
+    \gamma_{lm} = \mathrm i \sqrt{\frac{2l + 1}{4\pi l (l + 1)}\frac{(l - m)!}{(l + m)!}}
 
-    and the Winger 3j-symbols (:func:`ptsa.special.wigner3j`) and the spherical Hankel
-    functions. The summation runs over all
-    :math:`p \in \{\lambda + l - 1, \lambda + l - 3, \dots, \max(|\lambda - l| + 1, |\mu - m|)\}`.
+and the Winger 3j-symbols (:func:`ptsa.special.wigner3j`) and the spherical Hankel
+functions. The summation runs over all
+:math:`p \in \{\lambda + l - 1, \lambda + l - 3, \dots, \max(|\lambda - l| + 1, |\mu - m|)\}`.
 
-    These coefficients are used to translate from scattered to incident modes.
+These coefficients are used to translate from scattered to incident modes.
 
-    Args:
-        lambda (integer, array_like): Degree of the destination mode
-        mu (integer, array_like): Order of the destination mode
-        l (integer, array_like): Degree of the source mode
-        m (integer, array_like): Order of the source mode
-        x (complex, array_like): Translation in units of the wave number
-        theta (float or complex, array_like): Polar angle
-        phi (float, array_like): Azimuthal angel
+Args:
+    lambda (integer, array_like): Degree of the destination mode
+    mu (integer, array_like): Order of the destination mode
+    l (integer, array_like): Degree of the source mode
+    m (integer, array_like): Order of the source mode
+    x (complex, array_like): Translation in units of the wave number
+    theta (float or complex, array_like): Polar angle
+    phi (float, array_like): Azimuthal angel
 
-    Returns:
-        complex
+Returns:
+    complex
 
-    References:
-        .. [#] L. Tsang, J. A. Kong, and R. T. Shi, Theory of Microwave Remote Sensing (Wiley Series in Remote Sensing and Image Processing) (Wiley-Interscience, 1985).
-    """,  # docstring
+References:
+    .. [#] L. Tsang, J. A. Kong, and R. T. Shi, Theory of Microwave Remote Sensing (Wiley Series in Remote Sensing and Image Processing) (Wiley-Interscience, 1985).
+""",  # docstring
     0,  # unused
 )
 
@@ -1689,37 +1668,36 @@ tl_vcw = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'tl_vcw',  # function name
-    r"""
-    tl_vcw(kz1, mu, kz2, m, k, xrho, phi, z)
+    r"""tl_vcw(kz1, mu, kz2, m, k, xrho, phi, z)
 
-    Translation coefficient for vector cylindrical waves from scattered to incident modes
+Translation coefficient for vector cylindrical waves from scattered to incident modes
 
-    Definded by
+Definded by
 
-    .. math::
+.. math::
 
-        \begin{cases}
-            H_{m - \mu}^{(1)}(x_\rho) \mathrm e^{\mathrm i ((m - \mu) \varphi + k_{z,1}z)} & \text{if }k_{z,1} = k_{z,2} \\
-            0 & \text{otherwise}
-        \end{cases}
+    \begin{cases}
+        H_{m - \mu}^{(1)}(x_\rho) \mathrm e^{\mathrm i ((m - \mu) \varphi + k_{z,1}z)} & \text{if }k_{z,1} = k_{z,2} \\
+        0 & \text{otherwise}
+    \end{cases}
 
-    where :math:`H_{m - \mu}^{(1)}` are the Hankel functions.
+where :math:`H_{m - \mu}^{(1)}` are the Hankel functions.
 
-    These coefficients are used to translate from incident to incident modes and from
-    scattered to scattered modes.
+These coefficients are used to translate from incident to incident modes and from
+scattered to scattered modes.
 
-    Args:
-        kz1 (float, array_like): Z component of the destination mode's wave vector
-        mu (integer, array_like): Order of the destination mode
-        kz2 (float, array_like): Z component of the source mode's wave vector
-        m (integer, array_like): Order of the source mode
-        xrho (complex, array_like): Translation in radial direction in units of the wave number
-        phi (float, array_like): Azimuthal angel
-        z (float, array_like): Translation in z direction
+Args:
+    kz1 (float, array_like): Z component of the destination mode's wave vector
+    mu (integer, array_like): Order of the destination mode
+    kz2 (float, array_like): Z component of the source mode's wave vector
+    m (integer, array_like): Order of the source mode
+    xrho (complex, array_like): Translation in radial direction in units of the wave number
+    phi (float, array_like): Azimuthal angel
+    z (float, array_like): Translation in z direction
 
-    Returns:
-        complex
-    """,  # docstring
+Returns:
+    complex
+""",  # docstring
     0,  # unused
 )
 
@@ -1758,37 +1736,36 @@ tl_vcw_r = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     'tl_vcw_r',  # function name
-    r"""
-    tl_vcw_r(kz1, mu, kz2, m, k, xrho, phi, z)
+    r"""tl_vcw_r(kz1, mu, kz2, m, k, xrho, phi, z)
 
-    Translation coefficient for vector cylindrical waves of the same kind
+Translation coefficient for vector cylindrical waves of the same kind
 
-    Definded by
+Definded by
 
-    .. math::
+.. math::
 
-        \begin{cases}
-            J_{m - \mu}(x_\rho) \mathrm e^{\mathrm i ((m - \mu) \varphi + k_{z,1}z)} & \text{if }k_{z,1} = k_{z,2} \\
-            0 & \text{otherwise}
-        \end{cases}
+    \begin{cases}
+        J_{m - \mu}(x_\rho) \mathrm e^{\mathrm i ((m - \mu) \varphi + k_{z,1}z)} & \text{if }k_{z,1} = k_{z,2} \\
+        0 & \text{otherwise}
+    \end{cases}
 
-    where :math:`J_{m - \mu}^{(1)}` are the Bessel functions.
+where :math:`J_{m - \mu}^{(1)}` are the Bessel functions.
 
-    These coefficients are used to translate from incident to incident modes and from
-    scattered to scattered modes.
+These coefficients are used to translate from incident to incident modes and from
+scattered to scattered modes.
 
-    Args:
-        kz1 (float, array_like): Z component of the destination mode's wave vector
-        mu (integer, array_like): Order of the destination mode
-        kz2 (float, array_like): Z component of the source mode's wave vector
-        m (integer, array_like): Order of the source mode
-        xrho (complex, array_like): Translation in radial direction in units of the wave number
-        phi (float, array_like): Azimuthal angel
-        z (float, array_like): Translation in z direction
+Args:
+    kz1 (float, array_like): Z component of the destination mode's wave vector
+    mu (integer, array_like): Order of the destination mode
+    kz2 (float, array_like): Z component of the source mode's wave vector
+    m (integer, array_like): Order of the source mode
+    xrho (complex, array_like): Translation in radial direction in units of the wave number
+    phi (float, array_like): Azimuthal angel
+    z (float, array_like): Translation in z direction
 
-    Returns:
-        complex
-    """,  # docstring
+Returns:
+    complex
+""",  # docstring
     0,  # unused
 )
 
@@ -1816,8 +1793,6 @@ _tl_vsw_helper = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # identity element
     '_tl_vsw_helper',  # function name
-    r"""
-    _tl_vsw_helper(l, m, lambda_, mu, p, q)
-    """,  # docstring
+    r"""_tl_vsw_helper(l, m, lambda_, mu, p, q)""",  # docstring
     0,  # unused
 )

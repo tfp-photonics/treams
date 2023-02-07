@@ -253,8 +253,7 @@ _translate_rp = np.PyUFunc_FromFuncAndData(
 
 
 def translate(lambda_, mu, pol, l, m, qol, kr, theta, phi, poltype=None, singular=True, *args, **kwargs):
-    """
-    translate(lambda_, mu, pol, l, m, qol, kr, theta, phi, helicity=True, singular=True)
+    """translate(lambda_, mu, pol, l, m, qol, kr, theta, phi, helicity=True, singular=True)
 
     Translation coefficient for spherical modes
 
@@ -340,8 +339,7 @@ _rotate = np.PyUFunc_FromFuncAndData(
 
 
 def rotate(lambda_, mu, pol, l, m, qol, phi, theta=0, psi=0, *args, **kwargs):
-    """
-    rotate(lambda_, mu, pol, l, m, qol, phi, theta=0, psi=0)
+    """rotate(lambda_, mu, pol, l, m, qol, phi, theta=0, psi=0)
 
     Rotation coefficient for spherical modes
 
@@ -581,8 +579,7 @@ _translate_periodic_p = np.PyUFunc_FromFuncAndDataAndSignature(
 
 
 def translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, poltype=None, eta=0, func=lattice.lsumsw):
-    """
-    translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, helicity=True, eta=0)
+    """translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, helicity=True, eta=0)
 
     Translation coefficients in a lattice
 
@@ -835,8 +832,7 @@ _periodic_to_pw_p = np.PyUFunc_FromFuncAndData(
 
 
 def periodic_to_pw(kx, ky, kz, pol, l, m, qol, area, poltype=None, *args, **kwargs):
-    """
-    periodic_to_pw(kx, ky, kz, pol, l, m, qol, area, helicity=True)
+    """periodic_to_pw(kx, ky, kz, pol, l, m, qol, area, helicity=True)
 
     Convert periodic spherical wave to plane wave
 
@@ -982,8 +978,7 @@ _periodic_to_cw_p = np.PyUFunc_FromFuncAndData(
 
 
 def periodic_to_cw(kz, m, pol, l, mu, qol, k, area, poltype=None, *args, **kwargs):
-    """
-    periodic_to_cw(kz, m, pol, l, mu, qol, k, area, helicity=True)
+    """periodic_to_cw(kz, m, pol, l, mu, qol, k, area, helicity=True)
 
     Convert periodic spherical wave to plane wave
 

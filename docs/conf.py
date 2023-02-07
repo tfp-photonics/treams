@@ -12,6 +12,8 @@
 #
 from importlib.metadata import version
 
+import numpy as np
+
 # sys.path.insert(0, os.path.abspath('..'))
 
 
@@ -39,7 +41,6 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.todo",
     "matplotlib.sphinxext.plot_directive",
-    "numpydoc",
 ]
 
 intersphinx_mapping = {
@@ -74,3 +75,22 @@ html_sidebars = {
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 # html_static_path = ['_static']
+
+
+def preprocess_ufunc(app, what, name, obj, options, lines):
+    if isinstance(obj, np.ufunc):
+        lines.pop(0)
+        lines.pop(0)
+        lines.pop(0)
+        lines.pop(0)
+
+
+def ufunc_signature(app, what, name, obj, options, signature, return_annotation):
+    if isinstance(obj, np.ufunc):
+        signature = "(" + obj.__doc__.split("\n")[2].split("(")[1]
+    return signature, return_annotation
+
+
+def setup(app):
+    app.connect("autodoc-process-docstring", preprocess_ufunc)
+    app.connect("autodoc-process-signature", ufunc_signature)

@@ -35,8 +35,7 @@ cdef extern from "<complex.h>" nogil:
     double complex csqrt(double complex z)
 
 cdef void _interface(long l, number_t x[2][2], number_t *z, double complex m[4][4]) nogil:
-    """
-    Fill a matrix for the relation at a spherical interface
+    """Fill a matrix for the relation at a spherical interface
 
     Note:
         The result is stored in column major order, because it is later processed with
@@ -86,8 +85,7 @@ cdef void _interface(long l, number_t x[2][2], number_t *z, double complex m[4][
 
 
 cdef void _innermost_interface(long l, number_t x[2][2], number_t *z, double complex m[2][4]) nogil:
-    """
-    Fill a matrix for the relation at the innermost spherical interface
+    """Fill a matrix for the relation at the innermost spherical interface
 
     This function is essentially the same as `_interface` but neglecting the singular
     modes on the inner side, because they must vanish.
@@ -132,9 +130,7 @@ cdef void _innermost_interface(long l, number_t x[2][2], number_t *z, double com
 
 
 cdef void _mie(long l, double *x, number_t *epsilon, number_t *mu, number_t *kappa, long n, double complex res[2][2]) nogil:
-    """
-    Calculate the mie coefficients for degree l
-    """
+    """Calculate the mie coefficients for degree l"""
     cdef double complex mfull[4][4]
     cdef double complex mtmp[2][4]  # Column major
     cdef double complex m[2][4]  # Column major
@@ -270,33 +266,32 @@ mie = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'mie',  # function name
-    r"""
-    mie(l, x, epsilon, mu, kappa)
+    r"""mie(l, x, epsilon, mu, kappa)
 
-    Mie coefficient of degree l in helicity basis
+Mie coefficient of degree l in helicity basis
 
-    The sphere is defined by its size parameter :math:`k_0 r`, where :math:`r` is the
-    radius and :math:`k_0` the wave number in vacuum. A multilayered sphere is defined
-    by giving an array of ascending numbers, that define the size parameters of the
-    sphere and its shells starting from the center.
-    Likewise, the material parameters are given from inside to outside. These arrays
-    are expected to be exactly one unit larger then the array `x`.
+The sphere is defined by its size parameter :math:`k_0 r`, where :math:`r` is the
+radius and :math:`k_0` the wave number in vacuum. A multilayered sphere is defined
+by giving an array of ascending numbers, that define the size parameters of the
+sphere and its shells starting from the center.
+Likewise, the material parameters are given from inside to outside. These arrays
+are expected to be exactly one unit larger then the array `x`.
 
-    The result is an array relating incident light of negative (index `0`) and
-    positive (index `1`) helicity with the scattered modes, which are index in the same
-    way. The first dimension of the array are the scattered and the second dimension the
-    incident modes.
+The result is an array relating incident light of negative (index `0`) and
+positive (index `1`) helicity with the scattered modes, which are index in the same
+way. The first dimension of the array are the scattered and the second dimension the
+incident modes.
 
-    Args:
-        l (integer): Degree :math:`l \geq 0`
-        x (float, array_like): Size parameters
-        epsilon (float or complex, array_like): Relative permittivity
-        mu (float or complex, array_like): Relative permeability
-        kappa (float or complex, array_like): Chirality parameter
+Args:
+    l (integer): Degree :math:`l \geq 0`
+    x (float, array_like): Size parameters
+    epsilon (float or complex, array_like): Relative permittivity
+    mu (float or complex, array_like): Relative permeability
+    kappa (float or complex, array_like): Chirality parameter
 
-    Returns:
-        complex (2, 2)-array
-    """,  # docstring
+Returns:
+    complex (2, 2)-array
+""",  # docstring
     0,  # unused
     '(),(a),(b),(b),(b)->(2,2)'  # signature
 )
@@ -432,27 +427,26 @@ fresnel = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'fresnel',  # function name
-    r"""
-    fresnel(ks, kzs, zs)
+    r"""fresnel(ks, kzs, zs)
 
-    Fresnel coefficient for a planar interface
+Fresnel coefficient for a planar interface
 
-    The first dimension contains the numbers for the two media, the second dimenison
-    indexes the polarizations.
+The first dimension contains the numbers for the two media, the second dimenison
+indexes the polarizations.
 
-    The result is an array relating incoming light of negative (index `0`) and
-    positive (index `1`) helicity with the outgoing modes, which are indexed in the same
-    way. The first dimension of the array are the outgoing and the second dimension the
-    incoming modes.
+The result is an array relating incoming light of negative (index `0`) and
+positive (index `1`) helicity with the outgoing modes, which are indexed in the same
+way. The first dimension of the array are the outgoing and the second dimension the
+incoming modes.
 
-    Args:
-        ks (float or complex): Wave numbers
-        ks (float): Z component of the waves
-        zs (float or complex): Impedances
+Args:
+    ks (float or complex): Wave numbers
+    ks (float): Z component of the waves
+    zs (float or complex): Impedances
 
-    Returns:
-        complex (2, 2, 2, 2)-array
-    """,  # docstring
+Returns:
+    complex (2, 2, 2, 2)-array
+""",  # docstring
     0,  # unused
     '(2,2),(2,2),(2)->(2,2,2,2)',  # signature
 )
@@ -595,33 +589,32 @@ mie_cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'mie_cyl',  # function name
-    r"""
-    mie_cyl(kz, m, k0, radii, epsilon, mu, kappa)
+    r"""mie_cyl(kz, m, k0, radii, epsilon, mu, kappa)
 
-    Coefficient for scattering at an infinite cylinder in helicity basis
+Coefficient for scattering at an infinite cylinder in helicity basis
 
-    The cylinder is defined by its radii :math:`\rho`. A multilayered cylinder is defined
-    by giving an array of ascending numbers, that define its shells starting from the center.
-    Likewise, the material parameters are given from inside to outside. These arrays
-    are expected to be exactly one unit larger then the array `x`.
+The cylinder is defined by its radii :math:`\rho`. A multilayered cylinder is defined
+by giving an array of ascending numbers, that define its shells starting from the center.
+Likewise, the material parameters are given from inside to outside. These arrays
+are expected to be exactly one unit larger then the array `x`.
 
-    The result is an array relating incident light of negative (index `0`) and
-    positive (index `1`) helicity with the scattered modes, which are index in the same
-    way. The first dimension of the array are the scattered and the second dimension the
-    incident modes.
+The result is an array relating incident light of negative (index `0`) and
+positive (index `1`) helicity with the scattered modes, which are index in the same
+way. The first dimension of the array are the scattered and the second dimension the
+incident modes.
 
-    Args:
-        kz (float): Z component of the wave
-        m (integer): Order
-        k0 (float or complex): Wave number in vacuum
-        radii (float, array_like): Size parameters
-        epsilon (float or complex, array_like): Relative permittivity
-        mu (float or complex, array_like): Relative permeability
-        kappa (float or complex, array_like): Chirality parameter
+Args:
+    kz (float): Z component of the wave
+    m (integer): Order
+    k0 (float or complex): Wave number in vacuum
+    radii (float, array_like): Size parameters
+    epsilon (float or complex, array_like): Relative permittivity
+    mu (float or complex, array_like): Relative permeability
+    kappa (float or complex, array_like): Chirality parameter
 
-    Returns:
-        complex (2, 2)-array
-    """,  # docstring
+Returns:
+    complex (2, 2)-array
+""",  # docstring
     0,  # unused
     '(),(),(),(a),(b),(b),(b)->(2,2)',  # signature
 )

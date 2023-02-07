@@ -198,8 +198,7 @@ _translate_r = np.PyUFunc_FromFuncAndData(
 
 
 def translate(kz, mu, pol, qz, m, qol, krr, phi, z, singular=True, *args, **kwargs):
-    r"""
-    translate(kz, mu, pol, qz, m, qol, krr, phi, z, singular=True)
+    r"""translate(kz, mu, pol, qz, m, qol, krr, phi, z, singular=True)
 
     Translation coefficient for cylindrical modes
 
@@ -295,27 +294,26 @@ rotate = np.PyUFunc_FromFuncAndData(
     1,
     0,
     'rotate',
-    """
-    rotate(kz, mu, pol, qz, m, qol, phi)
+    """rotate(kz, mu, pol, qz, m, qol, phi)
 
-    Rotation coefficient for cylindrical modes
+Rotation coefficient for cylindrical modes
 
-    Returns the correct rotation coefficient or a combination thereof for the specified
-    mode. A basis does not have to be specified since the coefficients are the same in
-    helicity and parity modes.
+Returns the correct rotation coefficient or a combination thereof for the specified
+mode. A basis does not have to be specified since the coefficients are the same in
+helicity and parity modes.
 
-    Args:
-        kz (float, array_like): Z component of the destination mode
-        mu (int, array_like): Order of the destination mode
-        pol (int, array_like): Polarization of the destination mode
-        qz (float, array_like): Z component of the source mode
-        m (int, array_like): Order of the source mode
-        qol (int, array_like): Polarization of the source mode
-        phi (float, array_like): Rotation angle
+Args:
+    kz (float, array_like): Z component of the destination mode
+    mu (int, array_like): Order of the destination mode
+    pol (int, array_like): Polarization of the destination mode
+    qz (float, array_like): Z component of the source mode
+    m (int, array_like): Order of the source mode
+    qol (int, array_like): Polarization of the source mode
+    phi (float, array_like): Rotation angle
 
-    Returns:
-        complex
-    """,
+Returns:
+    complex
+""",
     0,
 )
 
@@ -442,31 +440,30 @@ periodic_to_pw = np.PyUFunc_FromFuncAndData(
     1,
     0,
     'periodic_to_pw',
-    """
-    periodic_to_pw(kx, ky, kz, pol, qz, m, qol, area)
+    """periodic_to_pw(kx, ky, kz, pol, qz, m, qol, area)
 
-    Convert periodic cylindrical wave to plane wave
+Convert periodic cylindrical wave to plane wave
 
-    Returns the coefficient for the basis change in a periodic arrangement of cylindrical
-    modes to plane waves. For multiple positions only diagonal values (with respect to
-    the position) are returned.
+Returns the coefficient for the basis change in a periodic arrangement of cylindrical
+modes to plane waves. For multiple positions only diagonal values (with respect to
+the position) are returned.
 
-    The polarization values `0` and `1` refer to negative and positive helicity
-    waves or to TE and TM parity.
+The polarization values `0` and `1` refer to negative and positive helicity
+waves or to TE and TM parity.
 
-    Args:
-        kx (float, array_like): X component of destination mode wave vector
-        ky (float, array_like): Y component of destination mode wave vector
-        kz (float or complex, array_like): Z component of destination mode wave vector
-        pol (int, array_like): Polarization of the destination mode
-        qz (float, array_like): Z component of the source mode
-        m (int, array_like): Order of the source mode
-        qol (int, array_like): Polarization of the source mode
-        area (float, array_like): Unit cell area
+Args:
+    kx (float, array_like): X component of destination mode wave vector
+    ky (float, array_like): Y component of destination mode wave vector
+    kz (float or complex, array_like): Z component of destination mode wave vector
+    pol (int, array_like): Polarization of the destination mode
+    qz (float, array_like): Z component of the source mode
+    m (int, array_like): Order of the source mode
+    qol (int, array_like): Polarization of the source mode
+    area (float, array_like): Unit cell area
 
-    Returns:
-        complex
-    """,
+Returns:
+    complex
+""",
     0,
 )
 
@@ -590,8 +587,7 @@ _to_sw_p = np.PyUFunc_FromFuncAndData(
 
 
 def to_sw(l, m, polsw, kz, mu, polcw, k, poltype=None, *args, **kwargs):
-    """
-    to_sw(l, m, polsw, kz, mu, polcw, k, helicity=True)
+    """to_sw(l, m, polsw, kz, mu, polcw, k, helicity=True)
 
     Coefficient for the expansion of a cylindrical wave in spherical waves
 
@@ -625,8 +621,7 @@ def to_sw(l, m, polsw, kz, mu, polcw, k, poltype=None, *args, **kwargs):
 
 
 def translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, eta=0):
-    """
-    translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, eta=0)
+    """translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, eta=0)
 
     Translation coefficients in a lattice
 

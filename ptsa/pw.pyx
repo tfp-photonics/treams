@@ -43,8 +43,7 @@ np.import_ufunc()
 
 
 def translate(kx, ky, kz, x, y, z, *args, **kwargs):
-    r"""
-    translate(kx, ky, kz, x, y, z)
+    r"""translate(kx, ky, kz, x, y, z)
 
     Translation coefficient for plane wave modes
 
@@ -211,8 +210,7 @@ _to_sw_p = np.PyUFunc_FromFuncAndData(
 
 
 def to_sw(l, m, polsw, kx, ky, kz, polpw, poltype=None, *args, **kwargs):
-    """
-    to_sw(l, m, polsw, kx, ky, kz, polpw, helicity=True)
+    """to_sw(l, m, polsw, kx, ky, kz, polpw, helicity=True)
 
     Coefficient for the expansion of a plane wave in spherical waves
 
@@ -356,30 +354,29 @@ to_cw = np.PyUFunc_FromFuncAndData(
     1,
     0,
     'to_cw',
-    """
-    to_cw(kzcw, m, polcw, kx, ky, kzpw, polpw)
+    """to_cw(kzcw, m, polcw, kx, ky, kzpw, polpw)
 
-    Coefficient for the expansion of a plane wave in cylindricrical waves
+Coefficient for the expansion of a plane wave in cylindricrical waves
 
-    Returns the coefficient for the basis change from a plane wave to a cylindrical wave.
-    For multiple positions only diagonal values (with respect to the position) are
-    returned.
+Returns the coefficient for the basis change from a plane wave to a cylindrical wave.
+For multiple positions only diagonal values (with respect to the position) are
+returned.
 
-    The polarization values `0` and `1` refer to negative and positive helicity
-    waves or to TE and TM parity.
+The polarization values `0` and `1` refer to negative and positive helicity
+waves or to TE and TM parity.
 
-    Args:
-        kzcw (float, array_like): Z component of cylindrical wave
-        m (int, array_like): Order of the cylindrical wave
-        polsw (int, array_like): Polarization of the destination mode
-        kx (float, array_like): X component of plane wave's wave vector
-        ky (float, array_like): Y component of plane wave's wave vector
-        kzpw (float, array_like): Z component of plane wave's wave vector
-        polpw (int, array_like): Polarization of the plane wave
+Args:
+    kzcw (float, array_like): Z component of cylindrical wave
+    m (int, array_like): Order of the cylindrical wave
+    polsw (int, array_like): Polarization of the destination mode
+    kx (float, array_like): X component of plane wave's wave vector
+    ky (float, array_like): Y component of plane wave's wave vector
+    kzpw (float, array_like): Z component of plane wave's wave vector
+    polpw (int, array_like): Polarization of the plane wave
 
-    Returns:
-        complex
-    """,
+Returns:
+    complex
+""",
     0,
 )
 
@@ -406,8 +403,7 @@ cdef double complex _cxyz_to_zxy_p(number_t kx, number_t ky, number_t kz, long p
 
 
 cdef double complex _cxyz_to_zxy_h(number_t kx, number_t ky, number_t kz, long polout, long polin) nogil:
-    """
-    Change the coordinate system and basis vectors of a plane wave
+    """Change the coordinate system and basis vectors of a plane wave
 
     The Q-matrices are expected to extend periodically in the x y plane, but the
     two-dimensional T-matrices have their cylinder axis along the z direction and the
@@ -572,8 +568,7 @@ _xyz_to_yzx_p = np.PyUFunc_FromFuncAndData(
 
 
 def permute_xyz(kx, ky, kz, p, q, poltype=None, inverse=False, *args, **kwargs):
-    """
-    permute_xyz(kxp, kyp, kzp, pp, kx, ky, kz, qol, helicity=True, inverse=False)
+    """permute_xyz(kxp, kyp, kzp, pp, kx, ky, kz, qol, helicity=True, inverse=False)
 
     Change the coordinate system of the plane wave
 

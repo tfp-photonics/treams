@@ -4,6 +4,36 @@ import ptsa.lattice as la
 
 
 class Lattice:
+    """Lattice definitions.
+
+    The lattice can be one-, two-, or three-dimensional. If it is not three-dimensional
+    it is required to be embedded into a lower dimensional subspace that is aligned with
+    the Cartesian axes. The default alignment for one-dimensional lattices is along the
+    z-axis and for two-dimensional lattices it is in the x-y-plane.
+
+    For a one-dimensional lattice the definition consists of simply the value of the
+    lattice pitch. Higher-dimensional lattices are defined by (2, 2)- or (3, 3)-arrays.
+    If the arrays are diagonal it is sufficient to specify the (2,)- or (3,)-array
+    diagonals. Alternatively, if another instance of a Lattice is given, the defined
+    alignment is extracted, which can be used to separate a lower-dimensional
+    sublattice.
+
+    Lattices are immutable objects.
+
+    Example:
+        >>> Lattice([1, 2])
+        Lattice([[1. 0.]
+                [0. 2.]], alignment='xy')
+        >>> Lattice(_, 'x')
+        Lattice(1.0, alignment='x')
+
+    Args:
+        arr (float, array, Lattice): Lattice definition. Each row corresponds to one
+            lattice vector, each column to the axis defined in `alignment`.
+        alignment (str, optional): Alignment of the lattice. Possible values are 'x',
+            'y', 'z', 'xy', 'yz', 'zx', and 'xyz'.
+    """
+
     _allowed_alignments = {
         "x": "y",
         "y": "z",
@@ -15,6 +45,7 @@ class Lattice:
     }
 
     def __init__(self, arr, alignment=None):
+        """Initialization."""
         if isinstance(arr, Lattice):
             self._alignment = arr.alignment if alignment is None else alignment
             self._lattice = arr._sublattice(self._alignment)[...]
@@ -49,26 +80,78 @@ class Lattice:
 
     @property
     def alignment(self):
+        """The alignment of the lattice in three-dimensional space.
+
+        For three-dimensional lattices it is always 'xyz' but lower-dimensional lattices
+        have to be aligned with a subset of the axes.
+        """
         return self._alignment
 
     @classmethod
     def square(cls, pitch, alignment=None):
+        """Create a two-dimensional square lattice.
+
+        Args:
+            pitch (float): Lattice constant.
+            alignment (str, optional): Alignment of the two-dimensional lattice in the
+                three-dimensional space. Defaults to 'xy'.
+        """
         return cls(2 * [pitch], alignment)
 
     @classmethod
     def cubic(cls, pitch, alignment=None):
+        """Create a three-dimensional cubic lattice.
+
+        Args:
+            pitch (float): Lattice constant.
+            alignment (str, optional): Alignment of the lattice. Defaults to 'xyz'.
+        """
         return cls(3 * [pitch], alignment)
 
     @classmethod
     def rectangular(cls, x, y, alignment=None):
+        """Create a two-dimensional rectangular lattice.
+
+        Args:
+            x (float): Lattice constant along the first dimension. For the default
+                alignment this corresponds to the x-axis.
+            y (float): Lattice constant along the second dimension. For the default
+                alignment this corresponds to the y-axis.
+            alignment (str, optional): Alignment of the two-dimensional lattice in the
+                three-dimensional space. Defaults to 'xy'.
+        """
         return cls([x, y], alignment)
 
     @classmethod
     def orthorhombic(cls, x, y, z, alignment=None):
+        """Create a three-dimensional orthorhombic lattice.
+
+        Args:
+            x (float): Lattice constant along the first dimension. For the default
+                alignment this corresponds to the x-axis.
+            y (float): Lattice constant along the second dimension. For the default
+                alignment this corresponds to the y-axis.
+            z (float): Lattice constant along the third dimension. For the default
+                alignment this corresponds to the z-axis.
+            alignment (str, optional): Alignment of the lattice. Defaults to 'xyz'.
+        """
         return cls([x, y, z], alignment)
 
     @classmethod
     def hexagonal(cls, pitch, height=None, alignment=None):
+        """Create a hexagonal lattice.
+
+        The lattice is two-dimensional if no height is specified else it is
+        three-dimensional
+
+        Args:
+            pitch (float): Lattice constant.
+            height (float, optional): Separation along the third axis for a
+                three-dimensional lattice.
+            alignment (str, optional): Alignment of the two-dimensional lattice in the
+                three-dimensional space. Defaults to either 'xy' or 'xyz' in the two-
+                or three-dimensional case, respectively.
+        """
         if height is None:
             return cls(
                 np.array([[pitch, 0], [0.5 * pitch, np.sqrt(0.75) * pitch]]), alignment
@@ -81,6 +164,14 @@ class Lattice:
         )
 
     def __eq__(self, other):
+        """Equality.
+
+        Two lattices are considered equal when they have the same dimension, alignment,
+        and lattice vectors.
+
+        Args:
+            other: Lattice to compare with.
+        """
         return other is not None and (
             self is other
             or (
@@ -92,31 +183,65 @@ class Lattice:
 
     @property
     def dim(self):
+        """Dimension of the lattice."""
         if self._lattice.ndim == 0:
             return 1
         return self._lattice.shape[0]
 
     @property
     def volume(self):
+        """(Generalized) volume of the lattice.
+
+        The value gives the lattice pitch, area, or volume depending on its dimension.
+        The volume is signed.
+        """
         if self.dim == 1:
             return self._lattice
         return la.volume(self._lattice)
 
     @property
     def reciprocal(self):
+        r"""Reciprocal lattice.
+
+        The reciprocal lattice to a given lattice with dimension :math:`d` and lattice
+        vectors :math:`\boldsymbol a_i` for :math:`i \in \{1, \dots, d\}` is defined by
+        lattice vectors :math:`\boldsymbol b_j` with :math:`j \in \{1, \dots, d\}` such
+        that :math:`\boldsymbol a_i \boldsymbol b_j = 2 \pi \delta_{ij}` is fulfilled.
+        """
         return self._reciprocal
 
     def __getitem__(self, idx):
+        """Index into the lattice.
+
+        Indexing can be used to obtain entries from the lattice vector definitions or
+        by using the Ellipsis or empty tuple to obtain the full array.
+        """
         return self._lattice[idx]
 
     def __str__(self):
+        """String representation.
+
+        This just prints the lattice pitch or lattice vectors.
+        """
         return str(self._lattice)
 
     def __repr__(self):
+        """Representation.
+
+        The result can be used to recreate an equal instance.
+        """
         string = str(self._lattice).replace("\n", "\n        ")
         return f"Lattice({string}, alignment='{self.alignment}')"
 
     def _sublattice(self, key):
+        """Get the sublattice defined by key.
+
+        This function is called when one gives another instance of Lattice to the
+        constructor.
+
+        Args:
+            key (str): Alignment of the sublattice to extract.
+        """
         key = key.lower()
         if self.dim == 1:
             if key == self.alignment:
@@ -138,6 +263,22 @@ class Lattice:
         return Lattice(self[mask, :][:, idx], key)
 
     def permute(self, n=1):
+        """Permute the lattice orientation.
+
+        Get a new lattice with the alignment permuted.
+
+        Examples:
+            >>> Lattice.hexagonal(1, 2).permute()
+            Lattice([[0.        1.        0.       ]
+                    [0.        0.5       0.8660254]
+                    [2.        0.        0.       ]], alignment='xyz')
+            >>> Lattice.hexagonal(1).permute()
+            Lattice([[1.        0.       ]
+                    [0.5       0.8660254]], alignment='yz')
+
+        Args:
+            n (int, optional): Number of repeated permutations. Defaults to `1`.
+        """
         if n != int(n):
             raise ValueError("'n' must be integer")
         n = n % 3
@@ -154,9 +295,19 @@ class Lattice:
         return Lattice(lattice, alignment)
 
     def __bool__(self):
+        """Lattice instances always equate to True."""
         return True
 
     def __or__(self, other):
+        """Merge two lattices.
+
+        Two lattices are combined into one if possible.
+
+        Example:
+            >>> Lattice(1, 'x') | Lattice(2)
+            Lattice([[2. 0.]
+                    [0. 1.]], alignment='zx')
+        """
         if other is None or self == other:
             return Lattice(self)
 
@@ -224,6 +375,14 @@ class Lattice:
         raise ValueError("cannot combine lattices")
 
     def __and__(self, other):
+        """Intersect two lattices.
+
+        The intersection of two lattices is taken if possible.
+
+        Example:
+            >>> Lattice([1, 2]) & Lattice([2, 3], 'yz')
+            Lattice(2.0, alignment='y')
+        """
         if other is None:
             return None
         if self == other:
@@ -242,6 +401,12 @@ class Lattice:
         raise ValueError("cannot combine lattices")
 
     def __le__(self, other):
+        """Test if one lattice includes another.
+
+        Example:
+            >>> Lattice(3) <= Lattice([1, 2, 3])
+            True
+        """
         try:
             lat = Lattice(other, self.alignment)
         except ValueError:
@@ -249,6 +414,14 @@ class Lattice:
         return lat == self
 
     def isdisjoint(self, other):
+        """Test if lattices are disjoint.
+
+        Lattices are considered disjoint if their alignments are disjoint.
+
+        Example:
+            >>> Lattice([1, 2, 3]).isdisjoint(Lattice(1))
+            False
+        """
         for c in other.alignment:
             if c in self.alignment:
                 return False

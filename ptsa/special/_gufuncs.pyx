@@ -491,21 +491,20 @@ car2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'car2cyl',  # function name
-    r"""
-    car2cyl(r)
+    r"""car2cyl(r)
 
-    Convert cartesian to cylindrical coordinates
+Convert cartesian to cylindrical coordinates
 
-    The cartesian coordinates :math:`(x, y, z)` are converted to
-    :math:`(\rho, \varphi, z)` with :math:`x = \rho \cos \varphi` and
-    :math:`y = \rho \sin \varphi`.
+The cartesian coordinates :math:`(x, y, z)` are converted to
+:math:`(\rho, \varphi, z)` with :math:`x = \rho \cos \varphi` and
+:math:`y = \rho \sin \varphi`.
 
-    Args:
-        r (float, 3-array): Cartesian coordinates in 3-dimensional space
+Args:
+    r (float, 3-array): Cartesian coordinates in 3-dimensional space
 
-    Returns:
-        float, 3-array
-    """,  # docstring
+Returns:
+    float, 3-array
+""",  # docstring
     0,  # unused
     '(3)->(3)',  # signature
 )
@@ -529,21 +528,20 @@ car2sph = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'car2sph',  # function name
-    r"""
-    car2sph(r)
+    r"""car2sph(r)
 
-    Convert cartesian to spherical coordinates
+Convert cartesian to spherical coordinates
 
-    The cartesian coordinates :math:`(x, y, z)` are converted to
-    :math:`(r, \theta, \varphi)` with :math:`x = r \sin \theta \cos \varphi`,
-    :math:`y = r \sin \theta \sin \varphi`, and :math:`z = r \cos \theta`.
+The cartesian coordinates :math:`(x, y, z)` are converted to
+:math:`(r, \theta, \varphi)` with :math:`x = r \sin \theta \cos \varphi`,
+:math:`y = r \sin \theta \sin \varphi`, and :math:`z = r \cos \theta`.
 
-    Args:
-        r (float, 3-array): Cartesian coordinates in 3-dimensional space
+Args:
+    r (float, 3-array): Cartesian coordinates in 3-dimensional space
 
-    Returns:
-        float, 3-array
-    """,  # docstring
+Returns:
+    float, 3-array
+""",  # docstring
     0,  # unused
     '(3)->(3)',  # signature
 )
@@ -567,21 +565,20 @@ cyl2car = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'cyl2car',  # function name
-    r"""
-    cyl2car(r)
+    r"""cyl2car(r)
 
-    Convert cylindrical to cartesian coordinates
+Convert cylindrical to cartesian coordinates
 
-    The cylindrical coordinates :math:`(\rho, \varphi, z)` are converted to
-    :math:`(x, y, z)` with :math:`x = \rho \cos \varphi` and
-    :math:`y = \rho \sin \varphi`.
+The cylindrical coordinates :math:`(\rho, \varphi, z)` are converted to
+:math:`(x, y, z)` with :math:`x = \rho \cos \varphi` and
+:math:`y = \rho \sin \varphi`.
 
-    Args:
-        r (float, 3-array): Cylindrical coordinates in 3-dimensional space
+Args:
+    r (float, 3-array): Cylindrical coordinates in 3-dimensional space
 
-    Returns:
-        float, 3-array
-    """,  # docstring
+Returns:
+    float, 3-array
+""",  # docstring
     0,  # unused
     '(3)->(3)',  # signature
 )
@@ -605,21 +602,20 @@ cyl2sph = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'cyl2sph',  # function name
-    r"""
-    cyl2sph(r)
+    r"""cyl2sph(r)
 
-    Convert cylindrical to spherical coordinates
+Convert cylindrical to spherical coordinates
 
-    The cylindrical coordinates :math:`(\rho, \varphi, z)` are converted to
-    :math:`(r, \theta, \varphi)` with :math:`\rho = r \sin \theta` and
-    :math:`z = \rho \cos \theta`.
+The cylindrical coordinates :math:`(\rho, \varphi, z)` are converted to
+:math:`(r, \theta, \varphi)` with :math:`\rho = r \sin \theta` and
+:math:`z = \rho \cos \theta`.
 
-    Args:
-        r (float, 3-array): Cylindrical coordinates in 3-dimensional space
+Args:
+    r (float, 3-array): Cylindrical coordinates in 3-dimensional space
 
-    Returns:
-        float, 3-array
-    """,  # docstring
+Returns:
+    float, 3-array
+""",  # docstring
     0,  # unused
     '(3)->(3)',  # signature
 )
@@ -643,21 +639,20 @@ sph2car = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'sph2car',  # function name
-    r"""
-    sph2car(r)
+    r"""sph2car(r)
 
-    Convert spherical to cartesian coordinates
+Convert spherical to cartesian coordinates
 
-    The spherical coordinates :math:`(r, \theta, \varphi)` are converted to
-    :math:`(x, y, z)` with :math:`x = r \sin \theta \cos \varphi`,
-    :math:`y = r \sin \theta \sin \varphi`, and :math:`z = r \cos \theta`.
+The spherical coordinates :math:`(r, \theta, \varphi)` are converted to
+:math:`(x, y, z)` with :math:`x = r \sin \theta \cos \varphi`,
+:math:`y = r \sin \theta \sin \varphi`, and :math:`z = r \cos \theta`.
 
-    Args:
-        r (float, 3-array): Spherical coordinates in 3-dimensional space
+Args:
+    r (float, 3-array): Spherical coordinates in 3-dimensional space
 
-    Returns:
-        float, 3-array
-    """,  # docstring
+Returns:
+    float, 3-array
+""",  # docstring
     0,  # unused
     '(3)->(3)',  # signature
 )
@@ -681,21 +676,20 @@ sph2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'sph2cyl',  # function name
-    r"""
-    sph2cylr(r)
+    r"""sph2cylr(r)
 
-    Convert spherical to cylindrical coordinates
+Convert spherical to cylindrical coordinates
 
-    The spherical coordinates :math:`(r, \theta, \varphi)` are converted to
-    :math:`(\rho, \varphi, z)` with :math:`\rho = r \sin \theta` and
-    :math:`z = \rho \cos \theta`.
+The spherical coordinates :math:`(r, \theta, \varphi)` are converted to
+:math:`(\rho, \varphi, z)` with :math:`\rho = r \sin \theta` and
+:math:`z = \rho \cos \theta`.
 
-    Args:
-        r (float, 3-array): Spherical coordinates in 3-dimensional space
+Args:
+    r (float, 3-array): Spherical coordinates in 3-dimensional space
 
-    Returns:
-        float, 3-array
-    """,  # docstring
+Returns:
+    float, 3-array
+""",  # docstring
     0,  # unused
     '(3)->(3)',  # signature
 )
@@ -719,21 +713,20 @@ car2pol = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'car2pol',  # function name
-    r"""
-    car2pol(r)
+    r"""car2pol(r)
 
-    Convert cartesian to polar coordinates
+Convert cartesian to polar coordinates
 
-    The cartesian coordinates :math:`(x, y)` are converted to
-    :math:`(\rho, \varphi)` with :math:`x = \rho \cos \varphi` and
-    :math:`y = \rho \sin \varphi`.
+The cartesian coordinates :math:`(x, y)` are converted to
+:math:`(\rho, \varphi)` with :math:`x = \rho \cos \varphi` and
+:math:`y = \rho \sin \varphi`.
 
-    Args:
-        r (float, 2-array): Cartesian coordinates in 2-dimensional space
+Args:
+    r (float, 2-array): Cartesian coordinates in 2-dimensional space
 
-    Returns:
-        float, 2-array
-    """,  # docstring
+Returns:
+    float, 2-array
+""",  # docstring
     0,  # unused
     '(2)->(2)',  # signature
 )
@@ -757,21 +750,20 @@ pol2car = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'pol2car',  # function name
-    r"""
-    pol2car(r)
+    r"""pol2car(r)
 
-    Convert polar to cartesian coordinates
+Convert polar to cartesian coordinates
 
-    The polar coordinates :math:`(x, y)` are converted to
-    :math:`(\rho, \varphi)` with :math:`x = \rho \cos \varphi` and
-    :math:`y = \rho \sin \varphi`.
+The polar coordinates :math:`(x, y)` are converted to
+:math:`(\rho, \varphi)` with :math:`x = \rho \cos \varphi` and
+:math:`y = \rho \sin \varphi`.
 
-    Args:
-        r (float, 2-array): Polar coordinates in 2-dimensional space
+Args:
+    r (float, 2-array): Polar coordinates in 2-dimensional space
 
-    Returns:
-        float, 2-array
-    """,  # docstring
+Returns:
+    float, 2-array
+""",  # docstring
     0,  # unused
     '(2)->(2)',  # signature
 )
@@ -801,32 +793,31 @@ vcar2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vcar2cyl',  # function name
-    r"""
-    vcar2cyl(v, r)
+    r"""vcar2cyl(v, r)
 
-    Convert vector in cartesian coordinates to vector in cylindrical coordinates
+Convert vector in cartesian coordinates to vector in cylindrical coordinates
 
-    The cartesian vector :math:`(v_x, v_y, v_z)`  at coordinates :math:`(x, y, z)` is
-    converted to :math:`(v_\rho, v_\varphi, v_z)` with
+The cartesian vector :math:`(v_x, v_y, v_z)`  at coordinates :math:`(x, y, z)` is
+converted to :math:`(v_\rho, v_\varphi, v_z)` with
 
-    .. math::
+.. math::
 
-       \begin{pmatrix} v_\rho \\ v_\varphi \\ v_z \end{pmatrix}
-       =
-       \begin{pmatrix}
-          \cos \varphi & \sin \varphi & 0 \\
-          -\sin \varphi & \cos \varphi & 0 \\
-          0 & 0 & 1
-       \end{pmatrix}
-       \begin{pmatrix} v_x \\ v_y \\ v_z \end{pmatrix}
+    \begin{pmatrix} v_\rho \\ v_\varphi \\ v_z \end{pmatrix}
+    =
+    \begin{pmatrix}
+        \cos \varphi & \sin \varphi & 0 \\
+        -\sin \varphi & \cos \varphi & 0 \\
+        0 & 0 & 1
+    \end{pmatrix}
+    \begin{pmatrix} v_x \\ v_y \\ v_z \end{pmatrix}
 
-    Args:
-        v (float or complex, 3-array): Vector in 3-dimensional cartesian space
-        r (float, 3-array): Cartesian coordinates in 3-dimensional space
+Args:
+    v (float or complex, 3-array): Vector in 3-dimensional cartesian space
+    r (float, 3-array): Cartesian coordinates in 3-dimensional space
 
-    Returns:
-        float or complex, 3-array
-    """,  # docstring
+Returns:
+    float or complex, 3-array
+""",  # docstring
     0,  # unused
     '(3),(3)->(3)',  # signature
 )
@@ -846,32 +837,31 @@ vcar2sph = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vcar2sph',  # function name
-    r"""
-    vcar2cyl(v, r)
+    r"""vcar2cyl(v, r)
 
-    Convert vector in cartesian coordinates to vector in spherical coordinates
+Convert vector in cartesian coordinates to vector in spherical coordinates
 
-    The cartesian vector :math:`(v_x, v_y, v_z)`  at coordinates :math:`(x, y, z)` is
-    converted to :math:`(v_r, v_\theta, v_\varphi)` with
+The cartesian vector :math:`(v_x, v_y, v_z)`  at coordinates :math:`(x, y, z)` is
+converted to :math:`(v_r, v_\theta, v_\varphi)` with
 
-    .. math::
+.. math::
 
-       \begin{pmatrix} v_r \\ v_\theta \\ v_\varphi \end{pmatrix}
-       =
-       \begin{pmatrix}
-          \sin \theta \cos \varphi & \sin \theta \sin \varphi & \cos \theta \\
-          \cos \theta \cos \varphi & \cos \theta \sin \varphi & \cos \theta \\
-          -\sin \varphi & \cos \varphi & 0
-       \end{pmatrix}
-       \begin{pmatrix} v_x \\ v_y \\ v_z \end{pmatrix}
+    \begin{pmatrix} v_r \\ v_\theta \\ v_\varphi \end{pmatrix}
+    =
+    \begin{pmatrix}
+        \sin \theta \cos \varphi & \sin \theta \sin \varphi & \cos \theta \\
+        \cos \theta \cos \varphi & \cos \theta \sin \varphi & \cos \theta \\
+        -\sin \varphi & \cos \varphi & 0
+    \end{pmatrix}
+    \begin{pmatrix} v_x \\ v_y \\ v_z \end{pmatrix}
 
-    Args:
-        v (float or complex, 3-array): Vector in 3-dimensional cartesian space
-        r (float, 3-array): Cartesian coordinates in 3-dimensional space
+Args:
+    v (float or complex, 3-array): Vector in 3-dimensional cartesian space
+    r (float, 3-array): Cartesian coordinates in 3-dimensional space
 
-    Returns:
-        float or complex, 3-array
-    """,  # docstring
+Returns:
+    float or complex, 3-array
+""",  # docstring
     0,  # unused
     '(3),(3)->(3)',  # signature
 )
@@ -890,32 +880,31 @@ vcyl2car = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vcyl2car',  # function name
-    r"""
-    vcyl2car(v, r)
+    r"""vcyl2car(v, r)
 
-    Convert vector in cylindrical coordinates to vector in cartesian coordinates
+Convert vector in cylindrical coordinates to vector in cartesian coordinates
 
-    The cylindrical vector :math:`(v_\rho, v_\varphi, v_z)`  at coordinates
-    :math:`(\rho, \varphi, z)` is converted to :math:`(v_x, v_y, v_z)` with
+The cylindrical vector :math:`(v_\rho, v_\varphi, v_z)`  at coordinates
+:math:`(\rho, \varphi, z)` is converted to :math:`(v_x, v_y, v_z)` with
 
-    .. math::
+.. math::
 
-       \begin{pmatrix} v_x \\ v_y \\ v_z \end{pmatrix}
-       =
-       \begin{pmatrix}
-          \cos \varphi & -\sin \varphi & 0 \\
-          \sin \varphi & \cos \varphi & 0 \\
-          0 & 0 & 1
-       \end{pmatrix}
-       \begin{pmatrix} v_\rho \\ v_\varphi \\ v_z \end{pmatrix}
+    \begin{pmatrix} v_x \\ v_y \\ v_z \end{pmatrix}
+    =
+    \begin{pmatrix}
+        \cos \varphi & -\sin \varphi & 0 \\
+        \sin \varphi & \cos \varphi & 0 \\
+        0 & 0 & 1
+    \end{pmatrix}
+    \begin{pmatrix} v_\rho \\ v_\varphi \\ v_z \end{pmatrix}
 
-    Args:
-        v (float or complex, 3-array): Vector in 3-dimensional cylindrical space
-        r (float, 3-array): Cylindrical coordinates in 3-dimensional space
+Args:
+    v (float or complex, 3-array): Vector in 3-dimensional cylindrical space
+    r (float, 3-array): Cylindrical coordinates in 3-dimensional space
 
-    Returns:
-        float or complex, 3-array
-    """,  # docstring
+Returns:
+    float or complex, 3-array
+""",  # docstring
     0,  # unused
     '(3),(3)->(3)',  # signature
 )
@@ -934,32 +923,31 @@ vcyl2sph = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vcyl2sph',  # function name
-    r"""
-    vcyl2sph(v, r)
+    r"""vcyl2sph(v, r)
 
-    Convert vector in cylindrical coordinates to vector in spherical coordinates
+Convert vector in cylindrical coordinates to vector in spherical coordinates
 
-    The cylindrical vector :math:`(v_\rho, v_\varphi, v_z)`  at coordinates
-    :math:`(\rho, \varphi, z)` is converted to :math:`(v_r, v_\theta, v_\varphi)` with
+The cylindrical vector :math:`(v_\rho, v_\varphi, v_z)`  at coordinates
+:math:`(\rho, \varphi, z)` is converted to :math:`(v_r, v_\theta, v_\varphi)` with
 
-    .. math::
+.. math::
 
-       \begin{pmatrix} v_r \\ v_\theta \\ v_\varphi \end{pmatrix}
-       =
-       \begin{pmatrix}
-          \sin \theta & 0 & \cos \theta \\
-          \cos \theta & 0 & -\sin \theta \\
-          0 & 1 & 0
-       \end{pmatrix}
-       \begin{pmatrix} v_\rho \\ v_\varphi \\ v_z \end{pmatrix}
+    \begin{pmatrix} v_r \\ v_\theta \\ v_\varphi \end{pmatrix}
+    =
+    \begin{pmatrix}
+        \sin \theta & 0 & \cos \theta \\
+        \cos \theta & 0 & -\sin \theta \\
+        0 & 1 & 0
+    \end{pmatrix}
+    \begin{pmatrix} v_\rho \\ v_\varphi \\ v_z \end{pmatrix}
 
-    Args:
-        v (float or complex, 3-array): Vector in 3-dimensional cylindrical space
-        r (float, 3-array): Cylindrical coordinates in 3-dimensional space
+Args:
+    v (float or complex, 3-array): Vector in 3-dimensional cylindrical space
+    r (float, 3-array): Cylindrical coordinates in 3-dimensional space
 
-    Returns:
-        float or complex, 3-array
-    """,  # docstring
+Returns:
+    float or complex, 3-array
+""",  # docstring
     0,  # unused
     '(3),(3)->(3)',  # signature
 )
@@ -978,32 +966,31 @@ vsph2car = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vsph2car',  # function name
-    r"""
-    vsph2car(v, r)
+    r"""vsph2car(v, r)
 
-    Convert vector in spherical coordinates to vector in cartesian coordinates
+Convert vector in spherical coordinates to vector in cartesian coordinates
 
-    The spherical vector :math:`(v_r, v_\theta, v_\varphi)`  at coordinates
-    :math:`(r, \theta,  \varphi)` is converted to :math:`(v_x, v_y, v_z)` with
+The spherical vector :math:`(v_r, v_\theta, v_\varphi)`  at coordinates
+:math:`(r, \theta,  \varphi)` is converted to :math:`(v_x, v_y, v_z)` with
 
-    .. math::
+.. math::
 
-       \begin{pmatrix} v_x \\ v_y \\ v_z \end{pmatrix}
-       =
-       \begin{pmatrix}
-          \sin \theta \cos \varphi & \cos \theta \cos \varphi & -\sin \varphi \\
-          \sin \theta \sin \varphi & \cos \theta \sin \varphi & \cos \varphi \\
-          \cos \theta & -\sin \theta & 0
-       \end{pmatrix}
-       \begin{pmatrix} v_r \\ v_\theta \\ v_\varphi \end{pmatrix}
+    \begin{pmatrix} v_x \\ v_y \\ v_z \end{pmatrix}
+    =
+    \begin{pmatrix}
+        \sin \theta \cos \varphi & \cos \theta \cos \varphi & -\sin \varphi \\
+        \sin \theta \sin \varphi & \cos \theta \sin \varphi & \cos \varphi \\
+        \cos \theta & -\sin \theta & 0
+    \end{pmatrix}
+    \begin{pmatrix} v_r \\ v_\theta \\ v_\varphi \end{pmatrix}
 
-    Args:
-        v (float or complex, 3-array): Vector in 3-dimensional spherical space
-        r (float, 3-array): Spherical coordinates in 3-dimensional space
+Args:
+    v (float or complex, 3-array): Vector in 3-dimensional spherical space
+    r (float, 3-array): Spherical coordinates in 3-dimensional space
 
-    Returns:
-        float or complex, 3-array
-    """,  # docstring
+Returns:
+    float or complex, 3-array
+""",  # docstring
     0,  # unused
     '(3),(3)->(3)',  # signature
 )
@@ -1022,32 +1009,31 @@ vsph2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vsph2cyl',  # function name
-    r"""
-    vsph2cyl(v, r)
+    r"""vsph2cyl(v, r)
 
-    Convert vector in spherical coordinates to vector in cylindrical coordinates
+Convert vector in spherical coordinates to vector in cylindrical coordinates
 
-    The spherical vector :math:`(v_r, v_\theta, v_\varphi)`  at coordinates
-    :math:`(r, \theta,  \varphi)` is converted to :math:`(v_\rho, v_\varphi, v_z)` with
+The spherical vector :math:`(v_r, v_\theta, v_\varphi)`  at coordinates
+:math:`(r, \theta,  \varphi)` is converted to :math:`(v_\rho, v_\varphi, v_z)` with
 
-    .. math::
+.. math::
 
-       \begin{pmatrix} v_\rho \\ v_\varphi \\ v_z \end{pmatrix}
-       =
-       \begin{pmatrix}
-          \sin \theta & \cos \theta & 0 \\
-          0 & 0 & 1 \\
-          \cos \theta & -\sin \theta & 0
-       \end{pmatrix}
-       \begin{pmatrix} v_r \\ v_\theta \\ v_\varphi \end{pmatrix}
+    \begin{pmatrix} v_\rho \\ v_\varphi \\ v_z \end{pmatrix}
+    =
+    \begin{pmatrix}
+        \sin \theta & \cos \theta & 0 \\
+        0 & 0 & 1 \\
+        \cos \theta & -\sin \theta & 0
+    \end{pmatrix}
+    \begin{pmatrix} v_r \\ v_\theta \\ v_\varphi \end{pmatrix}
 
-    Args:
-        v (float or complex, 3-array): Vector in 3-dimensional spherical space
-        r (float, 3-array): Spherical coordinates in 3-dimensional space
+Args:
+    v (float or complex, 3-array): Vector in 3-dimensional spherical space
+    r (float, 3-array): Spherical coordinates in 3-dimensional space
 
-    Returns:
-        float or complex, 3-array
-    """,  # docstring
+Returns:
+    float or complex, 3-array
+""",  # docstring
     0,  # unused
     '(3),(3)->(3)',  # signature
 )
@@ -1066,31 +1052,30 @@ vcar2pol = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vcar2pol',  # function name
-    r"""
-    vcar2pol(v, r)
+    r"""vcar2pol(v, r)
 
-    Convert vector in cartesian coordinates to vector in polar coordinates
+Convert vector in cartesian coordinates to vector in polar coordinates
 
-    The cartesian vector :math:`(v_x, v_y)`  at coordinates :math:`(x, y)` is
-    converted to :math:`(v_\rho, v_\varphi)` with
+The cartesian vector :math:`(v_x, v_y)`  at coordinates :math:`(x, y)` is
+converted to :math:`(v_\rho, v_\varphi)` with
 
-    .. math::
+.. math::
 
-       \begin{pmatrix} v_\rho \\ v_\varphi \end{pmatrix}
-       =
-       \begin{pmatrix}
-          \cos \varphi & \sin \varphi \\
-          -\sin \varphi & \cos \varphi
-       \end{pmatrix}
-       \begin{pmatrix} v_x \\ v_y \end{pmatrix}
+    \begin{pmatrix} v_\rho \\ v_\varphi \end{pmatrix}
+    =
+    \begin{pmatrix}
+        \cos \varphi & \sin \varphi \\
+        -\sin \varphi & \cos \varphi
+    \end{pmatrix}
+    \begin{pmatrix} v_x \\ v_y \end{pmatrix}
 
-    Args:
-        v (float or complex, 3-array): Vector in 2-dimensional cartesian space
-        r (float, 2-array): Cartesian coordinates in 2-dimensional space
+Args:
+    v (float or complex, 3-array): Vector in 2-dimensional cartesian space
+    r (float, 2-array): Cartesian coordinates in 2-dimensional space
 
-    Returns:
-        float or complex, 2-array
-    """,  # docstring
+Returns:
+    float or complex, 2-array
+""",  # docstring
     0,  # unused
     '(2),(2)->(2)',  # signature
 )
@@ -1109,31 +1094,30 @@ vpol2car = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vpol2car',  # function name
-    r"""
-    vpol2car(v, r)
+    r"""vpol2car(v, r)
 
-    Convert vector in polar coordinates to vector in cartesian coordinates
+Convert vector in polar coordinates to vector in cartesian coordinates
 
-    The polar vector :math:`(v_\rho, v_\varphi)`  at coordinates
-    :math:`(\rho, \varphi)` is converted to :math:`(v_x, v_y)` with
+The polar vector :math:`(v_\rho, v_\varphi)`  at coordinates
+:math:`(\rho, \varphi)` is converted to :math:`(v_x, v_y)` with
 
-    .. math::
+.. math::
 
-       \begin{pmatrix} v_x \\ v_y \end{pmatrix}
-       =
-       \begin{pmatrix}
-          \cos \varphi & -\sin \varphi \\
-          \sin \varphi & \cos \varphi
-       \end{pmatrix}
-       \begin{pmatrix} v_\rho \\ v_\varphi \end{pmatrix}
+    \begin{pmatrix} v_x \\ v_y \end{pmatrix}
+    =
+    \begin{pmatrix}
+        \cos \varphi & -\sin \varphi \\
+        \sin \varphi & \cos \varphi
+    \end{pmatrix}
+    \begin{pmatrix} v_\rho \\ v_\varphi \end{pmatrix}
 
-    Args:
-        v (float or complex, 3-array): Vector in 3-dimensional cylindrical space
-        r (float, 3-array): Cylindrical coordinates in 3-dimensional space
+Args:
+    v (float or complex, 3-array): Vector in 3-dimensional cylindrical space
+    r (float, 3-array): Cylindrical coordinates in 3-dimensional space
 
-    Returns:
-        float or complex, 3-array
-    """,  # docstring
+Returns:
+    float or complex, 3-array
+""",  # docstring
     0,  # unused
     '(2),(2)->(2)',  # signature
 )
@@ -1167,39 +1151,38 @@ vsh_X = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vsh_X',  # function name
-    r"""
-    vsh_X(l, m, theta, phi)
+    r"""vsh_X(l, m, theta, phi)
 
-    Vector spherical harmonic X in spherical coordinates
+Vector spherical harmonic X in spherical coordinates
 
-    The vector spherical harmonics can be defined via the (scalar) spherical harmonics
-    (:func:`ptsa.special.sph_harm`)
+The vector spherical harmonics can be defined via the (scalar) spherical harmonics
+(:func:`ptsa.special.sph_harm`)
 
-    .. math::
+.. math::
 
-       \boldsymbol X_{lm}(\theta, \varphi)
-       = \frac{1}{\sqrt{l (l + 1)}} \nabla Y_{lm}(\theta, \varphi)
+    \boldsymbol X_{lm}(\theta, \varphi)
+    = \frac{1}{\sqrt{l (l + 1)}} \nabla Y_{lm}(\theta, \varphi)
 
-    which can be expressed as
+which can be expressed as
 
-    .. math::
+.. math::
 
-       \boldsymbol X_{lm}(\theta, \varphi)
-       = \mathrm i \sqrt{\frac{2 l + 1}{4 \pi l (l + 1)} \frac{(l - m)!}{(l + m)!}}
-       \left(\mathrm i \pi_{lm}(\theta, \varphi) \boldsymbol{\hat\theta} - \tau_{lm}(\theta, \varphi) \boldsymbol{\hat\varphi}\right)
+    \boldsymbol X_{lm}(\theta, \varphi)
+    = \mathrm i \sqrt{\frac{2 l + 1}{4 \pi l (l + 1)} \frac{(l - m)!}{(l + m)!}}
+    \left(\mathrm i \pi_{lm}(\theta, \varphi) \boldsymbol{\hat\theta} - \tau_{lm}(\theta, \varphi) \boldsymbol{\hat\varphi}\right)
 
-    with the angular functions :func:`ptsa.special.pi_fun` and
-    :func:`ptsa.special.tau_fun`.
+with the angular functions :func:`ptsa.special.pi_fun` and
+:func:`ptsa.special.tau_fun`.
 
-    Args:
-        l (int, array_like): Degree :math:`l \geq 0`
-        m (int, array_like): Order :math:`|m| \leq l`
-        theta (float or complex, array_like): Polar angle
-        phi (float, array_like): Azimuthal angle
+Args:
+    l (int, array_like): Degree :math:`l \geq 0`
+    m (int, array_like): Order :math:`|m| \leq l`
+    theta (float or complex, array_like): Polar angle
+    phi (float, array_like): Azimuthal angle
 
-    Returns:
-        complex, 3-array
-    """,  # docstring
+Returns:
+    complex, 3-array
+""",  # docstring
     0,  # unused
     '(),(),(),()->(3)',  # signature
 )
@@ -1233,33 +1216,32 @@ vsh_Y = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vsh_Y',  # function name
-    r"""
-    vsh_Y(l, m, theta, phi)
+    r"""vsh_Y(l, m, theta, phi)
 
-    Vector spherical harmonic Y in spherical coordinates
+Vector spherical harmonic Y in spherical coordinates
 
-    The vector spherical harmonics can be defined by
-    :math:`\boldsymbol X_{lm}(\theta, \varphi) = \boldsymbol{\hat r} \times \boldsymbol X_{lm}(\theta, \varphi)`
-    using :func:`ptsa.special.vsh_X`. Alternatively, it can can be expressed as
+The vector spherical harmonics can be defined by
+:math:`\boldsymbol X_{lm}(\theta, \varphi) = \boldsymbol{\hat r} \times \boldsymbol X_{lm}(\theta, \varphi)`
+using :func:`ptsa.special.vsh_X`. Alternatively, it can can be expressed as
 
-    .. math::
+.. math::
 
-       \boldsymbol X_{lm}(\theta, \varphi)
-       = \mathrm i \sqrt{\frac{2 l + 1}{4 \pi l (l + 1)} \frac{(l - m)!}{(l + m)!}}
-       \left(\tau_{lm}(\theta, \varphi) \boldsymbol{\hat\theta} + \mathrm i \pi_{lm}(\theta, \varphi) \boldsymbol{\hat\varphi}\right)
+    \boldsymbol X_{lm}(\theta, \varphi)
+    = \mathrm i \sqrt{\frac{2 l + 1}{4 \pi l (l + 1)} \frac{(l - m)!}{(l + m)!}}
+    \left(\tau_{lm}(\theta, \varphi) \boldsymbol{\hat\theta} + \mathrm i \pi_{lm}(\theta, \varphi) \boldsymbol{\hat\varphi}\right)
 
-    with the angular functions :func:`ptsa.special.pi_fun` and
-    :func:`ptsa.special.tau_fun`.
+with the angular functions :func:`ptsa.special.pi_fun` and
+:func:`ptsa.special.tau_fun`.
 
-    Args:
-        l (int, array_like): Degree :math:`l \geq 0`
-        m (int, array_like): Order :math:`|m| \leq l`
-        theta (float or complex, array_like): Polar angle
-        phi (float, array_like): Azimuthal angle
+Args:
+    l (int, array_like): Degree :math:`l \geq 0`
+    m (int, array_like): Order :math:`|m| \leq l`
+    theta (float or complex, array_like): Polar angle
+    phi (float, array_like): Azimuthal angle
 
-    Returns:
-        complex, 3-array
-    """,  # docstring
+Returns:
+    complex, 3-array
+""",  # docstring
     0,  # unused
     '(),(),(),()->(3)',  # signature
 )
@@ -1293,24 +1275,23 @@ vsh_Z = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vsh_Z',  # function name
-    r"""
-    vsh_Z(l, m, theta, phi)
+    r"""vsh_Z(l, m, theta, phi)
 
-    Vector spherical harmonic Z in spherical coordinates
+Vector spherical harmonic Z in spherical coordinates
 
-    The vector spherical harmonics can be defined via the (scalar) spherical harmonics
-    (:func:`ptsa.special.sph_harm`) by
-    :math:`\boldsymbol Z_{lm}(\theta, \varphi) = \mathrm i Y_{lm}(\theta, \varphi) \boldsymbol{\hat r}`.
+The vector spherical harmonics can be defined via the (scalar) spherical harmonics
+(:func:`ptsa.special.sph_harm`) by
+:math:`\boldsymbol Z_{lm}(\theta, \varphi) = \mathrm i Y_{lm}(\theta, \varphi) \boldsymbol{\hat r}`.
 
-    Args:
-        l (int, array_like): Degree :math:`l \geq 0`
-        m (int, array_like): Order :math:`|m| \leq l`
-        theta (float or complex, array_like): Polar angle
-        phi (float, array_like): Azimuthal angle
+Args:
+    l (int, array_like): Degree :math:`l \geq 0`
+    m (int, array_like): Order :math:`|m| \leq l`
+    theta (float or complex, array_like): Polar angle
+    phi (float, array_like): Azimuthal angle
 
-    Returns:
-        complex, 3-array
-    """,  # docstring
+Returns:
+    complex, 3-array
+""",  # docstring
     0,  # unused
     '(),(),(),()->(3)',  # signature
 )
@@ -1346,30 +1327,29 @@ vsw_M = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vsw_M',  # function name
-    r"""
-    vsw_M(l, m, x, theta, phi)
+    r"""vsw_M(l, m, x, theta, phi)
 
-    Singular vector spherical wave M
+Singular vector spherical wave M
 
-    The vector spherical wave is defined by
-    :math:`\boldsymbol M_{lm}^{(3)}(x, \theta, \varphi) = h_l^{(1)} (x) \boldsymbol X_{lm}(\theta, \varphi)`
-    using :func:`ptsa.special.spherical_hankel1` and :func:`ptsa.special.vsh_X`.
+The vector spherical wave is defined by
+:math:`\boldsymbol M_{lm}^{(3)}(x, \theta, \varphi) = h_l^{(1)} (x) \boldsymbol X_{lm}(\theta, \varphi)`
+using :func:`ptsa.special.spherical_hankel1` and :func:`ptsa.special.vsh_X`.
 
-    This function is describing a transverse solution to the vectorial Helmholtz wave
-    equation, that is also tangential on a spherical surface. This is often used to
-    describe a transverse electric (in spherical coordinates) (TE) wave. Additionally,
-    the term magnetic (refferring to the multipole) is used for this solution.
+This function is describing a transverse solution to the vectorial Helmholtz wave
+equation, that is also tangential on a spherical surface. This is often used to
+describe a transverse electric (in spherical coordinates) (TE) wave. Additionally,
+the term magnetic (refferring to the multipole) is used for this solution.
 
-    Args:
-        l (int, array_like): Degree :math:`l \geq 0`
-        m (int, array_like): Order :math:`|m| \leq l`
-        x (float or complex, array_like): Distance in units of the wave number :math:`kr`
-        theta (float or complex, array_like): Polar angle
-        phi (float, array_like): Azimuthal angle
+Args:
+    l (int, array_like): Degree :math:`l \geq 0`
+    m (int, array_like): Order :math:`|m| \leq l`
+    x (float or complex, array_like): Distance in units of the wave number :math:`kr`
+    theta (float or complex, array_like): Polar angle
+    phi (float, array_like): Azimuthal angle
 
-    Returns:
-        complex, 3-array
-    """,  # docstring
+Returns:
+    complex, 3-array
+""",  # docstring
     0,  # unused
     '(),(),(),(),()->(3)',  # signature
 )
@@ -1405,38 +1385,37 @@ vsw_N = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vsw_N',  # function name
-    r"""
-    vsw_N(l, m, x, theta, phi)
+    r"""vsw_N(l, m, x, theta, phi)
 
-    Singular vector spherical wave N
+Singular vector spherical wave N
 
-    The vector spherical wave is defined by
+The vector spherical wave is defined by
 
-    .. math::
+.. math::
 
-       \boldsymbol N_{lm}^{(3)}(x, \theta, \varphi)
-       = \nabla \times \boldsymbol M_{lm}^{(3)}(x, \theta, \varphi) \\
-       = \left(h_l^{(1)}'(x) + \frac{h_l^{(1)}(x)}{x}\right) \boldsymbol Y_{lm}(\theta, \varphi)
-       + \sqrt{l (l + 1)} \frac{h_l^{(1)}(x)}{x} \boldsymbol Z_{lm}(\theta, \varphi)
+    \boldsymbol N_{lm}^{(3)}(x, \theta, \varphi)
+    = \nabla \times \boldsymbol M_{lm}^{(3)}(x, \theta, \varphi) \\
+    = \left(h_l^{(1)}'(x) + \frac{h_l^{(1)}(x)}{x}\right) \boldsymbol Y_{lm}(\theta, \varphi)
+    + \sqrt{l (l + 1)} \frac{h_l^{(1)}(x)}{x} \boldsymbol Z_{lm}(\theta, \varphi)
 
-    with :func:`ptsa.special.vsw_M`, :func:`ptsa.special.vsh_Y`,
-    :func:`ptsa.special.vsh_Z`, and :func:`ptsa.special.spherical_hankel1`.
+with :func:`ptsa.special.vsw_M`, :func:`ptsa.special.vsh_Y`,
+:func:`ptsa.special.vsh_Z`, and :func:`ptsa.special.spherical_hankel1`.
 
-    This function is describing a transverse solution to the vectorial Helmholtz wave
-    equation. This is often used to describe a transverse magnetic (in spherical
-    coordinates) (TM) wave. Additionally, the term electric (refferring to the
-    multipole) is used for this solution.
+This function is describing a transverse solution to the vectorial Helmholtz wave
+equation. This is often used to describe a transverse magnetic (in spherical
+coordinates) (TM) wave. Additionally, the term electric (refferring to the
+multipole) is used for this solution.
 
-    Args:
-       l (int, array_like): Degree :math:`l \geq 0`
-       m (int, array_like): Order :math:`|m| \leq l`
-       x (float or complex, array_like): Distance in units of the wave number :math:`kr`
-       theta (float or complex, array_like): Polar angle
-       phi (float, array_like): Azimuthal angle
+Args:
+    l (int, array_like): Degree :math:`l \geq 0`
+    m (int, array_like): Order :math:`|m| \leq l`
+    x (float or complex, array_like): Distance in units of the wave number :math:`kr`
+    theta (float or complex, array_like): Polar angle
+    phi (float, array_like): Azimuthal angle
 
-    Returns:
-       complex, 3-array
-    """,  # docstring
+Returns:
+    complex, 3-array
+""",  # docstring
     0,  # unused
     '(),(),(),(),()->(3)',  # signature
 )
@@ -1472,30 +1451,29 @@ vsw_rM = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vsw_rM',  # function name
-    r"""
-    vsw_rM(l, m, x, theta, phi)
+    r"""vsw_rM(l, m, x, theta, phi)
 
-    Regular vector spherical wave M
+Regular vector spherical wave M
 
-    The vector spherical wave is defined by
-    :math:`\boldsymbol M_{lm}^{(1)}(x, \theta, \varphi) = j_l(x) \boldsymbol X_{lm}(\theta, \varphi)`
-    using :func:`ptsa.special.spherical_jn` and :func:`ptsa.special.vsh_X`.
+The vector spherical wave is defined by
+:math:`\boldsymbol M_{lm}^{(1)}(x, \theta, \varphi) = j_l(x) \boldsymbol X_{lm}(\theta, \varphi)`
+using :func:`ptsa.special.spherical_jn` and :func:`ptsa.special.vsh_X`.
 
-    This function is describing a transverse solution to the vectorial Helmholtz wave
-    equation, that is also tangential on a spherical surface. This is often used to
-    describe a transverse electric (in spherical coordinates) (TE) wave. Additionally,
-    the term magnetic (refferring to the multipole) is used for this solution.
+This function is describing a transverse solution to the vectorial Helmholtz wave
+equation, that is also tangential on a spherical surface. This is often used to
+describe a transverse electric (in spherical coordinates) (TE) wave. Additionally,
+the term magnetic (refferring to the multipole) is used for this solution.
 
-    Args:
-        l (int, array_like): Degree :math:`l \geq 0`
-        m (int, array_like): Order :math:`|m| \leq l`
-        x (float or complex, array_like): Distance in units of the wave number :math:`kr`
-        theta (float or complex, array_like): Polar angle
-        phi (float, array_like): Azimuthal angle
+Args:
+    l (int, array_like): Degree :math:`l \geq 0`
+    m (int, array_like): Order :math:`|m| \leq l`
+    x (float or complex, array_like): Distance in units of the wave number :math:`kr`
+    theta (float or complex, array_like): Polar angle
+    phi (float, array_like): Azimuthal angle
 
-    Returns:
-        complex, 3-array
-    """,  # docstring
+Returns:
+    complex, 3-array
+""",  # docstring
     0,  # unused
     '(),(),(),(),()->(3)',  # signature
 )
@@ -1531,38 +1509,37 @@ vsw_rN = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vsw_rN',  # function name
-    r"""
-    vsw_rN(l, m, x, theta, phi)
+    r"""vsw_rN(l, m, x, theta, phi)
 
-    Regular vector spherical wave N
+Regular vector spherical wave N
 
-    The vector spherical wave is defined by
+The vector spherical wave is defined by
 
-    .. math::
+.. math::
 
-       \boldsymbol N_{lm}^{(1)}(x, \theta, \varphi)
-       = \nabla \times \boldsymbol M_{lm}^{(1)}(x, \theta, \varphi) \\
-       = \left(j_l'(x) + \frac{j_l(x)}{x}\right) \boldsymbol Y_{lm}(\theta, \varphi)
-       + \sqrt{l (l + 1)} \frac{j_l(x)}{x} \boldsymbol Z_{lm}(\theta, \varphi)
+    \boldsymbol N_{lm}^{(1)}(x, \theta, \varphi)
+    = \nabla \times \boldsymbol M_{lm}^{(1)}(x, \theta, \varphi) \\
+    = \left(j_l'(x) + \frac{j_l(x)}{x}\right) \boldsymbol Y_{lm}(\theta, \varphi)
+    + \sqrt{l (l + 1)} \frac{j_l(x)}{x} \boldsymbol Z_{lm}(\theta, \varphi)
 
-    with :func:`ptsa.special.vsw_M`, :func:`ptsa.special.vsh_Y`,
-    :func:`ptsa.special.vsh_Z`, and :func:`ptsa.special.spherical_jn`.
+with :func:`ptsa.special.vsw_M`, :func:`ptsa.special.vsh_Y`,
+:func:`ptsa.special.vsh_Z`, and :func:`ptsa.special.spherical_jn`.
 
-    This function is describing a transverse solution to the vectorial Helmholtz wave
-    equation. This is often used to describe a transverse magnetic (in spherical
-    coordinates) (TM) wave. Additionally, the term electric (refferring to the
-    multipole) is used for this solution.
+This function is describing a transverse solution to the vectorial Helmholtz wave
+equation. This is often used to describe a transverse magnetic (in spherical
+coordinates) (TM) wave. Additionally, the term electric (refferring to the
+multipole) is used for this solution.
 
-    Args:
-       l (int, array_like): Degree :math:`l \geq 0`
-       m (int, array_like): Order :math:`|m| \leq l`
-       x (float or complex, array_like): Distance in units of the wave number :math:`kr`
-       theta (float or complex, array_like): Polar angle
-       phi (float, array_like): Azimuthal angle
+Args:
+    l (int, array_like): Degree :math:`l \geq 0`
+    m (int, array_like): Order :math:`|m| \leq l`
+    x (float or complex, array_like): Distance in units of the wave number :math:`kr`
+    theta (float or complex, array_like): Polar angle
+    phi (float, array_like): Azimuthal angle
 
-    Returns:
-       complex, 3-array
-    """,  # docstring
+Returns:
+    complex, 3-array
+""",  # docstring
     0,  # unused
     '(),(),(),(),()->(3)',  # signature
 )
@@ -1600,35 +1577,34 @@ vsw_rA = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vsw_rA',  # function name
-    r"""
-    vsw_rA(l, m, x, theta, phi, p)
+    r"""vsw_rA(l, m, x, theta, phi, p)
 
-    Regular helical vector spherical wave
+Regular helical vector spherical wave
 
-    The vector spherical wave is defined by
+The vector spherical wave is defined by
 
-    .. math::
+.. math::
 
-       \boldsymbol A_{lm\pm}^{(1)}(x, \theta, \varphi)
-       = \frac{\boldsymbol N_{lm}^{(1)}(x, \theta, \varphi) \pm \boldsymbol M_{lm}^{(1)}(x, \theta, \varphi)}{\sqrt{2}}
+    \boldsymbol A_{lm\pm}^{(1)}(x, \theta, \varphi)
+    = \frac{\boldsymbol N_{lm}^{(1)}(x, \theta, \varphi) \pm \boldsymbol M_{lm}^{(1)}(x, \theta, \varphi)}{\sqrt{2}}
 
-    with :func:`ptsa.special.vsw_rM` and :func:`ptsa.special.vsw_rN`. The sign is
-    determined by `p`, where `0` corresponds to negative and `1` to positive helicity.
+with :func:`ptsa.special.vsw_rM` and :func:`ptsa.special.vsw_rN`. The sign is
+determined by `p`, where `0` corresponds to negative and `1` to positive helicity.
 
-    This function is describing a transverse solution to the vectorial Helmholtz wave
-    equation. Additionally, it has a well-defined helicity.
+This function is describing a transverse solution to the vectorial Helmholtz wave
+equation. Additionally, it has a well-defined helicity.
 
-    Args:
-       l (int, array_like): Degree :math:`l \geq 0`
-       m (int, array_like): Order :math:`|m| \leq l`
-       x (float or complex, array_like): Distance in units of the wave number :math:`kr`
-       theta (float or complex, array_like): Polar angle
-       phi (float, array_like): Azimuthal angle
-       p (bool, array_like): Helicity
+Args:
+    l (int, array_like): Degree :math:`l \geq 0`
+    m (int, array_like): Order :math:`|m| \leq l`
+    x (float or complex, array_like): Distance in units of the wave number :math:`kr`
+    theta (float or complex, array_like): Polar angle
+    phi (float, array_like): Azimuthal angle
+    p (bool, array_like): Helicity
 
-    Returns:
-       complex, 3-array
-    """,  # docstring
+Returns:
+    complex, 3-array
+""",  # docstring
     0,  # unused
     '(),(),(),(),(),()->(3)',  # signature
 )
@@ -1666,35 +1642,34 @@ vsw_A = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vsw_A',  # function name
-    r"""
-    vsw_A(l, m, x, theta, phi, p)
+    r"""vsw_A(l, m, x, theta, phi, p)
 
-    Singular helical vector spherical wave
+Singular helical vector spherical wave
 
-    The vector spherical wave is defined by
+The vector spherical wave is defined by
 
-    .. math::
+.. math::
 
-       \boldsymbol A_{lm\pm}^{(3)}(x, \theta, \varphi)
-       = \frac{\boldsymbol N_{lm}^{(3)}(x, \theta, \varphi) \pm \boldsymbol M_{lm}^{(3)}(x, \theta, \varphi)}{\sqrt{2}}
+    \boldsymbol A_{lm\pm}^{(3)}(x, \theta, \varphi)
+    = \frac{\boldsymbol N_{lm}^{(3)}(x, \theta, \varphi) \pm \boldsymbol M_{lm}^{(3)}(x, \theta, \varphi)}{\sqrt{2}}
 
-    with :func:`ptsa.special.vsw_M` and :func:`ptsa.special.vsw_N`. The sign is
-    determined by `p`, where `0` corresponds to negative and `1` to positive helicity.
+with :func:`ptsa.special.vsw_M` and :func:`ptsa.special.vsw_N`. The sign is
+determined by `p`, where `0` corresponds to negative and `1` to positive helicity.
 
-    This function is describing a transverse solution to the vectorial Helmholtz wave
-    equation. Additionally, it has a well-defined helicity.
+This function is describing a transverse solution to the vectorial Helmholtz wave
+equation. Additionally, it has a well-defined helicity.
 
-    Args:
-       l (int, array_like): Degree :math:`l \geq 0`
-       m (int, array_like): Order :math:`|m| \leq l`
-       x (float or complex, array_like): Distance in units of the wave number :math:`kr`
-       theta (float or complex, array_like): Polar angle
-       phi (float, array_like): Azimuthal angle
-       p (bool, array_like): Helicity
+Args:
+    l (int, array_like): Degree :math:`l \geq 0`
+    m (int, array_like): Order :math:`|m| \leq l`
+    x (float or complex, array_like): Distance in units of the wave number :math:`kr`
+    theta (float or complex, array_like): Polar angle
+    phi (float, array_like): Azimuthal angle
+    p (bool, array_like): Helicity
 
-    Returns:
-       complex, 3-array
-    """,  # docstring
+Returns:
+    complex, 3-array
+""",  # docstring
     0,  # unused
     '(),(),(),(),(),()->(3)',  # signature
 )
@@ -1722,35 +1697,34 @@ vcw_M = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vcw_M',  # function name
-    r"""
-    vcw_M(kz, m, xrho, phi, z)
+    r"""vcw_M(kz, m, xrho, phi, z)
 
-    Singular vector cylindrical wave M
+Singular vector cylindrical wave M
 
-    The vector cylindrical wave is defined by
+The vector cylindrical wave is defined by
 
-    .. math::
+.. math::
 
-       \boldsymbol M_{k_z m}^{(3)}(x_\rho, \varphi, z)
-       = \left(\frac{\mathrm i m}{x_\rho} H_m^{(1)}(x_\rho)\boldsymbol{\hat{\rho}} - H_m^{(1)}'(x_\rho) \boldsymbol{\hat{\varphi}}\right)
-       \mathrm e^{\mathrm i (k_z z + m \varphi)}
+    \boldsymbol M_{k_z m}^{(3)}(x_\rho, \varphi, z)
+    = \left(\frac{\mathrm i m}{x_\rho} H_m^{(1)}(x_\rho)\boldsymbol{\hat{\rho}} - H_m^{(1)}'(x_\rho) \boldsymbol{\hat{\varphi}}\right)
+    \mathrm e^{\mathrm i (k_z z + m \varphi)}
 
-    using :func:`ptsa.special.hankel1`.
+using :func:`ptsa.special.hankel1`.
 
-    This function is describing a transverse solution to the vectorial Helmholtz wave
-    equation, that is also tangential on a cylindrical surface. This is often used to
-    describe a transverse electric (in cylindrical coordinates) (TE) wave.
+This function is describing a transverse solution to the vectorial Helmholtz wave
+equation, that is also tangential on a cylindrical surface. This is often used to
+describe a transverse electric (in cylindrical coordinates) (TE) wave.
 
-    Args:
-        kz (float, array_like): Z component of the wave
-        m (int, array_like): Order :math:`|m| \leq l`
-        xrho (float or complex, array_like): Radial in units of the wave number :math:`k_\rho \rho`
-        phi (float, array_like): Azimuthal angle
-        z (float, array_like): Z coordinate
+Args:
+    kz (float, array_like): Z component of the wave
+    m (int, array_like): Order :math:`|m| \leq l`
+    xrho (float or complex, array_like): Radial in units of the wave number :math:`k_\rho \rho`
+    phi (float, array_like): Azimuthal angle
+    z (float, array_like): Z coordinate
 
-    Returns:
-        complex, 3-array
-    """,  # docstring
+Returns:
+    complex, 3-array
+""",  # docstring
     0,  # unused
     '(),(),(),(),()->(3)',  # signature
 )
@@ -1786,35 +1760,34 @@ vcw_rM = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vcw_rM',  # function name
-    r"""
-    vcw_rM(kz, m, xrho, phi, z)
+    r"""vcw_rM(kz, m, xrho, phi, z)
 
-    Regular vector cylindrical wave M
+Regular vector cylindrical wave M
 
-    The vector cylindrical wave is defined by
+The vector cylindrical wave is defined by
 
-    .. math::
+.. math::
 
-       \boldsymbol M_{k_z m}^{(1)}(x_\rho, \varphi, z)
-       = \left(\frac{\mathrm i m}{x_\rho} J_m(x_\rho)\boldsymbol{\hat{\rho}} - J_m'(x_\rho) \boldsymbol{\hat{\varphi}}\right)
-       \mathrm e^{\mathrm i (k_z z + m \varphi)}
+    \boldsymbol M_{k_z m}^{(1)}(x_\rho, \varphi, z)
+    = \left(\frac{\mathrm i m}{x_\rho} J_m(x_\rho)\boldsymbol{\hat{\rho}} - J_m'(x_\rho) \boldsymbol{\hat{\varphi}}\right)
+    \mathrm e^{\mathrm i (k_z z + m \varphi)}
 
-    using :func:`ptsa.special.jn`.
+using :func:`ptsa.special.jn`.
 
-    This function is describing a transverse solution to the vectorial Helmholtz wave
-    equation, that is also tangential on a cylindrical surface. This is often used to
-    describe a transverse electric (in cylindrical coordinates) (TE) wave.
+This function is describing a transverse solution to the vectorial Helmholtz wave
+equation, that is also tangential on a cylindrical surface. This is often used to
+describe a transverse electric (in cylindrical coordinates) (TE) wave.
 
-    Args:
-        kz (float, array_like): Z component of the wave
-        m (int, array_like): Order :math:`|m| \leq l`
-        xrho (float or complex, array_like): Radial in units of the wave number :math:`k_\rho \rho`
-        phi (float, array_like): Azimuthal angle
-        z (float, array_like): Z coordinate
+Args:
+    kz (float, array_like): Z component of the wave
+    m (int, array_like): Order :math:`|m| \leq l`
+    xrho (float or complex, array_like): Radial in units of the wave number :math:`k_\rho \rho`
+    phi (float, array_like): Azimuthal angle
+    z (float, array_like): Z coordinate
 
-    Returns:
-        complex, 3-array
-    """,  # docstring
+Returns:
+    complex, 3-array
+""",  # docstring
     0,  # unused
     '(),(),(),(),()->(3)',  # signature
 )
@@ -1843,36 +1816,35 @@ vcw_N = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vcw_N',  # function name
-    r"""
-    vcw_N(kz, m, xrho, phi, z, k)
+    r"""vcw_N(kz, m, xrho, phi, z, k)
 
-    Singular vector cylindrical wave N
+Singular vector cylindrical wave N
 
-    The vector cylindrical wave is defined by
+The vector cylindrical wave is defined by
 
-    .. math::
+.. math::
 
-       \boldsymbol N_{k_z m}^{(3)}(x_\rho, \varphi, z)
-       = \left(\frac{\mathrm i k_z}{k} H_m^{(1)}'(x_\rho)\boldsymbol{\hat{\rho}} - \frac{m k_z}{k x_\rho} H_m^{(1)}(x_\rho) \boldsymbol{\hat{\varphi}} + \frac{k_\rho}{k} H_m^{(1)}(x_\rho)\right)
-       \mathrm e^{\mathrm i (k_z z + m \varphi)}
+    \boldsymbol N_{k_z m}^{(3)}(x_\rho, \varphi, z)
+    = \left(\frac{\mathrm i k_z}{k} H_m^{(1)}'(x_\rho)\boldsymbol{\hat{\rho}} - \frac{m k_z}{k x_\rho} H_m^{(1)}(x_\rho) \boldsymbol{\hat{\varphi}} + \frac{k_\rho}{k} H_m^{(1)}(x_\rho)\right)
+    \mathrm e^{\mathrm i (k_z z + m \varphi)}
 
-    using :func:`ptsa.special.hankel1`.
+using :func:`ptsa.special.hankel1`.
 
-    This function is describing a transverse solution to the vectorial Helmholtz wave
-    equation. This is often used to describe a transverse magnetic (in cylindrical
-    coordinates) (TM) wave.
+This function is describing a transverse solution to the vectorial Helmholtz wave
+equation. This is often used to describe a transverse magnetic (in cylindrical
+coordinates) (TM) wave.
 
-    Args:
-        kz (float, array_like): Z component of the wave
-        m (int, array_like): Order :math:`|m| \leq l`
-        xrho (float or complex, array_like): Radial in units of the wave number :math:`k_\rho \rho`
-        phi (float, array_like): Azimuthal angle
-        z (float, array_like): Z coordinate
-        k (float or complex): Wave number
+Args:
+    kz (float, array_like): Z component of the wave
+    m (int, array_like): Order :math:`|m| \leq l`
+    xrho (float or complex, array_like): Radial in units of the wave number :math:`k_\rho \rho`
+    phi (float, array_like): Azimuthal angle
+    z (float, array_like): Z coordinate
+    k (float or complex): Wave number
 
-    Returns:
-        complex, 3-array
-    """,  # docstring
+Returns:
+    complex, 3-array
+""",  # docstring
     0,  # unused
     '(),(),(),(),(),()->(3)',  # signature
 )
@@ -1910,36 +1882,35 @@ vcw_rN = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vcw_rN',  # function name
-    r"""
-    vcw_N(kz, m, xrho, phi, z, k)
+    r"""vcw_N(kz, m, xrho, phi, z, k)
 
-    Regular vector cylindrical wave N
+Regular vector cylindrical wave N
 
-    The vector cylindrical wave is defined by
+The vector cylindrical wave is defined by
 
-    .. math::
+.. math::
 
-       \boldsymbol N_{k_z m}^{(3)}(x_\rho, \varphi, z)
-       = \left(\frac{\mathrm i k_z}{k} J_m'(x_\rho)\boldsymbol{\hat{\rho}} - \frac{m k_z}{k x_\rho} J_m(x_\rho) \boldsymbol{\hat{\varphi}} + \frac{k_\rho}{k} J_m(x_\rho)\right)
-       \mathrm e^{\mathrm i (k_z z + m \varphi)}
+    \boldsymbol N_{k_z m}^{(3)}(x_\rho, \varphi, z)
+    = \left(\frac{\mathrm i k_z}{k} J_m'(x_\rho)\boldsymbol{\hat{\rho}} - \frac{m k_z}{k x_\rho} J_m(x_\rho) \boldsymbol{\hat{\varphi}} + \frac{k_\rho}{k} J_m(x_\rho)\right)
+    \mathrm e^{\mathrm i (k_z z + m \varphi)}
 
-    using :func:`ptsa.special.jv`.
+using :func:`ptsa.special.jv`.
 
-    This function is describing a transverse solution to the vectorial Helmholtz wave
-    equation. This is often used to describe a transverse magnetic (in cylindrical
-    coordinates) (TM) wave.
+This function is describing a transverse solution to the vectorial Helmholtz wave
+equation. This is often used to describe a transverse magnetic (in cylindrical
+coordinates) (TM) wave.
 
-    Args:
-        kz (float, array_like): Z component of the wave
-        m (int, array_like): Order :math:`|m| \leq l`
-        xrho (float or complex, array_like): Radial in units of the wave number :math:`k_\rho \rho`
-        phi (float, array_like): Azimuthal angle
-        z (float, array_like): Z coordinate
-        k (float or complex): Wave number
+Args:
+    kz (float, array_like): Z component of the wave
+    m (int, array_like): Order :math:`|m| \leq l`
+    xrho (float or complex, array_like): Radial in units of the wave number :math:`k_\rho \rho`
+    phi (float, array_like): Azimuthal angle
+    z (float, array_like): Z coordinate
+    k (float or complex): Wave number
 
-    Returns:
-        complex, 3-array
-    """,  # docstring
+Returns:
+    complex, 3-array
+""",  # docstring
     0,  # unused
     '(),(),(),(),(),()->(3)',  # signature
 )
@@ -1969,36 +1940,35 @@ vcw_A = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vcw_A',  # function name
-    r"""
-    vcw_A(kz, m, xrho, phi, z, k, pol)
+    r"""vcw_A(kz, m, xrho, phi, z, k, pol)
 
-    Singular helical vector cylindrical wave
+Singular helical vector cylindrical wave
 
-    The vector spherical wave is defined by
+The vector spherical wave is defined by
 
-    .. math::
+.. math::
 
-       \boldsymbol A_{k_z m \pm}^{(3)}(x_\rho, \varphi, z)
-       = \frac{\boldsymbol N_{k_z m}^{(3)}(x_\rho, \varphi, z) \pm \boldsymbol M_{k_z m}^{(3)}(x_\rho, \varphi, z)}{\sqrt{2}}
+    \boldsymbol A_{k_z m \pm}^{(3)}(x_\rho, \varphi, z)
+    = \frac{\boldsymbol N_{k_z m}^{(3)}(x_\rho, \varphi, z) \pm \boldsymbol M_{k_z m}^{(3)}(x_\rho, \varphi, z)}{\sqrt{2}}
 
-    with :func:`ptsa.special.vcw_M` and :func:`ptsa.special.vcw_N`. The sign is
-    determined by `p`, where `0` corresponds to negative and `1` to positive helicity.
+with :func:`ptsa.special.vcw_M` and :func:`ptsa.special.vcw_N`. The sign is
+determined by `p`, where `0` corresponds to negative and `1` to positive helicity.
 
-    This function is describing a transverse solution to the vectorial Helmholtz wave
-    equation. Additionally, it has a well-defined helicity.
+This function is describing a transverse solution to the vectorial Helmholtz wave
+equation. Additionally, it has a well-defined helicity.
 
-    Args:
-        kz (float, array_like): Z component of the wave
-        m (int, array_like): Order :math:`|m| \leq l`
-        xrho (float or complex, array_like): Radial in units of the wave number :math:`k_\rho \rho`
-        phi (float, array_like): Azimuthal angle
-        z (float, array_like): Z coordinate
-        k (float or complex): Wave number
-        pol (bool, array_like): Polarization
+Args:
+    kz (float, array_like): Z component of the wave
+    m (int, array_like): Order :math:`|m| \leq l`
+    xrho (float or complex, array_like): Radial in units of the wave number :math:`k_\rho \rho`
+    phi (float, array_like): Azimuthal angle
+    z (float, array_like): Z coordinate
+    k (float or complex): Wave number
+    pol (bool, array_like): Polarization
 
-    Returns:
-        complex, 3-array
-    """,  # docstring
+Returns:
+    complex, 3-array
+""",  # docstring
     0,  # unused
     '(),(),(),(),(),(),()->(3)',  # signature
 )
@@ -2038,36 +2008,35 @@ vcw_rA = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vcw_rA',  # function name
-    r"""
-    vcw_rA(kz, m, xrho, phi, z, k)
+    r"""vcw_rA(kz, m, xrho, phi, z, k)
 
-    Regular helical vector cylindrical wave
+Regular helical vector cylindrical wave
 
-    The vector spherical wave is defined by
+The vector spherical wave is defined by
 
-    .. math::
+.. math::
 
-       \boldsymbol A_{k_z m \pm}^{(1)}(x_\rho, \varphi, z)
-       = \frac{\boldsymbol N_{k_z m}^{(1)}(x_\rho, \varphi, z) \pm \boldsymbol M_{k_z m}^{(1)}(x_\rho, \varphi, z)}{\sqrt{2}}
+    \boldsymbol A_{k_z m \pm}^{(1)}(x_\rho, \varphi, z)
+    = \frac{\boldsymbol N_{k_z m}^{(1)}(x_\rho, \varphi, z) \pm \boldsymbol M_{k_z m}^{(1)}(x_\rho, \varphi, z)}{\sqrt{2}}
 
-    with :func:`ptsa.special.vcw_rM` and :func:`ptsa.special.vcw_rN`. The sign is
-    determined by `p`, where `0` corresponds to negative and `1` to positive helicity.
+with :func:`ptsa.special.vcw_rM` and :func:`ptsa.special.vcw_rN`. The sign is
+determined by `p`, where `0` corresponds to negative and `1` to positive helicity.
 
-    This function is describing a transverse solution to the vectorial Helmholtz wave
-    equation. Additionally, it has a well-defined helicity.
+This function is describing a transverse solution to the vectorial Helmholtz wave
+equation. Additionally, it has a well-defined helicity.
 
-    Args:
-        kz (float, array_like): Z component of the wave
-        m (int, array_like): Order :math:`|m| \leq l`
-        xrho (float or complex, array_like): Radial in units of the wave number :math:`k_\rho \rho`
-        phi (float, array_like): Azimuthal angle
-        z (float, array_like): Z coordinate
-        k (float or complex): Wave number
-        pol (bool, array_like): Polarization
+Args:
+    kz (float, array_like): Z component of the wave
+    m (int, array_like): Order :math:`|m| \leq l`
+    xrho (float or complex, array_like): Radial in units of the wave number :math:`k_\rho \rho`
+    phi (float, array_like): Azimuthal angle
+    z (float, array_like): Z coordinate
+    k (float or complex): Wave number
+    pol (bool, array_like): Polarization
 
-    Returns:
-        complex, 3-array
-    """,  # docstring
+Returns:
+    complex, 3-array
+""",  # docstring
     0,  # unused
     '(),(),(),(),(),(),()->(3)',  # signature
 )
@@ -2105,33 +2074,32 @@ vpw_M = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vpw_M',  # function name
-    r"""
-    vpw_M(kx, ky, kz, x, y, z)
+    r"""vpw_M(kx, ky, kz, x, y, z)
 
-    Vector plane wave M
+Vector plane wave M
 
-    The vector plane wave is defined by
+The vector plane wave is defined by
 
-    .. math::
+.. math::
 
-       \boldsymbol M_{\boldsymbol k}(\boldsymbol r)
-       = - \mathrm i \boldsymbol{\hat \varphi}_{\boldsymbol k} \mathrm e^{\mathrm i \boldsymbol k \boldsymbol r}.
+    \boldsymbol M_{\boldsymbol k}(\boldsymbol r)
+    = - \mathrm i \boldsymbol{\hat \varphi}_{\boldsymbol k} \mathrm e^{\mathrm i \boldsymbol k \boldsymbol r}.
 
-    This function is describing a transverse solution to the vectorial Helmholtz wave
-    equation, that is also tangential on a planar surface. This is often used to
-    describe a transverse electric (TE) wave.
+This function is describing a transverse solution to the vectorial Helmholtz wave
+equation, that is also tangential on a planar surface. This is often used to
+describe a transverse electric (TE) wave.
 
-    Args:
-        kx (float or complex, array_like): X component of the wave vector
-        ky (float or complex, array_like): Y component of the wave vector
-        kz (float or complex, array_like): Z component of the wave vector
-        x (float, array_like): Y coordinate
-        y (float, array_like): X coordinate
-        z (float, array_like): Z coordinate
+Args:
+    kx (float or complex, array_like): X component of the wave vector
+    ky (float or complex, array_like): Y component of the wave vector
+    kz (float or complex, array_like): Z component of the wave vector
+    x (float, array_like): Y coordinate
+    y (float, array_like): X coordinate
+    z (float, array_like): Z coordinate
 
-    Returns:
-        complex, 3-array
-    """,  # docstring
+Returns:
+    complex, 3-array
+""",  # docstring
     0,  # unused
     '(),(),(),(),(),()->(3)',  # signature
 )
@@ -2169,32 +2137,31 @@ vpw_N = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vpw_N',  # function name
-    r"""
-    vpw_N(kx, ky, kz, x, y, z)
+    r"""vpw_N(kx, ky, kz, x, y, z)
 
-    Vector plane wave N
+Vector plane wave N
 
-    The vector plane wave is defined by
+The vector plane wave is defined by
 
-    .. math::
+.. math::
 
-       \boldsymbol N_{\boldsymbol k}(\boldsymbol r)
-       = - \boldsymbol{\hat \theta}_{\boldsymbol k} \mathrm e^{\mathrm i \boldsymbol k \boldsymbol r}.
+    \boldsymbol N_{\boldsymbol k}(\boldsymbol r)
+    = - \boldsymbol{\hat \theta}_{\boldsymbol k} \mathrm e^{\mathrm i \boldsymbol k \boldsymbol r}.
 
-    This function is describing a transverse solution to the vectorial Helmholtz wave
-    equation. This is often used to describe a transverse magnetic (TM) wave.
+This function is describing a transverse solution to the vectorial Helmholtz wave
+equation. This is often used to describe a transverse magnetic (TM) wave.
 
-    Args:
-        kx (float or complex, array_like): X component of the wave vector
-        ky (float or complex, array_like): Y component of the wave vector
-        kz (float or complex, array_like): Z component of the wave vector
-        x (float, array_like): Y coordinate
-        y (float, array_like): X coordinate
-        z (float, array_like): Z coordinate
+Args:
+    kx (float or complex, array_like): X component of the wave vector
+    ky (float or complex, array_like): Y component of the wave vector
+    kz (float or complex, array_like): Z component of the wave vector
+    x (float, array_like): Y coordinate
+    y (float, array_like): X coordinate
+    z (float, array_like): Z coordinate
 
-    Returns:
-        complex, 3-array
-    """,  # docstring
+Returns:
+    complex, 3-array
+""",  # docstring
     0,  # unused
     '(),(),(),(),(),()->(3)',  # signature
 )
@@ -2234,36 +2201,35 @@ vpw_A = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # identity element
     'vpw_A',  # function name
-    r"""
-    vpw_A(kx, ky, kz, x, y, z, p)
+    r"""vpw_A(kx, ky, kz, x, y, z, p)
 
-    Vector plane wave of well-defined helicity
+Vector plane wave of well-defined helicity
 
-    The vector plane wave is defined by
+The vector plane wave is defined by
 
-    .. math::
+.. math::
 
-       \boldsymbol A_{\boldsymbol k \pm}(\boldsymbol r)
-       = \frac{\boldsymbol N_{\boldsymbol k \pm}(\boldsymbol r) \pm \boldsymbol M_{\boldsymbol k}(\boldsymbol r)}{\sqrt{2}}
+    \boldsymbol A_{\boldsymbol k \pm}(\boldsymbol r)
+    = \frac{\boldsymbol N_{\boldsymbol k \pm}(\boldsymbol r) \pm \boldsymbol M_{\boldsymbol k}(\boldsymbol r)}{\sqrt{2}}
 
-    with :func:`ptsa.special.vpw_M` and :func:`ptsa.special.vpw_N`. The sign is
-    determined by `p`, where `0` corresponds to negative and `1` to positive helicity.
+with :func:`ptsa.special.vpw_M` and :func:`ptsa.special.vpw_N`. The sign is
+determined by `p`, where `0` corresponds to negative and `1` to positive helicity.
 
-    This function is describing a transverse solution to the vectorial Helmholtz wave
-    equation. Additionally, it has a well-defined helicity.
+This function is describing a transverse solution to the vectorial Helmholtz wave
+equation. Additionally, it has a well-defined helicity.
 
-    Args:
-        kx (float or complex, array_like): X component of the wave vector
-        ky (float or complex, array_like): Y component of the wave vector
-        kz (float or complex, array_like): Z component of the wave vector
-        x (float, array_like): Y coordinate
-        y (float, array_like): X coordinate
-        z (float, array_like): Z coordinate
-        p (bool, array_like): Helicity
+Args:
+    kx (float or complex, array_like): X component of the wave vector
+    ky (float or complex, array_like): Y component of the wave vector
+    kz (float or complex, array_like): Z component of the wave vector
+    x (float, array_like): Y coordinate
+    y (float, array_like): X coordinate
+    z (float, array_like): Z coordinate
+    p (bool, array_like): Helicity
 
-    Returns:
-        complex, 3-array
-    """,  # docstring
+Returns:
+    complex, 3-array
+""",  # docstring
     0,  # unused
     '(),(),(),(),(),(),()->(3)',  # signature
 )

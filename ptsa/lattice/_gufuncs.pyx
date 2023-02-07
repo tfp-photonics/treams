@@ -976,19 +976,18 @@ reciprocal = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'reciprocal',  # function name
-    """
-    reciprocal(a)
+    """reciprocal(a)
 
-    Reciprocal vectors in two- and three-dimensional space
+Reciprocal vectors in two- and three-dimensional space
 
-    Calculate the reciprocal vectors to the lattice vectors given as rows of `a`.
+Calculate the reciprocal vectors to the lattice vectors given as rows of `a`.
 
-    Args:
-        a (float, (2,2)- or (3,3)-array): Lattice vectors
+Args:
+    a (float, (2,2)- or (3,3)-array): Lattice vectors
 
-    Returns:
-        float, (2,2)- or (3,3)-array
-    """,  # docstring
+Returns:
+    float, (2,2)- or (3,3)-array
+""",  # docstring
     0,  # unused
     '(i,i)->(i,i)',  # signature
 )
@@ -1021,21 +1020,20 @@ volume = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'volume',  # function name
-    """
-    volume(a)
+    """volume(a)
 
-    Calculate the signed volume (area)
+Calculate the signed volume (area)
 
-    From the vectors given in `a`, calculate the volume or area. This value is signed
-    showing the handedness of the system. For a two-dimensional lattice calculates the
-    area and the function has therefore as alias the name `area`.
+From the vectors given in `a`, calculate the volume or area. This value is signed
+showing the handedness of the system. For a two-dimensional lattice calculates the
+area and the function has therefore as alias the name `area`.
 
-    Args:
-        a (float, (2,2)- or (3,3)-array): Lattice vectors
+Args:
+    a (float, (2,2)- or (3,3)-array): Lattice vectors
 
-    Returns:
-        float
-    """,  # docstring
+Returns:
+    float
+""",  # docstring
     0,  # unused
     '(i,i)->()',  # signature
 )
@@ -1081,38 +1079,37 @@ lsumcw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'lsumcw2d',  # function name
-    r"""
-    lsumcw2d(l, k, kpar, a, r, eta)
+    r"""lsumcw2d(l, k, kpar, a, r, eta)
 
-    Fast summation of cylindrical functions on a 2d lattice
+Fast summation of cylindrical functions on a 2d lattice
 
-    Computes
+Computes
 
-    .. math::
+.. math::
 
-        D_{l}(k, \boldsymbol k_\parallel, \boldsymbol r, \Lambda_2)
-        = \sum_{\boldsymbol R \in \Lambda_2}
-        H_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
-        \mathrm e^{\mathrm i l \varphi_{-\boldsymbol r - \boldsymbol R}}
-        \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
+    D_{l}(k, \boldsymbol k_\parallel, \boldsymbol r, \Lambda_2)
+    = \sum_{\boldsymbol R \in \Lambda_2}
+    H_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
+    \mathrm e^{\mathrm i l \varphi_{-\boldsymbol r - \boldsymbol R}}
+    \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
 
-    using the Ewald summation.
+using the Ewald summation.
 
-    The cut between the real and reciprocal space summation is defined by `eta`. Larger
-    values increase the weight of the real sum. In `a` the lattice vectors are
-    given as rows.
+The cut between the real and reciprocal space summation is defined by `eta`. Larger
+values increase the weight of the real sum. In `a` the lattice vectors are
+given as rows.
 
-    Args:
-        l (integer): Order
-        k (float or complex): Wave number
-        kpar (float, (2,)-array): Wave vector
-        a (float, (2,2)-array): Lattice vectors
-        r (float, (2,)-array): Shift vector
-        eta (float or complex): Separation value
+Args:
+    l (integer): Order
+    k (float or complex): Wave number
+    kpar (float, (2,)-array): Wave vector
+    a (float, (2,2)-array): Lattice vectors
+    r (float, (2,)-array): Shift vector
+    eta (float or complex): Separation value
 
-    Returns:
-        complex
-    """,  # docstring
+Returns:
+    complex
+""",  # docstring
     0,  # unused
     '(),(),(2),(2,2),(2),()->()',  # signature
 )
@@ -1125,9 +1122,7 @@ realsumcw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'realsumcw2d',  # function name
-    r"""
-    realsumcw2d(l, k, kpar, a, r, eta)
-    """,  # docstring
+    r"""realsumcw2d(l, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
     '(),(),(2),(2,2),(2),()->()',  # signature
 )
@@ -1140,9 +1135,7 @@ recsumcw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'recsumcw2d',  # function name
-    r"""
-    recsumcw2d(l, k, kpar, a, r, eta)
-    """,  # docstring
+    r"""recsumcw2d(l, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
     '(),(),(2),(2,2),(2),()->()',  # signature
 )
@@ -1187,39 +1180,38 @@ lsumsw3d = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'lsumsw3d',  # function name
-    r"""
-    lsumsw3d(l, m, k, kpar, a, r, eta)
+    r"""lsumsw3d(l, m, k, kpar, a, r, eta)
 
-    Fast summation of spherical functions on a 3d lattice
+Fast summation of spherical functions on a 3d lattice
 
-    Computes
+Computes
 
-    .. math::
+.. math::
 
-        D_{lm}(k, \boldsymbol k_\parallel, \Lambda_3, \boldsymbol r)
-        = \sum_{\boldsymbol R \in \Lambda_3}
-        h_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
-        Y_{lm}(-\boldsymbol r - \boldsymbol R)
-        \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
+    D_{lm}(k, \boldsymbol k_\parallel, \Lambda_3, \boldsymbol r)
+    = \sum_{\boldsymbol R \in \Lambda_3}
+    h_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
+    Y_{lm}(-\boldsymbol r - \boldsymbol R)
+    \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
 
-    using the Ewald summation.
+using the Ewald summation.
 
-    The cut between the real and reciprocal space summation is defined by `eta`. Larger
-    values increase the weight of the real sum. In `a` the lattice vectors are
-    given as rows.
+The cut between the real and reciprocal space summation is defined by `eta`. Larger
+values increase the weight of the real sum. In `a` the lattice vectors are
+given as rows.
 
-    Args:
-        l (integer): Degree :math:`l \geq 0`
-        m (integer): Order :math:`|m| \leq l`
-        k (float or complex): Wave number
-        kpar (float, (3,)-array): Wave vector
-        a (float, (3,3)-array): Lattice vectors
-        r (float, (3,)-array): Shift vector
-        eta (float or complex): Separation value
+Args:
+    l (integer): Degree :math:`l \geq 0`
+    m (integer): Order :math:`|m| \leq l`
+    k (float or complex): Wave number
+    kpar (float, (3,)-array): Wave vector
+    a (float, (3,3)-array): Lattice vectors
+    r (float, (3,)-array): Shift vector
+    eta (float or complex): Separation value
 
-    Returns:
-        complex
-    """,  # docstring
+Returns:
+    complex
+""",  # docstring
     0,  # unused
     '(),(),(),(3),(3,3),(3),()->()',  # signature
 )
@@ -1232,9 +1224,7 @@ realsumsw3d = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'realsumsw3d',  # function name
-    r"""
-    realsumsw3d(l, m, k, kpar, a, r, eta)
-    """,  # docstring
+    r"""realsumsw3d(l, m, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
     '(),(),(),(3),(3,3),(3),()->()',  # signature
 )
@@ -1247,9 +1237,7 @@ recsumsw3d = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'recsumsw3d',  # function name
-    r"""
-    recsumsw3d(l, m, k, kpar, a, r, eta)
-    """,  # docstring
+    r"""recsumsw3d(l, m, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
     '(),(),(),(3),(3,3),(3),()->()',  # signature
 )
@@ -1295,39 +1283,38 @@ lsumsw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'lsumsw2d',  # function name
-    r"""
-    lsumsw2d(l, m, k, kpar, a, r, eta)
+    r"""lsumsw2d(l, m, k, kpar, a, r, eta)
 
-    Fast summation of spherical functions on a 2d lattice
+Fast summation of spherical functions on a 2d lattice
 
-    Computes
+Computes
 
-    .. math::
+.. math::
 
-        D_{lm}(k, \boldsymbol k_\parallel, \Lambda_2, \boldsymbol r)
-        = \sum_{\boldsymbol R \in \Lambda_2}
-        h_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
-        Y_{lm}(-\boldsymbol r - \boldsymbol R)
-        \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
+    D_{lm}(k, \boldsymbol k_\parallel, \Lambda_2, \boldsymbol r)
+    = \sum_{\boldsymbol R \in \Lambda_2}
+    h_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
+    Y_{lm}(-\boldsymbol r - \boldsymbol R)
+    \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
 
-    using the Ewald summation.
+using the Ewald summation.
 
-    The cut between the real and reciprocal space summation is defined by `eta`. Larger
-    values increase the weight of the real sum. In `a` the lattice vectors are
-    given as rows. The lattice is in the x-y-plane.
+The cut between the real and reciprocal space summation is defined by `eta`. Larger
+values increase the weight of the real sum. In `a` the lattice vectors are
+given as rows. The lattice is in the x-y-plane.
 
-    Args:
-        l (integer): Degree :math:`l \geq 0`
-        m (integer): Order :math:`|m| \leq l`
-        k (float or complex): Wave number
-        kpar (float, (2,)-array): Tangential wave vector
-        a (float, (2,2)-array): Lattice vectors
-        r (float, (2,)-array): In-plane shift vector
-        eta (float or complex): Separation value
+Args:
+    l (integer): Degree :math:`l \geq 0`
+    m (integer): Order :math:`|m| \leq l`
+    k (float or complex): Wave number
+    kpar (float, (2,)-array): Tangential wave vector
+    a (float, (2,2)-array): Lattice vectors
+    r (float, (2,)-array): In-plane shift vector
+    eta (float or complex): Separation value
 
-    Returns:
-        complex
-    """,  # docstring
+Returns:
+    complex
+""",  # docstring
     0,  # unused
     '(),(),(),(2),(2,2),(2),()->()',  # signature
 )
@@ -1340,9 +1327,7 @@ realsumsw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'realsumsw2d',  # function name
-    r"""
-    realsumsw2d(l, m, k, kpar, a, r, eta)
-    """,  # docstring
+    r"""realsumsw2d(l, m, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
     '(),(),(),(2),(2,2),(2),()->()',  # signature
 )
@@ -1355,9 +1340,7 @@ recsumsw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'recsumsw2d',  # function name
-    r"""
-    recsumsw2d(l, m, k, kpar, a, r, eta)
-    """,  # docstring
+    r"""recsumsw2d(l, m, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
     '(),(),(),(2),(2,2),(2),()->()',  # signature
 )
@@ -1403,39 +1386,38 @@ lsumsw2d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'lsumsw2d_shift',  # function name
-    r"""
-    lsumsw2d_shift(l, m, k, kpar, a, r, eta)
+    r"""lsumsw2d_shift(l, m, k, kpar, a, r, eta)
 
-    Fast summation of spherical functions on a 2d lattice with out of lattice shifts
+Fast summation of spherical functions on a 2d lattice with out of lattice shifts
 
-    Computes
+Computes
 
-    .. math::
+.. math::
 
-        D_{lm}(k, \boldsymbol k_\parallel, \Lambda_3, \boldsymbol r)
-        = \sum_{\boldsymbol R \in \Lambda_3}
-        h_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
-        Y_{lm}(-\boldsymbol r - \boldsymbol R)
-        \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
+    D_{lm}(k, \boldsymbol k_\parallel, \Lambda_3, \boldsymbol r)
+    = \sum_{\boldsymbol R \in \Lambda_3}
+    h_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
+    Y_{lm}(-\boldsymbol r - \boldsymbol R)
+    \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
 
-    using the Ewald summation.
+using the Ewald summation.
 
-    The cut between the real and reciprocal space summation is defined by `eta`. Larger
-    values increase the weight of the real sum. In `a` the lattice vectors are
-    given as rows. The lattice is in the x-y-plane.
+The cut between the real and reciprocal space summation is defined by `eta`. Larger
+values increase the weight of the real sum. In `a` the lattice vectors are
+given as rows. The lattice is in the x-y-plane.
 
-    Args:
-        l (integer): Degree :math:`l \geq 0`
-        m (integer): Order :math:`|m| \leq l`
-        k (float or complex): Wave number
-        kpar (float, (2,)-array): Tangential wave vector
-        a (float, (2,2)-array): Lattice vectors
-        r (float, (3,)-array): Shift vector
-        eta (float or complex): Separation value
+Args:
+    l (integer): Degree :math:`l \geq 0`
+    m (integer): Order :math:`|m| \leq l`
+    k (float or complex): Wave number
+    kpar (float, (2,)-array): Tangential wave vector
+    a (float, (2,2)-array): Lattice vectors
+    r (float, (3,)-array): Shift vector
+    eta (float or complex): Separation value
 
-    Returns:
-        complex
-    """,  # docstring
+Returns:
+    complex
+""",  # docstring
     0,  # unused
     '(),(),(),(2),(2,2),(3),()->()',  # signature
 )
@@ -1448,9 +1430,7 @@ realsumsw2d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'realsumsw2d_shift',  # function name
-    r"""
-    realsumsw2d_shift(l, m, k, kpar, a, r, eta)
-    """,  # docstring
+    r"""realsumsw2d_shift(l, m, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
     '(),(),(),(2),(2,2),(3),()->()',  # signature
 )
@@ -1463,9 +1443,7 @@ recsumsw2d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'recsumsw2d_shift',  # function name
-    r"""
-    recsumsw2d_shift(l, m, k, kpar, a, r, eta)
-    """,  # docstring
+    r"""recsumsw2d_shift(l, m, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
     '(),(),(),(2),(2,2),(3),()->()',  # signature
 )
@@ -1511,39 +1489,38 @@ lsumsw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'lsumsw1d_shift',  # function name
-    r"""
-    lsumsw1d_shift(l, m, k, kpar, a, r, eta)
+    r"""lsumsw1d_shift(l, m, k, kpar, a, r, eta)
 
-    Fast summation of spherical functions on a 1d lattice with out of lattice shifts
+Fast summation of spherical functions on a 1d lattice with out of lattice shifts
 
-    Computes
+Computes
 
-    .. math::
+.. math::
 
-        D_{lm}(k, \boldsymbol k_\parallel, \Lambda_1, \boldsymbol r)
-        = \sum_{\boldsymbol R \in \Lambda_1}
-        h_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
-        Y_{lm}(-\boldsymbol r - \boldsymbol R)
-        \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
+    D_{lm}(k, \boldsymbol k_\parallel, \Lambda_1, \boldsymbol r)
+    = \sum_{\boldsymbol R \in \Lambda_1}
+    h_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
+    Y_{lm}(-\boldsymbol r - \boldsymbol R)
+    \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
 
-    using the Ewald summation.
+using the Ewald summation.
 
-    The cut between the real and reciprocal space summation is defined by `eta`. Larger
-    values increase the weight of the real sum. In `a` the lattice vectors are
-    given as rows. The lattice is along the z axis.
+The cut between the real and reciprocal space summation is defined by `eta`. Larger
+values increase the weight of the real sum. In `a` the lattice vectors are
+given as rows. The lattice is along the z axis.
 
-    Args:
-        l (integer): Degree :math:`l \geq 0`
-        m (integer): Order :math:`|m| \leq l`
-        k (float or complex): Wave number
-        kpar (float): Tangential wave vector component
-        a (float): Lattice pitch
-        r (float, (3,)-array): Shift vector
-        eta (float or complex): Separation value
+Args:
+    l (integer): Degree :math:`l \geq 0`
+    m (integer): Order :math:`|m| \leq l`
+    k (float or complex): Wave number
+    kpar (float): Tangential wave vector component
+    a (float): Lattice pitch
+    r (float, (3,)-array): Shift vector
+    eta (float or complex): Separation value
 
-    Returns:
-        complex
-    """,  # docstring
+Returns:
+    complex
+""",  # docstring
     0,  # unused
     '(),(),(),(),(),(3),()->()',  # signature
 )
@@ -1556,9 +1533,7 @@ realsumsw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'realsumsw1d_shift',  # function name
-    r"""
-    realsumsw1d_shift(l, m, k, kpar, a, r, eta)
-    """,  # docstring
+    r"""realsumsw1d_shift(l, m, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
     '(),(),(),(),(),(3),()->()',  # signature
 )
@@ -1571,9 +1546,7 @@ recsumsw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'recsumsw1d_shift',  # function name
-    r"""
-    recsumsw1d_shift(l, m, k, kpar, a, r, eta)
-    """,  # docstring
+    r"""recsumsw1d_shift(l, m, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
     '(),(),(),(),(),(3),()->()',  # signature
 )
@@ -1617,38 +1590,37 @@ lsumcw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'lsumcw1d_shift',  # function name
-    r"""
-    lsumcw1d_shift(l, k, kpar, a, r, eta)
+    r"""lsumcw1d_shift(l, k, kpar, a, r, eta)
 
-    Fast summation of cylindrical functions on a 1d lattice with out of lattice shifts
+Fast summation of cylindrical functions on a 1d lattice with out of lattice shifts
 
-    Computes
+Computes
 
-    .. math::
+.. math::
 
-        D_{l}(k, \boldsymbol k_\parallel, \boldsymbol r, \Lambda_1)
-        = \sum_{\boldsymbol R \in \Lambda_1}
-        H_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
-        \mathrm e^{\mathrm i l \varphi_{-\boldsymbol r - \boldsymbol R}}
-        \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
+    D_{l}(k, \boldsymbol k_\parallel, \boldsymbol r, \Lambda_1)
+    = \sum_{\boldsymbol R \in \Lambda_1}
+    H_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
+    \mathrm e^{\mathrm i l \varphi_{-\boldsymbol r - \boldsymbol R}}
+    \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
 
-    using the Ewald summation.
+using the Ewald summation.
 
-    The cut between the real and reciprocal space summation is defined by `eta`. Larger
-    values increase the weight of the real sum. In `a` the lattice vectors are
-    given as rows. The lattice is along the x axis.
+The cut between the real and reciprocal space summation is defined by `eta`. Larger
+values increase the weight of the real sum. In `a` the lattice vectors are
+given as rows. The lattice is along the x axis.
 
-    Args:
-        l (integer): Order
-        k (float or complex): Wave number
-        kpar (float): Tangential wave vector component
-        a (float): Lattice pitch
-        r (float, (2,)-array): Shift vector
-        eta (float or complex): Separation value
+Args:
+    l (integer): Order
+    k (float or complex): Wave number
+    kpar (float): Tangential wave vector component
+    a (float): Lattice pitch
+    r (float, (2,)-array): Shift vector
+    eta (float or complex): Separation value
 
-    Returns:
-        complex
-    """,  # docstring
+Returns:
+    complex
+""",  # docstring
     0,  # unused
     '(),(),(),(),(2),()->()',  # signature
 )
@@ -1661,9 +1633,7 @@ realsumcw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'realsumcw1d_shift',  # function name
-    r"""
-    realsumcw1d_shift(l, k, kpar, a, r, eta)
-    """,  # docstring
+    r"""realsumcw1d_shift(l, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
     '(),(),(),(),(2),()->()',  # signature
 )
@@ -1676,9 +1646,7 @@ recsumcw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'recsumcw1d_shift',  # function name
-    r"""
-    recsumcw1d_shift(l, k, kpar, a, r, eta)
-    """,  # docstring
+    r"""recsumcw1d_shift(l, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
     '(),(),(),(),(2),()->()',  # signature
 )
@@ -1722,38 +1690,37 @@ lsumcw1d = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'lsumcw1d',  # function name
-    r"""
-    lsumcw1d(l, k, kpar, a, r, eta)
+    r"""lsumcw1d(l, k, kpar, a, r, eta)
 
-    Fast summation of cylindrical functions on a 1d lattice
+Fast summation of cylindrical functions on a 1d lattice
 
-    Computes
+Computes
 
-    .. math::
+.. math::
 
-        D_{l}(k, k_\parallel, r, \Lambda_1)
-        = \sum_{R \in \Lambda_1}
-        H_l^{(1)}(k |r + R|)
-        (\mathrm{sign}(-r - R))^l
-        \mathrm e^{\mathrm i k_\parallel R}
+    D_{l}(k, k_\parallel, r, \Lambda_1)
+    = \sum_{R \in \Lambda_1}
+    H_l^{(1)}(k |r + R|)
+    (\mathrm{sign}(-r - R))^l
+    \mathrm e^{\mathrm i k_\parallel R}
 
-    using the Ewald summation.
+using the Ewald summation.
 
-    The cut between the real and reciprocal space summation is defined by `eta`. Larger
-    values increase the weight of the real sum. In `a` the lattice vectors are
-    given as rows. The lattice is along the x axis.
+The cut between the real and reciprocal space summation is defined by `eta`. Larger
+values increase the weight of the real sum. In `a` the lattice vectors are
+given as rows. The lattice is along the x axis.
 
-    Args:
-        l (integer): Order
-        k (float or complex): Wave number
-        kpar (float): Tangential wave vector component
-        a (float): Lattice pitch
-        r (float): In-line shift
-        eta (float or complex): Separation value
+Args:
+    l (integer): Order
+    k (float or complex): Wave number
+    kpar (float): Tangential wave vector component
+    a (float): Lattice pitch
+    r (float): In-line shift
+    eta (float or complex): Separation value
 
-    Returns:
-        complex
-    """,  # docstring
+Returns:
+    complex
+""",  # docstring
     0,  # unused
 )
 realsumcw1d = np.PyUFunc_FromFuncAndData(
@@ -1765,9 +1732,7 @@ realsumcw1d = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'realsumcw1d',  # function name
-    r"""
-    realsumcw1d(l, k, kpar, a, r, eta)
-    """,  # docstring
+    r"""realsumcw1d(l, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
 )
 recsumcw1d = np.PyUFunc_FromFuncAndData(
@@ -1779,9 +1744,7 @@ recsumcw1d = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'recsumcw1d',  # function name
-    r"""
-    recsumcw1d(l, k, kpar, a, r, eta)
-    """,  # docstring
+    r"""recsumcw1d(l, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
 )
 
@@ -1824,38 +1787,37 @@ lsumsw1d = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'lsumsw1d',  # function name
-    r"""
-    lsumsw1d(l, k, kpar, a, r, eta)
+    r"""lsumsw1d(l, k, kpar, a, r, eta)
 
-    Fast summation of spherical functions on a 1d lattice
+Fast summation of spherical functions on a 1d lattice
 
-    Computes
+Computes
 
-    .. math::
+.. math::
 
-        D_{l0}(k, k_\parallel, \Lambda_1, r)
-        = \sum_{R \in \Lambda_1}
-        h_l^{(1)}(k |r + R|)
-        Y_{l0}(-\boldsymbol{\hat z} (r + R))
-        \mathrm e^{\mathrm i k_\parallel R}
+    D_{l0}(k, k_\parallel, \Lambda_1, r)
+    = \sum_{R \in \Lambda_1}
+    h_l^{(1)}(k |r + R|)
+    Y_{l0}(-\boldsymbol{\hat z} (r + R))
+    \mathrm e^{\mathrm i k_\parallel R}
 
-    using the Ewald summation.
+using the Ewald summation.
 
-    The cut between the real and reciprocal space summation is defined by `eta`. Larger
-    values increase the weight of the real sum. The lattice is along the z-axis.
-    Therefore only :math:`m = 0` contributes.
+The cut between the real and reciprocal space summation is defined by `eta`. Larger
+values increase the weight of the real sum. The lattice is along the z-axis.
+Therefore only :math:`m = 0` contributes.
 
-    Args:
-        l (integer): Degree :math:`l \geq 0`
-        k (float or complex): Wave number
-        kpar (float): Tangential wave vector component
-        a (float): Lattice pitch
-        r (float): In-line shift
-        eta (float or complex): Separation value
+Args:
+    l (integer): Degree :math:`l \geq 0`
+    k (float or complex): Wave number
+    kpar (float): Tangential wave vector component
+    a (float): Lattice pitch
+    r (float): In-line shift
+    eta (float or complex): Separation value
 
-    Returns:
-        complex
-    """,  # docstring
+Returns:
+    complex
+""",  # docstring
     0,  # unused
 )
 realsumsw1d = np.PyUFunc_FromFuncAndData(
@@ -1867,9 +1829,7 @@ realsumsw1d = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'realsumsw1d',  # function name
-    r"""
-    realsumsw1d(l, k, kpar, a, r, eta)
-    """,  # docstring
+    r"""realsumsw1d(l, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
 )
 recsumsw1d = np.PyUFunc_FromFuncAndData(
@@ -1881,9 +1841,7 @@ recsumsw1d = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'recsumsw1d',  # function name
-    r"""
-    recsumsw1d(l, k, kpar, a, r, eta)
-    """,  # docstring
+    r"""recsumsw1d(l, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
 )
 
@@ -1920,36 +1878,35 @@ dsumcw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'dsumcw2d',  # function name
-    r"""
-    dsumcw2d(l, k, kpar, a, r, i)
+    r"""dsumcw2d(l, k, kpar, a, r, i)
 
-    Direct summation of cylindrical functions on a 2d lattice
+Direct summation of cylindrical functions on a 2d lattice
 
-    Computes
+Computes
 
-    .. math::
+.. math::
 
-        D_{l}(k, \boldsymbol k_\parallel, \boldsymbol r, \Lambda_2)
-        = \sum_{\boldsymbol R \in \Lambda_2}
-        H_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
-        \mathrm e^{\mathrm i l \varphi_{-\boldsymbol r - \boldsymbol R}}
-        \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
+    D_{l}(k, \boldsymbol k_\parallel, \boldsymbol r, \Lambda_2)
+    = \sum_{\boldsymbol R \in \Lambda_2}
+    H_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
+    \mathrm e^{\mathrm i l \varphi_{-\boldsymbol r - \boldsymbol R}}
+    \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
 
-    directly for one expansion value `i`. Sum `i` from `0` to a large value to
-    obtain an approximation of the sum value. In `a` the lattice vectors are
-    given as rows.
+directly for one expansion value `i`. Sum `i` from `0` to a large value to
+obtain an approximation of the sum value. In `a` the lattice vectors are
+given as rows.
 
-    Args:
-        l (integer): Order
-        k (float or complex): Wave number
-        kpar (float, (2,)-array): Wave vector
-        a (float, (2,2)-array): Lattice vectors
-        r (float, (2,)-array): Shift vector
-        i (integer): Expansion value
+Args:
+    l (integer): Order
+    k (float or complex): Wave number
+    kpar (float, (2,)-array): Wave vector
+    a (float, (2,2)-array): Lattice vectors
+    r (float, (2,)-array): Shift vector
+    i (integer): Expansion value
 
-    Returns:
-        complex
-    """,  # docstring
+Returns:
+    complex
+""",  # docstring
     0,  # unused
     '(),(),(2),(2,2),(2),()->()',  # signature
 )
@@ -1989,37 +1946,36 @@ dsumsw3d = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'dsumsw3d',  # function name
-    r"""
-    dsumsw3d(l, m, k, kpar, a, r, i)
+    r"""dsumsw3d(l, m, k, kpar, a, r, i)
 
-    Direct summation of spherical functions on a 3d lattice
+Direct summation of spherical functions on a 3d lattice
 
-    Computes
+Computes
 
-    .. math::
+.. math::
 
-        D_{lm}(k, \boldsymbol k_\parallel, \Lambda_3, \boldsymbol r)
-        = \sum_{\boldsymbol R \in \Lambda_3}
-        h_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
-        Y_{lm}(-\boldsymbol r - \boldsymbol R)
-        \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
+    D_{lm}(k, \boldsymbol k_\parallel, \Lambda_3, \boldsymbol r)
+    = \sum_{\boldsymbol R \in \Lambda_3}
+    h_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
+    Y_{lm}(-\boldsymbol r - \boldsymbol R)
+    \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
 
-    directly for one expansion value `i`. Sum `i` from `0` to a large value to
-    obtain an approximation of the sum value. In `a` the lattice vectors are
-    given as rows.
+directly for one expansion value `i`. Sum `i` from `0` to a large value to
+obtain an approximation of the sum value. In `a` the lattice vectors are
+given as rows.
 
-    Args:
-        l (integer): Degree :math:`l \geq 0`
-        m (integer): Order :math:`|m| \leq l`
-        k (float or complex): Wave number
-        kpar (float, (3,)-array): Wave vector
-        a (float, (3,3)-array): Lattice vectors
-        r (float, (3,)-array): Shift vector
-        i (integer): Expansion value
+Args:
+    l (integer): Degree :math:`l \geq 0`
+    m (integer): Order :math:`|m| \leq l`
+    k (float or complex): Wave number
+    kpar (float, (3,)-array): Wave vector
+    a (float, (3,3)-array): Lattice vectors
+    r (float, (3,)-array): Shift vector
+    i (integer): Expansion value
 
-    Returns:
-        complex
-    """,  # docstring
+Returns:
+    complex
+""",  # docstring
     0,  # unused
     '(),(),(),(3),(3,3),(3),()->()',  # signature
 )
@@ -2059,37 +2015,36 @@ dsumsw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'dsumsw2d',  # function name
-    r"""
-    dsumsw2d(l, m, k, kpar, a, r, i)
+    r"""dsumsw2d(l, m, k, kpar, a, r, i)
 
-    Direct summation of spherical functions on a 2d lattice
+Direct summation of spherical functions on a 2d lattice
 
-    Computes
+Computes
 
-    .. math::
+.. math::
 
-        D_{lm}(k, \boldsymbol k_\parallel, \Lambda_2, \boldsymbol r)
-        = \sum_{\boldsymbol R \in \Lambda_2}
-        h_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
-        Y_{lm}(-\boldsymbol r - \boldsymbol R)
-        \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
+    D_{lm}(k, \boldsymbol k_\parallel, \Lambda_2, \boldsymbol r)
+    = \sum_{\boldsymbol R \in \Lambda_2}
+    h_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
+    Y_{lm}(-\boldsymbol r - \boldsymbol R)
+    \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
 
-    directly for one expansion value `i`. Sum `i` from `0` to a large value to
-    obtain an approximation of the sum value. In `a` the lattice vectors are
-    given as rows. The lattice is in the x-y-plane.
+directly for one expansion value `i`. Sum `i` from `0` to a large value to
+obtain an approximation of the sum value. In `a` the lattice vectors are
+given as rows. The lattice is in the x-y-plane.
 
-    Args:
-        l (integer): Degree :math:`l \geq 0`
-        m (integer): Order :math:`|m| \leq l`
-        k (float or complex): Wave number
-        kpar (float, (2,)-array): Tangential wave vector
-        a (float, (2,2)-array): Lattice vectors
-        r (float, (2,)-array): In-plane shift vector
-        i (integer): Expansion value
+Args:
+    l (integer): Degree :math:`l \geq 0`
+    m (integer): Order :math:`|m| \leq l`
+    k (float or complex): Wave number
+    kpar (float, (2,)-array): Tangential wave vector
+    a (float, (2,2)-array): Lattice vectors
+    r (float, (2,)-array): In-plane shift vector
+    i (integer): Expansion value
 
-    Returns:
-        complex
-    """,  # docstring
+Returns:
+    complex
+""",  # docstring
     0,  # unused
     '(),(),(),(2),(2,2),(2),()->()',  # signature
 )
@@ -2129,37 +2084,36 @@ dsumsw2d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'dsumsw2d_shift',  # function name
-    r"""
-    dsumsw2d_shift(l, m, k, kpar, a, r, i)
+    r"""dsumsw2d_shift(l, m, k, kpar, a, r, i)
 
-    Direct summation of spherical functions on a 2d lattice with out of lattice shifts
+Direct summation of spherical functions on a 2d lattice with out of lattice shifts
 
-    Computes
+Computes
 
-    .. math::
+.. math::
 
-        D_{lm}(k, \boldsymbol k_\parallel, \Lambda_3, \boldsymbol r)
-        = \sum_{\boldsymbol R \in \Lambda_3}
-        h_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
-        Y_{lm}(-\boldsymbol r - \boldsymbol R)
-        \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
+    D_{lm}(k, \boldsymbol k_\parallel, \Lambda_3, \boldsymbol r)
+    = \sum_{\boldsymbol R \in \Lambda_3}
+    h_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
+    Y_{lm}(-\boldsymbol r - \boldsymbol R)
+    \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
 
-    directly for one expansion value `i`. Sum `i` from `0` to a large value to
-    obtain an approximation of the sum value. In `a` the lattice vectors are
-    given as rows. The lattice is in the x-y-plane.
+directly for one expansion value `i`. Sum `i` from `0` to a large value to
+obtain an approximation of the sum value. In `a` the lattice vectors are
+given as rows. The lattice is in the x-y-plane.
 
-    Args:
-        l (integer): Degree :math:`l \geq 0`
-        m (integer): Order :math:`|m| \leq l`
-        k (float or complex): Wave number
-        kpar (float, (2,)-array): Tangential wave vector
-        a (float, (2,2)-array): Lattice vectors
-        r (float, (3,)-array): Shift vector
-        i (integer): Expansion value
+Args:
+    l (integer): Degree :math:`l \geq 0`
+    m (integer): Order :math:`|m| \leq l`
+    k (float or complex): Wave number
+    kpar (float, (2,)-array): Tangential wave vector
+    a (float, (2,2)-array): Lattice vectors
+    r (float, (3,)-array): Shift vector
+    i (integer): Expansion value
 
-    Returns:
-        complex
-    """,  # docstring
+Returns:
+    complex
+""",  # docstring
     0,  # unused
     '(),(),(),(2),(2,2),(3),()->()',  # signature
 )
@@ -2199,37 +2153,36 @@ dsumsw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'dsumsw1d_shift',  # function name
-    r"""
-    dsumsw1d_shift(l, m, k, kpar, a, r, i)
+    r"""dsumsw1d_shift(l, m, k, kpar, a, r, i)
 
-    Fast summation of spherical functions on a 1d lattice with out of lattice shifts
+Fast summation of spherical functions on a 1d lattice with out of lattice shifts
 
-    Computes
+Computes
 
-    .. math::
+.. math::
 
-        D_{lm}(k, \boldsymbol k_\parallel, \Lambda_1, \boldsymbol r)
-        = \sum_{\boldsymbol R \in \Lambda_1}
-        h_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
-        Y_{lm}(-\boldsymbol r - \boldsymbol R)
-        \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
+    D_{lm}(k, \boldsymbol k_\parallel, \Lambda_1, \boldsymbol r)
+    = \sum_{\boldsymbol R \in \Lambda_1}
+    h_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
+    Y_{lm}(-\boldsymbol r - \boldsymbol R)
+    \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
 
-    directly for one expansion value `i`. Sum `i` from `0` to a large value to
-    obtain an approximation of the sum value. In `a` the lattice vectors are
-    given as rows. The lattice is along the z axis.
+directly for one expansion value `i`. Sum `i` from `0` to a large value to
+obtain an approximation of the sum value. In `a` the lattice vectors are
+given as rows. The lattice is along the z axis.
 
-    Args:
-        l (integer): Degree :math:`l \geq 0`
-        m (integer): Order :math:`|m| \leq l`
-        k (float or complex): Wave number
-        kpar (float): Tangential wave vector component
-        a (float): Lattice pitch
-        r (float, (3,)-array): Shift vector
-        i (integer): Expansion value
+Args:
+    l (integer): Degree :math:`l \geq 0`
+    m (integer): Order :math:`|m| \leq l`
+    k (float or complex): Wave number
+    kpar (float): Tangential wave vector component
+    a (float): Lattice pitch
+    r (float, (3,)-array): Shift vector
+    i (integer): Expansion value
 
-    Returns:
-        complex
-    """,  # docstring
+Returns:
+    complex
+""",  # docstring
     0,  # unused
     '(),(),(),(),(),(3),()->()',  # signature
 )
@@ -2267,36 +2220,35 @@ dsumcw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'dsumcw1d_shift',  # function name
-    r"""
-    dsumcw1d_shift(l, k, kpar, a, r, i)
+    r"""dsumcw1d_shift(l, k, kpar, a, r, i)
 
-    Direct summation of cylindrical functions on a 1d lattice with out of lattice shifts
+Direct summation of cylindrical functions on a 1d lattice with out of lattice shifts
 
-    Computes
+Computes
 
-    .. math::
+.. math::
 
-        D_{l}(k, \boldsymbol k_\parallel, \boldsymbol r, \Lambda_1)
-        = \sum_{\boldsymbol R \in \Lambda_1}
-        H_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
-        \mathrm e^{\mathrm i l \varphi_{-\boldsymbol r - \boldsymbol R}}
-        \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
+    D_{l}(k, \boldsymbol k_\parallel, \boldsymbol r, \Lambda_1)
+    = \sum_{\boldsymbol R \in \Lambda_1}
+    H_l^{(1)}(k |\boldsymbol r + \boldsymbol R|)
+    \mathrm e^{\mathrm i l \varphi_{-\boldsymbol r - \boldsymbol R}}
+    \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
 
-    directly for one expansion value `i`. Sum `i` from `0` to a large value to
-    obtain an approximation of the sum value. In `a` the lattice vectors are
-    given as rows. The lattice is along the x axis.
+directly for one expansion value `i`. Sum `i` from `0` to a large value to
+obtain an approximation of the sum value. In `a` the lattice vectors are
+given as rows. The lattice is along the x axis.
 
-    Args:
-        l (integer): Order
-        k (float or complex): Wave number
-        kpar (float): Tangential wave vector component
-        a (float): Lattice pitch
-        r (float, (2,)-array): Shift vector
-        i (integer): Expansion value
+Args:
+    l (integer): Order
+    k (float or complex): Wave number
+    kpar (float): Tangential wave vector component
+    a (float): Lattice pitch
+    r (float, (2,)-array): Shift vector
+    i (integer): Expansion value
 
-    Returns:
-        complex
-    """,  # docstring
+Returns:
+    complex
+""",  # docstring
     0,  # unused
     '(),(),(),(),(2),()->()',  # signature
 )
@@ -2334,36 +2286,35 @@ dsumcw1d = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'dsumcw1d',  # function name
-    r"""
-    dsumcw1d(l, k, kpar, a, r, i)
+    r"""dsumcw1d(l, k, kpar, a, r, i)
 
-    Direct summation of cylindrical functions on a 1d lattice
+Direct summation of cylindrical functions on a 1d lattice
 
-    Computes
+Computes
 
-    .. math::
+.. math::
 
-        D_{l}(k, k_\parallel, r, \Lambda_1)
-        = \sum_{R \in \Lambda_1}
-        H_l^{(1)}(k |r + R|)
-        (\mathrm{sign}(-r - R))^l
-        \mathrm e^{\mathrm i k_\parallel R}
+    D_{l}(k, k_\parallel, r, \Lambda_1)
+    = \sum_{R \in \Lambda_1}
+    H_l^{(1)}(k |r + R|)
+    (\mathrm{sign}(-r - R))^l
+    \mathrm e^{\mathrm i k_\parallel R}
 
-    directly for one expansion value `i`. Sum `i` from `0` to a large value to
-    obtain an approximation of the sum value. In `a` the lattice vectors are
-    given as rows. The lattice is along the x axis.
+directly for one expansion value `i`. Sum `i` from `0` to a large value to
+obtain an approximation of the sum value. In `a` the lattice vectors are
+given as rows. The lattice is along the x axis.
 
-    Args:
-        l (integer): Order
-        k (float or complex): Wave number
-        kpar (float): Tangential wave vector component
-        a (float): Lattice pitch
-        r (float): In-line shift
-        i (integer): Expansion value
+Args:
+    l (integer): Order
+    k (float or complex): Wave number
+    kpar (float): Tangential wave vector component
+    a (float): Lattice pitch
+    r (float): In-line shift
+    i (integer): Expansion value
 
-    Returns:
-        complex
-    """,  # docstring
+Returns:
+    complex
+""",  # docstring
     0,  # unused
 )
 
@@ -2400,38 +2351,37 @@ dsumsw1d = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'dsumsw1d',  # function name
-    r"""
-    dsumsw1d(l, k, kpar, a, r, i)
+    r"""dsumsw1d(l, k, kpar, a, r, i)
 
-    Direct summation of spherical functions on a 1d lattice
+Direct summation of spherical functions on a 1d lattice
 
-    Computes
+Computes
 
-    .. math::
+.. math::
 
-        D_{l0}(k, k_\parallel, \Lambda_1, r)
-        = \sum_{R \in \Lambda_1}
-        h_l^{(1)}(k |r + R|)
-        Y_{l0}(-\boldsymbol{\hat z} (r + R))
-        \mathrm e^{\mathrm i k_\parallel R}
+    D_{l0}(k, k_\parallel, \Lambda_1, r)
+    = \sum_{R \in \Lambda_1}
+    h_l^{(1)}(k |r + R|)
+    Y_{l0}(-\boldsymbol{\hat z} (r + R))
+    \mathrm e^{\mathrm i k_\parallel R}
 
-    using the Ewald summation.
+using the Ewald summation.
 
-    directly for one expansion value `i`. Sum `i` from `0` to a large value to
-    obtain an approximation of the sum value. The lattice is along the z-axis.
-    Therefore only :math:`m = 0` contributes.
+directly for one expansion value `i`. Sum `i` from `0` to a large value to
+obtain an approximation of the sum value. The lattice is along the z-axis.
+Therefore only :math:`m = 0` contributes.
 
-    Args:
-        l (integer): Degree :math:`l \geq 0`
-        k (float or complex): Wave number
-        kpar (float): Tangential wave vector component
-        a (float): Lattice pitch
-        r (float): In-line shift
-        i (integer): Expansion value
+Args:
+    l (integer): Degree :math:`l \geq 0`
+    k (float or complex): Wave number
+    kpar (float): Tangential wave vector component
+    a (float): Lattice pitch
+    r (float): In-line shift
+    i (integer): Expansion value
 
-    Returns:
-        complex
-    """,  # docstring
+Returns:
+    complex
+""",  # docstring
     0,  # unused
 )
 
@@ -2469,9 +2419,7 @@ zero3d = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'zero3d',  # function name
-    r"""
-    zero3d(eta)
-    """,  # docstring
+    r"""zero3d(eta)""",  # docstring
     0,  # unused
 )
 zero2d = np.PyUFunc_FromFuncAndData(
@@ -2483,9 +2431,7 @@ zero2d = np.PyUFunc_FromFuncAndData(
     1,  # number of output args
     0,  # `identity` element, never mind this
     'zero2d',  # function name
-    r"""
-    zero2d(eta)
-    """,  # docstring
+    r"""zero2d(eta)""",  # docstring
     0,  # unused
 )
 

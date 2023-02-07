@@ -94,7 +94,7 @@ Miscellaneous functions
 -----------------------
 
 .. autosummary::
-   :toctree: generated/
+   :toctree: generated/a/
 
    area
    cube
@@ -141,66 +141,72 @@ def diffr_orders_circle(b, rmax):
 
 def lsumsw(dim, l, m, k, kpar, a, r, eta, out=None, **kwargs):
     if dim == 1:
-       return lsumsw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return lsumsw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
     elif dim == 2:
-       return lsumsw2d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return lsumsw2d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
     elif dim == 3:
-       return lsumsw3d(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return lsumsw3d(l, m, k, kpar, a, r, eta, out=out, **kwargs)
     raise ValueError(f"invalid dimension '{dim}'")
+
 
 def realsumsw(dim, l, m, k, kpar, a, r, eta, out=None, **kwargs):
     if dim == 1:
-       return realsumsw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return realsumsw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
     elif dim == 2:
-       return realsumsw2d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return realsumsw2d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
     elif dim == 3:
-       return realsumsw3d(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return realsumsw3d(l, m, k, kpar, a, r, eta, out=out, **kwargs)
     raise ValueError(f"invalid dimension '{dim}'")
+
 
 def recsumsw(dim, l, m, k, kpar, a, r, eta, out=None, **kwargs):
     if dim == 1:
-       return recsumsw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return recsumsw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
     elif dim == 2:
-       return recsumsw2d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return recsumsw2d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
     elif dim == 3:
-       return recsumsw3d(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return recsumsw3d(l, m, k, kpar, a, r, eta, out=out, **kwargs)
     raise ValueError(f"invalid dimension '{dim}'")
 
 
 def lsumcw(dim, l, k, kpar, a, r, eta, out=None, **kwargs):
     if dim == 1:
-       return lsumcw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return lsumcw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
     elif dim == 2:
-       return lsumcw2d(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return lsumcw2d(l, m, k, kpar, a, r, eta, out=out, **kwargs)
     raise ValueError(f"invalid dimension '{dim}'")
+
 
 def realsumcw(dim, l, k, kpar, a, r, eta, out=None, **kwargs):
     if dim == 1:
-       return realsumcw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return realsumcw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
     elif dim == 2:
-       return realsumcw2d(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return realsumcw2d(l, m, k, kpar, a, r, eta, out=out, **kwargs)
     raise ValueError(f"invalid dimension '{dim}'")
+
 
 def recsumcw(dim, l, k, kpar, a, r, eta, out=None, **kwargs):
     if dim == 1:
-       return recsumcw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return recsumcw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
     elif dim == 2:
-       return recsumcw2d(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return recsumcw2d(l, m, k, kpar, a, r, eta, out=out, **kwargs)
     raise ValueError(f"invalid dimension '{dim}'")
 
 
 def dsumsw(dim, l, m, k, kpar, a, r, i, out=None, **kwargs):
     if dim == 1:
-       return dsumsw1d_shift(l, m, k, kpar, a, r, i, out=out, **kwargs)
+        return dsumsw1d_shift(l, m, k, kpar, a, r, i, out=out, **kwargs)
     elif dim == 2:
-       return dsumsw2d_shift(l, m, k, kpar, a, r, i, out=out, **kwargs)
+        return dsumsw2d_shift(l, m, k, kpar, a, r, i, out=out, **kwargs)
     elif dim == 3:
-       return dsumsw3d(l, m, k, kpar, a, r, i, out=out, **kwargs)
+        return dsumsw3d(l, m, k, kpar, a, r, i, out=out, **kwargs)
     raise ValueError(f"invalid dimension '{dim}'")
+
 
 def dsumcw(dim, l, k, kpar, a, r, i, out=None, **kwargs):
     if dim == 1:
-       return dsumcw1d_shift(l, m, k, kpar, a, r, i, out=out, **kwargs)
+        return dsumcw1d_shift(l, m, k, kpar, a, r, i, out=out, **kwargs)
     elif dim == 2:
-       return dsumcw2d(l, m, k, kpar, a, r, i, out=out, **kwargs)
+        return dsumcw2d(l, m, k, kpar, a, r, i, out=out, **kwargs)
     raise ValueError(f"invalid dimension '{dim}'")
+
