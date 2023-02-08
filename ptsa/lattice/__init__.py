@@ -1,10 +1,6 @@
-r"""
-======================================
-Lattice summations :mod:`ptsa.lattice`
-======================================
+r"""Lattice sums.
 
 .. currentmodule:: ptsa.lattice
-
 
 Calculates the lattice sums of the forms
 
@@ -12,7 +8,8 @@ Calculates the lattice sums of the forms
    D_{lm}(k, \boldsymbol k_\parallel, \boldsymbol r, \Lambda_d)
    = \sideset{}{'}{\sum_{\boldsymbol R \in \Lambda_d}}
    h_l^{(1)}(k|\boldsymbol r + \boldsymbol R|)
-   Y_{lm}(\theta_{-\boldsymbol r - \boldsymbol R}, \varphi_{-\boldsymbol r - \boldsymbol R})
+   Y_{lm}
+   (\theta_{-\boldsymbol r - \boldsymbol R}, \varphi_{-\boldsymbol r - \boldsymbol R})
    \mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}
 
 and
@@ -117,14 +114,13 @@ References
 
 import numpy as np
 
-from ptsa.lattice._gufuncs import *
-from ptsa.lattice._misc import cube, cubeedge
 from ptsa.lattice import _misc
+from ptsa.lattice._gufuncs import *  # noqa: F403
+from ptsa.lattice._misc import cube, cubeedge  # noqa: F401
 
 
 def diffr_orders_circle(b, rmax):
-    """
-    Diffraction orders in a circle
+    """Diffraction orders in a circle.
 
     Given the reciprocal lattice defined by the vectors that make up the rows of `b`,
     return all diffraction orders within a circle of radius `rmax`.
@@ -139,7 +135,7 @@ def diffr_orders_circle(b, rmax):
     return _misc.diffr_orders_circle(np.array(b), rmax)
 
 
-def lsumsw(dim, l, m, k, kpar, a, r, eta, out=None, **kwargs):
+def lsumsw(dim, l, m, k, kpar, a, r, eta, out=None, **kwargs):  # noqa: E741
     if dim == 1:
         return lsumsw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
     elif dim == 2:
@@ -149,7 +145,7 @@ def lsumsw(dim, l, m, k, kpar, a, r, eta, out=None, **kwargs):
     raise ValueError(f"invalid dimension '{dim}'")
 
 
-def realsumsw(dim, l, m, k, kpar, a, r, eta, out=None, **kwargs):
+def realsumsw(dim, l, m, k, kpar, a, r, eta, out=None, **kwargs):  # noqa: E741
     if dim == 1:
         return realsumsw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
     elif dim == 2:
@@ -159,7 +155,7 @@ def realsumsw(dim, l, m, k, kpar, a, r, eta, out=None, **kwargs):
     raise ValueError(f"invalid dimension '{dim}'")
 
 
-def recsumsw(dim, l, m, k, kpar, a, r, eta, out=None, **kwargs):
+def recsumsw(dim, l, m, k, kpar, a, r, eta, out=None, **kwargs):  # noqa: E741
     if dim == 1:
         return recsumsw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
     elif dim == 2:
@@ -169,31 +165,31 @@ def recsumsw(dim, l, m, k, kpar, a, r, eta, out=None, **kwargs):
     raise ValueError(f"invalid dimension '{dim}'")
 
 
-def lsumcw(dim, l, k, kpar, a, r, eta, out=None, **kwargs):
+def lsumcw(dim, m, k, kpar, a, r, eta, out=None, **kwargs):  # noqa: E741
     if dim == 1:
-        return lsumcw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return lsumcw1d_shift(m, k, kpar, a, r, eta, out=out, **kwargs)
     elif dim == 2:
-        return lsumcw2d(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return lsumcw2d(m, k, kpar, a, r, eta, out=out, **kwargs)
     raise ValueError(f"invalid dimension '{dim}'")
 
 
-def realsumcw(dim, l, k, kpar, a, r, eta, out=None, **kwargs):
+def realsumcw(dim, m, k, kpar, a, r, eta, out=None, **kwargs):
     if dim == 1:
-        return realsumcw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return realsumcw1d_shift(m, k, kpar, a, r, eta, out=out, **kwargs)
     elif dim == 2:
-        return realsumcw2d(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return realsumcw2d(m, k, kpar, a, r, eta, out=out, **kwargs)
     raise ValueError(f"invalid dimension '{dim}'")
 
 
-def recsumcw(dim, l, k, kpar, a, r, eta, out=None, **kwargs):
+def recsumcw(dim, m, k, kpar, a, r, eta, out=None, **kwargs):
     if dim == 1:
-        return recsumcw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return recsumcw1d_shift(m, k, kpar, a, r, eta, out=out, **kwargs)
     elif dim == 2:
-        return recsumcw2d(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return recsumcw2d(m, k, kpar, a, r, eta, out=out, **kwargs)
     raise ValueError(f"invalid dimension '{dim}'")
 
 
-def dsumsw(dim, l, m, k, kpar, a, r, i, out=None, **kwargs):
+def dsumsw(dim, l, m, k, kpar, a, r, i, out=None, **kwargs):  # noqa: E741
     if dim == 1:
         return dsumsw1d_shift(l, m, k, kpar, a, r, i, out=out, **kwargs)
     elif dim == 2:
@@ -203,10 +199,10 @@ def dsumsw(dim, l, m, k, kpar, a, r, i, out=None, **kwargs):
     raise ValueError(f"invalid dimension '{dim}'")
 
 
-def dsumcw(dim, l, k, kpar, a, r, i, out=None, **kwargs):
+def dsumcw(dim, m, k, kpar, a, r, i, out=None, **kwargs):
     if dim == 1:
-        return dsumcw1d_shift(l, m, k, kpar, a, r, i, out=out, **kwargs)
+        return dsumcw1d_shift(m, k, kpar, a, r, i, out=out, **kwargs)
     elif dim == 2:
-        return dsumcw2d(l, m, k, kpar, a, r, i, out=out, **kwargs)
+        return dsumcw2d(m, k, kpar, a, r, i, out=out, **kwargs)
     raise ValueError(f"invalid dimension '{dim}'")
 

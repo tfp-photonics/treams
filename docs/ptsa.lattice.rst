@@ -1,7 +1,7 @@
 .. _ptsa-lattice:
 
-ptsa.lattice module
-===================
+Lattice subpackage (:mod:`ptsa.lattice`)
+========================================
 
 .. automodule:: ptsa.lattice
    :no-members:

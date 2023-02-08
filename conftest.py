@@ -1,23 +1,25 @@
-"""
-Configuration for pytest
+"""Configuration for pytest.
 
-It's needed here to add the option `--runslow`, which is mainly used in the
-lattice subpackage.
+It's needed here to add the option `--runslow`, which is mainly used in the lattice
+subpackage.
 """
 import pytest
 
 
 def pytest_addoption(parser):
+    """Add option '--runslow'."""
     parser.addoption(
         "--runslow", action="store_true", default=False, help="run slow tests"
     )
 
 
 def pytest_configure(config):
+    """Add marker 'slow'."""
     config.addinivalue_line("markers", "slow: mark test as slow to run")
 
 
 def pytest_collection_modifyitems(config, items):
+    """Skip slow tests without option '--runslow'."""
     if config.getoption("--runslow"):
         # --runslow given in cli: do not skip slow tests
         return

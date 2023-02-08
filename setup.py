@@ -1,4 +1,4 @@
-"""Packaging of ptsa"""
+"""Packaging of ptsa."""
 import os
 
 import numpy as np
@@ -23,13 +23,16 @@ if os.name == "nt":
     compile_args = ["-DMS_WIN64"]
 
     class build_ext(_build_ext):
-        # Enforce the gcc compiler under windows
+        """build_ext for Windows."""
+
         def finalize_options(self):
+            """Set compiler to gcc."""
             super().finalize_options()
             self.compiler = "mingw32"
 
         # https://cython.readthedocs.io/en/latest/src/tutorial/appendix.html
         def build_extensions(self):
+            """Add Windows specific compiler and linker arguments."""
             if self.compiler.compiler_type == "mingw32":
                 for e in self.extensions:
                     e.extra_compile_args = compile_args
@@ -43,6 +46,7 @@ else:
 
 # https://cython.readthedocs.io/en/latest/src/userguide/source_files_and_compilation.html#distributing-cython-modules
 def no_cythonize(extensions, **_ignore):
+    """Add c and c++ code to source archive."""
     for extension in extensions:
         sources = []
         for sfile in extension.sources:
