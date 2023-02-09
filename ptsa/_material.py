@@ -102,7 +102,7 @@ class Material:
 
         Note:
             The refractive index is defined independently from the chirality parameter
-            here. For an alternative definition of the refractive index, see also 
+            here. For an alternative definition of the refractive index, see also
             :func:`Material.from_nmp`.
 
         Args:
@@ -123,11 +123,11 @@ class Material:
 
         This function calculates the relative permeability and permittivity and the
         chirality parameter with :math:`\epsilon = \frac{n_+ + n_-}{2Z}`,
-        :math:`\mu = \frac{(n_+ + n_-)Z}{2}` and :math:`\mu = \frac{(n_+ - n_-}{2}`.
+        :math:`\mu = \frac{(n_+ + n_-)Z}{2}` and :math:`\mu = \frac{(n_+ - n_-)}{2}`.
 
         Note:
             Two refractive indices are defined here that depend on the chirality
-            parameter. For an alternative definition of the refractive index, see also 
+            parameter. For an alternative definition of the refractive index, see also
             :func:`Material.from_n`.
 
         Args:
@@ -279,7 +279,7 @@ class Material:
             kz (float, array-like): z-component of the wave vector
             pol (int, array-like): Polarization indices
                 (:ref:`polarizations:Polarizations`).
-        
+
         Returns:
             complex, array-like
         """
@@ -300,7 +300,7 @@ class Material:
             ky (float, array-like): y-component of the wave vector
             pol (int, array-like): Polarization indices
                 (:ref:`polarizations:Polarizations`).
-        
+
         Returns:
             complex, array-like
         """
