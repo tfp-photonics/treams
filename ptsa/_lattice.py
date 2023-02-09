@@ -4,7 +4,7 @@ import ptsa.lattice as la
 
 
 class Lattice:
-    """Lattice definitions.
+    """Lattice definition.
 
     The lattice can be one-, two-, or three-dimensional. If it is not three-dimensional
     it is required to be embedded into a lower dimensional subspace that is aligned with
