@@ -10,8 +10,9 @@ Reference
 Subpackages
 -----------
 
-.. toctree::
-   :maxdepth: 1
+.. autosummary::
+   :toctree: generated/
+   :template: bare-module
 
    ptsa.lattice
    ptsa.special
@@ -56,3 +57,8 @@ Global configuration variables are stored in
    :maxdepth: 1
 
    ptsa.config
+
+.. autosummary::
+   :toctree: generated/
+
+   ptsa.util

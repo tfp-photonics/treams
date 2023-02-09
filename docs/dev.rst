@@ -50,8 +50,9 @@ but for development a more fine grained selection can be made by passing a direc
 file as an argument. Additionally, the option ``-k`` allows to define keywords when
 selecting test.
 
-Some integration tests for the module :ref:`ptsa-lattice` take a long time to finish and
-are therefore disabled by default. You can add them with the option ``--runslow``.
+Some integration tests for the module :ref:`generated/ptsa.lattice:ptsa.lattice` take a
+long time to finish and are therefore disabled by default. You can add them with the
+option ``--runslow``.
 
 If coverage reports should be included on can use the option ``--cov ptsa``. However,
 this will only report on the pure python files. To also get coverage reports for the

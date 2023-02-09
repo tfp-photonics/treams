@@ -57,7 +57,7 @@ Accelerated lattice summations
 -------------------------------
 
 .. autosummary::
-   :toctree: generated/
+   :toctree:
 
    lsumcw1d
    lsumcw1d_shift
@@ -75,7 +75,7 @@ Direct summations
 The functions are almost only here for benchmarking and comparison.
 
 .. autosummary::
-   :toctree: generated/
+   :toctree:
 
    dsumcw1d
    dsumcw1d_shift
@@ -91,7 +91,7 @@ Miscellaneous functions
 -----------------------
 
 .. autosummary::
-   :toctree: generated/a/
+   :toctree:
 
    area
    cube
@@ -101,6 +101,16 @@ Miscellaneous functions
    volume
 
 
+Cython module
+-------------
+
+.. autosummary::
+   :toctree:
+   :template: cython-module
+
+   cython_lattice
+
+
 References
 ==========
 
@@ -108,8 +118,6 @@ References
 * `[2] K. Kambe, Zeitschrift Für Naturforschung A 23, 9 (1968). <https://doi.org/10.1515/zna-1968-0908>`_
 * `[3] C. M. Linton, SIAM Rev. 52, 630 (2010). <https://doi.org/10.1137/09075130X>`_
 * `[4] D. Beutel el al., J. Opt. Soc. Am. B (2021). <https://doi.org/10.1364/JOSAB.419645>`_
-
-
 """
 
 import numpy as np
@@ -137,72 +145,80 @@ def diffr_orders_circle(b, rmax):
 
 def lsumsw(dim, l, m, k, kpar, a, r, eta, out=None, **kwargs):  # noqa: E741
     if dim == 1:
-        return lsumsw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return lsumsw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
     elif dim == 2:
-        return lsumsw2d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return lsumsw2d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
     elif dim == 3:
-        return lsumsw3d(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return lsumsw3d(l, m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
     raise ValueError(f"invalid dimension '{dim}'")
 
 
 def realsumsw(dim, l, m, k, kpar, a, r, eta, out=None, **kwargs):  # noqa: E741
     if dim == 1:
-        return realsumsw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return realsumsw1d_shift(  # noqa: F405
+            l, m, k, kpar, a, r, eta, out=out, **kwargs
+        )
     elif dim == 2:
-        return realsumsw2d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return realsumsw2d_shift(  # noqa: F405
+            l, m, k, kpar, a, r, eta, out=out, **kwargs
+        )
     elif dim == 3:
-        return realsumsw3d(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return realsumsw3d(l, m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
     raise ValueError(f"invalid dimension '{dim}'")
 
 
 def recsumsw(dim, l, m, k, kpar, a, r, eta, out=None, **kwargs):  # noqa: E741
     if dim == 1:
-        return recsumsw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return recsumsw1d_shift(  # noqa: F405
+            l, m, k, kpar, a, r, eta, out=out, **kwargs
+        )
     elif dim == 2:
-        return recsumsw2d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return recsumsw2d_shift(  # noqa: F405
+            l, m, k, kpar, a, r, eta, out=out, **kwargs
+        )
     elif dim == 3:
-        return recsumsw3d(l, m, k, kpar, a, r, eta, out=out, **kwargs)
+        return recsumsw3d(l, m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
     raise ValueError(f"invalid dimension '{dim}'")
 
 
 def lsumcw(dim, m, k, kpar, a, r, eta, out=None, **kwargs):  # noqa: E741
     if dim == 1:
-        return lsumcw1d_shift(m, k, kpar, a, r, eta, out=out, **kwargs)
+        return lsumcw1d_shift(m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
     elif dim == 2:
-        return lsumcw2d(m, k, kpar, a, r, eta, out=out, **kwargs)
+        return lsumcw2d(m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
     raise ValueError(f"invalid dimension '{dim}'")
 
 
 def realsumcw(dim, m, k, kpar, a, r, eta, out=None, **kwargs):
     if dim == 1:
-        return realsumcw1d_shift(m, k, kpar, a, r, eta, out=out, **kwargs)
+        return realsumcw1d_shift(m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
     elif dim == 2:
-        return realsumcw2d(m, k, kpar, a, r, eta, out=out, **kwargs)
+        return realsumcw2d(m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
     raise ValueError(f"invalid dimension '{dim}'")
 
 
 def recsumcw(dim, m, k, kpar, a, r, eta, out=None, **kwargs):
     if dim == 1:
-        return recsumcw1d_shift(m, k, kpar, a, r, eta, out=out, **kwargs)
+        return recsumcw1d_shift(m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
     elif dim == 2:
-        return recsumcw2d(m, k, kpar, a, r, eta, out=out, **kwargs)
+        return recsumcw2d(m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
     raise ValueError(f"invalid dimension '{dim}'")
 
 
 def dsumsw(dim, l, m, k, kpar, a, r, i, out=None, **kwargs):  # noqa: E741
     if dim == 1:
-        return dsumsw1d_shift(l, m, k, kpar, a, r, i, out=out, **kwargs)
+        return dsumsw1d_shift(l, m, k, kpar, a, r, i, out=out, **kwargs)  # noqa: F405
     elif dim == 2:
-        return dsumsw2d_shift(l, m, k, kpar, a, r, i, out=out, **kwargs)
+        return dsumsw2d_shift(l, m, k, kpar, a, r, i, out=out, **kwargs)  # noqa: F405
     elif dim == 3:
-        return dsumsw3d(l, m, k, kpar, a, r, i, out=out, **kwargs)
+        return dsumsw3d(l, m, k, kpar, a, r, i, out=out, **kwargs)  # noqa: F405
     raise ValueError(f"invalid dimension '{dim}'")
 
 
 def dsumcw(dim, m, k, kpar, a, r, i, out=None, **kwargs):
     if dim == 1:
-        return dsumcw1d_shift(m, k, kpar, a, r, i, out=out, **kwargs)
+        return dsumcw1d_shift(m, k, kpar, a, r, i, out=out, **kwargs)  # noqa: F405
     elif dim == 2:
-        return dsumcw2d(m, k, kpar, a, r, i, out=out, **kwargs)
+        return dsumcw2d(m, k, kpar, a, r, i, out=out, **kwargs)  # noqa: F405
     raise ValueError(f"invalid dimension '{dim}'")
 

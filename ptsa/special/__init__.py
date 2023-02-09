@@ -1,7 +1,4 @@
-"""
-=====================================
-Special functions :mod:`ptsa.special`
-=====================================
+""" Special (mathematical) functions.
 
 .. currentmodule:: ptsa.special
 
@@ -17,7 +14,7 @@ Bessel and Hankel functions, with their spherical counterparts, derivatives
 ---------------------------------------------------------------------------
 
 .. autosummary::
-   :toctree: generated/
+   :toctree:
 
    hankel1_d
    hankel2_d
@@ -33,7 +30,7 @@ Those functions are just reexported from Scipy. So, one only needs to import thi
 subpackage within ptsa.
 
 .. autosummary::
-   :toctree: generated/
+   :toctree:
 
    hankel1
    hankel2
@@ -47,7 +44,7 @@ Those functions just wrap Scipy functions with special optional arguments to be 
 analogously access them like their non-spherical counterparts:
 
 .. autosummary::
-   :toctree: generated/
+   :toctree:
 
    spherical_jn_d
    spherical_yn_d
@@ -57,7 +54,7 @@ Scipy functions with enhanced domain
 ------------------------------------
 
 .. autosummary::
-   :toctree: generated/
+   :toctree:
 
    sph_harm
    lpmv
@@ -67,7 +64,7 @@ Integrals for the Ewald summation
 ---------------------------------
 
 .. autosummary::
-   :toctree: generated/
+   :toctree:
 
    incgamma
    intkambe
@@ -77,7 +74,7 @@ Wigner d- and Wigner D-matrix elements
 --------------------------------------
 
 .. autosummary::
-   :toctree: generated/
+   :toctree:
 
    wignersmalld
    wignerd
@@ -87,7 +84,7 @@ Wigner 3j-symbols
 -----------------
 
 .. autosummary::
-   :toctree: generated/
+   :toctree:
 
    wigner3j
 
@@ -96,7 +93,7 @@ Vector wave functions
 --------------------------
 
 .. autosummary::
-   :toctree: generated/
+   :toctree:
 
    pi_fun
    tau_fun
@@ -104,7 +101,7 @@ Vector wave functions
 Spherical waves and translation coefficients
 
 .. autosummary::
-   :toctree: generated/
+   :toctree:
 
    vsh_X
    vsh_Y
@@ -124,7 +121,7 @@ Spherical waves and translation coefficients
 Cylindrical waves
 
 .. autosummary::
-   :toctree: generated/
+   :toctree:
 
    vcw_M
    vcw_N
@@ -139,7 +136,7 @@ Cylindrical waves
 Plane waves
 
 .. autosummary::
-   :toctree: generated/
+   :toctree:
 
    vpw_M
    vpw_N
@@ -150,7 +147,7 @@ Coordinate system transformations
 ---------------------------------
 
 .. autosummary::
-   :toctree: generated/
+   :toctree:
 
    car2cyl
    car2sph
@@ -168,9 +165,19 @@ Coordinate system transformations
    pol2car
    vcar2pol
    vpol2car
+
+
+Cython module
+-------------
+
+.. autosummary::
+   :toctree:
+   :template: cython-module
+
+   cython_special
 """
 
-from scipy.special import (
+from scipy.special import (  # noqa: F401
     hankel1,
     hankel2,
     jv,
@@ -179,14 +186,13 @@ from scipy.special import (
     yv,
 )
 
-from ptsa.special import _ufuncs
-from ptsa.special import _gufuncs
-from ptsa.special._ufuncs import *
-from ptsa.special._gufuncs import *
+from ptsa.special import _gufuncs, _ufuncs  # noqa: F401
+from ptsa.special._gufuncs import *  # noqa: F401, F403
+from ptsa.special._ufuncs import *  # noqa: F401, F403
 
 
 def spherical_jn_d(n, z):
-    """Derivative of the spherical Bessel function of the first kind
+    """Derivative of the spherical Bessel function of the first kind.
 
     This is simply a wrapper for `scipy.special.spherical_jn(n, z, True)`, see
     :py:func:`scipy.special.spherical_jn`. It's here to have a consistent way of
@@ -207,7 +213,7 @@ def spherical_jn_d(n, z):
 
 
 def spherical_yn_d(n, z):
-    """Derivative of the spherical Bessel function of the second kind
+    """Derivative of the spherical Bessel function of the second kind.
 
     This is simply a wrapper for `scipy.special.spherical_yn(n, z, True)`, see
     :py:func:`scipy.special.spherical_jn`. It's here to have a consistent way of
