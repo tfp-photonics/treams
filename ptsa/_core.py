@@ -1,4 +1,4 @@
-"""Basis sets and core array functionalities"""
+"""Basis sets and core array functionalities."""
 
 import abc
 import copy
@@ -13,20 +13,29 @@ from ptsa._material import Material
 
 
 class BasisSet(util.OrderedSet, metaclass=abc.ABCMeta):
-    """
-    BasisSet
+    """Basis Set Base Class.
 
     BasisSet is the base class for all basis sets used. They are expected to be an
-    ordered sequence of the modes, that are included in a expansion.
+    ordered sequence of the modes, that are included in a expansion. Derives from
+    :class:`util.OrderedSet`.
     """
 
     _names = ()
+    """Names of the relevant parameters"""
 
     def __repr__(self):
+        """String representation.
+
+        Automatically generated when the attribute ``_names`` is defined.
+
+        Returns:
+            str
+        """
         string = ",\n    ".join(f"{name}={i}" for name, i in zip(self._names, self[()]))
         return f"{self.__class__.__name__}(\n    {string},\n)"
 
     def __len__(self):
+        """Number of modes."""
         return len(self.pol)
 
     @classmethod

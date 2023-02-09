@@ -1,4 +1,8 @@
-"""Utilities."""
+"""Utilities.
+
+Collection of functions to make :class:`AnnotatedArray` work. The implementation is
+aimed to be quite general, while still providing a solid basis for the rest of the code.
+"""
 
 import abc
 import collections
@@ -10,20 +14,19 @@ import warnings
 import numpy as np
 
 __all__ = [
-    "AnnotationWarning",
-    "AnnotationError",
-    "AnnotationDict",
-    "AnnotationSequence",
     "AnnotatedArray",
-    "OrderedSet",
+    "AnnotationDict",
+    "AnnotationError",
+    "AnnotationSequence",
+    "AnnotationWarning",
     "implements",
+    "OrderedSet",
     "register_properties",
 ]
 
 
 class OrderedSet(collections.abc.Sequence, collections.abc.Set):
-    """
-    Ordered set
+    """Ordered set.
 
     A abstract base class that combines a sequence and set. In contrast to regular sets
     it is expected that the equality comparison only returns `True` if all entries are
@@ -32,11 +35,15 @@ class OrderedSet(collections.abc.Sequence, collections.abc.Set):
 
     @abc.abstractmethod
     def __eq__(self, other):
+        """Equality test."""
         raise NotImplementedError
 
 
 class AnnotationWarning(UserWarning):
-    """Custom warning for AnnotatedArrays."""
+    """Custom warning for Annotations.
+
+    By default the warning filter is set to 'always'.
+    """
 
     pass
 
@@ -45,52 +52,159 @@ warnings.simplefilter("always", AnnotationWarning)
 
 
 class AnnotationError(Exception):
-    """Custom exception for AnnotatedArrays."""
+    """Custom exception for Annotations."""
 
     pass
 
 
 class AnnotationDict(collections.abc.MutableMapping):
+    """Dictionary that notifies the user when overwriting keys.
+
+    Behaves mostly similar to regular dictionaries, except that when overwriting
+    existing keys a :class:`AnnotationWarning` is emmitted.
+
+    Examples:
+        An :class:`AnnotationDict` can be created from other mappings, from a list of
+        key-value pairs (note how a warning is emmitted for the duplicate key), and from
+        keyword arguments.
+
+        .. code-block:: python
+
+            >>> AnnotationDict({"a": 1, "b": 2})
+            AnnotationDict({'a': 1, 'b': 2})
+            >>> AnnotationDict([("a", 1), ("b", 2), ("a", 3)])
+            ptsa/util.py:74: AnnotationWarning: overwriting key 'a'
+            warnings.warn(f"overwriting key '{key}'", AnnotationWarning)
+            AnnotationDict({'a': 3, 'b': 2})
+            >>> AnnotationDict({"a": 1, "b": 2}, c=3)
+            AnnotationDict({'a': 1, 'b': 2, 'c': 3})
+
+    Warns:
+        AnnotationWarning
+    """
+
     def __init__(self, items=(), /, **kwargs):
+        """Initialization."""
         self._dct = {}
         for i in (items.items() if hasattr(items, "items") else items, kwargs.items()):
             for key, val in i:
                 self[key] = val
 
     def __getitem__(self, key):
+        """Get a value by its key.
+
+        Args:
+            key (hashable): Key
+        """
         return self._dct[key]
 
     def __setitem__(self, key, val):
+        """Set an item to the key.
+
+        When overwriting an existing key an :class:`AnnotationWarning` is emitted.
+        Avoid the warning by explicitly deleting the key first.
+
+        Args:
+            key (hashable): Key
+            val : Value
+
+        Warns:
+            AnnotationWarning
+        """
         if key in self and self[key] != val:
             warnings.warn(f"overwriting key '{key}'", AnnotationWarning)
         self._dct[key] = val
 
     def __delitem__(self, key):
+        """Delete the key."""
         del self._dct[key]
 
     def __iter__(self):
+        """Iterate over the keys.
+
+        Returns:
+            Iterator
+        """
         return iter(self._dct)
 
     def __len__(self):
+        """Number of keys contained.
+
+        Returns:
+            int
+        """
         return len(self._dct)
 
     def __repr__(self):
+        """String representation.
+
+        Returns:
+            str
+        """
         return f"{self.__class__.__name__}({repr(self._dct)})"
 
     def match(self, other):
+        """Compare the own keys to another dictionary.
+
+        This emits an :class:`AnnotationWarning` for each key that would be overwritten
+        by the given dictionary.
+
+        Args:
+            other (Mapping)
+
+        Returns:
+            None
+
+        Warns:
+            AnnotationWarning
+        """
         for key, val in self.items():
             if key in other and other[key] != val:
                 warnings.warn(f"incompatible key '{key}'", AnnotationWarning)
 
 
 class AnnotationSequence(collections.abc.Sequence):
-    def __init__(self, *args, container=AnnotationDict):
-        self._ann = tuple(container(i) for i in args)
+    """A Sequence of dictionaries.
+
+    This class is intended to work together with :class:`AnnotationDict`. It provides
+    convenience functions to interact with multiple of those dictionaries, which are
+    mainly used to keep track of the annotations made to each dimension of an
+    :class:`AnnotatedArray`. While the sequence itself is immutable the entries of each
+    dictionary is mutable.
+
+    Args:
+        *args: Items of the sequence
+        mapping (AnnotationDict): Type of mapping to use in the sequence.
+
+    Warns:
+        AnnotationWarning
+    """
+
+    def __init__(self, *args, mapping=AnnotationDict):
+        """Initialization."""
+        self._ann = tuple(mapping(i) for i in args)
 
     def __len__(self):
+        """Number of dictionaries in the sequence.
+
+        Returns:
+            int
+        """
         return len(self._ann)
 
     def __getitem__(self, key):
+        """Get an item or subsequence.
+
+        Indexing works with integers and slices like regular tuples. Additionally, it is
+        possible to get a copy of the object with `()`, or a new sequence of mappings in
+         a list (or other iterable) of integers.
+
+        Args:
+            key (iterable, slice, int)
+
+        Returns:
+            mapping
+        """
         if isinstance(key, tuple) and key == ():
             return copy.copy(self._ann)
         if isinstance(key, slice):
@@ -101,16 +215,28 @@ class AnnotationSequence(collections.abc.Sequence):
         for k in key:
             if not isinstance(k, int):
                 raise TypeError(
-                    "list index must be integer, slice, list of integers, or '()'"
+                    "sequence index must be integer, slice, list of integers, or '()'"
                 )
             res.append(self[k])
         return type(self)(*res)
 
     def update(self, other):
+        """Update all mappings in the sequence at once.
+
+        The given sequence is aliged at the last entry and then updated pairwise.
+        Warnings for overwritten keys are extended by the information at which index
+        they occurred.
+
+        Args:
+            other (Sequence[Mapping]): Mappings to update with.
+
+        Warns:
+            AnnotationWarning
+        """
         if len(other) > len(self):
             warnings.warn(
                 f"argument of length {len(self)} given: "
-                f"ignore leading {len(other) - len(self)} dimensions",
+                f"ignore leading {len(other) - len(self)} entries",
                 AnnotationWarning,
             )
         for i in range(-1, -1 - min(len(self), len(other)), -1):
@@ -121,11 +247,22 @@ class AnnotationSequence(collections.abc.Sequence):
                 except AnnotationWarning as err:
                     warnings.simplefilter("always", category=AnnotationWarning)
                     warnings.warn(
-                        f"at dimension {len(self) + i}: " + err.args[0],
-                        AnnotationWarning,
+                        f"at index {len(self) + i}: " + err.args[0], AnnotationWarning,
                     )
 
     def match(self, other):
+        """Match all mappings at once.
+
+        The given sequence is aliged at the last entry and then updated pairwise.
+        Warnings for overwritten keys are extended by the information at which index
+        they occurred, see also :func:`AnnotationDict.match`.
+
+        Args:
+            other (Sequence[Mappings]): Mappings to match.
+
+        Warns:
+            AnnotationWarning
+        """
         for i in range(-1, -1 - min(len(self), len(other)), -1):
             with warnings.catch_warnings():
                 warnings.simplefilter("error", category=AnnotationWarning)
@@ -139,37 +276,80 @@ class AnnotationSequence(collections.abc.Sequence):
                     )
 
     def __eq__(self, other):
-        if len(self) != len(other):
+        """Equality test.
+
+        Two sequences of mappings are considered equal when they have equal length and
+        when they all mappings are equal.
+
+        Args:
+            other (Sequence[Mapping]): Mappings to compare with.
+
+        Returns:
+            bool
+        """
+        try:
+            lenother = len(other)
+        except TypeError:
             return False
-        for a, b in zip(self, other):
+        if len(self) != lenother:
+            return False
+        try:
+            zipped = zip(self, other)
+        except TypeError:
+            return False
+        for a, b in zipped:
             if a != b:
                 return False
         return True
 
     def __repr__(self):
+        """String representation.
+
+        Returns:
+            str
+        """
         return f"{type(self).__name__}{repr(self._ann)}"
 
 
 def _cast_nparray(arr):
+    """Cast AnnotatedArray to numpy array."""
     return np.asarray(arr) if isinstance(arr, AnnotatedArray) else arr
 
 
 def _cast_annarray(arr):
+    """Cast array to AnnotatedArray."""
     return arr if isinstance(arr, np.generic) else AnnotatedArray(arr)
 
 
-def _parse_signature(signature, inputs):
+def _parse_signature(signature, inputdims):
+    """Parse a ufunc signature based on the actual inputs.
+
+    The signature is matched with the input dimensions, to get the actual signature. It
+    is returned as two lists (inputs and outputs). Each list contains for each
+    individual input and output another list of the signature items.
+
+    Example:
+        >>> ptsa.util._parse_signature('(n?,k),(k,m?)->(n?,m?)', (2, 1))
+        ([['n?', 'k'], ['k']], [['n?']])
+
+    Args:
+        signature (str): Function signature
+        inputdims (Iterable[int]): Input dimensions
+
+    Returns:
+        tuple[list[list[str]]
+    """
     signature = "".join(signature.split())  # remove whitespace
     sigin, sigout = signature.split("->")  # split input and output
     sigin = sigin[1:-1].split("),(")  # split input
     sigin = [i.split(",") for i in sigin]
     sigout = sigout[1:-1].split("),(")  # split output
     sigout = [i.split(",") for i in sigout]
-    for i, in_ in enumerate(inputs):
+    for i, idim in enumerate(inputdims):
         j = 0
         while j < len(sigin[i]):
             d = sigin[i][j]
-            if d.endswith("?") and len(sigin[i]) > np.ndim(in_):
+            if d.endswith("?") and len(sigin[i]) > np.ndim(idim):
                 sigin = [[i for i in s if i != d] for s in sigin]
                 sigout = [[i for i in s if i != d] for s in sigout]
             else:
@@ -178,6 +358,23 @@ def _parse_signature(signature, inputs):
 
 
 def _parse_key(key, ndim):
+    """Parse a key to index an array.
+
+    This function attempts to replicate the numpy indexing of arrays. It can handle
+    integers, slices, an Ellipsis, arrays of integers, arrays of bools, (bare) bools,
+    and None. It returns the key with an Ellipsis appended if the number of index
+    dimensions does not match the number of dimensions given. Additionally, it informs
+    about the number of dimension indexed by fancy indexing, if the fancy indexed
+    dimensions will be prepended, and the number of dimensions that the Ellipsis
+    contains.
+
+    Args:
+        key (tuple): The indexing key
+        ndim (int): Number of array dimensions
+
+    Returns:
+        tuple
+    """
     consumed = 0
     ellipsis = False
     fancy_ndim = 0
@@ -222,10 +419,11 @@ def _parse_key(key, ndim):
 
 
 HANDLED_FUNCTIONS = {}
+"""Dictionary of numpy functions implemented for AnnotatedArrays."""
 
 
 def implements(np_func):
-    "Register an __array_function__ implementation to AnnotatedArrays."
+    """Decorator to register an __array_function__ implementation to AnnotatedArrays."""
 
     def decorator(func):
         HANDLED_FUNCTIONS[np_func] = func
@@ -235,6 +433,16 @@ def implements(np_func):
 
 
 def _pget(key, arr):
+    """Property getter.
+
+    Get the key from all mappings in the annotations of an array and return it as a
+    tuple. If it is the same for all items of the sequence it is directly returned. If
+    the key is not present in a mapping ``None`` is taken.
+
+    Args:
+        key (str): Property name
+        arr (AnnotatedArray): Array from which to get the property.
+    """
     if arr.ndim == 0:
         return None
     val = [a.get(key) for a in arr.ann]
@@ -244,17 +452,46 @@ def _pget(key, arr):
 
 
 def _pset(key, arr, val):
+    """Property setter.
+
+    Set the key for mappings in the annotations of an array. If the given value is not a
+    tuple it is added to all dimensions of the array. Otherwise, it is aligned at the
+    last dimension, see also :class:`AnnotationSequence`. `None` values are ignored.
+
+    Args:
+        key (str): Property name
+        arr (AnnotatedArray): Array from which to get the property.
+        val: Value
+    """
     if not isinstance(val, tuple):
         val = (val,) * arr.ndim
     arr.ann.update(tuple({} if v is None else {key: v} for v in val))
 
 
 def _pdel(key, arr):
+    """Property deleter.
+
+    The key is removed from all mappings, where it is present.
+
+    Args:
+        key (str): Property name
+        arr (AnnotatedArray): Array from which to get the property.
+    """
     for a in arr.ann:
         a.pop(key, None)
 
 
 def register_properties(obj):
+    """Class decorator to add default properties to an AnnotatedArray.
+
+    The properties are assumed to be stored in the instance attribute `_properties`.
+
+    Args:
+        obj (type): Class to add the properties.
+
+    Returns:
+        type
+    """
     for prop in obj._properties:
         setattr(
             obj,
@@ -269,8 +506,25 @@ def register_properties(obj):
 
 
 class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
+    """Array that keeps track of annotations for each dimension.
+
+    This class acts mostly like numpy arrays.
+
+    Attributes:
+        ann (AnnotationSequence): Array annotations
+    """
+
     _scales = set()
     _properties = set()
+
+    def __init__(self, array, ann=(), **kwargs):
+        self._array = np.asarray(array)
+        self.ann = getattr(array, "ann", ())
+        self.ann.update(ann)
+        for key, val in kwargs.items():
+            if not isinstance(val, tuple):
+                val = (val,) * self.ndim
+            self.ann.update(tuple({} if v is None else {key: v} for v in val))
 
     @classmethod
     def relax(cls, *args, mro=None, **kwargs):
@@ -282,15 +536,6 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
                 raise err from None
         cls, *mro = mro
         return cls.relax(*args, mro=mro, **kwargs)
-
-    def __init__(self, array, ann=(), **kwargs):
-        self._array = np.asarray(array)
-        self.ann = getattr(array, "ann", ())
-        self.ann.update(ann)
-        for key, val in kwargs.items():
-            if not isinstance(val, tuple):
-                val = (val,) * self.ndim
-            self.ann.update(tuple({} if v is None else {key: v} for v in val))
 
     def __str__(self):
         return str(self._array)
@@ -406,7 +651,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
 
     @staticmethod
     def _gufunc_call(ufunc, inputs, kwargs, res):
-        sigin, sigout = _parse_signature(ufunc.signature, inputs)
+        sigin, sigout = _parse_signature(ufunc.signature, map(np.ndim, inputs))
         if kwargs.get("keepdims", False):
             sigout = [sigin[0] for _ in range(ufunc.nout)]
         ndims = [np.ndim(i) for x in (inputs, res) for i in x]
