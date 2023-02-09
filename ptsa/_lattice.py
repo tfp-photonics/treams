@@ -84,6 +84,9 @@ class Lattice:
 
         For three-dimensional lattices it is always 'xyz' but lower-dimensional lattices
         have to be aligned with a subset of the axes.
+
+        Returns:
+            str
         """
         return self._alignment
 
@@ -95,6 +98,9 @@ class Lattice:
             pitch (float): Lattice constant.
             alignment (str, optional): Alignment of the two-dimensional lattice in the
                 three-dimensional space. Defaults to 'xy'.
+
+        Returns:
+            Lattice
         """
         return cls(2 * [pitch], alignment)
 
@@ -105,6 +111,9 @@ class Lattice:
         Args:
             pitch (float): Lattice constant.
             alignment (str, optional): Alignment of the lattice. Defaults to 'xyz'.
+
+        Returns:
+            Lattice
         """
         return cls(3 * [pitch], alignment)
 
@@ -119,6 +128,9 @@ class Lattice:
                 alignment this corresponds to the y-axis.
             alignment (str, optional): Alignment of the two-dimensional lattice in the
                 three-dimensional space. Defaults to 'xy'.
+
+        Returns:
+            Lattice
         """
         return cls([x, y], alignment)
 
@@ -134,6 +146,9 @@ class Lattice:
             z (float): Lattice constant along the third dimension. For the default
                 alignment this corresponds to the z-axis.
             alignment (str, optional): Alignment of the lattice. Defaults to 'xyz'.
+
+        Returns:
+            Lattice
         """
         return cls([x, y, z], alignment)
 
@@ -151,6 +166,9 @@ class Lattice:
             alignment (str, optional): Alignment of the two-dimensional lattice in the
                 three-dimensional space. Defaults to either 'xy' or 'xyz' in the two-
                 or three-dimensional case, respectively.
+
+        Returns:
+            Lattice
         """
         if height is None:
             return cls(
@@ -170,7 +188,10 @@ class Lattice:
         and lattice vectors.
 
         Args:
-            other: Lattice to compare with.
+            other (Lattice): Lattice to compare with.
+
+        Returns:
+            bool
         """
         return other is not None and (
             self is other
@@ -183,7 +204,11 @@ class Lattice:
 
     @property
     def dim(self):
-        """Dimension of the lattice."""
+        """Dimension of the lattice.
+
+        Returns:
+            int
+        """
         if self._lattice.ndim == 0:
             return 1
         return self._lattice.shape[0]
@@ -194,6 +219,9 @@ class Lattice:
 
         The value gives the lattice pitch, area, or volume depending on its dimension.
         The volume is signed.
+
+        Returns:
+            float
         """
         if self.dim == 1:
             return self._lattice
@@ -207,6 +235,9 @@ class Lattice:
         vectors :math:`\boldsymbol a_i` for :math:`i \in \{1, \dots, d\}` is defined by
         lattice vectors :math:`\boldsymbol b_j` with :math:`j \in \{1, \dots, d\}` such
         that :math:`\boldsymbol a_i \boldsymbol b_j = 2 \pi \delta_{ij}` is fulfilled.
+
+        Returns:
+            Lattice
         """
         return self._reciprocal
 
@@ -215,6 +246,9 @@ class Lattice:
 
         Indexing can be used to obtain entries from the lattice vector definitions or
         by using the Ellipsis or empty tuple to obtain the full array.
+
+        Returns:
+            float
         """
         return self._lattice[idx]
 
@@ -222,6 +256,9 @@ class Lattice:
         """String representation.
 
         This just prints the lattice pitch or lattice vectors.
+
+        Returns:
+            str
         """
         return str(self._lattice)
 
@@ -229,6 +266,9 @@ class Lattice:
         """Representation.
 
         The result can be used to recreate an equal instance.
+
+        Returns:
+            str
         """
         string = str(self._lattice).replace("\n", "\n        ")
         return f"Lattice({string}, alignment='{self.alignment}')"
@@ -241,6 +281,9 @@ class Lattice:
 
         Args:
             key (str): Alignment of the sublattice to extract.
+
+        Returns:
+            Lattice
         """
         key = key.lower()
         if self.dim == 1:
@@ -278,6 +321,9 @@ class Lattice:
 
         Args:
             n (int, optional): Number of repeated permutations. Defaults to `1`.
+
+        Returns:
+            Lattice
         """
         if n != int(n):
             raise ValueError("'n' must be integer")
@@ -295,7 +341,11 @@ class Lattice:
         return Lattice(lattice, alignment)
 
     def __bool__(self):
-        """Lattice instances always equate to True."""
+        """Lattice instances always equate to True.
+
+        Returns:
+            bool
+        """
         return True
 
     def __or__(self, other):
@@ -307,6 +357,12 @@ class Lattice:
             >>> Lattice(1, 'x') | Lattice(2)
             Lattice([[2. 0.]
                     [0. 1.]], alignment='zx')
+
+        Args:
+            other (Lattice): Lattice to merge.
+
+        Returns:
+            Lattice
         """
         if other is None or self == other:
             return Lattice(self)
@@ -382,6 +438,12 @@ class Lattice:
         Example:
             >>> Lattice([1, 2]) & Lattice([2, 3], 'yz')
             Lattice(2.0, alignment='y')
+
+        Args:
+            other (Lattice): Lattice to intersect.
+
+        Returns:
+            Lattice
         """
         if other is None:
             return None
@@ -406,6 +468,12 @@ class Lattice:
         Example:
             >>> Lattice(3) <= Lattice([1, 2, 3])
             True
+
+        Args:
+            other (Lattice): Lattice to compare with.
+
+        Returns:
+            bool
         """
         try:
             lat = Lattice(other, self.alignment)
@@ -421,6 +489,12 @@ class Lattice:
         Example:
             >>> Lattice([1, 2, 3]).isdisjoint(Lattice(1))
             False
+
+        Args:
+            other (Lattice): Lattice to compare with.
+
+        Returns:
+            bool
         """
         for c in other.alignment:
             if c in self.alignment:
