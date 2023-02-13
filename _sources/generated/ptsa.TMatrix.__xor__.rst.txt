@@ -1,0 +1,6 @@
+ptsa.TMatrix.\_\_xor\_\_
+========================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrix.__xor__

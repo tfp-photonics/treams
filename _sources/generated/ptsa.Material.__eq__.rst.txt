@@ -1,0 +1,6 @@
+ptsa.Material.\_\_eq\_\_
+========================
+
+.. currentmodule:: ptsa
+
+.. automethod:: Material.__eq__

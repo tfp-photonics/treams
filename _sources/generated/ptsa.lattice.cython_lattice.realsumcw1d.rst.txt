@@ -1,0 +1,6 @@
+ptsa.lattice.cython\_lattice.realsumcw1d
+========================================
+
+.. currentmodule:: ptsa.lattice.cython_lattice
+
+.. autofunction:: realsumcw1d

@@ -1,0 +1,6 @@
+ptsa.util.AnnotationSequence.index
+==================================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: AnnotationSequence.index

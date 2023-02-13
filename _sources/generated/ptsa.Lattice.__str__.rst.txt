@@ -1,0 +1,6 @@
+ptsa.Lattice.\_\_str\_\_
+========================
+
+.. currentmodule:: ptsa
+
+.. automethod:: Lattice.__str__

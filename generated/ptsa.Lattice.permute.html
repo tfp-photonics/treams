@@ -6,16 +6,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>ptsa.Lattice.permute &#8212; ptsa 0.2.2.dev75+g97b116d documentation</title>
+    <title>ptsa.Lattice.permute &#8212; ptsa 0.2.2.dev84+g829c933 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/no-nobiles.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ptsa.Lattice.rectangular" href="ptsa.Lattice.rectangular.html" />
+    <link rel="prev" title="ptsa.Lattice.orthorhombic" href="ptsa.Lattice.orthorhombic.html" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <!--[if lte IE 6]>
@@ -33,7 +36,15 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev75+g97b116d documentation</a> &#187;</li>
+        <li class="right" >
+          <a href="ptsa.Lattice.rectangular.html" title="ptsa.Lattice.rectangular"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ptsa.Lattice.orthorhombic.html" title="ptsa.Lattice.orthorhombic"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="ptsa.Lattice.html" accesskey="U">ptsa.Lattice</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.Lattice.permute</a></li> 
       </ul>
     </div>  
@@ -48,7 +59,27 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="ptsa.Lattice.permute">
 <span class="sig-prename descclassname"><span class="pre">Lattice.</span></span><span class="sig-name descname"><span class="pre">permute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ptsa.Lattice.permute" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Permute the lattice orientation.</p>
+<p>Get a new lattice with the alignment permuted.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Lattice</span><span class="o">.</span><span class="n">hexagonal</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">permute</span><span class="p">()</span>
+<span class="go">Lattice([[0.        1.        0.       ]</span>
+<span class="go">        [0.        0.5       0.8660254]</span>
+<span class="go">        [2.        0.        0.       ]], alignment=&#39;xyz&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Lattice</span><span class="o">.</span><span class="n">hexagonal</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">permute</span><span class="p">()</span>
+<span class="go">Lattice([[1.        0.       ]</span>
+<span class="go">        [0.5       0.8660254]], alignment=&#39;yz&#39;)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of repeated permutations. Defaults to <cite>1</cite>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Lattice</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 
@@ -60,14 +91,25 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <h3><a href="../index.html">Table of Contents</a></h3>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../ptsa.html">Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ptsa.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ptsa.html#modules">Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 </ul>
 
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="ptsa.Lattice.orthorhombic.html"
+                          title="previous chapter">ptsa.Lattice.orthorhombic</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="ptsa.Lattice.rectangular.html"
+                          title="next chapter">ptsa.Lattice.rectangular</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -98,7 +140,15 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev75+g97b116d documentation</a> &#187;</li>
+        <li class="right" >
+          <a href="ptsa.Lattice.rectangular.html" title="ptsa.Lattice.rectangular"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ptsa.Lattice.orthorhombic.html" title="ptsa.Lattice.orthorhombic"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="ptsa.Lattice.html" >ptsa.Lattice</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.Lattice.permute</a></li> 
       </ul>
     </div>

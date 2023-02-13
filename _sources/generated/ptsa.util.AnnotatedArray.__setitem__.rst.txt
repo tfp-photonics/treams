@@ -1,0 +1,6 @@
+ptsa.util.AnnotatedArray.\_\_setitem\_\_
+========================================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: AnnotatedArray.__setitem__

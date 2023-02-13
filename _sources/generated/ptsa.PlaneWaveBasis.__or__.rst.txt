@@ -1,0 +1,6 @@
+ptsa.PlaneWaveBasis.\_\_or\_\_
+==============================
+
+.. currentmodule:: ptsa
+
+.. automethod:: PlaneWaveBasis.__or__

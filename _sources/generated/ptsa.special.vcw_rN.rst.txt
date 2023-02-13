@@ -1,4 +1,4 @@
-﻿ptsa.special.vcw\_rN
+ptsa.special.vcw\_rN
 ====================
 
 .. currentmodule:: ptsa.special

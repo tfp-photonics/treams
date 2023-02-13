@@ -1,0 +1,6 @@
+ptsa.PhysicsArray.\_\_eq\_\_
+============================
+
+.. currentmodule:: ptsa
+
+.. automethod:: PhysicsArray.__eq__

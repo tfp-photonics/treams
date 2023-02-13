@@ -1,4 +1,4 @@
-﻿ptsa.special.wignersmalld
+ptsa.special.wignersmalld
 =========================
 
 .. currentmodule:: ptsa.special

@@ -1,4 +1,4 @@
-﻿ptsa.special.intkambe
+ptsa.special.intkambe
 =====================
 
 .. currentmodule:: ptsa.special

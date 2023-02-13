@@ -1,0 +1,6 @@
+ptsa.SphericalWaveBasis.\_\_eq\_\_
+==================================
+
+.. currentmodule:: ptsa
+
+.. automethod:: SphericalWaveBasis.__eq__

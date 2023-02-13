@@ -1,4 +1,4 @@
-﻿ptsa.special.pi\_fun
+ptsa.special.pi\_fun
 ====================
 
 .. currentmodule:: ptsa.special

@@ -1,0 +1,6 @@
+ptsa.special.cython\_special.pi\_fun
+====================================
+
+.. currentmodule:: ptsa.special.cython_special
+
+.. autofunction:: pi_fun

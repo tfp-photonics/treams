@@ -1,0 +1,6 @@
+ptsa.PhysicsArray.\_\_floordiv\_\_
+==================================
+
+.. currentmodule:: ptsa
+
+.. automethod:: PhysicsArray.__floordiv__

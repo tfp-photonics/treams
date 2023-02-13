@@ -6,17 +6,18 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>ptsa.PlaneWaveBasis &#8212; ptsa 0.2.2.dev75+g97b116d documentation</title>
+    <title>ptsa.PlaneWaveBasis &#8212; ptsa 0.2.2.dev84+g829c933 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/no-nobiles.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="ptsa.PlaneWaveBasis.count" href="ptsa.PlaneWaveBasis.count.html" />
+    <link rel="next" title="ptsa.PlaneWaveBasis.isglobal" href="ptsa.PlaneWaveBasis.isglobal.html" />
     <link rel="prev" title="ptsa.SMatrix.tr" href="ptsa.SMatrix.tr.html" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
@@ -36,12 +37,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="ptsa.PlaneWaveBasis.count.html" title="ptsa.PlaneWaveBasis.count"
+          <a href="ptsa.PlaneWaveBasis.isglobal.html" title="ptsa.PlaneWaveBasis.isglobal"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="ptsa.SMatrix.tr.html" title="ptsa.SMatrix.tr"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev75+g97b116d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../ptsa.html" accesskey="U">Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.PlaneWaveBasis</a></li> 
       </ul>
@@ -57,30 +58,112 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ptsa.PlaneWaveBasis">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ptsa.</span></span><span class="sig-name descname"><span class="pre">PlaneWaveBasis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ptsa.PlaneWaveBasis" title="Permalink to this definition">¶</a></dt>
-<dd><p class="rubric">Methods</p>
+<dd><p class="rubric">Attributes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.count.html#ptsa.PlaneWaveBasis.count" title="ptsa.PlaneWaveBasis.count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code></a>(value)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.isglobal.html#ptsa.PlaneWaveBasis.isglobal" title="ptsa.PlaneWaveBasis.isglobal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isglobal</span></code></a></p></td>
 <td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.default.html#ptsa.PlaneWaveBasis.default" title="ptsa.PlaneWaveBasis.default"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default</span></code></a>(cls, *args, **kwargs)</p></td>
-<td><p>Construct a basis set in a default order by giving few parameters.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.index.html#ptsa.PlaneWaveBasis.index" title="ptsa.PlaneWaveBasis.index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code></a>(value, [start, [stop]])</p></td>
-<td><p>Raises ValueError if the value is not present.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.isdisjoint.html#ptsa.PlaneWaveBasis.isdisjoint" title="ptsa.PlaneWaveBasis.isdisjoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isdisjoint</span></code></a>(other)</p></td>
-<td><p>Return True if two sets have a null intersection.</p></td>
 </tr>
 </tbody>
 </table>
-<table class="docutils align-default">
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><strong>complete</strong></p></td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__and__.html#ptsa.PlaneWaveBasis.__and__" title="ptsa.PlaneWaveBasis.__and__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__and__</span></code></a>(other)</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>partial</strong></p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__eq__.html#ptsa.PlaneWaveBasis.__eq__" title="ptsa.PlaneWaveBasis.__eq__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__eq__</span></code></a>(other)</p></td>
+<td><p>Equality test.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__ge__.html#ptsa.PlaneWaveBasis.__ge__" title="ptsa.PlaneWaveBasis.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__getitem__.html#ptsa.PlaneWaveBasis.__getitem__" title="ptsa.PlaneWaveBasis.__getitem__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__getitem__</span></code></a>(idx)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__gt__.html#ptsa.PlaneWaveBasis.__gt__" title="ptsa.PlaneWaveBasis.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__le__.html#ptsa.PlaneWaveBasis.__le__" title="ptsa.PlaneWaveBasis.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(other)</p></td>
+<td><p>Return self&lt;=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__len__.html#ptsa.PlaneWaveBasis.__len__" title="ptsa.PlaneWaveBasis.__len__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__len__</span></code></a>()</p></td>
+<td><p>Number of modes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__lt__.html#ptsa.PlaneWaveBasis.__lt__" title="ptsa.PlaneWaveBasis.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(other)</p></td>
+<td><p>Return self&lt;value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__ne__.html#ptsa.PlaneWaveBasis.__ne__" title="ptsa.PlaneWaveBasis.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(value, /)</p></td>
+<td><p>Return self!=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__or__.html#ptsa.PlaneWaveBasis.__or__" title="ptsa.PlaneWaveBasis.__or__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__or__</span></code></a>(other)</p></td>
+<td><p>Return self|value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__repr__.html#ptsa.PlaneWaveBasis.__repr__" title="ptsa.PlaneWaveBasis.__repr__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__repr__</span></code></a>()</p></td>
+<td><p>String representation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__str__.html#ptsa.PlaneWaveBasis.__str__" title="ptsa.PlaneWaveBasis.__str__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__str__</span></code></a>()</p></td>
+<td><p>Return str(self).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__sub__.html#ptsa.PlaneWaveBasis.__sub__" title="ptsa.PlaneWaveBasis.__sub__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__sub__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__xor__.html#ptsa.PlaneWaveBasis.__xor__" title="ptsa.PlaneWaveBasis.__xor__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__xor__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.complete.html#ptsa.PlaneWaveBasis.complete" title="ptsa.PlaneWaveBasis.complete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">complete</span></code></a>(k0[, material, modetype])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.count.html#ptsa.PlaneWaveBasis.count" title="ptsa.PlaneWaveBasis.count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code></a>(value)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.default.html#ptsa.PlaneWaveBasis.default" title="ptsa.PlaneWaveBasis.default"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default</span></code></a>(cls, *args, **kwargs)</p></td>
+<td><p>Construct a basis set in a default order by giving few parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.index.html#ptsa.PlaneWaveBasis.index" title="ptsa.PlaneWaveBasis.index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code></a>(value, [start, [stop]])</p></td>
+<td><p>Raises ValueError if the value is not present.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.isdisjoint.html#ptsa.PlaneWaveBasis.isdisjoint" title="ptsa.PlaneWaveBasis.isdisjoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isdisjoint</span></code></a>(other)</p></td>
+<td><p>Return True if two sets have a null intersection.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.partial.html#ptsa.PlaneWaveBasis.partial" title="ptsa.PlaneWaveBasis.partial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partial</span></code></a>([alignment, k0, material])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__ge__.html#ptsa.PlaneWaveBasis.__ge__" title="ptsa.PlaneWaveBasis.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__and__.html#ptsa.PlaneWaveBasis.__and__" title="ptsa.PlaneWaveBasis.__and__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__and__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__sub__.html#ptsa.PlaneWaveBasis.__sub__" title="ptsa.PlaneWaveBasis.__sub__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__sub__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__le__.html#ptsa.PlaneWaveBasis.__le__" title="ptsa.PlaneWaveBasis.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(other)</p></td>
+<td><p>Return self&lt;=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__or__.html#ptsa.PlaneWaveBasis.__or__" title="ptsa.PlaneWaveBasis.__or__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__or__</span></code></a>(other)</p></td>
+<td><p>Return self|value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__gt__.html#ptsa.PlaneWaveBasis.__gt__" title="ptsa.PlaneWaveBasis.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__str__.html#ptsa.PlaneWaveBasis.__str__" title="ptsa.PlaneWaveBasis.__str__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__str__</span></code></a>()</p></td>
+<td><p>Return str(self).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__len__.html#ptsa.PlaneWaveBasis.__len__" title="ptsa.PlaneWaveBasis.__len__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__len__</span></code></a>()</p></td>
+<td><p>Number of modes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__ne__.html#ptsa.PlaneWaveBasis.__ne__" title="ptsa.PlaneWaveBasis.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(value, /)</p></td>
+<td><p>Return self!=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__repr__.html#ptsa.PlaneWaveBasis.__repr__" title="ptsa.PlaneWaveBasis.__repr__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__repr__</span></code></a>()</p></td>
+<td><p>String representation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__xor__.html#ptsa.PlaneWaveBasis.__xor__" title="ptsa.PlaneWaveBasis.__xor__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__xor__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PlaneWaveBasis.__lt__.html#ptsa.PlaneWaveBasis.__lt__" title="ptsa.PlaneWaveBasis.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(other)</p></td>
+<td><p>Return self&lt;value.</p></td>
 </tr>
 </tbody>
 </table>
@@ -100,6 +183,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../ptsa.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ptsa.html#modules">Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 </ul>
@@ -111,8 +195,8 @@
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="ptsa.PlaneWaveBasis.count.html"
-                          title="next chapter">ptsa.PlaneWaveBasis.count</a></p>
+    <p class="topless"><a href="ptsa.PlaneWaveBasis.isglobal.html"
+                          title="next chapter">ptsa.PlaneWaveBasis.isglobal</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -145,12 +229,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="ptsa.PlaneWaveBasis.count.html" title="ptsa.PlaneWaveBasis.count"
+          <a href="ptsa.PlaneWaveBasis.isglobal.html" title="ptsa.PlaneWaveBasis.isglobal"
              >next</a> |</li>
         <li class="right" >
           <a href="ptsa.SMatrix.tr.html" title="ptsa.SMatrix.tr"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev75+g97b116d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.PlaneWaveBasis</a></li> 
       </ul>

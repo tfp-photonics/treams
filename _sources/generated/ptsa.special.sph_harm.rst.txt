@@ -1,4 +1,4 @@
-﻿ptsa.special.sph\_harm
+ptsa.special.sph\_harm
 ======================
 
 .. currentmodule:: ptsa.special

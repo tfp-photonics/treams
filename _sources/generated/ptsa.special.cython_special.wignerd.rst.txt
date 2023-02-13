@@ -1,0 +1,6 @@
+ptsa.special.cython\_special.wignerd
+====================================
+
+.. currentmodule:: ptsa.special.cython_special
+
+.. autofunction:: wignerd

@@ -1,0 +1,6 @@
+ptsa.TMatrix.\_\_truediv\_\_
+============================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrix.__truediv__

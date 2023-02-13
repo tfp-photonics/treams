@@ -6,18 +6,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>ptsa.Material &#8212; ptsa 0.2.2.dev75+g97b116d documentation</title>
+    <title>ptsa.Material &#8212; ptsa 0.2.2.dev84+g829c933 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/no-nobiles.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="ptsa.Material.__call__" href="ptsa.Material.__call__.html" />
-    <link rel="prev" title="ptsa.Lattice" href="ptsa.Lattice.html" />
+    <link rel="next" title="ptsa.Material.epsilon" href="ptsa.Material.epsilon.html" />
+    <link rel="prev" title="ptsa.Lattice.square" href="ptsa.Lattice.square.html" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <!--[if lte IE 6]>
@@ -36,12 +38,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="ptsa.Material.__call__.html" title="ptsa.Material.__call__"
+          <a href="ptsa.Material.epsilon.html" title="ptsa.Material.epsilon"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="ptsa.Lattice.html" title="ptsa.Lattice"
+          <a href="ptsa.Lattice.square.html" title="ptsa.Lattice.square"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev75+g97b116d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../ptsa.html" accesskey="U">Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.Material</a></li> 
       </ul>
@@ -57,44 +59,126 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ptsa.Material">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ptsa.</span></span><span class="sig-name descname"><span class="pre">Material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ptsa.Material" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>epsilon</strong></dt><dd></dd>
-<dt><strong>impedance</strong></dt><dd></dd>
-<dt><strong>ischiral</strong></dt><dd></dd>
-<dt><strong>isreal</strong></dt><dd></dd>
-<dt><strong>kappa</strong></dt><dd></dd>
-<dt><strong>mu</strong></dt><dd></dd>
-<dt><strong>n</strong></dt><dd></dd>
-<dt><strong>nmp</strong></dt><dd></dd>
-</dl>
+<dd><p>Material definition.</p>
+<p>The material properties are defined in the frequency domain through scalar values
+for permittivity <span class="math notranslate nohighlight">\(\epsilon\)</span>, permeability <span class="math notranslate nohighlight">\(\mu\)</span>, and the chirality
+parameter  <span class="math notranslate nohighlight">\(\kappa\)</span>. Materials are, thus, assumed to be linear,
+time-invariant, homogeneous, isotropic, and local. Also, it is assumed that they
+have no gain. The relation of the electric and magnetic fields is defined by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{pmatrix}
+    \frac{1}{\epsilon_0} \boldsymbol D \\
+    c \boldsymbol B
+\end{pmatrix}
+=
+\begin{pmatrix}
+    \epsilon &amp; \mathrm i \kappa \\
+    -\mathrm i \kappa &amp; \mu
+\end{pmatrix}
+\begin{pmatrix}
+    \boldsymbol E \\
+    Z_0 \boldsymbol H
+\end{pmatrix}\end{split}\]</div>
+<p>for a fixed vacuum wave number <span class="math notranslate nohighlight">\(k_0\)</span> and spatial position
+<span class="math notranslate nohighlight">\(\boldsymbol r\)</span> with <span class="math notranslate nohighlight">\(\epsilon_0\)</span> the vacuum permittivity, <span class="math notranslate nohighlight">\(c\)</span> the
+speed of light in vacuum, and <span class="math notranslate nohighlight">\(Z_0\)</span> the vacuum impedance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>epsilon</strong> (<em>optional</em><em>, </em><em>complex</em>) – Relative permittivity. Defaults to 1.</p></li>
+<li><p><strong>mu</strong> (<em>optional</em><em>, </em><em>complex</em>) – Relative permeability. Defaults to 1.</p></li>
+<li><p><strong>kappa</strong> (<em>optional</em><em>, </em><em>complex</em>) – Chirality parameter. Defaults to 0.</p></li>
+</ul>
 </dd>
 </dl>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.Material.epsilon.html#ptsa.Material.epsilon" title="ptsa.Material.epsilon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">epsilon</span></code></a></p></td>
+<td><p>Relative permittivity.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.Material.impedance.html#ptsa.Material.impedance" title="ptsa.Material.impedance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">impedance</span></code></a></p></td>
+<td><p>Relative impedance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.Material.ischiral.html#ptsa.Material.ischiral" title="ptsa.Material.ischiral"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ischiral</span></code></a></p></td>
+<td><p>Test if the material is chiral.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.Material.isreal.html#ptsa.Material.isreal" title="ptsa.Material.isreal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isreal</span></code></a></p></td>
+<td><p>Test if the material has purely real parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.Material.kappa.html#ptsa.Material.kappa" title="ptsa.Material.kappa"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kappa</span></code></a></p></td>
+<td><p>Chirality parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.Material.mu.html#ptsa.Material.mu" title="ptsa.Material.mu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mu</span></code></a></p></td>
+<td><p>Relative permeability.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.Material.n.html#ptsa.Material.n" title="ptsa.Material.n"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n</span></code></a></p></td>
+<td><p>Refractive index.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.Material.nmp.html#ptsa.Material.nmp" title="ptsa.Material.nmp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nmp</span></code></a></p></td>
+<td><p>Refractive indices of both helicities.</p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="ptsa.Material.__call__.html#ptsa.Material.__call__" title="ptsa.Material.__call__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code></a>()</p></td>
-<td><p>Call self as a function.</p></td>
+<td><p>Return a tuple containing all material parameters.</p></td>
 </tr>
-</tbody>
-</table>
-<table class="docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><strong>from_n</strong></p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.Material.__eq__.html#ptsa.Material.__eq__" title="ptsa.Material.__eq__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__eq__</span></code></a>(other)</p></td>
+<td><p>Compare material parameters.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>from_nmp</strong></p></td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.Material.__ge__.html#ptsa.Material.__ge__" title="ptsa.Material.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(value, /)</p></td>
+<td><p>Return self&gt;=value.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>krhos</strong></p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.Material.__gt__.html#ptsa.Material.__gt__" title="ptsa.Material.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(value, /)</p></td>
+<td><p>Return self&gt;value.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>ks</strong></p></td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.Material.__le__.html#ptsa.Material.__le__" title="ptsa.Material.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(value, /)</p></td>
+<td><p>Return self&lt;=value.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>kzs</strong></p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.Material.__lt__.html#ptsa.Material.__lt__" title="ptsa.Material.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(value, /)</p></td>
+<td><p>Return self&lt;value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.Material.__ne__.html#ptsa.Material.__ne__" title="ptsa.Material.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(value, /)</p></td>
+<td><p>Return self!=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.Material.__repr__.html#ptsa.Material.__repr__" title="ptsa.Material.__repr__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__repr__</span></code></a>()</p></td>
+<td><p>Representation that allows recreating the object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.Material.__str__.html#ptsa.Material.__str__" title="ptsa.Material.__str__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__str__</span></code></a>()</p></td>
+<td><p>All three material parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.Material.from_n.html#ptsa.Material.from_n" title="ptsa.Material.from_n"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_n</span></code></a>([n, impedance, kappa])</p></td>
+<td><p>Create material from refractive index and relative impedance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.Material.from_nmp.html#ptsa.Material.from_nmp" title="ptsa.Material.from_nmp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_nmp</span></code></a>([ns, impedance])</p></td>
+<td><p>Create material from refractive indices of both helicities.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.Material.krhos.html#ptsa.Material.krhos" title="ptsa.Material.krhos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">krhos</span></code></a>(k0, kz, pol)</p></td>
+<td><p>The (cylindrically) radial part of the wave vector.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.Material.ks.html#ptsa.Material.ks" title="ptsa.Material.ks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ks</span></code></a>(k0)</p></td>
+<td><p>Return the wave numbers in the medium for both polarizations.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.Material.kzs.html#ptsa.Material.kzs" title="ptsa.Material.kzs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kzs</span></code></a>(k0, kx, ky, pol)</p></td>
+<td><p>The z-component of the wave vector.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.Material.__ge__.html#ptsa.Material.__ge__" title="ptsa.Material.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(value, /)</p></td>
+<td><p>Return self&gt;=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.Material.__gt__.html#ptsa.Material.__gt__" title="ptsa.Material.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(value, /)</p></td>
+<td><p>Return self&gt;value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.Material.__ne__.html#ptsa.Material.__ne__" title="ptsa.Material.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(value, /)</p></td>
+<td><p>Return self!=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.Material.__lt__.html#ptsa.Material.__lt__" title="ptsa.Material.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(value, /)</p></td>
+<td><p>Return self&lt;value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.Material.__le__.html#ptsa.Material.__le__" title="ptsa.Material.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(value, /)</p></td>
+<td><p>Return self&lt;=value.</p></td>
 </tr>
 </tbody>
 </table>
@@ -114,19 +198,20 @@
 <li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../ptsa.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ptsa.html#modules">Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 </ul>
 
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="ptsa.Lattice.html"
-                          title="previous chapter">ptsa.Lattice</a></p>
+    <p class="topless"><a href="ptsa.Lattice.square.html"
+                          title="previous chapter">ptsa.Lattice.square</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="ptsa.Material.__call__.html"
-                          title="next chapter">ptsa.Material.__call__</a></p>
+    <p class="topless"><a href="ptsa.Material.epsilon.html"
+                          title="next chapter">ptsa.Material.epsilon</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -159,12 +244,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="ptsa.Material.__call__.html" title="ptsa.Material.__call__"
+          <a href="ptsa.Material.epsilon.html" title="ptsa.Material.epsilon"
              >next</a> |</li>
         <li class="right" >
-          <a href="ptsa.Lattice.html" title="ptsa.Lattice"
+          <a href="ptsa.Lattice.square.html" title="ptsa.Lattice.square"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev75+g97b116d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.Material</a></li> 
       </ul>

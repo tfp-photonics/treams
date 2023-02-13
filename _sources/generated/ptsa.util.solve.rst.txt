@@ -1,0 +1,6 @@
+ptsa.util.solve
+===============
+
+.. currentmodule:: ptsa.util
+
+.. autofunction:: solve

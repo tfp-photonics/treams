@@ -1,0 +1,6 @@
+ptsa.util.AnnotationSequence.\_\_len\_\_
+========================================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: AnnotationSequence.__len__

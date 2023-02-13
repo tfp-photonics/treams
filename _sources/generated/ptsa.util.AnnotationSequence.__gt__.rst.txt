@@ -1,0 +1,6 @@
+ptsa.util.AnnotationSequence.\_\_gt\_\_
+=======================================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: AnnotationSequence.__gt__

@@ -1,0 +1,6 @@
+ptsa.util.OrderedSet.\_\_getitem\_\_
+====================================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: OrderedSet.__getitem__

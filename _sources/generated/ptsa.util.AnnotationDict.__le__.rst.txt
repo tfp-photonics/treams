@@ -1,0 +1,6 @@
+ptsa.util.AnnotationDict.\_\_le\_\_
+===================================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: AnnotationDict.__le__

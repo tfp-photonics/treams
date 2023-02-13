@@ -4,35 +4,57 @@
 .. currentmodule:: ptsa
 
 .. autoclass:: SphericalWaveBasis
-   :no-members:
-   :no-inherited-members:
-   :no-special-members:
-
-  
-   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
-      .. autosummary::
-         :toctree:
-      
-         SphericalWaveBasis.__getitem__
-         SphericalWaveBasis.__len__
-         SphericalWaveBasis.count
-         SphericalWaveBasis.default
-         SphericalWaveBasis.defaultdim
-         SphericalWaveBasis.defaultlmax
-         SphericalWaveBasis.ebcm
-         SphericalWaveBasis.index
-         SphericalWaveBasis.isdisjoint
-      
-         SphericalWaveBasis.__len__
-  
 
   
   
-   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. rubric:: Attributes
+
       .. autosummary::
          :toctree:
       
-         SphericalWaveBasis.isglobal
-         SphericalWaveBasis.positions
+         ~SphericalWaveBasis.isglobal
+         ~SphericalWaveBasis.positions
   
+  
+
+  
+      .. rubric:: Methods
+
+      .. autosummary::
+         :toctree:
+
+      
+         ~SphericalWaveBasis.__and__
+         ~SphericalWaveBasis.__eq__
+         ~SphericalWaveBasis.__ge__
+         ~SphericalWaveBasis.__getitem__
+         ~SphericalWaveBasis.__gt__
+         ~SphericalWaveBasis.__le__
+         ~SphericalWaveBasis.__len__
+         ~SphericalWaveBasis.__lt__
+         ~SphericalWaveBasis.__ne__
+         ~SphericalWaveBasis.__or__
+         ~SphericalWaveBasis.__repr__
+         ~SphericalWaveBasis.__str__
+         ~SphericalWaveBasis.__sub__
+         ~SphericalWaveBasis.__xor__
+         ~SphericalWaveBasis.count
+         ~SphericalWaveBasis.default
+         ~SphericalWaveBasis.defaultdim
+         ~SphericalWaveBasis.defaultlmax
+         ~SphericalWaveBasis.ebcm
+         ~SphericalWaveBasis.index
+         ~SphericalWaveBasis.isdisjoint
+      
+         ~SphericalWaveBasis.__ge__
+         ~SphericalWaveBasis.__and__
+         ~SphericalWaveBasis.__sub__
+         ~SphericalWaveBasis.__le__
+         ~SphericalWaveBasis.__or__
+         ~SphericalWaveBasis.__gt__
+         ~SphericalWaveBasis.__str__
+         ~SphericalWaveBasis.__len__
+         ~SphericalWaveBasis.__ne__
+         ~SphericalWaveBasis.__xor__
+         ~SphericalWaveBasis.__lt__
   

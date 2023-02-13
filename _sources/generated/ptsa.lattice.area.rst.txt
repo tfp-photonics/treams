@@ -1,4 +1,4 @@
-﻿ptsa.lattice.area
+ptsa.lattice.area
 =================
 
 .. currentmodule:: ptsa.lattice

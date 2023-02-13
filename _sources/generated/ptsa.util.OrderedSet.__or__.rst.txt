@@ -1,0 +1,6 @@
+ptsa.util.OrderedSet.\_\_or\_\_
+===============================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: OrderedSet.__or__

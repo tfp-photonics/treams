@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Polarizations &#8212; ptsa 0.2.2.dev84+g829c933 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/no-nobiles.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Polarizations</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="polarizations">
+<h1>Polarizations<a class="headerlink" href="#polarizations" title="Permalink to this heading">¶</a></h1>
+<p>Two polarization types are supported: <cite>helicity</cite> and <cite>parity</cite>. The first allows the use
+of chiral material parameters. Each polarization type contains two polarizations that
+are indicated by the integers <cite>0</cite> and <cite>1</cite> throughout the code. For helicity
+polarizations <cite>0</cite> stands for negative helicity and <cite>1</cite> for positive helicity. In the
+case of parity polarizations <cite>0</cite> stands for <cite>TE</cite> or <cite>magnetic</cite> polarization and <cite>1</cite> for
+<cite>TM</cite> or <cite>electric</cite> polarizations. The magnetic parity waves are defined in
+<a class="reference internal" href="generated/ptsa.special.vsw_M.html#ptsa.special.vsw_M" title="ptsa.special.vsw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_M()</span></code></a>, <a class="reference internal" href="generated/ptsa.special.vsw_rM.html#ptsa.special.vsw_rM" title="ptsa.special.vsw_rM"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_rM()</span></code></a>, <a class="reference internal" href="generated/ptsa.special.vcw_M.html#ptsa.special.vcw_M" title="ptsa.special.vcw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vcw_M()</span></code></a>,
+<a class="reference internal" href="generated/ptsa.special.vcw_rM.html#ptsa.special.vcw_rM" title="ptsa.special.vcw_rM"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vcw_rM()</span></code></a>, and <a class="reference internal" href="generated/ptsa.special.vpw_M.html#ptsa.special.vpw_M" title="ptsa.special.vpw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vpw_M()</span></code></a>. For spherical waves they
+are transverse with respect to the radial direction, for cylindrical and plane waves
+they are transverse to the z-axis. The corresponding electric parity waves are
+<a class="reference internal" href="generated/ptsa.special.vsw_N.html#ptsa.special.vsw_N" title="ptsa.special.vsw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_N()</span></code></a>, <a class="reference internal" href="generated/ptsa.special.vsw_rN.html#ptsa.special.vsw_rN" title="ptsa.special.vsw_rN"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_rN()</span></code></a>, <a class="reference internal" href="generated/ptsa.special.vcw_N.html#ptsa.special.vcw_N" title="ptsa.special.vcw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vcw_N()</span></code></a>,
+<a class="reference internal" href="generated/ptsa.special.vcw_rN.html#ptsa.special.vcw_rN" title="ptsa.special.vcw_rN"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vcw_rN()</span></code></a>, and <a class="reference internal" href="generated/ptsa.special.vpw_N.html#ptsa.special.vpw_N" title="ptsa.special.vpw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vpw_N()</span></code></a>.</p>
+<p>The helicity waves are defined in <a class="reference internal" href="generated/ptsa.special.vsw_A.html#ptsa.special.vsw_A" title="ptsa.special.vsw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_A()</span></code></a>,
+<a class="reference internal" href="generated/ptsa.special.vsw_rA.html#ptsa.special.vsw_rA" title="ptsa.special.vsw_rA"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_rA()</span></code></a>, <a class="reference internal" href="generated/ptsa.special.vcw_A.html#ptsa.special.vcw_A" title="ptsa.special.vcw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vcw_A()</span></code></a>, <a class="reference internal" href="generated/ptsa.special.vcw_rA.html#ptsa.special.vcw_rA" title="ptsa.special.vcw_rA"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vcw_rA()</span></code></a>,
+and <a class="reference internal" href="generated/ptsa.special.vpw_A.html#ptsa.special.vpw_A" title="ptsa.special.vpw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vpw_A()</span></code></a>.</p>
+<p>The default polarization type to be used can be defined in <a class="reference internal" href="ptsa.config.html#module-ptsa.config" title="ptsa.config"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ptsa.config</span></code></a>.</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ptsa.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ptsa.html#modules">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/polarizations.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Polarizations</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Dominik Beutel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

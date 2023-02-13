@@ -1,0 +1,6 @@
+ptsa.Lattice.\_\_or\_\_
+=======================
+
+.. currentmodule:: ptsa
+
+.. automethod:: Lattice.__or__

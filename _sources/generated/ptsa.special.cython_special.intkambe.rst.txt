@@ -1,0 +1,6 @@
+ptsa.special.cython\_special.intkambe
+=====================================
+
+.. currentmodule:: ptsa.special.cython_special
+
+.. autofunction:: intkambe

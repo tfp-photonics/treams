@@ -1,0 +1,6 @@
+ptsa.util.AnnotationDict.get
+============================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: AnnotationDict.get

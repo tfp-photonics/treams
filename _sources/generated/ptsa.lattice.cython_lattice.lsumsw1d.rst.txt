@@ -1,0 +1,6 @@
+ptsa.lattice.cython\_lattice.lsumsw1d
+=====================================
+
+.. currentmodule:: ptsa.lattice.cython_lattice
+
+.. autofunction:: lsumsw1d

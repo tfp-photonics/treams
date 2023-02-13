@@ -1,4 +1,4 @@
-﻿ptsa.special.hankel1\_d
+ptsa.special.hankel1\_d
 =======================
 
 .. currentmodule:: ptsa.special

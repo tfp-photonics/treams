@@ -1,0 +1,6 @@
+ptsa.TMatrix.\_\_add\_\_
+========================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrix.__add__

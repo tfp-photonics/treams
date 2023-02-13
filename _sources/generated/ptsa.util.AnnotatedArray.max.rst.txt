@@ -1,0 +1,6 @@
+ptsa.util.AnnotatedArray.max
+============================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: AnnotatedArray.max

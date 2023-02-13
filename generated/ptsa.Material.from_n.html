@@ -6,16 +6,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>ptsa.Material.from_n &#8212; ptsa 0.2.2.dev75+g97b116d documentation</title>
+    <title>ptsa.Material.from_n &#8212; ptsa 0.2.2.dev84+g829c933 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/no-nobiles.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ptsa.Material.from_nmp" href="ptsa.Material.from_nmp.html" />
+    <link rel="prev" title="ptsa.Material.__str__" href="ptsa.Material.__str__.html" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <!--[if lte IE 6]>
@@ -33,7 +37,15 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev75+g97b116d documentation</a> &#187;</li>
+        <li class="right" >
+          <a href="ptsa.Material.from_nmp.html" title="ptsa.Material.from_nmp"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ptsa.Material.__str__.html" title="ptsa.Material.__str__"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="ptsa.Material.html" accesskey="U">ptsa.Material</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.Material.from_n</a></li> 
       </ul>
     </div>  
@@ -48,7 +60,29 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="ptsa.Material.from_n">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Material.</span></span><span class="sig-name descname"><span class="pre">from_n</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">impedance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ptsa.Material.from_n" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Create material from refractive index and relative impedance.</p>
+<p>This function calculates the relative permeability and permittivity with
+<span class="math notranslate nohighlight">\(\epsilon = \frac{n}{Z}\)</span> and <span class="math notranslate nohighlight">\(\mu = nZ\)</span>. The chirality parameter is
+considered separately.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The refractive index is defined independently from the chirality parameter
+here. For an alternative definition of the refractive index, see also
+<a class="reference internal" href="ptsa.Material.from_nmp.html#ptsa.Material.from_nmp" title="ptsa.Material.from_nmp"><code class="xref py py-func docutils literal notranslate"><span class="pre">Material.from_nmp()</span></code></a>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>complex</em><em>, </em><em>optional</em>) – Refractive index. Defaults to 1.</p></li>
+<li><p><strong>impedance</strong> (<em>complex</em><em>, </em><em>optional</em>) – Relative impedance. Defaults to 1.</p></li>
+<li><p><strong>kappa</strong> (<em>complex</em><em>, </em><em>optional</em>) – Chirality parameter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Material</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 
@@ -60,14 +94,25 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <h3><a href="../index.html">Table of Contents</a></h3>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../ptsa.html">Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ptsa.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ptsa.html#modules">Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 </ul>
 
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="ptsa.Material.__str__.html"
+                          title="previous chapter">ptsa.Material.__str__</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="ptsa.Material.from_nmp.html"
+                          title="next chapter">ptsa.Material.from_nmp</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -98,7 +143,15 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev75+g97b116d documentation</a> &#187;</li>
+        <li class="right" >
+          <a href="ptsa.Material.from_nmp.html" title="ptsa.Material.from_nmp"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ptsa.Material.__str__.html" title="ptsa.Material.__str__"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="ptsa.Material.html" >ptsa.Material</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.Material.from_n</a></li> 
       </ul>
     </div>

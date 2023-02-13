@@ -1,0 +1,6 @@
+ptsa.TMatrix.\_\_rshift\_\_
+===========================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrix.__rshift__

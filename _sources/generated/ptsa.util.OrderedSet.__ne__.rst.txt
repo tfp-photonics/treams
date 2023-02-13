@@ -1,0 +1,6 @@
+ptsa.util.OrderedSet.\_\_ne\_\_
+===============================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: OrderedSet.__ne__

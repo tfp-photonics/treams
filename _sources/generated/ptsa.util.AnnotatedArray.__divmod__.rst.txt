@@ -1,0 +1,6 @@
+ptsa.util.AnnotatedArray.\_\_divmod\_\_
+=======================================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: AnnotatedArray.__divmod__

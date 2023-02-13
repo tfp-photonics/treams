@@ -1,0 +1,6 @@
+ptsa.util.AnnotatedArray.\_\_getitem\_\_
+========================================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: AnnotatedArray.__getitem__

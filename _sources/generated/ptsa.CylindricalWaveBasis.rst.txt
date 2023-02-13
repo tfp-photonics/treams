@@ -4,35 +4,57 @@
 .. currentmodule:: ptsa
 
 .. autoclass:: CylindricalWaveBasis
-   :no-members:
-   :no-inherited-members:
-   :no-special-members:
-
-  
-   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
-      .. autosummary::
-         :toctree:
-      
-         CylindricalWaveBasis.__getitem__
-         CylindricalWaveBasis.__len__
-         CylindricalWaveBasis.count
-         CylindricalWaveBasis.default
-         CylindricalWaveBasis.defaultdim
-         CylindricalWaveBasis.defaultmmax
-         CylindricalWaveBasis.index
-         CylindricalWaveBasis.isdisjoint
-         CylindricalWaveBasis.with_periodicity
-      
-         CylindricalWaveBasis.__len__
-  
 
   
   
-   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. rubric:: Attributes
+
       .. autosummary::
          :toctree:
       
-         CylindricalWaveBasis.isglobal
-         CylindricalWaveBasis.positions
+         ~CylindricalWaveBasis.isglobal
+         ~CylindricalWaveBasis.positions
   
+  
+
+  
+      .. rubric:: Methods
+
+      .. autosummary::
+         :toctree:
+
+      
+         ~CylindricalWaveBasis.__and__
+         ~CylindricalWaveBasis.__eq__
+         ~CylindricalWaveBasis.__ge__
+         ~CylindricalWaveBasis.__getitem__
+         ~CylindricalWaveBasis.__gt__
+         ~CylindricalWaveBasis.__le__
+         ~CylindricalWaveBasis.__len__
+         ~CylindricalWaveBasis.__lt__
+         ~CylindricalWaveBasis.__ne__
+         ~CylindricalWaveBasis.__or__
+         ~CylindricalWaveBasis.__repr__
+         ~CylindricalWaveBasis.__str__
+         ~CylindricalWaveBasis.__sub__
+         ~CylindricalWaveBasis.__xor__
+         ~CylindricalWaveBasis.count
+         ~CylindricalWaveBasis.default
+         ~CylindricalWaveBasis.defaultdim
+         ~CylindricalWaveBasis.defaultmmax
+         ~CylindricalWaveBasis.index
+         ~CylindricalWaveBasis.isdisjoint
+         ~CylindricalWaveBasis.with_periodicity
+      
+         ~CylindricalWaveBasis.__ge__
+         ~CylindricalWaveBasis.__and__
+         ~CylindricalWaveBasis.__sub__
+         ~CylindricalWaveBasis.__le__
+         ~CylindricalWaveBasis.__or__
+         ~CylindricalWaveBasis.__gt__
+         ~CylindricalWaveBasis.__str__
+         ~CylindricalWaveBasis.__len__
+         ~CylindricalWaveBasis.__ne__
+         ~CylindricalWaveBasis.__xor__
+         ~CylindricalWaveBasis.__lt__
   

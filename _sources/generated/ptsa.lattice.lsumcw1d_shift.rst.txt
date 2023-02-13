@@ -1,4 +1,4 @@
-﻿ptsa.lattice.lsumcw1d\_shift
+ptsa.lattice.lsumcw1d\_shift
 ============================
 
 .. currentmodule:: ptsa.lattice

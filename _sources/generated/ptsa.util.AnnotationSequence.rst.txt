@@ -1,0 +1,40 @@
+ptsa.util.AnnotationSequence
+============================
+
+.. currentmodule:: ptsa.util
+
+.. autoclass:: AnnotationSequence
+
+  
+  
+  
+
+  
+      .. rubric:: Methods
+
+      .. autosummary::
+         :toctree:
+
+      
+         ~AnnotationSequence.__eq__
+         ~AnnotationSequence.__ge__
+         ~AnnotationSequence.__getitem__
+         ~AnnotationSequence.__gt__
+         ~AnnotationSequence.__le__
+         ~AnnotationSequence.__len__
+         ~AnnotationSequence.__lt__
+         ~AnnotationSequence.__ne__
+         ~AnnotationSequence.__repr__
+         ~AnnotationSequence.__str__
+         ~AnnotationSequence.count
+         ~AnnotationSequence.index
+         ~AnnotationSequence.match
+         ~AnnotationSequence.update
+      
+         ~AnnotationSequence.__ge__
+         ~AnnotationSequence.__le__
+         ~AnnotationSequence.__gt__
+         ~AnnotationSequence.__str__
+         ~AnnotationSequence.__ne__
+         ~AnnotationSequence.__lt__
+  

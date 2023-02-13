@@ -1,4 +1,4 @@
-﻿ptsa.special.spherical\_yn\_d
+ptsa.special.spherical\_yn\_d
 =============================
 
 .. currentmodule:: ptsa.special

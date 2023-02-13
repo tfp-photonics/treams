@@ -1,0 +1,6 @@
+ptsa.lattice.cython\_lattice.zero2d
+===================================
+
+.. currentmodule:: ptsa.lattice.cython_lattice
+
+.. autofunction:: zero2d

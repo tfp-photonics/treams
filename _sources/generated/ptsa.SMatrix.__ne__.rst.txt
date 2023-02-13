@@ -1,0 +1,6 @@
+ptsa.SMatrix.\_\_ne\_\_
+=======================
+
+.. currentmodule:: ptsa
+
+.. automethod:: SMatrix.__ne__

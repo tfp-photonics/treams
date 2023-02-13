@@ -6,18 +6,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>ptsa.PhysicsArray &#8212; ptsa 0.2.2.dev75+g97b116d documentation</title>
+    <title>ptsa.PhysicsArray &#8212; ptsa 0.2.2.dev84+g829c933 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/no-nobiles.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Spherical wave module" href="../ptsa.sw.html" />
-    <link rel="prev" title="ptsa.Material.__call__" href="ptsa.Material.__call__.html" />
+    <link rel="next" title="ptsa.PhysicsArray.T" href="ptsa.PhysicsArray.T.html" />
+    <link rel="prev" title="ptsa.Material.kzs" href="ptsa.Material.kzs.html" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <!--[if lte IE 6]>
@@ -36,12 +37,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../ptsa.sw.html" title="Spherical wave module"
+          <a href="ptsa.PhysicsArray.T.html" title="ptsa.PhysicsArray.T"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="ptsa.Material.__call__.html" title="ptsa.Material.__call__"
+          <a href="ptsa.Material.kzs.html" title="ptsa.Material.kzs"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev75+g97b116d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../ptsa.html" accesskey="U">Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.PhysicsArray</a></li> 
       </ul>
@@ -57,110 +58,310 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="ptsa.PhysicsArray">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ptsa.</span></span><span class="sig-name descname"><span class="pre">PhysicsArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ann</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ptsa.PhysicsArray" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>T</strong></dt><dd></dd>
-<dt><strong>ann</strong></dt><dd></dd>
-<dt><a class="reference internal" href="ptsa.PhysicsArray.basis.html#ptsa.PhysicsArray.basis" title="ptsa.PhysicsArray.basis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">basis</span></code></a></dt><dd><p>partial(func, <a href="#id1"><span class="problematic" id="id2">*</span></a>args, <a href="#id3"><span class="problematic" id="id4">**</span></a>keywords) - new function with partial application</p>
-</dd>
-<dt><strong>imag</strong></dt><dd></dd>
-<dt><a class="reference internal" href="ptsa.PhysicsArray.k0.html#ptsa.PhysicsArray.k0" title="ptsa.PhysicsArray.k0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">k0</span></code></a></dt><dd><p>partial(func, <a href="#id5"><span class="problematic" id="id6">*</span></a>args, <a href="#id7"><span class="problematic" id="id8">**</span></a>keywords) - new function with partial application</p>
-</dd>
-<dt><a class="reference internal" href="ptsa.PhysicsArray.kpar.html#ptsa.PhysicsArray.kpar" title="ptsa.PhysicsArray.kpar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kpar</span></code></a></dt><dd><p>partial(func, <a href="#id9"><span class="problematic" id="id10">*</span></a>args, <a href="#id11"><span class="problematic" id="id12">**</span></a>keywords) - new function with partial application</p>
-</dd>
-<dt><a class="reference internal" href="../ptsa.lattice.html#module-ptsa.lattice" title="ptsa.lattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lattice</span></code></a></dt><dd><p>partial(func, <a href="#id13"><span class="problematic" id="id14">*</span></a>args, <a href="#id15"><span class="problematic" id="id16">**</span></a>keywords) - new function with partial application</p>
-</dd>
-<dt><a class="reference internal" href="ptsa.PhysicsArray.material.html#ptsa.PhysicsArray.material" title="ptsa.PhysicsArray.material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">material</span></code></a></dt><dd><p>partial(func, <a href="#id17"><span class="problematic" id="id18">*</span></a>args, <a href="#id19"><span class="problematic" id="id20">**</span></a>keywords) - new function with partial application</p>
-</dd>
-<dt><a class="reference internal" href="ptsa.PhysicsArray.modetype.html#ptsa.PhysicsArray.modetype" title="ptsa.PhysicsArray.modetype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modetype</span></code></a></dt><dd><p>partial(func, <a href="#id21"><span class="problematic" id="id22">*</span></a>args, <a href="#id23"><span class="problematic" id="id24">**</span></a>keywords) - new function with partial application</p>
-</dd>
-<dt><strong>ndim</strong></dt><dd></dd>
-<dt><a class="reference internal" href="ptsa.PhysicsArray.poltype.html#ptsa.PhysicsArray.poltype" title="ptsa.PhysicsArray.poltype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">poltype</span></code></a></dt><dd><p>partial(func, <a href="#id25"><span class="problematic" id="id26">*</span></a>args, <a href="#id27"><span class="problematic" id="id28">**</span></a>keywords) - new function with partial application</p>
-</dd>
-<dt><strong>real</strong></dt><dd></dd>
-<dt><strong>shape</strong></dt><dd></dd>
-<dt><strong>size</strong></dt><dd></dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Methods</p>
-<table class="docutils align-default">
+<dd><p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><strong>all</strong></p></td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.T.html#ptsa.PhysicsArray.T" title="ptsa.PhysicsArray.T"><code class="xref py py-obj docutils literal notranslate"><span class="pre">T</span></code></a></p></td>
+<td><p>Transpose.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>any</strong></p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.ann.html#ptsa.PhysicsArray.ann" title="ptsa.PhysicsArray.ann"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ann</span></code></a></p></td>
+<td><p>Array annotations.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>astype</strong></p></td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.basis.html#ptsa.PhysicsArray.basis" title="ptsa.PhysicsArray.basis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">basis</span></code></a></p></td>
+<td><p>partial(func, <a href="#id1"><span class="problematic" id="id2">*</span></a>args, <a href="#id3"><span class="problematic" id="id4">**</span></a>keywords) - new function with partial application of the given arguments and keywords.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>changepoltype</strong></p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.changepoltype.html#ptsa.PhysicsArray.changepoltype" title="ptsa.PhysicsArray.changepoltype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">changepoltype</span></code></a></p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>conj</strong></p></td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.efield.html#ptsa.PhysicsArray.efield" title="ptsa.PhysicsArray.efield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">efield</span></code></a></p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>conjugate</strong></p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.expand.html#ptsa.PhysicsArray.expand" title="ptsa.PhysicsArray.expand"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expand</span></code></a></p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>cumprod</strong></p></td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.expandlattice.html#ptsa.PhysicsArray.expandlattice" title="ptsa.PhysicsArray.expandlattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expandlattice</span></code></a></p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>cumsum</strong></p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.imag.html#ptsa.PhysicsArray.imag" title="ptsa.PhysicsArray.imag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">imag</span></code></a></p></td>
+<td><p>Imaginary part of the array.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>diagonal</strong></p></td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.k0.html#ptsa.PhysicsArray.k0" title="ptsa.PhysicsArray.k0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">k0</span></code></a></p></td>
+<td><p>partial(func, <a href="#id5"><span class="problematic" id="id6">*</span></a>args, <a href="#id7"><span class="problematic" id="id8">**</span></a>keywords) - new function with partial application of the given arguments and keywords.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>efield</strong></p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.kpar.html#ptsa.PhysicsArray.kpar" title="ptsa.PhysicsArray.kpar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kpar</span></code></a></p></td>
+<td><p>partial(func, <a href="#id9"><span class="problematic" id="id10">*</span></a>args, <a href="#id11"><span class="problematic" id="id12">**</span></a>keywords) - new function with partial application of the given arguments and keywords.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>expand</strong></p></td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.lattice.html#ptsa.PhysicsArray.lattice" title="ptsa.PhysicsArray.lattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lattice</span></code></a></p></td>
+<td><p>partial(func, <a href="#id13"><span class="problematic" id="id14">*</span></a>args, <a href="#id15"><span class="problematic" id="id16">**</span></a>keywords) - new function with partial application of the given arguments and keywords.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>expandlattice</strong></p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.material.html#ptsa.PhysicsArray.material" title="ptsa.PhysicsArray.material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">material</span></code></a></p></td>
+<td><p>partial(func, <a href="#id17"><span class="problematic" id="id18">*</span></a>args, <a href="#id19"><span class="problematic" id="id20">**</span></a>keywords) - new function with partial application of the given arguments and keywords.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>flatten</strong></p></td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.modetype.html#ptsa.PhysicsArray.modetype" title="ptsa.PhysicsArray.modetype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modetype</span></code></a></p></td>
+<td><p>partial(func, <a href="#id21"><span class="problematic" id="id22">*</span></a>args, <a href="#id23"><span class="problematic" id="id24">**</span></a>keywords) - new function with partial application of the given arguments and keywords.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>index</strong></p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.ndim.html#ptsa.PhysicsArray.ndim" title="ptsa.PhysicsArray.ndim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndim</span></code></a></p></td>
+<td><p>Number of array dimensions.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>indices</strong></p></td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.permute.html#ptsa.PhysicsArray.permute" title="ptsa.PhysicsArray.permute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">permute</span></code></a></p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>max</strong></p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.poltype.html#ptsa.PhysicsArray.poltype" title="ptsa.PhysicsArray.poltype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">poltype</span></code></a></p></td>
+<td><p>partial(func, <a href="#id25"><span class="problematic" id="id26">*</span></a>args, <a href="#id27"><span class="problematic" id="id28">**</span></a>keywords) - new function with partial application of the given arguments and keywords.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>min</strong></p></td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.real.html#ptsa.PhysicsArray.real" title="ptsa.PhysicsArray.real"><code class="xref py py-obj docutils literal notranslate"><span class="pre">real</span></code></a></p></td>
+<td><p>Real part of the array.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>permute</strong></p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.rotate.html#ptsa.PhysicsArray.rotate" title="ptsa.PhysicsArray.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a></p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>prod</strong></p></td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.shape.html#ptsa.PhysicsArray.shape" title="ptsa.PhysicsArray.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
+<td><p>Array shape.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>relax</strong></p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.size.html#ptsa.PhysicsArray.size" title="ptsa.PhysicsArray.size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code></a></p></td>
+<td><p>Array size.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>rotate</strong></p></td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.translate.html#ptsa.PhysicsArray.translate" title="ptsa.PhysicsArray.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>sum</strong></p></td>
-<td></td>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__abs__.html#ptsa.PhysicsArray.__abs__" title="ptsa.PhysicsArray.__abs__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__abs__</span></code></a>()</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>trace</strong></p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__add__.html#ptsa.PhysicsArray.__add__" title="ptsa.PhysicsArray.__add__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__add__</span></code></a>(other)</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>translate</strong></p></td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__and__.html#ptsa.PhysicsArray.__and__" title="ptsa.PhysicsArray.__and__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__and__</span></code></a>(other)</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>transpose</strong></p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__array__.html#ptsa.PhysicsArray.__array__" title="ptsa.PhysicsArray.__array__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__array__</span></code></a>([dtype])</p></td>
+<td><p>Convert to an numpy array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__array_function__.html#ptsa.PhysicsArray.__array_function__" title="ptsa.PhysicsArray.__array_function__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__array_function__</span></code></a>(func, types, args, kwargs)</p></td>
+<td><p>Function calls on the array.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__array_ufunc__.html#ptsa.PhysicsArray.__array_ufunc__" title="ptsa.PhysicsArray.__array_ufunc__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__array_ufunc__</span></code></a>(ufunc, method, *inputs, **kwargs)</p></td>
+<td><p>Implement ufunc API.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__divmod__.html#ptsa.PhysicsArray.__divmod__" title="ptsa.PhysicsArray.__divmod__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__divmod__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__eq__.html#ptsa.PhysicsArray.__eq__" title="ptsa.PhysicsArray.__eq__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__eq__</span></code></a>(other)</p></td>
+<td><p>Return self==value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__floordiv__.html#ptsa.PhysicsArray.__floordiv__" title="ptsa.PhysicsArray.__floordiv__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__floordiv__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__ge__.html#ptsa.PhysicsArray.__ge__" title="ptsa.PhysicsArray.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__getitem__.html#ptsa.PhysicsArray.__getitem__" title="ptsa.PhysicsArray.__getitem__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__getitem__</span></code></a>(key)</p></td>
+<td><p>Get an item from the AnnotatedArray</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__gt__.html#ptsa.PhysicsArray.__gt__" title="ptsa.PhysicsArray.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__invert__.html#ptsa.PhysicsArray.__invert__" title="ptsa.PhysicsArray.__invert__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__invert__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__le__.html#ptsa.PhysicsArray.__le__" title="ptsa.PhysicsArray.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(other)</p></td>
+<td><p>Return self&lt;=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__lshift__.html#ptsa.PhysicsArray.__lshift__" title="ptsa.PhysicsArray.__lshift__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lshift__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__lt__.html#ptsa.PhysicsArray.__lt__" title="ptsa.PhysicsArray.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(other)</p></td>
+<td><p>Return self&lt;value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__matmul__.html#ptsa.PhysicsArray.__matmul__" title="ptsa.PhysicsArray.__matmul__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__matmul__</span></code></a>(other, *args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__mod__.html#ptsa.PhysicsArray.__mod__" title="ptsa.PhysicsArray.__mod__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__mod__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__mul__.html#ptsa.PhysicsArray.__mul__" title="ptsa.PhysicsArray.__mul__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__mul__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__ne__.html#ptsa.PhysicsArray.__ne__" title="ptsa.PhysicsArray.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(other)</p></td>
+<td><p>Return self!=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__neg__.html#ptsa.PhysicsArray.__neg__" title="ptsa.PhysicsArray.__neg__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__neg__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__or__.html#ptsa.PhysicsArray.__or__" title="ptsa.PhysicsArray.__or__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__or__</span></code></a>(other)</p></td>
+<td><p>Return self|value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__pos__.html#ptsa.PhysicsArray.__pos__" title="ptsa.PhysicsArray.__pos__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__pos__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__pow__.html#ptsa.PhysicsArray.__pow__" title="ptsa.PhysicsArray.__pow__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__pow__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__repr__.html#ptsa.PhysicsArray.__repr__" title="ptsa.PhysicsArray.__repr__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__repr__</span></code></a>()</p></td>
+<td><p>String representation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__rshift__.html#ptsa.PhysicsArray.__rshift__" title="ptsa.PhysicsArray.__rshift__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__rshift__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__setitem__.html#ptsa.PhysicsArray.__setitem__" title="ptsa.PhysicsArray.__setitem__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__setitem__</span></code></a>(key, value)</p></td>
+<td><p>Set values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__str__.html#ptsa.PhysicsArray.__str__" title="ptsa.PhysicsArray.__str__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__str__</span></code></a>()</p></td>
+<td><p>String of the array itself.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__sub__.html#ptsa.PhysicsArray.__sub__" title="ptsa.PhysicsArray.__sub__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__sub__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__truediv__.html#ptsa.PhysicsArray.__truediv__" title="ptsa.PhysicsArray.__truediv__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__truediv__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__xor__.html#ptsa.PhysicsArray.__xor__" title="ptsa.PhysicsArray.__xor__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__xor__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.all.html#ptsa.PhysicsArray.all" title="ptsa.PhysicsArray.all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span></code></a>([axis, dtype, out, keepdims, where])</p></td>
+<td><p>Test if all elements (along an axis) are True.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.any.html#ptsa.PhysicsArray.any" title="ptsa.PhysicsArray.any"><code class="xref py py-obj docutils literal notranslate"><span class="pre">any</span></code></a>([axis, dtype, out, keepdims, where])</p></td>
+<td><p>Test if any element (along an axis) is True.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.astype.html#ptsa.PhysicsArray.astype" title="ptsa.PhysicsArray.astype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">astype</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Return array as given type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.conj.html#ptsa.PhysicsArray.conj" title="ptsa.PhysicsArray.conj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conj</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Complex conjugate elementwise.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.conjugate.html#ptsa.PhysicsArray.conjugate" title="ptsa.PhysicsArray.conjugate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conjugate</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Complex conjugate elementwise.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.cumprod.html#ptsa.PhysicsArray.cumprod" title="ptsa.PhysicsArray.cumprod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cumprod</span></code></a>([axis, dtype, out])</p></td>
+<td><p>Cumulative product of elements (along an axis).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.cumsum.html#ptsa.PhysicsArray.cumsum" title="ptsa.PhysicsArray.cumsum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cumsum</span></code></a>([axis, dtype, out])</p></td>
+<td><p>Cumulative sum of elements (along an axis).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.diagonal.html#ptsa.PhysicsArray.diagonal" title="ptsa.PhysicsArray.diagonal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diagonal</span></code></a>([offset, axis1, axis2])</p></td>
+<td><p>Get the diagonal of the array.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.flatten.html#ptsa.PhysicsArray.flatten" title="ptsa.PhysicsArray.flatten"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flatten</span></code></a>([order])</p></td>
+<td><p>Flatten array to one dimension.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.index.html#ptsa.PhysicsArray.index" title="ptsa.PhysicsArray.index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code></a>(item)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.indices.html#ptsa.PhysicsArray.indices" title="ptsa.PhysicsArray.indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">indices</span></code></a>(basis)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.max.html#ptsa.PhysicsArray.max" title="ptsa.PhysicsArray.max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max</span></code></a>([axis, out, keepdims, initial, where])</p></td>
+<td><p>Maximum (along an axis).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.min.html#ptsa.PhysicsArray.min" title="ptsa.PhysicsArray.min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min</span></code></a>([axis, out, keepdims, initial, where])</p></td>
+<td><p>Minimum (along an axis).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.prod.html#ptsa.PhysicsArray.prod" title="ptsa.PhysicsArray.prod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prod</span></code></a>([axis, dtype, out, keepdims, initial, ...])</p></td>
+<td><p>Product of elements (along an axis).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.relax.html#ptsa.PhysicsArray.relax" title="ptsa.PhysicsArray.relax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relax</span></code></a>(*args[, mro])</p></td>
+<td><p>Try creating AnnotatedArray subclasses if possible.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.sum.html#ptsa.PhysicsArray.sum" title="ptsa.PhysicsArray.sum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sum</span></code></a>([axis, dtype, out, keepdims, initial, where])</p></td>
+<td><p>Sum of elements (along an axis).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.trace.html#ptsa.PhysicsArray.trace" title="ptsa.PhysicsArray.trace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trace</span></code></a>([offset, axis1, axis2, dtype, out])</p></td>
+<td><p>Trace of an array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.transpose.html#ptsa.PhysicsArray.transpose" title="ptsa.PhysicsArray.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>([axes])</p></td>
+<td><p>Transpose array dimensions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__and__.html#ptsa.PhysicsArray.__and__" title="ptsa.PhysicsArray.__and__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__and__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__sub__.html#ptsa.PhysicsArray.__sub__" title="ptsa.PhysicsArray.__sub__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__sub__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__or__.html#ptsa.PhysicsArray.__or__" title="ptsa.PhysicsArray.__or__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__or__</span></code></a>(other)</p></td>
+<td><p>Return self|value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__invert__.html#ptsa.PhysicsArray.__invert__" title="ptsa.PhysicsArray.__invert__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__invert__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__getitem__.html#ptsa.PhysicsArray.__getitem__" title="ptsa.PhysicsArray.__getitem__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__getitem__</span></code></a>(key)</p></td>
+<td><p>Get an item from the AnnotatedArray</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__pos__.html#ptsa.PhysicsArray.__pos__" title="ptsa.PhysicsArray.__pos__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__pos__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__str__.html#ptsa.PhysicsArray.__str__" title="ptsa.PhysicsArray.__str__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__str__</span></code></a>()</p></td>
+<td><p>String of the array itself.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__pow__.html#ptsa.PhysicsArray.__pow__" title="ptsa.PhysicsArray.__pow__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__pow__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__add__.html#ptsa.PhysicsArray.__add__" title="ptsa.PhysicsArray.__add__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__add__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__lt__.html#ptsa.PhysicsArray.__lt__" title="ptsa.PhysicsArray.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(other)</p></td>
+<td><p>Return self&lt;value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__eq__.html#ptsa.PhysicsArray.__eq__" title="ptsa.PhysicsArray.__eq__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__eq__</span></code></a>(other)</p></td>
+<td><p>Return self==value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__lshift__.html#ptsa.PhysicsArray.__lshift__" title="ptsa.PhysicsArray.__lshift__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lshift__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__ge__.html#ptsa.PhysicsArray.__ge__" title="ptsa.PhysicsArray.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__mod__.html#ptsa.PhysicsArray.__mod__" title="ptsa.PhysicsArray.__mod__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__mod__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__floordiv__.html#ptsa.PhysicsArray.__floordiv__" title="ptsa.PhysicsArray.__floordiv__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__floordiv__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__array_function__.html#ptsa.PhysicsArray.__array_function__" title="ptsa.PhysicsArray.__array_function__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__array_function__</span></code></a>(func, types, args, kwargs)</p></td>
+<td><p>Function calls on the array.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__array_ufunc__.html#ptsa.PhysicsArray.__array_ufunc__" title="ptsa.PhysicsArray.__array_ufunc__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__array_ufunc__</span></code></a>(ufunc, method, *inputs, **kwargs)</p></td>
+<td><p>Implement ufunc API.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__rshift__.html#ptsa.PhysicsArray.__rshift__" title="ptsa.PhysicsArray.__rshift__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__rshift__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__le__.html#ptsa.PhysicsArray.__le__" title="ptsa.PhysicsArray.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(other)</p></td>
+<td><p>Return self&lt;=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__array__.html#ptsa.PhysicsArray.__array__" title="ptsa.PhysicsArray.__array__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__array__</span></code></a>([dtype])</p></td>
+<td><p>Convert to an numpy array.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__divmod__.html#ptsa.PhysicsArray.__divmod__" title="ptsa.PhysicsArray.__divmod__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__divmod__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__gt__.html#ptsa.PhysicsArray.__gt__" title="ptsa.PhysicsArray.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__ne__.html#ptsa.PhysicsArray.__ne__" title="ptsa.PhysicsArray.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(other)</p></td>
+<td><p>Return self!=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__xor__.html#ptsa.PhysicsArray.__xor__" title="ptsa.PhysicsArray.__xor__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__xor__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__setitem__.html#ptsa.PhysicsArray.__setitem__" title="ptsa.PhysicsArray.__setitem__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__setitem__</span></code></a>(key, value)</p></td>
+<td><p>Set values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__abs__.html#ptsa.PhysicsArray.__abs__" title="ptsa.PhysicsArray.__abs__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__abs__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__truediv__.html#ptsa.PhysicsArray.__truediv__" title="ptsa.PhysicsArray.__truediv__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__truediv__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__mul__.html#ptsa.PhysicsArray.__mul__" title="ptsa.PhysicsArray.__mul__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__mul__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.PhysicsArray.__neg__.html#ptsa.PhysicsArray.__neg__" title="ptsa.PhysicsArray.__neg__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__neg__</span></code></a>()</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -180,19 +381,20 @@
 <li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../ptsa.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ptsa.html#modules">Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 </ul>
 
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="ptsa.Material.__call__.html"
-                          title="previous chapter">ptsa.Material.__call__</a></p>
+    <p class="topless"><a href="ptsa.Material.kzs.html"
+                          title="previous chapter">ptsa.Material.kzs</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="../ptsa.sw.html"
-                          title="next chapter">Spherical wave module</a></p>
+    <p class="topless"><a href="ptsa.PhysicsArray.T.html"
+                          title="next chapter">ptsa.PhysicsArray.T</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -225,12 +427,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../ptsa.sw.html" title="Spherical wave module"
+          <a href="ptsa.PhysicsArray.T.html" title="ptsa.PhysicsArray.T"
              >next</a> |</li>
         <li class="right" >
-          <a href="ptsa.Material.__call__.html" title="ptsa.Material.__call__"
+          <a href="ptsa.Material.kzs.html" title="ptsa.Material.kzs"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev75+g97b116d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.PhysicsArray</a></li> 
       </ul>

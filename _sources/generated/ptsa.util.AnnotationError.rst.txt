@@ -1,0 +1,6 @@
+ptsa.util.AnnotationError
+=========================
+
+.. currentmodule:: ptsa.util
+
+.. autoexception:: AnnotationError

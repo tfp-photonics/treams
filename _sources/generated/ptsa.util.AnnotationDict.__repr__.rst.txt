@@ -1,0 +1,6 @@
+ptsa.util.AnnotationDict.\_\_repr\_\_
+=====================================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: AnnotationDict.__repr__

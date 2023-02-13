@@ -1,4 +1,4 @@
-﻿ptsa.special.lpmv
+ptsa.special.lpmv
 =================
 
 .. currentmodule:: ptsa.special

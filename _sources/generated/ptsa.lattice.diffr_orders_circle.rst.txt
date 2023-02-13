@@ -1,4 +1,4 @@
-﻿ptsa.lattice.diffr\_orders\_circle
+ptsa.lattice.diffr\_orders\_circle
 ==================================
 
 .. currentmodule:: ptsa.lattice

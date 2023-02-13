@@ -1,4 +1,4 @@
-﻿ptsa.special.incgamma
+ptsa.special.incgamma
 =====================
 
 .. currentmodule:: ptsa.special

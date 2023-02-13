@@ -1,4 +1,4 @@
-﻿ptsa.special.wigner3j
+ptsa.special.wigner3j
 =====================
 
 .. currentmodule:: ptsa.special

@@ -1,0 +1,6 @@
+ptsa.special.cython\_special.lpmv
+=================================
+
+.. currentmodule:: ptsa.special.cython_special
+
+.. autofunction:: lpmv

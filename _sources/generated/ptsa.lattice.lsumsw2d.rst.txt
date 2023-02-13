@@ -1,4 +1,4 @@
-﻿ptsa.lattice.lsumsw2d
+ptsa.lattice.lsumsw2d
 =====================
 
 .. currentmodule:: ptsa.lattice

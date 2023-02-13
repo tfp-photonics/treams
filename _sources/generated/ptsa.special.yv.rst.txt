@@ -1,4 +1,4 @@
-﻿ptsa.special.yv
+ptsa.special.yv
 ===============
 
 .. currentmodule:: ptsa.special

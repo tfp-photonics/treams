@@ -1,0 +1,6 @@
+ptsa.util.AnnotatedArray.real
+=============================
+
+.. currentmodule:: ptsa.util
+
+.. autoproperty:: AnnotatedArray.real

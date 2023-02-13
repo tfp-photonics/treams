@@ -1,0 +1,6 @@
+ptsa.util.lstsq
+===============
+
+.. currentmodule:: ptsa.util
+
+.. autofunction:: lstsq

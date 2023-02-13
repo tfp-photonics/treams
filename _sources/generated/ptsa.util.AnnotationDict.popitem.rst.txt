@@ -1,0 +1,6 @@
+ptsa.util.AnnotationDict.popitem
+================================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: AnnotationDict.popitem

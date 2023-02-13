@@ -1,0 +1,6 @@
+ptsa.util.AnnotatedArray.diagonal
+=================================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: AnnotatedArray.diagonal

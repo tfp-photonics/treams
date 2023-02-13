@@ -6,10 +6,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>ptsa.special.wigner3j &#8212; ptsa 0.2.2.dev75+g97b116d documentation</title>
+    <title>ptsa.special.wigner3j &#8212; ptsa 0.2.2.dev84+g829c933 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/no-nobiles.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
@@ -42,9 +43,9 @@
         <li class="right" >
           <a href="ptsa.special.wignerd.html" title="ptsa.special.wignerd"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev75+g97b116d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../ptsa.special.html" accesskey="U">ptsa.special module</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="ptsa.special.html" accesskey="U">ptsa.special</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.special.wigner3j</a></li> 
       </ul>
     </div>  
@@ -59,7 +60,8 @@
 <dl class="py data">
 <dt class="sig sig-object py" id="ptsa.special.wigner3j">
 <span class="sig-prename descclassname"><span class="pre">ptsa.special.</span></span><span class="sig-name descname"><span class="pre">wigner3j</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">j1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m3</span></span></em><span class="sig-paren">)</span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ufunc</span> <span class="pre">'wigner3j'&gt;</span></em><a class="headerlink" href="#ptsa.special.wigner3j" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wigner-3j symbol</p>
+<dd><blockquote>
+<div><p>Wigner-3j symbol</p>
 <p>Calculate</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{pmatrix} j_1 &amp; j_2 &amp; j_3 \\ m_1 &amp; m_2 &amp; m_3 \end{pmatrix}\end{split}\]</div>
@@ -67,26 +69,19 @@
 Starting points are the extremal values for <cite>j3.</cite> The recursive function
 calls are cached. For unphysical value combinations <cite>0.0</cite> is returned,
 similar to Mathematica’s behavior.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>j1</strong> (<em>integer</em><em>, </em><em>array_like</em>) – Degrees</p></li>
-<li><p><strong>j2</strong> (<em>integer</em><em>, </em><em>array_like</em>) – Degrees</p></li>
-<li><p><strong>j3</strong> (<em>integer</em><em>, </em><em>array_like</em>) – Degrees</p></li>
-<li><p><strong>m1</strong> (<em>integer</em><em>, </em><em>array_like</em>) – Orders</p></li>
-<li><p><strong>m2</strong> (<em>integer</em><em>, </em><em>array_like</em>) – Orders</p></li>
-<li><p><strong>m3</strong> (<em>integer</em><em>, </em><em>array_like</em>) – Orders</p></li>
-</ul>
+<dl class="simple">
+<dt>Args:</dt><dd><p>j1, j2, j3 (integer, array_like): Degrees
+m1, m2, m3 (integer, array_like): Orders</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
+<dt>Returns:</dt><dd><p>float</p>
 </dd>
-</dl>
-<p class="rubric">References</p>
-<ul class="simple">
+<dt>References:</dt><dd><ul class="simple">
 <li><p><a class="reference external" href="https://doi.org/10.1006/jcph.1997.5867">Y.-L. Xu, J. Comput. Phys. 139, 137 - 165 (1998)</a></p></li>
 <li><p><a class="reference external" href="https://dlmf.nist.gov/34.3">DLMF: 34.3</a></p></li>
 </ul>
+</dd>
+</dl>
+</div></blockquote>
 </dd></dl>
 
 </section>
@@ -103,6 +98,7 @@ similar to Mathematica’s behavior.</p>
 <li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../ptsa.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ptsa.html#modules">Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 </ul>
@@ -153,9 +149,9 @@ similar to Mathematica’s behavior.</p>
         <li class="right" >
           <a href="ptsa.special.wignerd.html" title="ptsa.special.wignerd"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev75+g97b116d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../ptsa.special.html" >ptsa.special module</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="ptsa.special.html" >ptsa.special</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.special.wigner3j</a></li> 
       </ul>
     </div>

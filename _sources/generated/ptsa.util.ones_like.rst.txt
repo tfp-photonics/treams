@@ -1,0 +1,6 @@
+ptsa.util.ones\_like
+====================
+
+.. currentmodule:: ptsa.util
+
+.. autofunction:: ones_like

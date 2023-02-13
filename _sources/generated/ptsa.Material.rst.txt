@@ -4,37 +4,50 @@
 .. currentmodule:: ptsa
 
 .. autoclass:: Material
-   :no-members:
-   :no-inherited-members:
-   :no-special-members:
-
-  
-   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
-      .. autosummary::
-         :toctree:
-      
-         Material.__call__
-         Material.from_n
-         Material.from_nmp
-         Material.krhos
-         Material.ks
-         Material.kzs
-      
-  
 
   
   
-   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. rubric:: Attributes
+
       .. autosummary::
          :toctree:
       
-         Material.epsilon
-         Material.impedance
-         Material.ischiral
-         Material.isreal
-         Material.kappa
-         Material.mu
-         Material.n
-         Material.nmp
+         ~Material.epsilon
+         ~Material.impedance
+         ~Material.ischiral
+         ~Material.isreal
+         ~Material.kappa
+         ~Material.mu
+         ~Material.n
+         ~Material.nmp
   
+  
+
+  
+      .. rubric:: Methods
+
+      .. autosummary::
+         :toctree:
+
+      
+         ~Material.__call__
+         ~Material.__eq__
+         ~Material.__ge__
+         ~Material.__gt__
+         ~Material.__le__
+         ~Material.__lt__
+         ~Material.__ne__
+         ~Material.__repr__
+         ~Material.__str__
+         ~Material.from_n
+         ~Material.from_nmp
+         ~Material.krhos
+         ~Material.ks
+         ~Material.kzs
+      
+         ~Material.__ge__
+         ~Material.__gt__
+         ~Material.__ne__
+         ~Material.__lt__
+         ~Material.__le__
   

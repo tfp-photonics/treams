@@ -1,0 +1,6 @@
+ptsa.TMatrix.\_\_neg\_\_
+========================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrix.__neg__

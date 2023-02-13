@@ -1,0 +1,6 @@
+ptsa.PlaneWaveBasis.\_\_repr\_\_
+================================
+
+.. currentmodule:: ptsa
+
+.. automethod:: PlaneWaveBasis.__repr__

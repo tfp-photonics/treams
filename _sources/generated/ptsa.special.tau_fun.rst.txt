@@ -1,4 +1,4 @@
-﻿ptsa.special.tau\_fun
+ptsa.special.tau\_fun
 =====================
 
 .. currentmodule:: ptsa.special

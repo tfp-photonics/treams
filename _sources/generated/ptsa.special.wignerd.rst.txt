@@ -1,4 +1,4 @@
-﻿ptsa.special.wignerd
+ptsa.special.wignerd
 ====================
 
 .. currentmodule:: ptsa.special

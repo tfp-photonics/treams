@@ -1,0 +1,6 @@
+ptsa.TMatrixC.\_\_array\_ufunc\_\_
+==================================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrixC.__array_ufunc__

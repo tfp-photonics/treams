@@ -1,0 +1,6 @@
+ptsa.util.AnnotatedArray.\_\_matmul\_\_
+=======================================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: AnnotatedArray.__matmul__

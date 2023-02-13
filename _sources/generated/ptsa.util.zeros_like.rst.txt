@@ -1,0 +1,6 @@
+ptsa.util.zeros\_like
+=====================
+
+.. currentmodule:: ptsa.util
+
+.. autofunction:: zeros_like

@@ -1,0 +1,6 @@
+ptsa.CylindricalWaveBasis.\_\_and\_\_
+=====================================
+
+.. currentmodule:: ptsa
+
+.. automethod:: CylindricalWaveBasis.__and__

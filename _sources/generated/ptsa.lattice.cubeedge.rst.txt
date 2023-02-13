@@ -1,4 +1,4 @@
-﻿ptsa.lattice.cubeedge
+ptsa.lattice.cubeedge
 =====================
 
 .. currentmodule:: ptsa.lattice

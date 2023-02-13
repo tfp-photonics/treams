@@ -1,0 +1,48 @@
+ptsa.util.AnnotationDict
+========================
+
+.. currentmodule:: ptsa.util
+
+.. autoclass:: AnnotationDict
+
+  
+  
+  
+
+  
+      .. rubric:: Methods
+
+      .. autosummary::
+         :toctree:
+
+      
+         ~AnnotationDict.__eq__
+         ~AnnotationDict.__ge__
+         ~AnnotationDict.__getitem__
+         ~AnnotationDict.__gt__
+         ~AnnotationDict.__le__
+         ~AnnotationDict.__len__
+         ~AnnotationDict.__lt__
+         ~AnnotationDict.__ne__
+         ~AnnotationDict.__repr__
+         ~AnnotationDict.__setitem__
+         ~AnnotationDict.__str__
+         ~AnnotationDict.clear
+         ~AnnotationDict.get
+         ~AnnotationDict.items
+         ~AnnotationDict.keys
+         ~AnnotationDict.match
+         ~AnnotationDict.pop
+         ~AnnotationDict.popitem
+         ~AnnotationDict.setdefault
+         ~AnnotationDict.update
+         ~AnnotationDict.values
+      
+         ~AnnotationDict.__ge__
+         ~AnnotationDict.__le__
+         ~AnnotationDict.__gt__
+         ~AnnotationDict.__str__
+         ~AnnotationDict.__ne__
+         ~AnnotationDict.__lt__
+         ~AnnotationDict.__eq__
+  

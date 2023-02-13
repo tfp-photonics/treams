@@ -1,0 +1,6 @@
+ptsa.lattice.cython\_lattice.nedge
+==================================
+
+.. currentmodule:: ptsa.lattice.cython_lattice
+
+.. autofunction:: nedge

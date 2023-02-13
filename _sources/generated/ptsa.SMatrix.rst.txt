@@ -4,37 +4,51 @@
 .. currentmodule:: ptsa
 
 .. autoclass:: SMatrix
-   :no-members:
-   :no-inherited-members:
-   :no-special-members:
 
   
-   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+  
+  
+
+  
+      .. rubric:: Methods
+
       .. autosummary::
          :toctree:
-      
-         SMatrix.__getitem__
-         SMatrix.add
-         SMatrix.bands_kz
-         SMatrix.cd
-         SMatrix.changebasis
-         SMatrix.chirality_density
-         SMatrix.double
-         SMatrix.field
-         SMatrix.field_inside
-         SMatrix.field_outside
-         SMatrix.from_array
-         SMatrix.interface
-         SMatrix.periodic
-         SMatrix.pick
-         SMatrix.poynting_avg
-         SMatrix.propagation
-         SMatrix.slab
-         SMatrix.stack
-         SMatrix.tr
-      
-  
 
-  
-  
+      
+         ~SMatrix.__eq__
+         ~SMatrix.__ge__
+         ~SMatrix.__getitem__
+         ~SMatrix.__gt__
+         ~SMatrix.__le__
+         ~SMatrix.__lt__
+         ~SMatrix.__ne__
+         ~SMatrix.__repr__
+         ~SMatrix.__str__
+         ~SMatrix.add
+         ~SMatrix.bands_kz
+         ~SMatrix.cd
+         ~SMatrix.changebasis
+         ~SMatrix.chirality_density
+         ~SMatrix.double
+         ~SMatrix.field
+         ~SMatrix.field_inside
+         ~SMatrix.field_outside
+         ~SMatrix.from_array
+         ~SMatrix.interface
+         ~SMatrix.periodic
+         ~SMatrix.pick
+         ~SMatrix.poynting_avg
+         ~SMatrix.propagation
+         ~SMatrix.slab
+         ~SMatrix.stack
+         ~SMatrix.tr
+      
+         ~SMatrix.__ge__
+         ~SMatrix.__le__
+         ~SMatrix.__gt__
+         ~SMatrix.__str__
+         ~SMatrix.__ne__
+         ~SMatrix.__repr__
+         ~SMatrix.__lt__
   

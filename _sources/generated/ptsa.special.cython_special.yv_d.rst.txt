@@ -1,0 +1,6 @@
+ptsa.special.cython\_special.yv\_d
+==================================
+
+.. currentmodule:: ptsa.special.cython_special
+
+.. autofunction:: yv_d

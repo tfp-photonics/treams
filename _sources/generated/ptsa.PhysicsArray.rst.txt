@@ -4,66 +4,122 @@
 .. currentmodule:: ptsa
 
 .. autoclass:: PhysicsArray
-   :no-members:
-   :no-inherited-members:
-   :no-special-members:
-
-  
-   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
-      .. autosummary::
-         :toctree:
-      
-         PhysicsArray.__getitem__
-         PhysicsArray.__mul__
-         PhysicsArray.all
-         PhysicsArray.any
-         PhysicsArray.astype
-         PhysicsArray.conj
-         PhysicsArray.conjugate
-         PhysicsArray.cumprod
-         PhysicsArray.cumsum
-         PhysicsArray.diagonal
-         PhysicsArray.flatten
-         PhysicsArray.index
-         PhysicsArray.indices
-         PhysicsArray.max
-         PhysicsArray.min
-         PhysicsArray.prod
-         PhysicsArray.relax
-         PhysicsArray.sum
-         PhysicsArray.trace
-         PhysicsArray.transpose
-      
-         PhysicsArray.__getitem__
-         PhysicsArray.__mul__
-  
 
   
   
-   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. rubric:: Attributes
+
       .. autosummary::
          :toctree:
       
-         PhysicsArray.T
-         PhysicsArray.ann
-         PhysicsArray.basis
-         PhysicsArray.changepoltype
-         PhysicsArray.efield
-         PhysicsArray.expand
-         PhysicsArray.expandlattice
-         PhysicsArray.imag
-         PhysicsArray.k0
-         PhysicsArray.kpar
-         PhysicsArray.lattice
-         PhysicsArray.material
-         PhysicsArray.modetype
-         PhysicsArray.ndim
-         PhysicsArray.permute
-         PhysicsArray.poltype
-         PhysicsArray.real
-         PhysicsArray.rotate
-         PhysicsArray.shape
-         PhysicsArray.size
-         PhysicsArray.translate
+         ~PhysicsArray.T
+         ~PhysicsArray.ann
+         ~PhysicsArray.basis
+         ~PhysicsArray.changepoltype
+         ~PhysicsArray.efield
+         ~PhysicsArray.expand
+         ~PhysicsArray.expandlattice
+         ~PhysicsArray.imag
+         ~PhysicsArray.k0
+         ~PhysicsArray.kpar
+         ~PhysicsArray.lattice
+         ~PhysicsArray.material
+         ~PhysicsArray.modetype
+         ~PhysicsArray.ndim
+         ~PhysicsArray.permute
+         ~PhysicsArray.poltype
+         ~PhysicsArray.real
+         ~PhysicsArray.rotate
+         ~PhysicsArray.shape
+         ~PhysicsArray.size
+         ~PhysicsArray.translate
   
+  
+
+  
+      .. rubric:: Methods
+
+      .. autosummary::
+         :toctree:
+
+      
+         ~PhysicsArray.__abs__
+         ~PhysicsArray.__add__
+         ~PhysicsArray.__and__
+         ~PhysicsArray.__array__
+         ~PhysicsArray.__array_function__
+         ~PhysicsArray.__array_ufunc__
+         ~PhysicsArray.__divmod__
+         ~PhysicsArray.__eq__
+         ~PhysicsArray.__floordiv__
+         ~PhysicsArray.__ge__
+         ~PhysicsArray.__getitem__
+         ~PhysicsArray.__gt__
+         ~PhysicsArray.__invert__
+         ~PhysicsArray.__le__
+         ~PhysicsArray.__lshift__
+         ~PhysicsArray.__lt__
+         ~PhysicsArray.__matmul__
+         ~PhysicsArray.__mod__
+         ~PhysicsArray.__mul__
+         ~PhysicsArray.__ne__
+         ~PhysicsArray.__neg__
+         ~PhysicsArray.__or__
+         ~PhysicsArray.__pos__
+         ~PhysicsArray.__pow__
+         ~PhysicsArray.__repr__
+         ~PhysicsArray.__rshift__
+         ~PhysicsArray.__setitem__
+         ~PhysicsArray.__str__
+         ~PhysicsArray.__sub__
+         ~PhysicsArray.__truediv__
+         ~PhysicsArray.__xor__
+         ~PhysicsArray.all
+         ~PhysicsArray.any
+         ~PhysicsArray.astype
+         ~PhysicsArray.conj
+         ~PhysicsArray.conjugate
+         ~PhysicsArray.cumprod
+         ~PhysicsArray.cumsum
+         ~PhysicsArray.diagonal
+         ~PhysicsArray.flatten
+         ~PhysicsArray.index
+         ~PhysicsArray.indices
+         ~PhysicsArray.max
+         ~PhysicsArray.min
+         ~PhysicsArray.prod
+         ~PhysicsArray.relax
+         ~PhysicsArray.sum
+         ~PhysicsArray.trace
+         ~PhysicsArray.transpose
+      
+         ~PhysicsArray.__and__
+         ~PhysicsArray.__sub__
+         ~PhysicsArray.__or__
+         ~PhysicsArray.__invert__
+         ~PhysicsArray.__getitem__
+         ~PhysicsArray.__pos__
+         ~PhysicsArray.__str__
+         ~PhysicsArray.__pow__
+         ~PhysicsArray.__add__
+         ~PhysicsArray.__lt__
+         ~PhysicsArray.__eq__
+         ~PhysicsArray.__lshift__
+         ~PhysicsArray.__ge__
+         ~PhysicsArray.__mod__
+         ~PhysicsArray.__floordiv__
+         ~PhysicsArray.__array_function__
+         ~PhysicsArray.__array_ufunc__
+         ~PhysicsArray.__rshift__
+         ~PhysicsArray.__le__
+         ~PhysicsArray.__array__
+         ~PhysicsArray.__divmod__
+         ~PhysicsArray.__gt__
+         ~PhysicsArray.__ne__
+         ~PhysicsArray.__xor__
+         ~PhysicsArray.__setitem__
+         ~PhysicsArray.__abs__
+         ~PhysicsArray.__truediv__
+         ~PhysicsArray.__mul__
+         ~PhysicsArray.__neg__
   

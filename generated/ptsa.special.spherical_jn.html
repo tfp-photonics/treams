@@ -6,10 +6,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>ptsa.special.spherical_jn &#8212; ptsa 0.2.2.dev75+g97b116d documentation</title>
+    <title>ptsa.special.spherical_jn &#8212; ptsa 0.2.2.dev84+g829c933 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/no-nobiles.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
@@ -42,9 +43,9 @@
         <li class="right" >
           <a href="ptsa.special.yv.html" title="ptsa.special.yv"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev75+g97b116d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../ptsa.special.html" accesskey="U">ptsa.special module</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="ptsa.special.html" accesskey="U">ptsa.special</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.special.spherical_jn</a></li> 
       </ul>
     </div>  
@@ -60,7 +61,7 @@
 <dt class="sig sig-object py" id="ptsa.special.spherical_jn">
 <span class="sig-prename descclassname"><span class="pre">ptsa.special.</span></span><span class="sig-name descname"><span class="pre">spherical_jn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">derivative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ptsa.special.spherical_jn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spherical Bessel function of the first kind or its derivative.</p>
-<p>Defined as <a class="reference internal" href="#ra5e1b5919c41-1" id="id1">[1]</a>,</p>
+<p>Defined as <a class="footnote-reference brackets" href="#id4" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>,</p>
 <div class="math notranslate nohighlight">
 \[j_n(z) = \sqrt{\frac{\pi}{2z}} J_{n + 1/2}(z),\]</div>
 <p>where <span class="math notranslate nohighlight">\(J_n\)</span> is the Bessel function of the first kind.</p>
@@ -82,30 +83,32 @@ itself) is returned.</p></li>
 </dl>
 <p class="rubric">Notes</p>
 <p>For real arguments greater than the order, the function is computed
-using the ascending recurrence <a class="reference internal" href="#ra5e1b5919c41-2" id="id2">[2]</a>. For small real or complex
+using the ascending recurrence <a class="footnote-reference brackets" href="#id5" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>. For small real or complex
 arguments, the definitional relation to the cylindrical Bessel function
 of the first kind is used.</p>
-<p>The derivative is computed using the relations <a class="reference internal" href="#ra5e1b5919c41-3" id="id3">[3]</a>,</p>
+<p>The derivative is computed using the relations <a class="footnote-reference brackets" href="#id6" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>,</p>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}j_n'(z) = j_{n-1}(z) - \frac{n + 1}{z} j_n(z).\\j_0'(z) = -j_1(z)\end{aligned}\end{align} \]</div>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.18.0.</span></p>
 </div>
 <p class="rubric">References</p>
-<div role="list" class="citation-list">
-<div class="citation" id="ra5e1b5919c41-1" role="doc-biblioentry">
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id4" role="note">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p><a class="reference external" href="https://dlmf.nist.gov/10.47.E3">https://dlmf.nist.gov/10.47.E3</a></p>
-</div>
-<div class="citation" id="ra5e1b5919c41-2" role="doc-biblioentry">
+</aside>
+<aside class="footnote brackets" id="id5" role="note">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
 <p><a class="reference external" href="https://dlmf.nist.gov/10.51.E1">https://dlmf.nist.gov/10.51.E1</a></p>
-</div>
-<div class="citation" id="ra5e1b5919c41-3" role="doc-biblioentry">
+</aside>
+<aside class="footnote brackets" id="id6" role="note">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
 <p><a class="reference external" href="https://dlmf.nist.gov/10.51.E2">https://dlmf.nist.gov/10.51.E2</a></p>
-</div>
-<div class="citation" id="ra5e1b5919c41-as" role="doc-biblioentry">
+</aside>
+</aside>
+<div role="list" class="citation-list">
+<div class="citation" id="as" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>AS<span class="fn-bracket">]</span></span>
 <p>Milton Abramowitz and Irene A. Stegun, eds.
 Handbook of Mathematical Functions with Formulas,
@@ -159,6 +162,7 @@ for <span class="math notranslate nohighlight">\(n=3\)</span> in the interval <s
 <li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../ptsa.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ptsa.html#modules">Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 </ul>
@@ -209,9 +213,9 @@ for <span class="math notranslate nohighlight">\(n=3\)</span> in the interval <s
         <li class="right" >
           <a href="ptsa.special.yv.html" title="ptsa.special.yv"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev75+g97b116d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../ptsa.special.html" >ptsa.special module</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="ptsa.special.html" >ptsa.special</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.special.spherical_jn</a></li> 
       </ul>
     </div>

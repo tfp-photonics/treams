@@ -1,4 +1,4 @@
-﻿ptsa.special.vpol2car
+ptsa.special.vpol2car
 =====================
 
 .. currentmodule:: ptsa.special

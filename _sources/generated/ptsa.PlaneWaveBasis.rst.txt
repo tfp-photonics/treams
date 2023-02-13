@@ -4,33 +4,56 @@
 .. currentmodule:: ptsa
 
 .. autoclass:: PlaneWaveBasis
-   :no-members:
-   :no-inherited-members:
-   :no-special-members:
-
-  
-   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
-      .. autosummary::
-         :toctree:
-      
-         PlaneWaveBasis.__getitem__
-         PlaneWaveBasis.__len__
-         PlaneWaveBasis.complete
-         PlaneWaveBasis.count
-         PlaneWaveBasis.default
-         PlaneWaveBasis.index
-         PlaneWaveBasis.isdisjoint
-         PlaneWaveBasis.partial
-      
-         PlaneWaveBasis.__len__
-  
 
   
   
-   .. HACK -- the point here is that we don't want this to appear in the output, but the autosummary should still generate the pages.
+      .. rubric:: Attributes
+
       .. autosummary::
          :toctree:
       
-         PlaneWaveBasis.isglobal
+         ~PlaneWaveBasis.isglobal
   
+  
+
+  
+      .. rubric:: Methods
+
+      .. autosummary::
+         :toctree:
+
+      
+         ~PlaneWaveBasis.__and__
+         ~PlaneWaveBasis.__eq__
+         ~PlaneWaveBasis.__ge__
+         ~PlaneWaveBasis.__getitem__
+         ~PlaneWaveBasis.__gt__
+         ~PlaneWaveBasis.__le__
+         ~PlaneWaveBasis.__len__
+         ~PlaneWaveBasis.__lt__
+         ~PlaneWaveBasis.__ne__
+         ~PlaneWaveBasis.__or__
+         ~PlaneWaveBasis.__repr__
+         ~PlaneWaveBasis.__str__
+         ~PlaneWaveBasis.__sub__
+         ~PlaneWaveBasis.__xor__
+         ~PlaneWaveBasis.complete
+         ~PlaneWaveBasis.count
+         ~PlaneWaveBasis.default
+         ~PlaneWaveBasis.index
+         ~PlaneWaveBasis.isdisjoint
+         ~PlaneWaveBasis.partial
+      
+         ~PlaneWaveBasis.__ge__
+         ~PlaneWaveBasis.__and__
+         ~PlaneWaveBasis.__sub__
+         ~PlaneWaveBasis.__le__
+         ~PlaneWaveBasis.__or__
+         ~PlaneWaveBasis.__gt__
+         ~PlaneWaveBasis.__str__
+         ~PlaneWaveBasis.__len__
+         ~PlaneWaveBasis.__ne__
+         ~PlaneWaveBasis.__repr__
+         ~PlaneWaveBasis.__xor__
+         ~PlaneWaveBasis.__lt__
   

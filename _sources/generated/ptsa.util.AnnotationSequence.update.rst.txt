@@ -1,0 +1,6 @@
+ptsa.util.AnnotationSequence.update
+===================================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: AnnotationSequence.update

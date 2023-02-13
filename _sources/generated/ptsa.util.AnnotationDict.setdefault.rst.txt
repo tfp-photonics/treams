@@ -1,0 +1,6 @@
+ptsa.util.AnnotationDict.setdefault
+===================================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: AnnotationDict.setdefault

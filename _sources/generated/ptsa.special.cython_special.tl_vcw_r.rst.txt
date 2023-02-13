@@ -1,0 +1,6 @@
+ptsa.special.cython\_special.tl\_vcw\_r
+=======================================
+
+.. currentmodule:: ptsa.special.cython_special
+
+.. autofunction:: tl_vcw_r

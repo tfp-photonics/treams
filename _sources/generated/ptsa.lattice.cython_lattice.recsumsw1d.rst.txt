@@ -1,0 +1,6 @@
+ptsa.lattice.cython\_lattice.recsumsw1d
+=======================================
+
+.. currentmodule:: ptsa.lattice.cython_lattice
+
+.. autofunction:: recsumsw1d

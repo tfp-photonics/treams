@@ -1,4 +1,4 @@
-﻿ptsa.special.vsph2cyl
+ptsa.special.vsph2cyl
 =====================
 
 .. currentmodule:: ptsa.special

@@ -6,10 +6,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Examples &#8212; ptsa 0.2.2.dev75+g97b116d documentation</title>
+    <title>Examples &#8212; ptsa 0.2.2.dev84+g829c933 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/no-nobiles.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/sphinx_highlight.js"></script>
@@ -41,7 +42,7 @@
         <li class="right" >
           <a href="gettingstarted.html" title="Getting started"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.2.2.dev75+g97b116d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Examples</a></li> 
       </ul>
     </div>  
@@ -169,10 +170,6 @@ T-matrix and mostly repeat the previous steps.</p>
 </div>
 <p>Now we can plot the full field around our snowman. We only add the illuminating plane
 wave and arrive at:</p>
-<p>(<a class="reference external" href="./examples/cluster.py">Source code</a>, <a class="reference external" href="./examples/cluster.png">png</a>, <a class="reference external" href="./examples/cluster.hires.png">hires.png</a>, <a class="reference external" href="./examples/cluster.pdf">pdf</a>)</p>
-<figure class="align-default">
-<img alt="_images/cluster.png" class="plot-directive" src="_images/cluster.png" />
-</figure>
 <p>We remark, that the field outside the circumscribing sphere (red dashed line) does
 nicely fit with the field inside, indicating that the chosen expansion order for the
 global T-matrix was sufficient.</p>
@@ -236,16 +233,16 @@ from a description of coupled spheres, described by T-matrices to a description 
 the cylindrical T-matrix.</p>
 <p>We start by defining two spheres, that are within one unit cell. This means we have a
 nontrivial unit cell for our system, resulting finally in a local cylindrical T-matrix.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">permittivities</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">16.5</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="p">]</span>
-<span class="n">lmax</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># Multipole order</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">700</span>  <span class="c1"># Wave number in vacuum</span>
+<span class="n">materials</span> <span class="o">=</span> <span class="p">[</span><span class="n">ptsa</span><span class="o">.</span><span class="n">Material</span><span class="p">(</span><span class="o">-</span><span class="mf">16.5</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="p">),</span> <span class="n">ptsa</span><span class="o">.</span><span class="n">Material</span><span class="p">()]</span>
+<span class="n">lmax</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">radii</span> <span class="o">=</span> <span class="p">[</span><span class="mi">75</span><span class="p">,</span> <span class="mi">75</span><span class="p">]</span>
-<span class="n">spheres</span> <span class="o">=</span> <span class="p">[</span><span class="n">ptsa</span><span class="o">.</span><span class="n">TMatrix</span><span class="o">.</span><span class="n">sphere</span><span class="p">(</span><span class="n">lmax</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">permittivities</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">radii</span><span class="p">]</span>
+<span class="n">spheres</span> <span class="o">=</span> <span class="p">[</span><span class="n">ptsa</span><span class="o">.</span><span class="n">TMatrix</span><span class="o">.</span><span class="n">sphere</span><span class="p">(</span><span class="n">lmax</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">materials</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">radii</span><span class="p">]</span>
 <span class="n">positions</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mi">25</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">73</span><span class="p">],</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">73</span><span class="p">]]</span>
 <span class="n">chain_sph</span> <span class="o">=</span> <span class="n">ptsa</span><span class="o">.</span><span class="n">TMatrix</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">spheres</span><span class="p">,</span> <span class="n">positions</span><span class="p">)</span>
 <span class="n">pitch</span> <span class="o">=</span> <span class="mi">300</span>
 <span class="n">kz</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">chain_sph</span><span class="o">.</span><span class="n">latticeinteract</span><span class="p">(</span><span class="n">kz</span><span class="p">,</span> <span class="n">pitch</span><span class="p">)</span>
-
+<span class="n">chain_sph</span> <span class="o">=</span> <span class="n">chain_sph</span><span class="o">.</span><span class="n">interacted_lattice</span><span class="p">(</span><span class="n">pitch</span><span class="p">,</span> <span class="n">kz</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The definition of the unit cell is exactly the same to the definition of a regular
@@ -258,18 +255,9 @@ points in the unit cell, it is possible to calculate the all positions outside o
 spheres. However, this is comparably slow in comparison to the calculation using the
 cylindrical wave expansion. This expansion is only valid outside of the circumscribing
 cylinder with infinite length in z-direction.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="mi">150</span><span class="p">:</span><span class="mi">150</span><span class="p">:</span><span class="mi">51</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">150</span><span class="p">:</span><span class="mi">150</span><span class="p">:</span><span class="mi">51</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pw</span> <span class="o">=</span> <span class="n">ptsa</span><span class="o">.</span><span class="n">plane_wave</span><span class="p">(</span><span class="n">k0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="mi">150</span><span class="p">:</span><span class="mi">150</span><span class="p">:</span><span class="mi">51</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">150</span><span class="p">:</span><span class="mi">150</span><span class="p">:</span><span class="mi">51</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 <span class="n">field</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="nb">complex</span><span class="p">)</span>
-<span class="n">outside</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">grid</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="mi">2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">100</span> <span class="o">**</span> <span class="mi">2</span>
-<span class="n">in_between</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">outside</span><span class="p">),</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">grid</span> <span class="o">-</span> <span class="n">positions</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">radii</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">radii</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">grid</span> <span class="o">-</span> <span class="n">positions</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">radii</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">radii</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-    <span class="p">),</span>
-<span class="p">)</span>
-<span class="n">valid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">outside</span><span class="p">,</span> <span class="n">in_between</span><span class="p">)</span>
-
 </pre></div>
 </div>
 <p>Having the definition of the different areas out of the way, one can do the calculation
@@ -309,6 +297,7 @@ point, where we probe the field at.</p>
 <li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ptsa.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ptsa.html#modules">Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev.html">Development and contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 </ul>
@@ -359,7 +348,7 @@ point, where we probe the field at.</p>
         <li class="right" >
           <a href="gettingstarted.html" title="Getting started"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.2.2.dev75+g97b116d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Examples</a></li> 
       </ul>
     </div>

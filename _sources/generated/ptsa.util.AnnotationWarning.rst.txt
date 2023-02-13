@@ -1,0 +1,6 @@
+ptsa.util.AnnotationWarning
+===========================
+
+.. currentmodule:: ptsa.util
+
+.. autoexception:: AnnotationWarning

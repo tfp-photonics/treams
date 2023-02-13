@@ -1,0 +1,6 @@
+ptsa.util.svd
+=============
+
+.. currentmodule:: ptsa.util
+
+.. autofunction:: svd

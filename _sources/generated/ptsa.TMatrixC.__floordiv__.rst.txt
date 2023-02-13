@@ -1,0 +1,6 @@
+ptsa.TMatrixC.\_\_floordiv\_\_
+==============================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrixC.__floordiv__

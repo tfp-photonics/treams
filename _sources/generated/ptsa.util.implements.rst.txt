@@ -1,0 +1,6 @@
+ptsa.util.implements
+====================
+
+.. currentmodule:: ptsa.util
+
+.. autofunction:: implements

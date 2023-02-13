@@ -1,0 +1,6 @@
+ptsa.TMatrixC.\_\_array\_\_
+===========================
+
+.. currentmodule:: ptsa
+
+.. automethod:: TMatrixC.__array__

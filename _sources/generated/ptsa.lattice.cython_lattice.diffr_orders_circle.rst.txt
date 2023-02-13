@@ -1,0 +1,6 @@
+ptsa.lattice.cython\_lattice.diffr\_orders\_circle
+==================================================
+
+.. currentmodule:: ptsa.lattice.cython_lattice
+
+.. autofunction:: diffr_orders_circle

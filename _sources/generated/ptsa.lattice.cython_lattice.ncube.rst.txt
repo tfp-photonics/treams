@@ -1,0 +1,6 @@
+ptsa.lattice.cython\_lattice.ncube
+==================================
+
+.. currentmodule:: ptsa.lattice.cython_lattice
+
+.. autofunction:: ncube

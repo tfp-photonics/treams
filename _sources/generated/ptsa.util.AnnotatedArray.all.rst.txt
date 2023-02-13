@@ -1,0 +1,6 @@
+ptsa.util.AnnotatedArray.all
+============================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: AnnotatedArray.all

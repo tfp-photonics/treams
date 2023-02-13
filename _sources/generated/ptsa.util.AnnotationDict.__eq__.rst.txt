@@ -1,0 +1,6 @@
+ptsa.util.AnnotationDict.\_\_eq\_\_
+===================================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: AnnotationDict.__eq__

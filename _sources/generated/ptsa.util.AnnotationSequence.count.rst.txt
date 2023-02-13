@@ -1,0 +1,6 @@
+ptsa.util.AnnotationSequence.count
+==================================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: AnnotationSequence.count

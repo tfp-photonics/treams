@@ -1,0 +1,6 @@
+ptsa.SMatrix.\_\_ge\_\_
+=======================
+
+.. currentmodule:: ptsa
+
+.. automethod:: SMatrix.__ge__

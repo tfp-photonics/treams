@@ -1,4 +1,4 @@
-﻿ptsa.special.vsh\_Y
+ptsa.special.vsh\_Y
 ===================
 
 .. currentmodule:: ptsa.special

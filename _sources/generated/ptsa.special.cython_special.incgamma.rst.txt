@@ -1,0 +1,6 @@
+ptsa.special.cython\_special.incgamma
+=====================================
+
+.. currentmodule:: ptsa.special.cython_special
+
+.. autofunction:: incgamma

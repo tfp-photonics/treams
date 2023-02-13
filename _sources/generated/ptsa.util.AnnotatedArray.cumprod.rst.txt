@@ -1,0 +1,6 @@
+ptsa.util.AnnotatedArray.cumprod
+================================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: AnnotatedArray.cumprod

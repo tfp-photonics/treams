@@ -1,0 +1,6 @@
+ptsa.special.cython\_special.hankel1\_d
+=======================================
+
+.. currentmodule:: ptsa.special.cython_special
+
+.. autofunction:: hankel1_d

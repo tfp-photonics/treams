@@ -1,0 +1,6 @@
+ptsa.util.HANDLED\_FUNCTIONS
+============================
+
+.. currentmodule:: ptsa.util
+
+.. autodata:: HANDLED_FUNCTIONS

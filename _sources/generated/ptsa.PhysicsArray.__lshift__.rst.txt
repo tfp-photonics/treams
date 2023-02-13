@@ -1,0 +1,6 @@
+ptsa.PhysicsArray.\_\_lshift\_\_
+================================
+
+.. currentmodule:: ptsa
+
+.. automethod:: PhysicsArray.__lshift__

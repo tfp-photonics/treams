@@ -1,4 +1,4 @@
-﻿ptsa.special.spherical\_hankel2
+ptsa.special.spherical\_hankel2
 ===============================
 
 .. currentmodule:: ptsa.special

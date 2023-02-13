@@ -1,0 +1,6 @@
+ptsa.util.AnnotationDict.match
+==============================
+
+.. currentmodule:: ptsa.util
+
+.. automethod:: AnnotationDict.match

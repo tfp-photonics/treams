@@ -1,4 +1,4 @@
-﻿ptsa.special.jv
+ptsa.special.jv
 ===============
 
 .. currentmodule:: ptsa.special
