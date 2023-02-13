@@ -349,7 +349,7 @@ def _parse_signature(signature, inputdims):
         j = 0
         while j < len(sigin[i]):
             d = sigin[i][j]
-            if d.endswith("?") and len(sigin[i]) > np.ndim(idim):
+            if d.endswith("?") and len(sigin[i]) > idim:
                 sigin = [[i for i in s if i != d] for s in sigin]
                 sigout = [[i for i in s if i != d] for s in sigout]
             else:
@@ -508,16 +508,39 @@ def register_properties(obj):
 class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
     """Array that keeps track of annotations for each dimension.
 
-    This class acts mostly like numpy arrays.
+    This class acts mostly like numpy arrays, but it is enhanced by the following
+    functionalities:
 
-    Attributes:
-        ann (AnnotationSequence): Array annotations
+        * Annotations are added to each dimension
+        * Annotations are compared and preserved for numpy (generalized)
+          :py:class:`numpy.ufunc` (like :py:data:`numpy.add`, :py:data:`numpy.exp`,
+          :py:data:`numpy.matmul` and many more "standard" mathematical functions)
+        * Special ufunc methods, like :py:meth:`numpy.ufunc.reduce`, are supported
+        * A growing subset of other numpy functions are supported, like
+          :py:func:`numpy.linalg.solve`
+        * Keywords can be specified as scale are also index into, when index the
+          AnnotatedArray
+        * Annotations can also be exposed as properties
+
+    Example:
+        >>> a = AnnotatedArray([[0, 1], [2, 3]], ({"a": 1}, {"b": 2}))
+        >>> b = AnnotatedArray([1, 2], ({"b": 2},))
+        >>> a @ b
+        AnnotatedArray(
+            [2, 8],
+            ann=AnnotationSequence(AnnotationDict({'a': 1}),)
+        )
+
+    The interoperability with numpy is implemented using :ref:`basics.dispatch`
+    by defining :meth:`__array__`, :meth:`__array_ufunc__`, and
+    :meth:`__array_function__`.
     """
 
     _scales = set()
     _properties = set()
 
     def __init__(self, array, ann=(), **kwargs):
+        """Initalization."""
         self._array = np.asarray(array)
         self.ann = getattr(array, "ann", ())
         self.ann.update(ann)
@@ -528,6 +551,20 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
 
     @classmethod
     def relax(cls, *args, mro=None, **kwargs):
+        """Try creating AnnotatedArray subclasses if possible.
+
+        Subclasses can impose stricter conditions on the Annotations. To allow a simple
+        "decaying" of those subclasses it is possible to create them with this
+        classmethod. It attempts array creations along the method resolution order until
+        it succeeds.
+
+        Args:
+            mro (array-like, optional): Method resolution order along which to create
+                the subclass. By default it takes the order of the calling class.
+
+        Note:
+            All other arguments are the same as for the default initialization.
+        """
         mro = cls.__mro__[1:] if mro is None else mro
         try:
             return cls(*args, **kwargs)
@@ -538,28 +575,45 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         return cls.relax(*args, mro=mro, **kwargs)
 
     def __str__(self):
+        """String of the array itself."""
         return str(self._array)
 
     def __repr__(self):
+        """String representation."""
         repr_arr = "    " + repr(self._array)[6:-1].replace("\n  ", "\n")
         return f"{self.__class__.__name__}(\n{repr_arr},\n    ann={self.ann[:]}\n)"
 
     def __array__(self, dtype=None):
+        """Convert to an numpy array.
+
+        This function returns the bare array without annotations. This function does not
+        necessarily make a copy of the array.
+
+        Args:
+            dtype (optional): Type of the returned array.
+        """
         return np.asarray(self._array, dtype=dtype)
 
     @property
     def ann(self):
+        """Array annotations."""
         return self._ann
 
     @ann.setter
     def ann(self, ann):
+        """Set array annotations.
+
+        This function copies the given sequence of dictionaries. 
+        """
         self._ann = AnnotationSequence(*(({},) * self.ndim))
         self._ann.update(ann)
 
     def __bool__(self):
+        """Boolean value of the array."""
         return bool(self._array)
 
     def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+        """Implement ufunc API."""
         # Compute result first to use numpy's comprehensive checks on the arguments
         inputs_noaa = tuple(map(_cast_nparray, inputs))
 
@@ -708,6 +762,12 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         return res
 
     def __array_function__(self, func, types, args, kwargs):
+        """Function calls on the array.
+
+        Calls defined function in :data:`HANDLED_FUNCTIONS` otherwise raises exception.
+        Add functions to it by using the decorator :func:`implements` for custom
+        implementations.
+        """
         if func not in HANDLED_FUNCTIONS:
             return NotImplemented
         # if not all(issubclass(t, self.__class__) for t in types):
@@ -715,6 +775,10 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         return HANDLED_FUNCTIONS[func](*args, **kwargs)
 
     def __getitem__(self, key):
+        """Get an item from the AnnotatedArray
+
+        The indexing supports most of numpys regular and fancy indexing.
+        """
         res = AnnotatedArray(self._array[key])
         if isinstance(res, np.generic) or res.ndim == 0:
             return res
@@ -762,6 +826,11 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         return self.relax(res)
 
     def __setitem__(self, key, value):
+        """Set values.
+
+        If the provided value is an AnnotatedArray the annotations of corresponding
+        dimensions will be matched.
+        """
         self._array[key] = value
         if not hasattr(value, "ann"):
             return
@@ -812,49 +881,89 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
 
     @property
     def T(self):
+        """Transpose.
+
+        See also :py:attr:`numpy.ndarray.T`.
+        """
         return self.transpose()
 
     @implements(np.all)
     def all(self, axis=None, dtype=None, out=None, keepdims=False, *, where=True):
+        """Test if all elements (along an axis) are True.
+
+        See also :py:meth:`numpy.ndarray.all`.
+        """
         return np.logical_and.reduce(self, axis, dtype, out, keepdims, where=where)
 
     @implements(np.any)
     def any(self, axis=None, dtype=None, out=None, keepdims=False, *, where=True):
+        """Test if any element (along an axis) is True.
+
+        See also :py:meth:`numpy.ndarray.any`.
+        """
         return np.logical_or.reduce(self, axis, dtype, out, keepdims, where=where)
 
     @implements(np.max)
     def max(self, axis=None, out=None, keepdims=False, initial=None, where=True):
+        """Maximum (along an axis).
+
+        See also :py:meth:`numpy.ndarray.max`.
+        """
         return np.maximum.reduce(self, axis, None, out, keepdims, initial, where)
 
     @implements(np.min)
     def min(self, axis=None, out=None, keepdims=False, initial=None, where=True):
+        """Minimum (along an axis).
+
+        See also :py:meth:`numpy.ndarray.min`.
+        """
         return np.minimum.reduce(self, axis, None, out, keepdims, initial, where)
 
     @implements(np.sum)
     def sum(
         self, axis=None, dtype=None, out=None, keepdims=False, initial=0, where=True
     ):
+        """Sum of elements (along an axis).
+
+        See also :py:meth:`numpy.ndarray.sum`.
+        """
         return np.add.reduce(self, axis, dtype, out, keepdims, initial, where)
 
     @implements(np.prod)
     def prod(
         self, axis=None, dtype=None, out=None, keepdims=False, initial=1, where=True
     ):
+        """Product of elements (along an axis).
+
+        See also :py:meth:`numpy.ndarray.prod`.
+        """
         return np.multiply.reduce(self, axis, dtype, out, keepdims, initial, where)
 
     @implements(np.cumsum)
     def cumsum(self, axis=None, dtype=None, out=None):
+        """Cumulative sum of elements (along an axis).
+
+        See also :py:meth:`numpy.ndarray.cumsum`.
+        """
         if axis is None:
             return np.add.accumulate(self.flatten(), 0, dtype, out)
         return np.add.accumulate(self, axis, dtype, out)
 
     @implements(np.cumprod)
     def cumprod(self, axis=None, dtype=None, out=None):
+        """Cumulative product of elements (along an axis).
+
+        See also :py:meth:`numpy.ndarray.cumprod`.
+        """
         if axis is None:
             return np.multiply.accumulate(self.flatten(), 0, dtype, out)
         return np.multiply.accumulate(self, axis, dtype, out)
 
     def flatten(self, order="C"):
+        """Flatten array to one dimension.
+
+        See also :py:meth:`numpy.ndarray.flatten`.
+        """
         res = self.relax(self._array.flatten(order))
         if res.shape == self.shape:
             res.ann.update(self.ann)
@@ -864,47 +973,87 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
 
     @implements(np.trace)
     def trace(self, offset=0, axis1=0, axis2=1, dtype=None, out=None):
+        """Trace of an array.
+
+        See also :py:meth:`numpy.ndarray.trac`.
+        """
         ann = tuple(a for i, a in enumerate(self.ann[:]) if i not in (axis1, axis2))
         return self.relax(self._array.trace(offset, axis1, axis2, dtype, out), ann)
 
     def astype(self, *args, **kwargs):
+        """Return array as given type.
+
+        See also :py:meth:`numpy.ndarray.astype`.
+        """
         return self.relax(self._array.astype(*args, **kwargs), self.ann)
 
     @property
     @implements(np.ndim)
     def ndim(self):
+        """Number of array dimensions.
+
+        See also :py:attr:`numpy.ndarray.ndim`.
+        """
         return self._array.ndim
 
     @property
     @implements(np.shape)
     def shape(self):
+        """Array shape.
+
+        See also :py:attr:`numpy.ndarray.shape`.
+        """
         return self._array.shape
 
     @property
     @implements(np.size)
     def size(self):
+        """Array size.
+
+        See also :py:attr:`numpy.ndarray.size`.
+        """
         return self._array.size
 
     @property
     @implements(np.imag)
     def imag(self):
+        """Imaginary part of the array.
+
+        See also :py:attr:`numpy.ndarray.imag`.
+        """
         return self.relax(self._array.imag, self.ann)
 
     @property
     @implements(np.real)
     def real(self):
+        """Real part of the array.
+
+        See also :py:attr:`numpy.ndarray.real`.
+        """
         return self.relax(self._array.real, self.ann)
 
     def conjugate(self, *args, **kwargs):
+        """Complex conjugate elementwise.
+
+        See also :py:meth:`numpy.ndarray.conjugate`.
+        """
         return np.conjugate(self, *args, **kwargs)
 
     @implements(np.diagonal)
     def diagonal(self, offset=0, axis1=0, axis2=1):
+        """Get the diagonal of the array.
+
+        See also :py:meth:`numpy.ndarray.diagonal`.
+        """
         ann = tuple(a for i, a in enumerate(self.ann[:]) if i not in (axis1, axis2))
         return self.relax(self._array.diagonal(offset, axis1, axis2), ann)
 
     @implements(np.transpose)
     def transpose(self, axes=None):
+        """Transpose array dimensions.
+
+        See also :py:meth:`numpy.ndarray.transpose`.
+        """
         axes = range(self.ndim - 1, -1, -1) if axes is None else axes
         return self.relax(self._array.transpose(axes), self.ann[axes])
 
@@ -913,6 +1062,10 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
 
 @implements(np.linalg.solve)
 def solve(a, b):
+    """Solve linear system.
+
+    See also :py:func:`numpy.linalg.solve`.
+    """
     if issubclass(type(a), type(b)) or (
         not issubclass(type(b), type(a)) and isinstance(a, AnnotatedArray)
     ):
@@ -938,6 +1091,10 @@ def solve(a, b):
 
 @implements(np.linalg.lstsq)
 def lstsq(a, b, rcond="warn"):
+    """Solve linear system using least squares.
+
+    See also :py:func:`numpy.linalg.lstsq`.
+    """
     if issubclass(type(a), type(b)) or (
         not issubclass(type(b), type(a)) and isinstance(a, AnnotatedArray)
     ):
@@ -957,6 +1114,10 @@ def lstsq(a, b, rcond="warn"):
 
 @implements(np.linalg.svd)
 def svd(a, full_matrices=True, compute_uv=True, hermitian=False):
+    """Compute the singular value decomposition.
+
+    See also :py:func:`numpy.linalg.svd`.
+    """
     res = list(np.linalg.svd(np.asanyarray(a), full_matrices, compute_uv, hermitian))
     ann = getattr(a, "ann", ({},))
     if compute_uv:
@@ -969,6 +1130,10 @@ def svd(a, full_matrices=True, compute_uv=True, hermitian=False):
 
 @implements(np.diag)
 def diag(a, k=0):
+    """Extract diagonal from an array or create an diagonal array.
+
+    See also :py:func:`numpy.diag`.
+    """
     res = np.diag(np.asanyarray(a), k)
     ann = a.ann
     if a.ndim == 1:
@@ -983,21 +1148,31 @@ def diag(a, k=0):
 
 @implements(np.tril)
 def tril(a, k=0):
+    """Get lower trinagular matrix.
+
+    See also :py:func:`numpy.tril`.
+    """
     res = np.tril(np.asanyarray(a), k)
     return a.relax(res, getattr(a, "ann", ({},)))
 
 
 @implements(np.triu)
 def triu(a, k=0):
+    """Get upper trinagular matrix.
+
+    See also :py:func:`numpy.triu`.
+    """
     res = np.triu(np.asanyarray(a), k)
     return a.relax(res, getattr(a, "ann", ({},)))
 
 
 @implements(np.zeros_like)
 def zeros_like(a, dtype=None, order="K", shape=None):
+    """Create a numpy array like the given array containing zeros."""
     return np.zeros_like(np.asarray(a), dtype=dtype, order=order, shape=shape)
 
 
 @implements(np.ones_like)
 def ones_like(a, dtype=None, order="K", shape=None):
+    """Create a numpy array like the given array containing ones."""
     return np.ones_like(np.asarray(a), dtype=dtype, order=order, shape=shape)
