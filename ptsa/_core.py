@@ -13,11 +13,11 @@ from ptsa._material import Material
 
 
 class BasisSet(util.OrderedSet, metaclass=abc.ABCMeta):
-    """Basis Set Base Class.
+    """Basis set base class.
 
-    BasisSet is the base class for all basis sets used. They are expected to be an
-    ordered sequence of the modes, that are included in a expansion. Derives from
-    :class:`util.OrderedSet`.
+    It is the base class for all basis sets used. They are expected to be an ordered
+    sequence of the modes, that are included in a expansion. Basis sets are expected to
+    be immutable.
     """
 
     _names = ()
@@ -41,8 +41,7 @@ class BasisSet(util.OrderedSet, metaclass=abc.ABCMeta):
     @classmethod
     @abc.abstractmethod
     def default(cls, *args, **kwargs):
-        """
-        default(cls, *args, **kwargs)
+        """Construct a default basis from parameters.
 
         Construct a basis set in a default order by giving few parameters.
         """
@@ -50,9 +49,40 @@ class BasisSet(util.OrderedSet, metaclass=abc.ABCMeta):
 
 
 class SphericalWaveBasis(BasisSet):
+    r"""Basis of spherical waves.
+
+    Functions of the spherical wave basis are defined by their angular momentum ``l``,
+    its projection onto the z-axis ``m``, and the polarization ``pol``. If the basis
+    is defined with respect to a single origin it is referred to as "global", if it
+    contains multiple origins it is referred to as "local". In a local basis an
+    additional position index ``pidx`` is used to link the modes to one of the
+    specified ``positions``.
+
+    For spherical waves there exist multiple :ref:`polarizations:Polarizations` and they
+    can be separated into incident and scattered fields. Depending on these combinations
+    the basis modes refer to one of the functions :func:`~ptsa.special.vsw_A`,
+    :func:`~ptsa.special.vsw_rA`, :func:`~ptsa.special.vsw_M`,
+    :func:`~ptsa.special.vsw_rM`, :func:`~ptsa.special.vsw_N`, or
+    :func:`~ptsa.special.vsw_rN`.
+
+    Args:
+        modes (array-like): A tuple containing a list for each of ``l``, ``m``, and
+            ``pol`` or ``pidx``, ``l``, ``m``, and``pol``.
+        positions (array-like, optional): The positions of the origins for the specified
+            modes. Defaults to ``[[0, 0, 0]]``.
+
+    Attributes:
+        pidx (array-like): Integer referring to a row in :attr:`positions`.
+        l (array-like): Angular momentum as an integer :math:`l > 0`
+        m (array-like): Angular momentum projection onto the z-axis, it is an integer
+            with :math:`m \leq |l|`
+        pol (array-like): Polarization, see also :ref:`polarizations:Polarizations`.
+    """
+
     _names = ("pidx", "l", "m", "pol")
 
     def __init__(self, modes, positions=None):
+        """Initalization."""
         tmp = []
         if isinstance(modes, np.ndarray):
             modes = modes.tolist()
@@ -103,13 +133,38 @@ class SphericalWaveBasis(BasisSet):
 
     @property
     def positions(self):
+        """Positions of the modes' origins.
+
+        The positions are an immutable (N, 3)-array. Each row corresponds to a point in
+        the three-dimensional Cartesian space.
+        """
         return self._positions
 
     def __repr__(self):
+        """String representation."""
         positions = "positions=" + str(self.positions).replace("\n", ",")
         return f"{super().__repr__()[:-1]}    {positions},\n)"
 
+    @property
+    def isglobal(self):
+        """Basis is defined with respect to a single (global) origin.
+
+        Returns:
+            bool
+        """
+        return len(self) == 0 or np.all(self.pidx == self.pidx[0])
+
     def __getitem__(self, idx):
+        """Get a subset of the basis.
+
+        This function allows index into the basis set by an integer, a slice, a sequence
+        of integers or bools, an ellipsis, or an empty tuple. All of them except the
+        integer and the empty tuple results in another basis set being returned. In case
+        of the two exceptions a tuple is returned.
+
+        Alternatively, the string "plmp", "lmp", or "lm" can be used to access only a
+        subset of :attr:`pidx`, :attr:`l`, :attr:`m`, and :attr:`pol`.
+        """
         if isinstance(idx, str):
             idx = idx.lower().strip()
             if idx == "plmp":
@@ -125,6 +180,11 @@ class SphericalWaveBasis(BasisSet):
         return type(self)(zip(*res), self.positions)
 
     def __eq__(self, other):
+        """Compare basis sets.
+
+        Basis sets are considered equal, when they have the same modes in the same order
+        and the specified origin :attr:`positions` are equal.
+        """
         try:
             return self is other or (
                 np.array_equal(self.pidx, other.pidx)
@@ -137,16 +197,38 @@ class SphericalWaveBasis(BasisSet):
             return False
 
     @classmethod
-    def default(cls, lmax, nmax=1, *args, **kwargs):
-        """
-        Default sortation of modes
+    def default(cls, lmax, nmax=1, positions=None):
+        """Default basis for the given maximal multipolar order.
 
-        Default sortation of the T-Matrix entries, including degree `l`, order `m` and
-        polarization `p`.
+        The default order contains separate blocks for each position index which are in
+        ascending order. Within each block the modes are sorted by angular momentum
+        :math:`l`, with the lowest angular momentum coming first. For each angular
+        momentum its z-projection is in ascending order from :math:`m = -l` to
+        :math:`m = l`. Finally, the polarization index is the fastest changing index
+        which iterates between 1 and 0.
+
+        Example:
+            >>> SphericalWaveBasis.default(2)
+            SphericalWaveBasis(
+                pidx=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0],
+                l=[1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2],
+                m=[-1 -1  0  0  1  1 -2 -2 -1 -1  0  0  1  1  2  2],
+                pol=[1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0],
+                positions=[[0. 0. 0.]],
+            )
+            >>> SphericalWaveBasis.default(1, 2, [[0, 0, 1.], [0, 0, -1.]])
+            SphericalWaveBasis(
+                pidx=[0 0 0 0 0 0 1 1 1 1 1 1],
+                l=[1 1 1 1 1 1 1 1 1 1 1 1],
+                m=[-1 -1  0  0  1  1 -1 -1  0  0  1  1],
+                pol=[1 0 1 0 1 0 1 0 1 0 1 0],
+                positions=[[ 0.  0.  1.], [ 0.  0. -1.]],
+            )
 
         Args:
-            lmax (int): Maximal value of `l`
-            nmax (int, optional): Number of particles, defaults to `1`
+            lmax (int): Maximal multipolar order.
+            nmax (int, optional): Number of positions, defaults to 1.
+            positions (array-like, optional): Positions of the origins.
 
         Returns:
             tuple
@@ -158,20 +240,33 @@ class SphericalWaveBasis(BasisSet):
             for m in range(-l, l + 1)
             for p in range(1, -1, -1)
         ]
-        return cls(modes, *args, **kwargs)
+        return cls(modes, positions=positions)
 
     @classmethod
-    def ebcm(cls, lmax, nmax=1, mmax=-1, *args, **kwargs):
-        """
-        Default sortation of modes
+    def ebcm(cls, lmax, nmax=1, mmax=-1, positions=None):
+        """Order of modes suited for ECBM.
 
-        Default sortation of the T-Matrix entries, including degree `l`, order `m` and
-        polarization `p`.
+        In comparison to :meth:`default` this order prioritises blocks of the
+        z-projection of the angular momentum :math:`m` over the angular momentum
+        :math:`l`. This is useful to get block-diagonal matrices for the extended
+        boundary condition method (EBCM).
+
+        Example:
+            >>> SphericalWaveBasis.ebcm(2)
+            SphericalWaveBasis(
+                pidx=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0],
+                l=[2 2 1 1 2 2 1 1 2 2 1 1 2 2 2 2],
+                m=[-2 -2 -1 -1 -1 -1  0  0  0  0  1  1  1  1  2  2],
+                pol=[1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0],
+                positions=[[0. 0. 0.]],
+            )
 
         Args:
-            lmax (int): Maximal value of `l`
-            nmax (int, optional): Number of particles, defaults to `1`
-            mmax (int, optional): Maximal value of `|m|`
+            lmax (int): Maximal multipolar order.
+            nmax (int, optional): Number of particles, defaults to 1.
+            mmax (int, optional): Maximal value of `|m|`. If ommitted or set to -1 it
+                is taken equal to `lmax`.
+            positions (array-like, optional): Positions of the origins.
 
         Returns:
             tuple
@@ -184,20 +279,23 @@ class SphericalWaveBasis(BasisSet):
             for l in range(max(abs(m), 1), lmax + 1)  # noqa: E741
             for p in range(1, -1, -1)
         ]
-        return cls(modes, *args, **kwargs)
+        return cls(modes, positions=positions)
 
     @staticmethod
     def defaultlmax(dim, nmax=1):
-        """
-        Default maximal degree
+        """Calculate the default mode order for a given length.
 
         Given the dimension of the T-matrix return the estimated maximal value of `l`.
-        This is the inverse of defaultdim. A value of zero is allowed for empty
+        This is the inverse of :meth:`defaultdim`. A value of zero is allowed for empty
         T-matrices.
 
+        Example:
+            >>> SphericalWaveBasis.defaultlmax(len(SphericalWaveBasis.default(3)))
+            3
+
         Args:
-            dim (int): Dimension of the T-matrix, respectively number of modes
-            nmax (int, optional): Number of particles, defaults to `1`
+            dim (int): Dimension of the T-matrix, respectively number of modes.
+            nmax (int, optional): Number of particles, defaults to 1.
 
         Returns:
             int
@@ -210,14 +308,13 @@ class SphericalWaveBasis(BasisSet):
 
     @staticmethod
     def defaultdim(lmax, nmax=1):
-        """
-        Default dimension
+        """Default number of modes for a given mulipolar order.
 
         Given the maximal value of `l` return the size of the corresponding T-matrix.
-        This is the inverse of defaultlmax. A value of zero is allowed.
+        This is the inverse of :meth:`defaultlmax`. A value of zero is allowed.
 
         Args:
-            lmax (int): Maximal value of `l`
+            lmax (int): Maximal multipolar order
             nmax (int, optional): Number of particles, defaults to `1`
 
         Returns:
@@ -235,23 +332,41 @@ class SphericalWaveBasis(BasisSet):
         obj = cls(it, positions=positions)
         return obj
 
-    @property
-    def isglobal(self):
-        return len(self) == 0 or np.all(self.pidx == self.pidx[0])
-
 
 class CylindricalWaveBasis(BasisSet):
+    r"""Basis of cylindrical waves.
+
+    Functions of the cylindrical wave basis are defined by the z-components of the wave
+    vector ``kz`` and the angular momentum  ``m`` as well as the polarization ``pol``.
+    If the basis is defined with respect to a single origin it is referred to as
+    "global", if it contains multiple origins it is referred to as "local". In a local
+    basis an additional position index ``pidx`` is used to link the modes to one of the
+    specified ``positions``.
+
+    For cylindrical waves there exist multiple :ref:`polarizations:Polarizations` and
+    they can be separated into incident and scattered fields. Depending on these
+    combinations the basis modes refer to one of the functions
+    :func:`~ptsa.special.vcw_A`, :func:`~ptsa.special.vcw_rA`,
+    :func:`~ptsa.special.vcw_M`, :func:`~ptsa.special.vcw_rM`,
+    :func:`~ptsa.special.vcw_N`, or :func:`~ptsa.special.vcw_rN`.
+
+    Args:
+        modes (array-like): A tuple containing a list for each of ``kz``, ``m``, and
+            ``pol`` or ``pidx``, ``kz``, ``m``, and``pol``.
+        positions (array-like, optional): The positions of the origins for the specified
+            modes. Defaults to ``[[0, 0, 0]]``.
+
+    Attributes:
+        pidx (array-like): Integer referring to a row in :attr:`positions`.
+        kz (array-like): Real valued z-component of the wave vector.
+        m (array-like): Integer angular momentum projection onto the z-axis.
+        pol (array-like): Polarization, see also :ref:`polarizations:Polarizations`.
+    """
+
     _names = ("pidx", "kz", "m", "pol")
 
-    def __repr__(self):
-        positions = "positions=" + str(self.positions).replace("\n", ",")
-        return f"{super().__repr__()[:-1]}    {positions},\n)"
-
-    @property
-    def isglobal(self):
-        return len(self) == 0 or np.all(self.pidx == self.pidx[0])
-
     def __init__(self, modes, positions=None):
+        """Initalization."""
         tmp = []
         if isinstance(modes, np.ndarray):
             modes = modes.tolist()
@@ -301,9 +416,38 @@ class CylindricalWaveBasis(BasisSet):
 
     @property
     def positions(self):
+        """Positions of the modes' origins.
+
+        The positions are an immutable (N, 3)-array. Each row corresponds to a point in
+        the three-dimensional Cartesian space.
+        """
         return self._positions
 
+    def __repr__(self):
+        """String representation."""
+        positions = "positions=" + str(self.positions).replace("\n", ",")
+        return f"{super().__repr__()[:-1]}    {positions},\n)"
+
+    @property
+    def isglobal(self):
+        """Basis is defined with respect to a single (global) origin.
+
+        Returns:
+            bool
+        """
+        return len(self) == 0 or np.all(self.pidx == self.pidx[0])
+
     def __getitem__(self, idx):
+        """Get a subset of the basis.
+
+        This function allows index into the basis set by an integer, a slice, a sequence
+        of integers or bools, an ellipsis, or an empty tuple. All of them except the
+        integer and the empty tuple results in another basis set being returned. In case
+        of the two exceptions a tuple is returned.
+
+        Alternatively, the string "pkzmp", "kzmp", or "kzm" can be used to access only a
+        subset of :attr:`pidx`, :attr:`kz`, :attr:`m`, and :attr:`pol`.
+        """
         if isinstance(idx, str):
             idx = idx.lower().strip()
             if idx == "pkzmp":
@@ -319,6 +463,11 @@ class CylindricalWaveBasis(BasisSet):
         return type(self)(zip(*res), self.positions)
 
     def __eq__(self, other):
+        """Compare basis sets.
+
+        Basis sets are considered equal, when they have the same modes in the same order
+        and the specified origin :attr:`positions` are equal.
+        """
         try:
             return self is other or (
                 np.array_equal(self.pidx, other.pidx)
@@ -330,62 +479,39 @@ class CylindricalWaveBasis(BasisSet):
         except AttributeError:
             return False
 
-    @staticmethod
-    def defaultdim(nkz, mmax, nmax=1):
-        """
-        Default dimension
-
-        Given the maximal value of `l` return the size of the corresponding T-matrix.
-        This is the inverse of defaultmmax. A value of zero is allowed.
-
-        Args:
-            nkz (int): Number of z components of the wave
-            mmax (int): Maximal value of `m`
-            nmax (int, optional): Number of particles, defaults to `1`
-
-        Returns:
-            int
-        """
-        if nkz < 0 or mmax < 0:
-            raise ValueError("maximal order must be positive")
-        return (2 * mmax + 1) * nkz * 2 * nmax
-
-    @staticmethod
-    def defaultmmax(dim, nkz=1, nmax=1):
-        """
-        Default maximal order
-
-        Given the dimension of the T-matrix return the estimated maximal value of `m`.
-        This is the inverse of defaultdim. A value of zero is allowed for empty
-        T-matrices.
-
-        Args:
-            dim (int): Dimension of the T-matrix, respectively number of modes
-            nkz (int, optional): Number of z components of the wave
-            nmax (int, optional): Number of particles, defaults to `1`
-
-        Returns:
-            int
-        """
-        if dim % (2 * nkz * nmax) != 0:
-            raise ValueError("cannot estimate the default mmax")
-        dim = dim // (2 * nkz * nmax)
-        if (dim - 1) % 2 != 0:
-            raise ValueError("cannot estimate the default mmax")
-        return (dim - 1) // 2
-
     @classmethod
-    def default(cls, kzs, mmax, nmax=1, *args, **kwargs):
-        """
-        Default sortation of modes
+    def default(cls, kzs, mmax, nmax=1, positions=None):
+        """Default basis for the given z-components of wave vector and angular momentum.
 
-        Default sortation of the T-Matrix entries, including degree `l`, order `m` and
-        polarization `p`.
+        The default order contains separate blocks for each position index which are in
+        ascending order. Within each block the modes are sorted by the z-component of
+        the wave vector :math:`k_z`. For each of those values the z-projection of the
+        angular momentum is placed in ascending order. Finally, the polarization index
+        is the fastest changing index which iterates between 1 and 0.
+
+        Example:
+            >>> CylindricalWaveBasis.default([-0.5, 0.5], 1)
+            CylindricalWaveBasis(
+                pidx=[0 0 0 0 0 0 0 0 0 0 0 0],
+                kz=[-0.5 -0.5 -0.5 -0.5 -0.5 -0.5  0.5  0.5  0.5  0.5  0.5  0.5],
+                m=[-1 -1  0  0  1  1 -1 -1  0  0  1  1],
+                pol=[1 0 1 0 1 0 1 0 1 0 1 0],
+                positions=[[0. 0. 0.]],
+            )
+            >>> CylindricalWaveBasis.default([0], 1, 2, [[1., 0, 0], [-1., 0, 0]])
+            CylindricalWaveBasis(
+                pidx=[0 0 0 0 0 0 1 1 1 1 1 1],
+                kz=[0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.],
+                m=[-1 -1  0  0  1  1 -1 -1  0  0  1  1],
+                pol=[1 0 1 0 1 0 1 0 1 0 1 0],
+                positions=[[ 1.  0.  0.], [-1.  0.  0.]],
+            )
 
         Args:
-            kzs (float, array_like): Z components of the waves
-            mmax (int): Maximal value of `m`
-            nmax (int, optional): Number of particles, defaults to `1`
+            kzs (array-like, floatint): Maximal multipolar order.
+            nmax (int): Maximal value of the angular momentum z-component.
+            nmax (int, optional): Number of positions, defaults to 1.
+            positions (array-like, optional): Positions of the origins.
 
         Returns:
             tuple
@@ -400,15 +526,38 @@ class CylindricalWaveBasis(BasisSet):
             for m in range(-mmax, mmax + 1)
             for p in range(1, -1, -1)
         ]
-        return cls(modes, *args, **kwargs)
+        return cls(modes, positions=positions)
 
     @classmethod
-    def with_periodicity(cls, kz, mmax, lattice, rmax, nmax=1, **kwargs):
+    def with_periodicity(cls, kz, mmax, lattice, rmax, nmax=1, positions=None):
+        """Create a basis set for a system periodic in the z-direction.
+
+        Example:
+            >>> CylindricalWaveBasis.with_periodicity(0.1, 1, 2 * np.pi, 1)
+            CylindricalWaveBasis(
+                pidx=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0],
+                kz=[-0.9 -0.9 -0.9 -0.9 -0.9 -0.9  0.1  0.1  0.1  0.1  0.1  0.1  1.1
+            1.1 1.1  1.1  1.1  1.1],
+                m=[-1 -1  0  0  1  1 -1 -1  0  0  1  1 -1 -1  0  0  1  1],
+                pol=[1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0],
+                positions=[[0. 0. 0.]],
+            )
+
+        Args:
+            kz (float): Wave vector z-component. Ideally it is in the first Brillouin
+                zone (use :func:`misc.first_brillouin_1d`).
+            mmax (int): Maximal value for the z-component of the angular momentum.
+            lattice (:class:`ptsa.Lattice` or float): Lattice definition or pitch.
+            rmax (float): Maximal change of the z-component of the wave vector. So,
+                this defines a maximal momentum transfer from the given value `kz`.
+            nmax (int, optional): Number of positions.
+            positions (array-like, optional): Positions of the origins.
+        """
         lattice = Lattice(lattice)
         lattice_z = Lattice(lattice, "z")
         nkz = np.floor(np.abs(rmax / lattice_z.reciprocal))
         kzs = kz + np.arange(-nkz, nkz + 1) * lattice_z.reciprocal
-        res = cls.default(kzs, mmax, nmax, **kwargs)
+        res = cls.default(kzs, mmax, nmax, positions=None)
         res.hints["lattice"] = lattice
         res.hints["kpar"] = [np.nan, np.nan, kz]
         return res
@@ -422,6 +571,52 @@ class CylindricalWaveBasis(BasisSet):
         obj = cls(it, positions=positions)
         obj.hints = hints
         return obj
+
+    @staticmethod
+    def defaultmmax(dim, nkz=1, nmax=1):
+        """Calculate the default mode order for a given length.
+
+        Given the dimension of the T-matrix return the estimated maximal value of `m`.
+        This is the inverse of :meth:`defaultdim`. A value of zero is allowed for empty
+        T-matrices.
+
+        Example:
+            >>> SphericalWaveBasis.defaultlmax(len(SphericalWaveBasis.default(3)))
+            3
+
+        Args:
+            dim (int): Dimension of the T-matrix, respectively number of modes
+            nkz (int, optional): Number of z-components of the wave vector.
+            nmax (int, optional): Number of particles, defaults to 1.
+
+        Returns:
+            int
+        """
+        if dim % (2 * nkz * nmax) != 0:
+            raise ValueError("cannot estimate the default mmax")
+        dim = dim // (2 * nkz * nmax)
+        if (dim - 1) % 2 != 0:
+            raise ValueError("cannot estimate the default mmax")
+        return (dim - 1) // 2
+
+    @staticmethod
+    def defaultdim(nkz, mmax, nmax=1):
+        """Default number of modes for a given mulipolar order.
+
+        Given the maximal value of `l` return the size of the corresponding T-matrix.
+        This is the inverse of :meth:`defaultlmax`. A value of zero is allowed.
+
+        Args:
+            nkz (int): Number of z-components of the wave vector.
+            mmax (int): Maximal value of the angular momentum's z-component.
+            nmax (int, optional): Number of particles, defaults to 1.
+
+        Returns:
+            int
+        """
+        if nkz < 0 or mmax < 0:
+            raise ValueError("maximal order must be positive")
+        return (2 * mmax + 1) * nkz * 2 * nmax
 
 
 class PlaneWaveBasis(BasisSet):
