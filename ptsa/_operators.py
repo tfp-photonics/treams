@@ -1,3 +1,5 @@
+"""Operators for common transformations including different types of waves."""
+
 import numpy as np
 
 import ptsa._core as core
@@ -10,7 +12,20 @@ from ptsa._material import Material
 
 
 class Operator:
+    """Operator base class.
+
+    An operator is mainly intended to be used as a descriptor on a class. It will then
+    automatically obtain attributes from the class that correspond to the variable names
+    of the function that is linked to the operator in the class attribute `_func`. When
+    called, the remainding arguments have to be specified.
+    """
+
     def __get__(self, obj, objtype=None):
+        """Descriptor method.
+
+        This function obtains the keyword arguments from the object to which it is
+        attached.
+        """
         kwargs = getattr(obj, "ann", [{}, {}])[-2:]
         self._kwargs = tuple(
             map(
@@ -23,14 +38,26 @@ class Operator:
         return self
 
     def __call__(self, *args, **kwargs):
+        """Call the operator function."""
         kwargsa, kwargsb = self._parse_kwargs(kwargs, self._kwargs[0])
         return self._func(*args, **kwargsa, **kwargsb)
 
     def inv(self, *args, **kwargs):
+        """Inverse operator function."""
         kwargsa, kwargsb = self._parse_kwargs(self._kwargs[-1], kwargs)
         return self._func(*args, **kwargsa, **kwargsb)
 
-    def _parse_kwargs(self, kwargsa, kwargsb):
+    @staticmethod
+    def _parse_kwargs(kwargsa, kwargsb):
+        """Merge special keyword arguments.
+
+        The keywords `basis`, `modetype`, and `poltype` are merged if they appear in
+        both sets of keyword arguments into a tuple.
+
+        Args:
+            kwargsa (mapping): First keyword set.
+            kwargsb (mapping): Second keyword set.
+        """
         kwargsa = {**kwargsa}
         kwargsb = {**kwargsb}
         for key in ("basis", "modetype", "poltype"):
@@ -40,6 +67,7 @@ class Operator:
 
 
 def _sw_rotate(phi, theta, psi, basis, to_basis, where):
+    """Rotate spherical waves."""
     where = np.logical_and(where, to_basis.pidx[:, None] == basis.pidx)
     res = sw.rotate(
         *(m[:, None] for m in to_basis["lmp"]),
@@ -54,6 +82,7 @@ def _sw_rotate(phi, theta, psi, basis, to_basis, where):
 
 
 def _cw_rotate(phi, basis, to_basis, where):
+    """Rotate cylindrical waves."""
     where = np.logical_and(where, to_basis.pidx[:, None] == basis.pidx)
     res = cw.rotate(
         *(m[:, None] for m in to_basis["kzmp"]), *basis["kzmp"], phi, where=where,
@@ -63,6 +92,7 @@ def _cw_rotate(phi, basis, to_basis, where):
 
 
 def _pw_rotate(phi, basis, where):
+    """Rotate plane waves (actually rotates the basis)."""
     # TODO: rotate hints: lattice, kpar
     c1, s1 = np.cos(phi), np.sin(phi)
     r = np.array([[c1, -s1, 0], [s1, c1, 0], [0, 0, 1]])
@@ -74,6 +104,7 @@ def _pw_rotate(phi, basis, where):
 
 
 def _pwp_rotate(phi, basis, where):
+    """Rotate partial plane waves (actually rotates the basis)."""
     # TODO: rotate hints: lattice, kpar
     if basis.alignment != "xy":
         ValueError(f"rotation on alignment: '{basis.alignment}'")
@@ -87,8 +118,20 @@ def _pwp_rotate(phi, basis, where):
 
 
 def rotate(phi, theta=0, psi=0, *, basis, where=True):
-    """
-    rotate(phi, theta=0, psi=0, *, basis, where=True)
+    """Rotation matrix.
+
+    For the given Euler angles apply a rotation for the given basis. In some basis sets
+    only rotations around the z-axis are permitted.
+
+    Args:
+        phi (float): First Euler angle (rotation about z)
+        theta (float, optional): Second Euler angle (rotation about y)
+        psi (float, optional): Third Euler angle (rotation about z)
+        basis (:class:`~ptsa.BasisSet` or tuple): Basis set, if it is a tuple of two
+            basis sets the output and input modes are taken accordingly, else both sets
+            of modes are the same.
+        where (array-like, bool, optional): Only evaluate parts of the rotation matrix,
+            the give array must have a shape that matches the output shape.
     """
     if isinstance(basis, (tuple, list)):
         to_basis, basis = basis
@@ -111,9 +154,20 @@ def rotate(phi, theta=0, psi=0, *, basis, where=True):
 
 
 class Rotate(Operator):
+    """Rotation matrix.
+
+    When call as attribute of an object it returns a suitable rotation matrix to
+    transform it. See also :func:`rotate`.
+    """
+
     _func = staticmethod(rotate)
 
     def inv(self, *args, **kwargs):
+        """Inverse rotation.
+
+        This function applies the inverse rotation. In all basis sets this is just the
+        hermitian conjugated matrix, because the rotations for them are unitary.
+        """
         return self(*args, **kwargs).conj().T
 
 
@@ -309,7 +363,7 @@ def changepoltype(poltype=None, *, basis, where=True):
 class ChangePoltype(Operator):
     _func = staticmethod(changepoltype)
 
-    def _parse_kwargs(self, kwargsa, kwargsb):
+    def _parse_kwargs(kwargsa, kwargsb):
         kwargsa = {**kwargsa}
         kwargsb = {**kwargsb}
         opp = {"parity": "helicity", "helicity": "parity"}
