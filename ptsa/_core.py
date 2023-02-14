@@ -229,9 +229,6 @@ class SphericalWaveBasis(BasisSet):
             lmax (int): Maximal multipolar order.
             nmax (int, optional): Number of positions, defaults to 1.
             positions (array-like, optional): Positions of the origins.
-
-        Returns:
-            tuple
         """
         modes = [
             [n, l, m, p]
@@ -508,13 +505,10 @@ class CylindricalWaveBasis(BasisSet):
             )
 
         Args:
-            kzs (array-like, floatint): Maximal multipolar order.
-            nmax (int): Maximal value of the angular momentum z-component.
+            kzs (array-like, float): Maximal multipolar order.
+            mmax (int): Maximal value of the angular momentum z-component.
             nmax (int, optional): Number of positions, defaults to 1.
             positions (array-like, optional): Positions of the origins.
-
-        Returns:
-            tuple
         """
         kzs = np.atleast_1d(kzs)
         if kzs.ndim > 1:
@@ -529,11 +523,11 @@ class CylindricalWaveBasis(BasisSet):
         return cls(modes, positions=positions)
 
     @classmethod
-    def with_periodicity(cls, kz, mmax, lattice, rmax, nmax=1, positions=None):
+    def diffr_orders(cls, kz, mmax, lattice, bmax, nmax=1, positions=None):
         """Create a basis set for a system periodic in the z-direction.
 
         Example:
-            >>> CylindricalWaveBasis.with_periodicity(0.1, 1, 2 * np.pi, 1)
+            >>> CylindricalWaveBasis.diffr_orders(0.1, 1, 2 * np.pi, 1)
             CylindricalWaveBasis(
                 pidx=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0],
                 kz=[-0.9 -0.9 -0.9 -0.9 -0.9 -0.9  0.1  0.1  0.1  0.1  0.1  0.1  1.1
@@ -545,17 +539,17 @@ class CylindricalWaveBasis(BasisSet):
 
         Args:
             kz (float): Wave vector z-component. Ideally it is in the first Brillouin
-                zone (use :func:`misc.first_brillouin_1d`).
+                zone (use :func:`misc.firstbrillouin1d`).
             mmax (int): Maximal value for the z-component of the angular momentum.
             lattice (:class:`ptsa.Lattice` or float): Lattice definition or pitch.
-            rmax (float): Maximal change of the z-component of the wave vector. So,
+            bmax (float): Maximal change of the z-component of the wave vector. So,
                 this defines a maximal momentum transfer from the given value `kz`.
             nmax (int, optional): Number of positions.
             positions (array-like, optional): Positions of the origins.
         """
         lattice = Lattice(lattice)
         lattice_z = Lattice(lattice, "z")
-        nkz = np.floor(np.abs(rmax / lattice_z.reciprocal))
+        nkz = np.floor(np.abs(bmax / lattice_z.reciprocal))
         kzs = kz + np.arange(-nkz, nkz + 1) * lattice_z.reciprocal
         res = cls.default(kzs, mmax, nmax, positions=None)
         res.hints["lattice"] = lattice
@@ -620,10 +614,33 @@ class CylindricalWaveBasis(BasisSet):
 
 
 class PlaneWaveBasis(BasisSet):
+    """Plane wave basis.
+
+    A plane wave basis is defined by a collection of wave vectors specified by the
+    Cartesian wave vector components ``kx``, ``ky``, and ``kz`` and the polarizations
+    ``pol``.
+
+    For plane waves there exist multiple :ref:`polarizations:Polarizations`, such that
+    these modes can refer to either :func:`~ptsa.special.vpw_A` or
+    :func:`~ptsa.special.vpw_M` and :func:`~ptsa.special.vpw_N`.
+
+    Args:
+        modes (array-like): A tuple containing a list for each of ``kx``, ``ky``,
+            ``kz``, and ``pol``.
+
+    Attributes:
+        kx (array-like): X-component of the wave vector.
+        ky (array-like): Y-component of the wave vector.
+        kz (array-like): Z-component of the wave vector.
+        pol (array-like): Polarization, see also :ref:`polarizations:Polarizations`.
+    """
+
     _names = ("kx", "ky", "kz", "pol")
     isglobal = True
+    """A plane wave basis is always global."""
 
     def __init__(self, modes):
+        """Initialization."""
         tmp = []
         if isinstance(modes, np.ndarray):
             modes = modes.tolist()
@@ -655,6 +672,16 @@ class PlaneWaveBasis(BasisSet):
         self.hints = {}
 
     def __getitem__(self, idx):
+        """Get a subset of the basis.
+
+        This function allows index into the basis set by an integer, a slice, a sequence
+        of integers or bools, an ellipsis, or an empty tuple. All of them except the
+        integer and the empty tuple results in another basis set being returned. In case
+        of the two exceptions a tuple is returned.
+
+        Alternatively, the string "xyzp", "xyp", or "zp" can be used to access only a
+        subset of :attr:`kx`, :attr:`ky`, :attr:`kz`, and :attr:`pol`.
+        """
         if isinstance(idx, str):
             idx = idx.lower().strip()
             if idx == "xyzp":
@@ -671,6 +698,22 @@ class PlaneWaveBasis(BasisSet):
 
     @classmethod
     def default(cls, kvecs):
+        """Default basis from the given wave vectors.
+
+        For each wave vector the two polarizations 1 and 0 are taken.
+
+        Example:
+            >>> PlaneWaveBasis.default([[0, 0, 5], [0, 3, 4]])
+            PlaneWaveBasis(
+                kx=[0 0 0 0],
+                ky=[0 0 3 3],
+                kz=[5 5 4 4],
+                pol=[1 0 1 0],
+            )
+
+        Args:
+            kvecs (array-like): Wave vectors in Cartesian coordinates.
+        """
         kvecs = np.atleast_2d(kvecs)
         modes = np.empty((2 * kvecs.shape[0], 4), kvecs.dtype)
         modes[::2, :3] = kvecs
@@ -689,6 +732,11 @@ class PlaneWaveBasis(BasisSet):
         return obj
 
     def __eq__(self, other):
+        """Compare basis sets.
+
+        Basis sets are considered equal, when they have the same modes in the same
+        order.
+        """
         try:
             return self is other or (
                 np.array_equal(self.kx, other.kx)
@@ -699,7 +747,23 @@ class PlaneWaveBasis(BasisSet):
         except AttributeError:
             return False
 
-    def partial(self, alignment=None, k0=None, material=Material()):
+    def partial(self, alignment="xy", k0=None, material=Material()):
+        """Create a :class:`PlaneWavePartial`.
+
+        The plane wave basis is changed to a partial basis, where only two (real-valued)
+        wave vector components are defined the third component is then inferred from the
+        dispersion relation, which depends on the wave number and material, and a
+        ``modetype`` that specifies the sign of the third component.
+
+        Args:
+            alignment (str, optional): Wave vector components that are part of the
+                partial basis. Defaults to "xy", other permitted values are "yz" and
+                "zx".
+            k0 (float, optional): Wave number. If given, it is checked that the current
+                basis fulfils the dispersion relation.
+            material (:class:`~ptsa.Material` or tuple): Material definition. Defaults
+                to vacuum/air.
+        """
         if k0 is not None:
             ks = material.ks(k0)[self.pol]
             test = self.kx * self.kx + self.ky * self.ky + self.kz * self.kz - ks * ks
@@ -717,6 +781,20 @@ class PlaneWaveBasis(BasisSet):
         return obj
 
     def complete(self, k0, material=Material(), modetype=None):
+        """Create a complete basis.
+
+        A plane wave basis is considered complete, when all three Cartesian components
+        and the polarization is defined for each mode. The plane wave basis of this
+        class is already complete, so it. Child classes might override this function to
+        create a complete :class:`PlaneWaveBasis`. Here, it only performs checks on the
+        dispersion relation.
+
+        Args:
+            k0 (float): Wave number.
+            material (:class:`~ptsa.Material` or tuple, optional): Material definition.
+                Defaults to vacuum/air.
+            modetype (optional): Currently unused for this class.
+        """
         # TODO: check kz depending on modetype (alignment?)
         ks = (k0 * Material(material).nmp)[self.pol]
         if (np.abs(self.kx ** 2 + self.ky ** 2 + self.kz ** 2 - ks * ks) > 1e-14).any():
@@ -725,8 +803,33 @@ class PlaneWaveBasis(BasisSet):
 
 
 class PlaneWaveBasisPartial(PlaneWaveBasis):
-    def __init__(self, modes, alignment=None):
-        alignment = "xy" if alignment is None else alignment
+    """Partial plane wave basis.
+
+    A partial plane wave basis is defined by two wave vector components out of all three
+    Cartesian wave vector components ``kx``, ``ky``, and ``kz`` and the polarizations
+    ``pol``. Which two components are given is specified in the :attr:`alignment`. This
+    basis is mostly used for stratified media that are periodic or uniform in the two
+    alignment directions, such that the given wave vector components correspond to the
+    diffraction orders.
+
+    For plane waves there exist multiple :ref:`polarizations:Polarizations`, such that
+    these modes can refer to either :func:`~ptsa.special.vpw_A` or
+    :func:`~ptsa.special.vpw_M` and :func:`~ptsa.special.vpw_N`.
+
+    Args:
+        modes (array-like): A tuple containing a list for each of ``k1``, ``k2``, and
+            ``pol``.
+        alignment (str, optional): Definition which wave vector components are given.
+            Defaults to "xy", other possible values are "yz" and "zx".
+
+    Attributes:
+        alignment (str): Alignment of the partial basis.
+        pol (array-like): Polarization, see also :ref:`polarizations:Polarizations`.
+    """
+
+    def __init__(self, modes, alignment="xy"):
+        """Initialization."""
+        alignment = "xy"
         if isinstance(modes, np.ndarray):
             modes = modes.tolist()
         tmp = []
@@ -762,21 +865,12 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         self.alignment = alignment
         self.hints = {}
 
-    def _from_iterable(cls, it, alignment=None):
-        if isinstance(cls, PlaneWaveBasisPartial):
-            alignment = cls.alignment if alignment is None else alignment
-        obj = super()._from_iterable(it)
-        obj.alignment = obj.alignment if alignment is None else alignment
-        return obj
-
-    def __getitem__(self, idx):
-        res = self._kx[idx], self._ky[idx], self.pol[idx]
-        if isinstance(idx, int) or idx == ():
-            return res
-        return type(self)(zip(*res))
-
     @property
     def kx(self):
+        """X-components of the wave vector.
+
+        If the components are not specified `None` is returned.
+        """
         if self.alignment == "xy":
             return self._kx
         elif self.alignment == "zx":
@@ -785,6 +879,10 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
 
     @property
     def ky(self):
+        """Y-components of the wave vector.
+
+        If the components are not specified `None` is returned.
+        """
         if self.alignment == "xy":
             return self._ky
         elif self.alignment == "yz":
@@ -793,52 +891,79 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
 
     @property
     def kz(self):
+        """Z-components of the wave vector.
+
+        If the components are not specified `None` is returned.
+        """
         if self.alignment == "yz":
             return self._ky
         elif self.alignment == "zx":
             return self._kx
         return None
 
-    def complete(self, k0, material=Material(), modetype="up"):
-        if modetype not in ("up", "down"):
-            raise ValueError("modetype not recognized")
-        material = Material(material)
-        kx = self._kx
-        ky = self._ky
-        kz = material.kzs(k0, kx, ky, self.pol) * (2 * (modetype == "up") - 1)
-        if self.alignment == "yz":
-            kx, ky, kz = kz, kx, ky
-        elif self.alignment == "zy":
-            kx, ky, kz = ky, kz, kx
-        obj = PlaneWaveBasis(zip(kx, ky, kz, self.pol))
-        obj.hints = copy.deepcopy(self.hints)
-        return obj
+    def __getitem__(self, idx):
+        """Get a subset of the basis.
 
-    def __eq__(self, other):
-        try:
-            skx, sky, skz = self.kx, self.ky, self.kz
-            okx, oky, okz = other.kx, other.ky, other.kz
-            return self is other or (
-                (np.array_equal(skx, okx) or (skx is None and okx is None))
-                and (np.array_equal(sky, oky) or (sky is None and oky is None))
-                and (np.array_equal(skz, okz) or (skz is None and okz is None))
-                and np.array_equal(self.pol, other.pol)
-            )
-        except AttributeError:
-            return False
+        This function allows index into the basis set by an integer, a slice, a sequence
+        of integers or bools, an ellipsis, or an empty tuple. All of them except the
+        integer and the empty tuple results in another basis set being returned. In case
+        of the two exceptions a tuple is returned.
+        """
+        res = self._kx[idx], self._ky[idx], self.pol[idx]
+        if isinstance(idx, int) or idx == ():
+            return res
+        return type(self)(zip(*res))
 
     @classmethod
-    def default(cls, kpars, *args, **kwargs):
+    def default(cls, kpars, alignment="xy"):
+        """Default basis from the given wave vectors.
+
+        For each wave vector the two polarizations 1 and 0 are taken.
+
+        Example:
+            >>> PlaneWaveBasisPartial.default([[0, 0], [0, 3]])
+            PlaneWaveBasisPartial(
+                kx=[0. 0. 0. 0.],
+                ky=[0. 0. 3. 3.],
+                pol=[1 0 1 0],
+            )
+
+        Args:
+            kpars (array-like): Wave vector components in Cartesian coordinates.
+            alignment (str, optional): Definition which wave vector components are
+                given. Defaults to "xy", other possible values are "yz" and "zx".
+
+        """
         kpars = np.atleast_2d(kpars)
         modes = np.empty((2 * kpars.shape[0], 3), float)
         modes[::2, :2] = kpars
         modes[1::2, :2] = kpars
         modes[::2, 2] = 1
         modes[1::2, 2] = 0
-        return cls(modes, *args, **kwargs)
+        return cls(modes, alignment=alignment)
 
     @classmethod
     def diffr_orders(cls, kpar, lattice, bmax):
+        """Create a basis set for a two-dimensional periodic system.
+
+        The reciprocal lattice to the given lattice is taken to consider all diffraction
+        orders that lie within the defined maximal radius (in reciprocal space).
+
+        Example:
+            >>> PlaneWaveBasisPartial.diffr_orders([0, 0], Lattice.square(2 * np.pi), 1)
+            PlaneWaveBasisPartial(
+                kx=[ 0.  0.  0.  0.  0.  0.  1.  1. -1. -1.],
+                ky=[ 0.  0.  1.  1. -1. -1.  0.  0.  0.  0.],
+                pol=[1 0 1 0 1 0 1 0 1 0],
+            )
+
+        Args:
+            kpar (float): Tangential wave vector components. Ideally they are in the
+                first Brillouin zone (use :func:`misc.firstbrillouin2d`).
+            lattice (:class:`ptsa.Lattice` or float): Lattice definition or pitch.
+            bmax (float): Maximal change of tangential wave vector components. So,
+                this defines a maximal momentum transfer.
+        """
         lattice = Lattice(lattice)
         if lattice.dim != 2:
             raise ValueError("invalid lattice dimensions")
@@ -855,12 +980,86 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         obj.hints["kpar"] = kpar
         return obj
 
+    def _from_iterable(cls, it, alignment="xy"):
+        if isinstance(cls, PlaneWaveBasisPartial):
+            alignment = cls.alignment if alignment is None else alignment
+        obj = super()._from_iterable(it)
+        obj.alignment = obj.alignment if alignment is None else alignment
+        return obj
+
+    def __eq__(self, other):
+        """Compare basis sets.
+
+        Basis sets are considered equal, when they have the same modes in the same
+        order.
+        """
+        try:
+            skx, sky, skz = self.kx, self.ky, self.kz
+            okx, oky, okz = other.kx, other.ky, other.kz
+            return self is other or (
+                (np.array_equal(skx, okx) or (skx is None and okx is None))
+                and (np.array_equal(sky, oky) or (sky is None and oky is None))
+                and (np.array_equal(skz, okz) or (skz is None and okz is None))
+                and np.array_equal(self.pol, other.pol)
+            )
+        except AttributeError:
+            return False
+
+    def complete(self, k0, material=Material(), modetype="up"):
+        """Create a complete basis :class:`PlaneWaveBasis`.
+
+        A plane wave basis is considered complete, when all three Cartesian components
+        and the polarization is defined for each mode. So, the specified wave number,
+        material, and modetype is taken to calculate the third Cartesian wave vector.
+        The modetype "up" ("down") is for waves propagating in the positive (negative)
+        direction with respect to the Cartesian axis that is orthogonal to the
+        alignment.
+
+        Args:
+            k0 (float): Wave number.
+            material (:class:`~ptsa.Material` or tuple, optional): Material definition.
+                Defaults to vacuum/air.
+            modetype (str, optional): Propagation direction. Defaults to "up".
+        """
+        if modetype not in ("up", "down"):
+            raise ValueError("modetype not recognized")
+        material = Material(material)
+        kx = self._kx
+        ky = self._ky
+        kz = material.kzs(k0, kx, ky, self.pol) * (2 * (modetype == "up") - 1)
+        if self.alignment == "yz":
+            kx, ky, kz = kz, kx, ky
+        elif self.alignment == "zy":
+            kx, ky, kz = ky, kz, kx
+        obj = PlaneWaveBasis(zip(kx, ky, kz, self.pol))
+        obj.hints = copy.deepcopy(self.hints)
+        return obj
+
 
 def _raise_basis_error(*args):
     raise TypeError("'basis' must be BasisSet")
 
 
 class PhysicsDict(util.AnnotationDict):
+    """Physics dictionary.
+
+    Derives from :class:`ptsa.util.AnnotationDict`. This dictionary has additionally
+    several properties defined.
+
+    Attributes:
+        basis (:class:`BasisSet`): Basis set.
+        k0 (float): Wave number.
+        kpar (list): Parallel wave vector components. Usually, this is a list of length
+            3 with its items corresponding to the Cartesian axes. Unspecified items are
+            set to `nan`.
+        lattice (:class:`~ptsa.Lattice`): Lattice definition.
+        material (:class:`~ptsa.Material`): Material definition.
+        modetype (str): Mode type, for spherical and cylindrical waves this can be
+            "incident" and "scattered", for partial plane waves it can be "up" or
+            "down".
+        poltype (str): Polarization, see also :ref:`polarizations:Polarizations`.
+    """
+
     properties = {
         "k0": (lambda x: isinstance(x, float), float),
         "basis": (lambda x: isinstance(x, BasisSet), _raise_basis_error),
@@ -870,8 +1069,22 @@ class PhysicsDict(util.AnnotationDict):
         "lattice": (lambda x: isinstance(x, Lattice), Lattice),
         "kpar": (lambda x: isinstance(x, list), list),
     }
+    """Special properties tracked by the PhysicsDict."""
 
     def __setitem__(self, key, val):
+        """Set item specified by key to the defined value.
+
+        When overwriting an existing key an :class:`AnnotationWarning` is emitted.
+        Avoid the warning by explicitly deleting the key first. The special attributes
+        are cast to their corresponding types.
+
+        Args:
+            key (hashable): Key
+            val : Value
+
+        Warns:
+            AnnotationWarning
+        """
         testfunc, castfunc = self.properties.get(key, (lambda x: True, None))
         if not testfunc(val):
             val = castfunc(val)
@@ -880,31 +1093,60 @@ class PhysicsDict(util.AnnotationDict):
 
 @util.register_properties
 class PhysicsArray(util.AnnotatedArray):
+    """Physics-aware array.
+
+    A physics aware array is a special type of :class`~ptsa.util.AnnotatedArray`.
+    Additionally to keeping track of the annotations, it is enhanced by the ability to
+    create suiting linear operators to perform tasks like rotations, translations, or
+    expansions into different basis sets and by applying special rules for the
+    physical properties of :class:`PhysicsDict` upon matrix multiplications, see also
+    :meth:`__matmul__`.
+    """
+
     _scales = {"basis"}
     _properties = PhysicsDict.properties
 
     changepoltype = op.ChangePoltype()
+    """Polarization change matrix, see also :class:`ptsa.operators.ChangePoltype`."""
     efield = op.EField()
+    """Field evaluation matrix, see also :class:`ptsa.operators.EField`."""
     expand = op.Expand()
+    """Expansion matrix, see also :class:`ptsa.operators.Expand`."""
     expandlattice = op.ExpandLattice()
+    """Expansion matrix for lattices, see also :class:`ptsa.operators.ExpandLattice`."""
     permute = op.Permute()
+    """Permutation matrix, see also :class:`ptsa.operators.Permute`."""
     rotate = op.Rotate()
+    """Rotation matrix, see also :class:`ptsa.operators.Rotate`."""
     translate = op.Translate()
+    """Translation matrix, see also :class:`ptsa.operators.Translate`."""
 
     def __init__(self, arr, ann=(), **kwargs):
+        """Initialization."""
         super().__init__(arr, ann, **kwargs)
         self._check()
 
     @property
     def ann(self):
+        """Array annotations."""
+        # necessary to define the setter below
         return super().ann
 
     @ann.setter
     def ann(self, ann):
-        self._ann = util.AnnotationSequence(*(({},) * self.ndim), container=PhysicsDict)
+        """Set array annotations.
+
+        See also :meth:`ptsa.util.AnnotatedArray.__setitem__`.
+        """
+        self._ann = util.AnnotationSequence(*(({},) * self.ndim), mapping=PhysicsDict)
         self._ann.update(ann)
 
     def __repr__(self):
+        """String representation.
+
+        For a more managable output only the special physics properties are shown
+        alongside the array itself.
+        """
         repr_arr = "    " + repr(self._array)[6:-1].replace("\n  ", "\n")
         repr_kwargs = ",\n    ".join(
             f"{key}={repr(getattr(self, key))}"
@@ -915,15 +1157,17 @@ class PhysicsArray(util.AnnotatedArray):
             repr_arr += ",\n    " + repr_kwargs
         return f"{self.__class__.__name__}(\n{repr_arr}\n)"
 
-    def index(self, item):
-        if len(item) == 3:
-            item = (0,) + item
-        return super().index(item)
-
-    def indices(self, basis):
-        return [self.index(i) for i in basis]
-
     def _check(self):
+        """Run checks to validate the physical properties.
+
+        The checks are run on the last two dimensions. They include:
+
+            * Dispersion relation checks for :class:`PlaneWaveBasis` if `basis`, `k0`
+              and `material` is defined`
+            * `parity` polarizations are not physically permitted in chiral media.
+            * All lattices explicitly given and in the basis hints must be compatible.
+            * All tangential wave vector compontents must be compatible.
+        """
         total_lat = None
         total_kpar = [np.nan] * 3
         for a in self.ann[-2:]:
@@ -952,9 +1196,23 @@ class PhysicsArray(util.AnnotatedArray):
             if type(basis) == PlaneWaveBasis and None not in (k0, material):
                 basis.complete(k0, material, modetype)
             if poltype == "parity" and getattr(material, "ischiral", False):
-                raise ValueError("poltype 'parity' not possible for chiral material")
+                raise ValueError("poltype 'parity' not permitted for chiral material")
 
     def __matmul__(self, other, *args, **kwargs):
+        """Matrix multiplication.
+
+        When one of the operands for the matrix multiplication does not contain a
+        physical property that is present in the other matrix, it becomes "transparent"
+        to it, meaning that it is just copied to the corresponding results direction.
+
+        Example:
+            >>> res = PhysicsArray([0, 1], k0=1.5, foo="bar") @ [[2, 3], [4, 5]]
+            >>> res.ann
+            AnnotationSequence(PhysicsDict({'k0': 1.5}),)
+
+            Note that the result contains `k0` but not `foo`, since the "transparency"
+            of the second array only applies to physical properties.
+        """
         res = super().__matmul__(other, *args, **kwargs)
         other_ann = getattr(other, "ann", ({}, {}))
         other_ndim = np.ndim(other)
@@ -970,6 +1228,10 @@ class PhysicsArray(util.AnnotatedArray):
         return res
 
     def __rmatmul__(self, other, *args, **kwargs):
+        """Matrix multiplication with opposite operand order.
+
+        See also, :meth:`__matmul__`.
+        """
         res = super().__rmatmul__(other, *args, **kwargs)
         other_ann = getattr(other, "ann", ({},))
         other_ndim = np.ndim(other)

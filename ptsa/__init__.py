@@ -5,18 +5,37 @@
 Classes
 =======
 
+Basis sets
+----------
+
 .. autosummary::
    :toctree: generated/
 
+   CylindricalWaveBasis
+   PlaneWaveBasis
+   PlaneWaveBasisPartial
+   SphericalWaveBasis
+
+Matrices and Arrays
+-------------------
+
+.. autosummary::
+   :toctree: generated/
+
+   PhysicsArray
+   SMatrix
    TMatrix
    TMatrixC
-   SMatrix
-   PlaneWaveBasis
-   SphericalWaveBasis
-   CylindricalWaveBasis
+
+Other
+-----
+
+.. autosummary::
+   :toctree: generated/
+
    Lattice
    Material
-   PhysicsArray
+
 
 """
 

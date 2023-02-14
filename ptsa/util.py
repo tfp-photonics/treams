@@ -99,7 +99,7 @@ class AnnotationDict(collections.abc.MutableMapping):
         return self._dct[key]
 
     def __setitem__(self, key, val):
-        """Set an item to the key.
+        """Set item specified by key to the defined value.
 
         When overwriting an existing key an :class:`AnnotationWarning` is emitted.
         Avoid the warning by explicitly deleting the key first.
@@ -603,7 +603,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
     def ann(self, ann):
         """Set array annotations.
 
-        This function copies the given sequence of dictionaries. 
+        This function copies the given sequence of dictionaries.
         """
         self._ann = AnnotationSequence(*(({},) * self.ndim))
         self._ann.update(ann)
@@ -775,7 +775,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         return HANDLED_FUNCTIONS[func](*args, **kwargs)
 
     def __getitem__(self, key):
-        """Get an item from the AnnotatedArray
+        """Get an item from the AnnotatedArray.
 
         The indexing supports most of numpys regular and fancy indexing.
         """
