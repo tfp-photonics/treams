@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>ptsa.PlaneWaveBasis.__getitem__ &#8212; ptsa 0.2.2.dev84+g829c933 documentation</title>
+    <title>ptsa.PlaneWaveBasis.__getitem__ &#8212; ptsa 0.2.2.dev87+gd83c398 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="ptsa.PlaneWaveBasis.__ge__.html" title="ptsa.PlaneWaveBasis.__ge__"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev87+gd83c398 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="ptsa.PlaneWaveBasis.html" accesskey="U">ptsa.PlaneWaveBasis</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.PlaneWaveBasis.__getitem__</a></li> 
@@ -59,7 +59,14 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="ptsa.PlaneWaveBasis.__getitem__">
 <span class="sig-prename descclassname"><span class="pre">PlaneWaveBasis.</span></span><span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ptsa.PlaneWaveBasis.__getitem__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Get a subset of the basis.</p>
+<p>This function allows index into the basis set by an integer, a slice, a sequence
+of integers or bools, an ellipsis, or an empty tuple. All of them except the
+integer and the empty tuple results in another basis set being returned. In case
+of the two exceptions a tuple is returned.</p>
+<p>Alternatively, the string “xyzp”, “xyp”, or “zp” can be used to access only a
+subset of <a class="reference internal" href="ptsa.PlaneWaveBasis.html#ptsa.PlaneWaveBasis.kx" title="ptsa.PlaneWaveBasis.kx"><code class="xref py py-attr docutils literal notranslate"><span class="pre">kx</span></code></a>, <a class="reference internal" href="ptsa.PlaneWaveBasis.html#ptsa.PlaneWaveBasis.ky" title="ptsa.PlaneWaveBasis.ky"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ky</span></code></a>, <a class="reference internal" href="ptsa.PlaneWaveBasis.html#ptsa.PlaneWaveBasis.kz" title="ptsa.PlaneWaveBasis.kz"><code class="xref py py-attr docutils literal notranslate"><span class="pre">kz</span></code></a>, and <a class="reference internal" href="ptsa.PlaneWaveBasis.html#ptsa.PlaneWaveBasis.pol" title="ptsa.PlaneWaveBasis.pol"><code class="xref py py-attr docutils literal notranslate"><span class="pre">pol</span></code></a>.</p>
+</dd></dl>
 
 </section>
 
@@ -126,7 +133,7 @@
         <li class="right" >
           <a href="ptsa.PlaneWaveBasis.__ge__.html" title="ptsa.PlaneWaveBasis.__ge__"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev87+gd83c398 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="ptsa.PlaneWaveBasis.html" >ptsa.PlaneWaveBasis</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.PlaneWaveBasis.__getitem__</a></li> 

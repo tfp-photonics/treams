@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>ptsa.PlaneWaveBasis.default &#8212; ptsa 0.2.2.dev84+g829c933 documentation</title>
+    <title>ptsa.PlaneWaveBasis.default &#8212; ptsa 0.2.2.dev87+gd83c398 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="ptsa.PlaneWaveBasis.count.html" title="ptsa.PlaneWaveBasis.count"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev87+gd83c398 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="ptsa.PlaneWaveBasis.html" accesskey="U">ptsa.PlaneWaveBasis</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.PlaneWaveBasis.default</a></li> 
@@ -58,8 +58,24 @@
 <h1>ptsa.PlaneWaveBasis.default<a class="headerlink" href="#ptsa-planewavebasis-default" title="Permalink to this heading">¶</a></h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="ptsa.PlaneWaveBasis.default">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PlaneWaveBasis.</span></span><span class="sig-name descname"><span class="pre">default</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ptsa.PlaneWaveBasis.default" title="Permalink to this definition">¶</a></dt>
-<dd><p>Construct a basis set in a default order by giving few parameters.</p>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PlaneWaveBasis.</span></span><span class="sig-name descname"><span class="pre">default</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kvecs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ptsa.PlaneWaveBasis.default" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default basis from the given wave vectors.</p>
+<p>For each wave vector the two polarizations 1 and 0 are taken.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">PlaneWaveBasis</span><span class="o">.</span><span class="n">default</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="go">PlaneWaveBasis(</span>
+<span class="go">    kx=[0 0 0 0],</span>
+<span class="go">    ky=[0 0 3 3],</span>
+<span class="go">    kz=[5 5 4 4],</span>
+<span class="go">    pol=[1 0 1 0],</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>kvecs</strong> (<em>array-like</em>) – Wave vectors in Cartesian coordinates.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -127,7 +143,7 @@
         <li class="right" >
           <a href="ptsa.PlaneWaveBasis.count.html" title="ptsa.PlaneWaveBasis.count"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev87+gd83c398 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="ptsa.PlaneWaveBasis.html" >ptsa.PlaneWaveBasis</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.PlaneWaveBasis.default</a></li> 

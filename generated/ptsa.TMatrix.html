@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>ptsa.TMatrix &#8212; ptsa 0.2.2.dev84+g829c933 documentation</title>
+    <title>ptsa.TMatrix &#8212; ptsa 0.2.2.dev87+gd83c398 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
@@ -18,7 +18,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="ptsa.TMatrix.T" href="ptsa.TMatrix.T.html" />
-    <link rel="prev" title="Reference" href="../ptsa.html" />
+    <link rel="prev" title="ptsa.SMatrix.tr" href="ptsa.SMatrix.tr.html" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <!--[if lte IE 6]>
@@ -40,9 +40,9 @@
           <a href="ptsa.TMatrix.T.html" title="ptsa.TMatrix.T"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="../ptsa.html" title="Reference"
+          <a href="ptsa.SMatrix.tr.html" title="ptsa.SMatrix.tr"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev87+gd83c398 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../ptsa.html" accesskey="U">Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.TMatrix</a></li> 
       </ul>
@@ -151,7 +151,7 @@ be specified. Also modes must have as first element a position index.</p>
 <td><p>Circular dichroism</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.changepoltype.html#ptsa.TMatrix.changepoltype" title="ptsa.TMatrix.changepoltype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">changepoltype</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Polarization change matrix, see also <code class="xref py py-class docutils literal notranslate"><span class="pre">ptsa.operators.ChangePoltype</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.chi.html#ptsa.TMatrix.chi" title="ptsa.TMatrix.chi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chi</span></code></a></p></td>
 <td><p>Electromagnetic chirality</p></td>
@@ -160,13 +160,13 @@ be specified. Also modes must have as first element a position index.</p>
 <td><p>Duality breaking</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.efield.html#ptsa.TMatrix.efield" title="ptsa.TMatrix.efield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">efield</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Field evaluation matrix, see also <code class="xref py py-class docutils literal notranslate"><span class="pre">ptsa.operators.EField</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.expand.html#ptsa.TMatrix.expand" title="ptsa.TMatrix.expand"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expand</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Expansion matrix, see also <code class="xref py py-class docutils literal notranslate"><span class="pre">ptsa.operators.Expand</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.expandlattice.html#ptsa.TMatrix.expandlattice" title="ptsa.TMatrix.expandlattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expandlattice</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Expansion matrix for lattices, see also <code class="xref py py-class docutils literal notranslate"><span class="pre">ptsa.operators.ExpandLattice</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.imag.html#ptsa.TMatrix.imag" title="ptsa.TMatrix.imag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">imag</span></code></a></p></td>
 <td><p>Imaginary part of the array.</p></td>
@@ -196,7 +196,7 @@ be specified. Also modes must have as first element a position index.</p>
 <td><p>Number of array dimensions.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.permute.html#ptsa.TMatrix.permute" title="ptsa.TMatrix.permute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">permute</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Permutation matrix, see also <code class="xref py py-class docutils literal notranslate"><span class="pre">ptsa.operators.Permute</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.poltype.html#ptsa.TMatrix.poltype" title="ptsa.TMatrix.poltype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">poltype</span></code></a></p></td>
 <td><p>partial(func, <a href="#id25"><span class="problematic" id="id26">*</span></a>args, <a href="#id27"><span class="problematic" id="id28">**</span></a>keywords) - new function with partial application of the given arguments and keywords.</p></td>
@@ -205,7 +205,7 @@ be specified. Also modes must have as first element a position index.</p>
 <td><p>Real part of the array.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.rotate.html#ptsa.TMatrix.rotate" title="ptsa.TMatrix.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Rotation matrix, see also <code class="xref py py-class docutils literal notranslate"><span class="pre">ptsa.operators.Rotate</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.shape.html#ptsa.TMatrix.shape" title="ptsa.TMatrix.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
 <td><p>Array shape.</p></td>
@@ -214,7 +214,7 @@ be specified. Also modes must have as first element a position index.</p>
 <td><p>Array size.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.translate.html#ptsa.TMatrix.translate" title="ptsa.TMatrix.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Translation matrix, see also <code class="xref py py-class docutils literal notranslate"><span class="pre">ptsa.operators.Translate</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.xs_ext_avg.html#ptsa.TMatrix.xs_ext_avg" title="ptsa.TMatrix.xs_ext_avg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xs_ext_avg</span></code></a></p></td>
 <td><p>Rotational average of the extinction cross section</p></td>
@@ -258,7 +258,7 @@ be specified. Also modes must have as first element a position index.</p>
 <td><p>Return self&gt;=value.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__getitem__.html#ptsa.TMatrix.__getitem__" title="ptsa.TMatrix.__getitem__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__getitem__</span></code></a>(key)</p></td>
-<td><p>Get an item from the AnnotatedArray</p></td>
+<td><p>Get an item from the AnnotatedArray.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__gt__.html#ptsa.TMatrix.__gt__" title="ptsa.TMatrix.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(other)</p></td>
 <td><p>Return self&gt;value.</p></td>
@@ -276,7 +276,7 @@ be specified. Also modes must have as first element a position index.</p>
 <td><p>Return self&lt;value.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__matmul__.html#ptsa.TMatrix.__matmul__" title="ptsa.TMatrix.__matmul__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__matmul__</span></code></a>(other, *args, **kwargs)</p></td>
-<td><p></p></td>
+<td><p>Matrix multiplication.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__mod__.html#ptsa.TMatrix.__mod__" title="ptsa.TMatrix.__mod__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__mod__</span></code></a>(other)</p></td>
 <td><p></p></td>
@@ -359,12 +359,6 @@ be specified. Also modes must have as first element a position index.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.globalmat.html#ptsa.TMatrix.globalmat" title="ptsa.TMatrix.globalmat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">globalmat</span></code></a>([basis])</p></td>
 <td><p>Global T-matrix</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.index.html#ptsa.TMatrix.index" title="ptsa.TMatrix.index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code></a>(item)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.indices.html#ptsa.TMatrix.indices" title="ptsa.TMatrix.indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">indices</span></code></a>(basis)</p></td>
-<td><p></p></td>
-</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.interacted.html#ptsa.TMatrix.interacted" title="ptsa.TMatrix.interacted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interacted</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
@@ -410,94 +404,94 @@ be specified. Also modes must have as first element a position index.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__sub__.html#ptsa.TMatrix.__sub__" title="ptsa.TMatrix.__sub__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__sub__</span></code></a>(other)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__pow__.html#ptsa.TMatrix.__pow__" title="ptsa.TMatrix.__pow__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__pow__</span></code></a>(other)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__str__.html#ptsa.TMatrix.__str__" title="ptsa.TMatrix.__str__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__str__</span></code></a>()</p></td>
+<td><p>String of the array itself.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__pow__.html#ptsa.TMatrix.__pow__" title="ptsa.TMatrix.__pow__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__pow__</span></code></a>(other)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__add__.html#ptsa.TMatrix.__add__" title="ptsa.TMatrix.__add__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__add__</span></code></a>(other)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__repr__.html#ptsa.TMatrix.__repr__" title="ptsa.TMatrix.__repr__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__repr__</span></code></a>()</p></td>
-<td><p>String representation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__lt__.html#ptsa.TMatrix.__lt__" title="ptsa.TMatrix.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(other)</p></td>
-<td><p>Return self&lt;value.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__eq__.html#ptsa.TMatrix.__eq__" title="ptsa.TMatrix.__eq__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__eq__</span></code></a>(other)</p></td>
-<td><p>Return self==value.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__matmul__.html#ptsa.TMatrix.__matmul__" title="ptsa.TMatrix.__matmul__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__matmul__</span></code></a>(other, *args, **kwargs)</p></td>
+<td><p>Matrix multiplication.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__lshift__.html#ptsa.TMatrix.__lshift__" title="ptsa.TMatrix.__lshift__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lshift__</span></code></a>(other)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__mod__.html#ptsa.TMatrix.__mod__" title="ptsa.TMatrix.__mod__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__mod__</span></code></a>(other)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__neg__.html#ptsa.TMatrix.__neg__" title="ptsa.TMatrix.__neg__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__neg__</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__floordiv__.html#ptsa.TMatrix.__floordiv__" title="ptsa.TMatrix.__floordiv__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__floordiv__</span></code></a>(other)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__divmod__.html#ptsa.TMatrix.__divmod__" title="ptsa.TMatrix.__divmod__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__divmod__</span></code></a>(other)</p></td>
 <td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__array_ufunc__.html#ptsa.TMatrix.__array_ufunc__" title="ptsa.TMatrix.__array_ufunc__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__array_ufunc__</span></code></a>(ufunc, method, *inputs, **kwargs)</p></td>
-<td><p>Implement ufunc API.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__array__.html#ptsa.TMatrix.__array__" title="ptsa.TMatrix.__array__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__array__</span></code></a>([dtype])</p></td>
-<td><p>Convert to an numpy array.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__ne__.html#ptsa.TMatrix.__ne__" title="ptsa.TMatrix.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(other)</p></td>
 <td><p>Return self!=value.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__setitem__.html#ptsa.TMatrix.__setitem__" title="ptsa.TMatrix.__setitem__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__setitem__</span></code></a>(key, value)</p></td>
-<td><p>Set values.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__abs__.html#ptsa.TMatrix.__abs__" title="ptsa.TMatrix.__abs__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__abs__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__getitem__.html#ptsa.TMatrix.__getitem__" title="ptsa.TMatrix.__getitem__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__getitem__</span></code></a>(key)</p></td>
+<td><p>Get an item from the AnnotatedArray.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__array_function__.html#ptsa.TMatrix.__array_function__" title="ptsa.TMatrix.__array_function__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__array_function__</span></code></a>(func, types, args, kwargs)</p></td>
+<td><p>Function calls on the array.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__array__.html#ptsa.TMatrix.__array__" title="ptsa.TMatrix.__array__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__array__</span></code></a>([dtype])</p></td>
+<td><p>Convert to an numpy array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__and__.html#ptsa.TMatrix.__and__" title="ptsa.TMatrix.__and__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__and__</span></code></a>(other)</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__mul__.html#ptsa.TMatrix.__mul__" title="ptsa.TMatrix.__mul__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__mul__</span></code></a>(other)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__neg__.html#ptsa.TMatrix.__neg__" title="ptsa.TMatrix.__neg__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__neg__</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__ge__.html#ptsa.TMatrix.__ge__" title="ptsa.TMatrix.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__lt__.html#ptsa.TMatrix.__lt__" title="ptsa.TMatrix.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(other)</p></td>
+<td><p>Return self&lt;value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__le__.html#ptsa.TMatrix.__le__" title="ptsa.TMatrix.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(other)</p></td>
+<td><p>Return self&lt;=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__pos__.html#ptsa.TMatrix.__pos__" title="ptsa.TMatrix.__pos__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__pos__</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__and__.html#ptsa.TMatrix.__and__" title="ptsa.TMatrix.__and__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__and__</span></code></a>(other)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__setitem__.html#ptsa.TMatrix.__setitem__" title="ptsa.TMatrix.__setitem__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__setitem__</span></code></a>(key, value)</p></td>
+<td><p>Set values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__eq__.html#ptsa.TMatrix.__eq__" title="ptsa.TMatrix.__eq__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__eq__</span></code></a>(other)</p></td>
+<td><p>Return self==value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__truediv__.html#ptsa.TMatrix.__truediv__" title="ptsa.TMatrix.__truediv__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__truediv__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__xor__.html#ptsa.TMatrix.__xor__" title="ptsa.TMatrix.__xor__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__xor__</span></code></a>(other)</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__or__.html#ptsa.TMatrix.__or__" title="ptsa.TMatrix.__or__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__or__</span></code></a>(other)</p></td>
 <td><p>Return self|value.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__invert__.html#ptsa.TMatrix.__invert__" title="ptsa.TMatrix.__invert__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__invert__</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__array_ufunc__.html#ptsa.TMatrix.__array_ufunc__" title="ptsa.TMatrix.__array_ufunc__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__array_ufunc__</span></code></a>(ufunc, method, *inputs, **kwargs)</p></td>
+<td><p>Implement ufunc API.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__invert__.html#ptsa.TMatrix.__invert__" title="ptsa.TMatrix.__invert__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__invert__</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__getitem__.html#ptsa.TMatrix.__getitem__" title="ptsa.TMatrix.__getitem__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__getitem__</span></code></a>(key)</p></td>
-<td><p>Get an item from the AnnotatedArray</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__gt__.html#ptsa.TMatrix.__gt__" title="ptsa.TMatrix.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;value.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__pos__.html#ptsa.TMatrix.__pos__" title="ptsa.TMatrix.__pos__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__pos__</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__mod__.html#ptsa.TMatrix.__mod__" title="ptsa.TMatrix.__mod__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__mod__</span></code></a>(other)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__str__.html#ptsa.TMatrix.__str__" title="ptsa.TMatrix.__str__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__str__</span></code></a>()</p></td>
-<td><p>String of the array itself.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__repr__.html#ptsa.TMatrix.__repr__" title="ptsa.TMatrix.__repr__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__repr__</span></code></a>()</p></td>
+<td><p>String representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__ge__.html#ptsa.TMatrix.__ge__" title="ptsa.TMatrix.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(other)</p></td>
-<td><p>Return self&gt;=value.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__array_function__.html#ptsa.TMatrix.__array_function__" title="ptsa.TMatrix.__array_function__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__array_function__</span></code></a>(func, types, args, kwargs)</p></td>
-<td><p>Function calls on the array.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__add__.html#ptsa.TMatrix.__add__" title="ptsa.TMatrix.__add__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__add__</span></code></a>(other)</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__rshift__.html#ptsa.TMatrix.__rshift__" title="ptsa.TMatrix.__rshift__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__rshift__</span></code></a>(other)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__le__.html#ptsa.TMatrix.__le__" title="ptsa.TMatrix.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(other)</p></td>
-<td><p>Return self&lt;=value.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__divmod__.html#ptsa.TMatrix.__divmod__" title="ptsa.TMatrix.__divmod__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__divmod__</span></code></a>(other)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__gt__.html#ptsa.TMatrix.__gt__" title="ptsa.TMatrix.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(other)</p></td>
-<td><p>Return self&gt;value.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__xor__.html#ptsa.TMatrix.__xor__" title="ptsa.TMatrix.__xor__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__xor__</span></code></a>(other)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__abs__.html#ptsa.TMatrix.__abs__" title="ptsa.TMatrix.__abs__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__abs__</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="ptsa.TMatrix.__truediv__.html#ptsa.TMatrix.__truediv__" title="ptsa.TMatrix.__truediv__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__truediv__</span></code></a>(other)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__matmul__.html#ptsa.TMatrix.__matmul__" title="ptsa.TMatrix.__matmul__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__matmul__</span></code></a>(other, *args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ptsa.TMatrix.__floordiv__.html#ptsa.TMatrix.__floordiv__" title="ptsa.TMatrix.__floordiv__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__floordiv__</span></code></a>(other)</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -525,8 +519,8 @@ be specified. Also modes must have as first element a position index.</p>
 
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="../ptsa.html"
-                          title="previous chapter">Reference</a></p>
+    <p class="topless"><a href="ptsa.SMatrix.tr.html"
+                          title="previous chapter">ptsa.SMatrix.tr</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -567,9 +561,9 @@ be specified. Also modes must have as first element a position index.</p>
           <a href="ptsa.TMatrix.T.html" title="ptsa.TMatrix.T"
              >next</a> |</li>
         <li class="right" >
-          <a href="../ptsa.html" title="Reference"
+          <a href="ptsa.SMatrix.tr.html" title="ptsa.SMatrix.tr"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev87+gd83c398 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.TMatrix</a></li> 
       </ul>

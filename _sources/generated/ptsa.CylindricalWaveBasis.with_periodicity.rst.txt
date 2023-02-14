@@ -1,6 +1,0 @@
-ptsa.CylindricalWaveBasis.with\_periodicity
-===========================================
-
-.. currentmodule:: ptsa
-
-.. automethod:: CylindricalWaveBasis.with_periodicity

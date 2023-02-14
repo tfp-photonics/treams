@@ -1,0 +1,6 @@
+ptsa.PlaneWaveBasisPartial.count
+================================
+
+.. currentmodule:: ptsa
+
+.. automethod:: PlaneWaveBasisPartial.count

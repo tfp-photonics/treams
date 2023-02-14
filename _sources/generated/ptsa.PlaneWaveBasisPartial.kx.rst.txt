@@ -1,0 +1,6 @@
+ptsa.PlaneWaveBasisPartial.kx
+=============================
+
+.. currentmodule:: ptsa
+
+.. autoproperty:: PlaneWaveBasisPartial.kx

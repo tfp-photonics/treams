@@ -94,8 +94,6 @@
          ~TMatrix.diagonal
          ~TMatrix.flatten
          ~TMatrix.globalmat
-         ~TMatrix.index
-         ~TMatrix.indices
          ~TMatrix.interacted
          ~TMatrix.interacted_lattice
          ~TMatrix.max
@@ -112,34 +110,34 @@
          ~TMatrix.xs
       
          ~TMatrix.__sub__
-         ~TMatrix.__pow__
-         ~TMatrix.__add__
-         ~TMatrix.__repr__
-         ~TMatrix.__lt__
-         ~TMatrix.__eq__
-         ~TMatrix.__lshift__
-         ~TMatrix.__mod__
-         ~TMatrix.__floordiv__
-         ~TMatrix.__array_ufunc__
-         ~TMatrix.__array__
-         ~TMatrix.__ne__
-         ~TMatrix.__setitem__
-         ~TMatrix.__mul__
-         ~TMatrix.__neg__
-         ~TMatrix.__and__
-         ~TMatrix.__or__
-         ~TMatrix.__invert__
-         ~TMatrix.__getitem__
-         ~TMatrix.__pos__
          ~TMatrix.__str__
-         ~TMatrix.__ge__
-         ~TMatrix.__array_function__
-         ~TMatrix.__rshift__
-         ~TMatrix.__le__
-         ~TMatrix.__divmod__
-         ~TMatrix.__gt__
-         ~TMatrix.__xor__
-         ~TMatrix.__abs__
-         ~TMatrix.__truediv__
+         ~TMatrix.__pow__
          ~TMatrix.__matmul__
+         ~TMatrix.__lshift__
+         ~TMatrix.__neg__
+         ~TMatrix.__divmod__
+         ~TMatrix.__ne__
+         ~TMatrix.__abs__
+         ~TMatrix.__getitem__
+         ~TMatrix.__array_function__
+         ~TMatrix.__array__
+         ~TMatrix.__and__
+         ~TMatrix.__mul__
+         ~TMatrix.__ge__
+         ~TMatrix.__lt__
+         ~TMatrix.__le__
+         ~TMatrix.__pos__
+         ~TMatrix.__setitem__
+         ~TMatrix.__eq__
+         ~TMatrix.__truediv__
+         ~TMatrix.__xor__
+         ~TMatrix.__or__
+         ~TMatrix.__array_ufunc__
+         ~TMatrix.__invert__
+         ~TMatrix.__gt__
+         ~TMatrix.__mod__
+         ~TMatrix.__repr__
+         ~TMatrix.__add__
+         ~TMatrix.__rshift__
+         ~TMatrix.__floordiv__
   

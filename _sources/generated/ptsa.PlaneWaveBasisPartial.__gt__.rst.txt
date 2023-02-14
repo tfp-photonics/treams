@@ -1,0 +1,6 @@
+ptsa.PlaneWaveBasisPartial.\_\_gt\_\_
+=====================================
+
+.. currentmodule:: ptsa
+
+.. automethod:: PlaneWaveBasisPartial.__gt__

@@ -44,16 +44,16 @@
          ~PlaneWaveBasis.isdisjoint
          ~PlaneWaveBasis.partial
       
-         ~PlaneWaveBasis.__ge__
-         ~PlaneWaveBasis.__and__
          ~PlaneWaveBasis.__sub__
-         ~PlaneWaveBasis.__le__
-         ~PlaneWaveBasis.__or__
-         ~PlaneWaveBasis.__gt__
          ~PlaneWaveBasis.__str__
          ~PlaneWaveBasis.__len__
-         ~PlaneWaveBasis.__ne__
          ~PlaneWaveBasis.__repr__
          ~PlaneWaveBasis.__xor__
+         ~PlaneWaveBasis.__and__
+         ~PlaneWaveBasis.__or__
+         ~PlaneWaveBasis.__ge__
          ~PlaneWaveBasis.__lt__
+         ~PlaneWaveBasis.__le__
+         ~PlaneWaveBasis.__ne__
+         ~PlaneWaveBasis.__gt__
   

@@ -1,6 +1,0 @@
-ptsa.TMatrix.index
-==================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrix.index

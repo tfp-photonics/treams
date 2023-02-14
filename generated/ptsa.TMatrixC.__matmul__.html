@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>ptsa.TMatrixC.__matmul__ &#8212; ptsa 0.2.2.dev84+g829c933 documentation</title>
+    <title>ptsa.TMatrixC.__matmul__ &#8212; ptsa 0.2.2.dev87+gd83c398 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="ptsa.TMatrixC.__lt__.html" title="ptsa.TMatrixC.__lt__"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev87+gd83c398 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="ptsa.TMatrixC.html" accesskey="U">ptsa.TMatrixC</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.TMatrixC.__matmul__</a></li> 
@@ -59,7 +59,19 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="ptsa.TMatrixC.__matmul__">
 <span class="sig-prename descclassname"><span class="pre">TMatrixC.</span></span><span class="sig-name descname"><span class="pre">__matmul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ptsa.TMatrixC.__matmul__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Matrix multiplication.</p>
+<p>When one of the operands for the matrix multiplication does not contain a
+physical property that is present in the other matrix, it becomes “transparent”
+to it, meaning that it is just copied to the corresponding results direction.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">res</span> <span class="o">=</span> <span class="n">PhysicsArray</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">k0</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">foo</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">)</span> <span class="o">@</span> <span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">res</span><span class="o">.</span><span class="n">ann</span>
+<span class="go">AnnotationSequence(PhysicsDict({&#39;k0&#39;: 1.5}),)</span>
+</pre></div>
+</div>
+<p>Note that the result contains <cite>k0</cite> but not <cite>foo</cite>, since the “transparency”
+of the second array only applies to physical properties.</p>
+</dd></dl>
 
 </section>
 
@@ -126,7 +138,7 @@
         <li class="right" >
           <a href="ptsa.TMatrixC.__lt__.html" title="ptsa.TMatrixC.__lt__"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ptsa 0.2.2.dev87+gd83c398 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../ptsa.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="ptsa.TMatrixC.html" >ptsa.TMatrixC</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">ptsa.TMatrixC.__matmul__</a></li> 

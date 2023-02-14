@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Reference &#8212; ptsa 0.2.2.dev84+g829c933 documentation</title>
+    <title>Reference &#8212; ptsa 0.2.2.dev87+gd83c398 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
@@ -17,7 +17,7 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="ptsa.TMatrix" href="generated/ptsa.TMatrix.html" />
+    <link rel="next" title="ptsa.CylindricalWaveBasis" href="generated/ptsa.CylindricalWaveBasis.html" />
     <link rel="prev" title="Examples" href="examples.html" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
@@ -37,12 +37,12 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="generated/ptsa.TMatrix.html" title="ptsa.TMatrix"
+          <a href="generated/ptsa.CylindricalWaveBasis.html" title="ptsa.CylindricalWaveBasis"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="examples.html" title="Examples"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.2.2.dev87+gd83c398 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Reference</a></li> 
       </ul>
     </div>  
@@ -57,37 +57,57 @@
 <p>Package ptsa.</p>
 <section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h2>
+<section id="basis-sets">
+<h3>Basis sets<a class="headerlink" href="#basis-sets" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/ptsa.CylindricalWaveBasis.html#ptsa.CylindricalWaveBasis" title="ptsa.CylindricalWaveBasis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CylindricalWaveBasis</span></code></a>(modes[, positions])</p></td>
+<td><p>Basis of cylindrical waves.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/ptsa.PlaneWaveBasis.html#ptsa.PlaneWaveBasis" title="ptsa.PlaneWaveBasis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlaneWaveBasis</span></code></a>(modes)</p></td>
+<td><p>Plane wave basis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/ptsa.PlaneWaveBasisPartial.html#ptsa.PlaneWaveBasisPartial" title="ptsa.PlaneWaveBasisPartial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlaneWaveBasisPartial</span></code></a>(modes[, alignment])</p></td>
+<td><p>Partial plane wave basis.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/ptsa.SphericalWaveBasis.html#ptsa.SphericalWaveBasis" title="ptsa.SphericalWaveBasis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SphericalWaveBasis</span></code></a>(modes[, positions])</p></td>
+<td><p>Basis of spherical waves.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="matrices-and-arrays">
+<h3>Matrices and Arrays<a class="headerlink" href="#matrices-and-arrays" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/ptsa.PhysicsArray.html#ptsa.PhysicsArray" title="ptsa.PhysicsArray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhysicsArray</span></code></a>(arr[, ann])</p></td>
+<td><p>Physics-aware array.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/ptsa.SMatrix.html#ptsa.SMatrix" title="ptsa.SMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SMatrix</span></code></a>(smats, **kwargs)</p></td>
+<td><p>S-matrix (plane wave basis)</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/ptsa.TMatrix.html#ptsa.TMatrix" title="ptsa.TMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TMatrix</span></code></a>(arr[, ann])</p></td>
 <td><p>T-matrix for spherical modes</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/ptsa.TMatrixC.html#ptsa.TMatrixC" title="ptsa.TMatrixC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TMatrixC</span></code></a>(arr[, ann])</p></td>
 <td><p>T-matrix for cylindrical modes</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/ptsa.SMatrix.html#ptsa.SMatrix" title="ptsa.SMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SMatrix</span></code></a>(smats, **kwargs)</p></td>
-<td><p>S-matrix (plane wave basis)</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/ptsa.PlaneWaveBasis.html#ptsa.PlaneWaveBasis" title="ptsa.PlaneWaveBasis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlaneWaveBasis</span></code></a>(modes)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/ptsa.SphericalWaveBasis.html#ptsa.SphericalWaveBasis" title="ptsa.SphericalWaveBasis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SphericalWaveBasis</span></code></a>(modes[, positions])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/ptsa.CylindricalWaveBasis.html#ptsa.CylindricalWaveBasis" title="ptsa.CylindricalWaveBasis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CylindricalWaveBasis</span></code></a>(modes[, positions])</p></td>
-<td><p></p></td>
-</tr>
+</tbody>
+</table>
+</section>
+<section id="other">
+<h3>Other<a class="headerlink" href="#other" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/ptsa.Lattice.html#ptsa.Lattice" title="ptsa.Lattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Lattice</span></code></a>(arr[, alignment])</p></td>
 <td><p>Lattice definition.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/ptsa.Material.html#ptsa.Material" title="ptsa.Material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Material</span></code></a>([epsilon, mu, kappa])</p></td>
 <td><p>Material definition.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/ptsa.PhysicsArray.html#ptsa.PhysicsArray" title="ptsa.PhysicsArray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PhysicsArray</span></code></a>(arr[, ann])</p></td>
-<td><p></p></td>
-</tr>
 </tbody>
 </table>
+</section>
 </section>
 <section id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading">¶</a></h2>
@@ -171,8 +191,8 @@ tasks.</p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="generated/ptsa.TMatrix.html"
-                          title="next chapter">ptsa.TMatrix</a></p>
+    <p class="topless"><a href="generated/ptsa.CylindricalWaveBasis.html"
+                          title="next chapter">ptsa.CylindricalWaveBasis</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -205,12 +225,12 @@ tasks.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="generated/ptsa.TMatrix.html" title="ptsa.TMatrix"
+          <a href="generated/ptsa.CylindricalWaveBasis.html" title="ptsa.CylindricalWaveBasis"
              >next</a> |</li>
         <li class="right" >
           <a href="examples.html" title="Examples"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.2.2.dev84+g829c933 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.2.2.dev87+gd83c398 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Reference</a></li> 
       </ul>
     </div>
