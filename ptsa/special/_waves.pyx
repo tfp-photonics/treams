@@ -99,7 +99,7 @@ cdef number_t pi_fun(double l, double m, number_t x) nogil:
 
     .. math::
 
-        \pi^l_m(x) = \frac{m P_l^m(x)}{\sqrt{1 - x^2}}
+        \pi_l^m(x) = \frac{m P_l^m(x)}{\sqrt{1 - x^2}}
 
     where :math:`P^l_m` is the associated Legendre polynomial.
 
@@ -132,9 +132,9 @@ cdef number_t tau_fun(double l, double m, number_t x) nogil:
 
     .. math::
 
-        \tau^l_m(x) = \left.\frac{\mathrm d}{\mathrm d \theta}P_l^m(\cos\theta)\right|_{x = \cos\theta}
+        \tau_l^m(x) = \left.\frac{\mathrm d}{\mathrm d \theta}P_l^m(\cos\theta)\right|_{x = \cos\theta}
 
-    where :math:`P^l_m` is the associated Legendre polynomial.
+    where :math:`P_l^m` is the associated Legendre polynomial.
 
     Args:
         l (int): degree :math:`l \geq 0`

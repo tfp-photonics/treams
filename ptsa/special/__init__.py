@@ -1,4 +1,4 @@
-""" Special (mathematical) functions.
+"""Special (mathematical) functions.
 
 .. currentmodule:: ptsa.special
 

@@ -1221,12 +1221,12 @@ vsh_Y = np.PyUFunc_FromFuncAndDataAndSignature(
 Vector spherical harmonic Y in spherical coordinates
 
 The vector spherical harmonics can be defined by
-:math:`\boldsymbol X_{lm}(\theta, \varphi) = \boldsymbol{\hat r} \times \boldsymbol X_{lm}(\theta, \varphi)`
+:math:`\boldsymbol Y_{lm}(\theta, \varphi) = \boldsymbol{\hat r} \times \boldsymbol X_{lm}(\theta, \varphi)`
 using :func:`ptsa.special.vsh_X`. Alternatively, it can can be expressed as
 
 .. math::
 
-    \boldsymbol X_{lm}(\theta, \varphi)
+    \boldsymbol Y_{lm}(\theta, \varphi)
     = \mathrm i \sqrt{\frac{2 l + 1}{4 \pi l (l + 1)} \frac{(l - m)!}{(l + m)!}}
     \left(\tau_{lm}(\theta, \varphi) \boldsymbol{\hat\theta} + \mathrm i \pi_{lm}(\theta, \varphi) \boldsymbol{\hat\varphi}\right)
 
