@@ -7,6 +7,7 @@ Welcome to ptsa's documentation!
 
    gettingstarted
    examples
+   theory
    ptsa
    dev
    about
