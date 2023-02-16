@@ -1,0 +1,6 @@
+﻿ptsa.changepoltype
+==================
+
+.. currentmodule:: ptsa
+
+.. autofunction:: changepoltype

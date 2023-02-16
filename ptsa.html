@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Reference &#8212; ptsa 0.2.2.dev87+gd83c398 documentation</title>
+    <title>Reference &#8212; ptsa 0.2.2.dev92+g9ab8508 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
@@ -18,7 +18,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="ptsa.CylindricalWaveBasis" href="generated/ptsa.CylindricalWaveBasis.html" />
-    <link rel="prev" title="Examples" href="examples.html" />
+    <link rel="prev" title="Polarizations" href="polarizations.html" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <!--[if lte IE 6]>
@@ -40,9 +40,9 @@
           <a href="generated/ptsa.CylindricalWaveBasis.html" title="ptsa.CylindricalWaveBasis"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="examples.html" title="Examples"
+          <a href="polarizations.html" title="Polarizations"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.2.2.dev87+gd83c398 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.2.2.dev92+g9ab8508 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Reference</a></li> 
       </ul>
     </div>  
@@ -108,6 +108,43 @@
 </tbody>
 </table>
 </section>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/ptsa.bfield.html#ptsa.bfield" title="ptsa.bfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bfield</span></code></a>(r, *, basis[, k0, material, ...])</p></td>
+<td><p>Magnetic flux density.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/ptsa.changepoltype.html#ptsa.changepoltype" title="ptsa.changepoltype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">changepoltype</span></code></a>([poltype, where])</p></td>
+<td><p>Matrix to change polarization types.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/ptsa.dfield.html#ptsa.dfield" title="ptsa.dfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dfield</span></code></a>(r, *, basis[, k0, material, ...])</p></td>
+<td><p>Displacement field.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/ptsa.efield.html#ptsa.efield" title="ptsa.efield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">efield</span></code></a>(r, *, basis[, k0, material, ...])</p></td>
+<td><p>Electric field.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/ptsa.expand.html#ptsa.expand" title="ptsa.expand"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expand</span></code></a>(basis[, modetype, k0, material, ...])</p></td>
+<td><p>Expansion matrix.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/ptsa.expandlattice.html#ptsa.expandlattice" title="ptsa.expandlattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expandlattice</span></code></a>([lattice, kpar, eta, k0, ...])</p></td>
+<td><p>Expansion matrix in lattices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/ptsa.hfield.html#ptsa.hfield" title="ptsa.hfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hfield</span></code></a>(r, *, basis[, k0, material, ...])</p></td>
+<td><p>Magnetic field.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/ptsa.permute.html#ptsa.permute" title="ptsa.permute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">permute</span></code></a>([n])</p></td>
+<td><p>Permutation matrix.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/ptsa.rotate.html#ptsa.rotate" title="ptsa.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a>(phi[, theta, psi, where])</p></td>
+<td><p>Rotation matrix.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/ptsa.translate.html#ptsa.translate" title="ptsa.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a>(r, *, basis[, k0, material, ...])</p></td>
+<td><p>Translation matrix.</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading">¶</a></h2>
@@ -178,6 +215,7 @@ tasks.</p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#modules">Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev.html">Development and contributing</a></li>
@@ -186,8 +224,8 @@ tasks.</p>
 
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="examples.html"
-                          title="previous chapter">Examples</a></p>
+    <p class="topless"><a href="polarizations.html"
+                          title="previous chapter">Polarizations</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -228,9 +266,9 @@ tasks.</p>
           <a href="generated/ptsa.CylindricalWaveBasis.html" title="ptsa.CylindricalWaveBasis"
              >next</a> |</li>
         <li class="right" >
-          <a href="examples.html" title="Examples"
+          <a href="polarizations.html" title="Polarizations"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.2.2.dev87+gd83c398 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.2.2.dev92+g9ab8508 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Reference</a></li> 
       </ul>
     </div>

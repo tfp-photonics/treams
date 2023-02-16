@@ -1,0 +1,6 @@
+﻿ptsa.dfield
+===========
+
+.. currentmodule:: ptsa
+
+.. autofunction:: dfield

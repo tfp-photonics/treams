@@ -1,0 +1,6 @@
+﻿ptsa.permute
+============
+
+.. currentmodule:: ptsa
+
+.. autofunction:: permute

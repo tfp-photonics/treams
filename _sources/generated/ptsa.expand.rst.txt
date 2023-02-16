@@ -1,0 +1,6 @@
+﻿ptsa.expand
+===========
+
+.. currentmodule:: ptsa
+
+.. autofunction:: expand

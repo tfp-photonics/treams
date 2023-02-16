@@ -1,0 +1,477 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Maxwell’s equations and chiral constitutive relations &#8212; ptsa 0.2.2.dev92+g9ab8508 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/no-nobiles.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Polarizations" href="polarizations.html" />
+    <link rel="prev" title="Theory" href="theory.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="polarizations.html" title="Polarizations"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="theory.html" title="Theory"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.2.2.dev92+g9ab8508 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="theory.html" accesskey="U">Theory</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Maxwell’s equations and chiral constitutive relations</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="maxwell-s-equations-and-chiral-constitutive-relations">
+<h1>Maxwell’s equations and chiral constitutive relations<a class="headerlink" href="#maxwell-s-equations-and-chiral-constitutive-relations" title="Permalink to this heading">¶</a></h1>
+<p>In matter Maxwell’s equations can be written in frequency domain in the absence of free
+charges and currents as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\nabla \cdot
+\begin{pmatrix}
+    \frac{1}{\epsilon_0} \boldsymbol D \\
+    c \boldsymbol B
+\end{pmatrix}
+= 0\end{split}\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\nabla \times
+\begin{pmatrix}
+    \boldsymbol E \\
+    Z_0 \boldsymbol H
+\end{pmatrix}
+=
+k_0
+\begin{pmatrix}
+    0 &amp; \mathrm i \\
+    - \mathrm i &amp; 0
+\end{pmatrix}
+\begin{pmatrix}
+    \frac{1}{\epsilon_0} \boldsymbol D \\
+    c \boldsymbol B
+\end{pmatrix}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol E\)</span>, <span class="math notranslate nohighlight">\(\boldsymbol H\)</span>, <span class="math notranslate nohighlight">\(\boldsymbol D\)</span>, and
+<span class="math notranslate nohighlight">\(\boldsymbol B\)</span> are the electric and magnetic fields, the displacement field, and
+the magnetic flux density (<a class="reference internal" href="generated/ptsa.efield.html#ptsa.efield" title="ptsa.efield"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.efield()</span></code></a>, <a class="reference internal" href="generated/ptsa.hfield.html#ptsa.hfield" title="ptsa.hfield"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.hfield()</span></code></a>,
+<a class="reference internal" href="generated/ptsa.dfield.html#ptsa.dfield" title="ptsa.dfield"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.dfield()</span></code></a>, <a class="reference internal" href="generated/ptsa.bfield.html#ptsa.bfield" title="ptsa.bfield"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.bfield()</span></code></a>). All these quantities are complex valued
+fields, that depend on the angular frequency <span class="math notranslate nohighlight">\(\omega\)</span> and the position
+<span class="math notranslate nohighlight">\(\boldsymbol r\)</span>, which we omitted here for a conciser notation. The speed of light
+(in vacuum) <span class="math notranslate nohighlight">\(c\)</span>, the free space impedance <span class="math notranslate nohighlight">\(Z_0\)</span>, and the vacuum permittivity
+<span class="math notranslate nohighlight">\(\epsilon_0\)</span> are chosen as constant prefactors such that all fields are normalized
+to the same units. Conventionally, within ptsa the (vacuum) wave number
+<span class="math notranslate nohighlight">\(k_0 = \frac{\omega}{c}\)</span> is generally used to express the frequency.</p>
+<p>For the transformation to the time domain we use for a general function
+<span class="math notranslate nohighlight">\(f(\omega)\)</span></p>
+<div class="math notranslate nohighlight">
+\[f(t) = \int_{-\infty}^\infty \mathrm d t f(\omega) \mathrm e^{-\mathrm i \omega t}\]</div>
+<p>as Fourier transformation convention, and thus the inverse transformation is</p>
+<div class="math notranslate nohighlight">
+\[f(\omega)
+= \int_{-\infty}^\infty \frac{\mathrm d \omega}{2 \pi}
+f(t) \mathrm e^{\mathrm i \omega t}\]</div>
+<p>To solve those equations they have to be complemented with constitutive relations. In a
+linear, time-invariant, homogeneous, isotropic, local and reciprocal medium the relation
+of the four electromagnetic fields can be expressed by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{pmatrix}
+    \frac{1}{\epsilon_0} \boldsymbol D \\
+    c \boldsymbol B
+\end{pmatrix}
+=
+\begin{pmatrix}
+    \epsilon &amp; \mathrm i \kappa \\
+    - \mathrm i \kappa &amp; \mu
+\end{pmatrix}
+\begin{pmatrix}
+    \boldsymbol E \\
+    Z_0 \boldsymbol H
+\end{pmatrix}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\epsilon\)</span>, <span class="math notranslate nohighlight">\(\mu\)</span>, and <span class="math notranslate nohighlight">\(\kappa\)</span> are the relative permittivity,
+relative permeability, and chirality parameter (<a class="reference internal" href="generated/ptsa.Material.html#ptsa.Material" title="ptsa.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">ptsa.Material</span></code></a>). Due to the
+requirement of isotropy these quantities are all scalar.</p>
+<p>The combination of the curl equation and the constitutive relations leads to the
+equation</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\nabla \times
+\begin{pmatrix}
+    \boldsymbol E \\
+    Z_0 \boldsymbol H
+\end{pmatrix}
+=
+k_0
+\begin{pmatrix}
+    \kappa &amp; \mathrm i \mu \\
+    - \mathrm i \epsilon &amp; \kappa
+\end{pmatrix}
+\begin{pmatrix}
+    \boldsymbol E \\
+    Z_0 \boldsymbol H
+\end{pmatrix}\end{split}\]</div>
+<p>that can be diagonalized to yield</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\nabla \times
+\begin{pmatrix}
+    \boldsymbol G_- \\
+    \boldsymbol G_+
+\end{pmatrix}
+=
+\begin{pmatrix}
+    -k_- &amp; 0 \\
+    0 &amp; k_+
+\end{pmatrix}
+\begin{pmatrix}
+    \boldsymbol G_- \\
+    \boldsymbol G_+
+\end{pmatrix}\end{split}\]</div>
+<p>where the Riemann-Silberstein vectors <span class="math notranslate nohighlight">\(\sqrt{2} \boldsymbol G_\pm = \boldsymbol E
+\pm \mathrm i Z_0 Z \boldsymbol H\)</span> appear (<code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.gfield()</span></code>), with the relative
+impedance defined as <span class="math notranslate nohighlight">\(Z = \sqrt{\frac{\mu}{\epsilon}}\)</span>. The wave numbers in the
+medium are <span class="math notranslate nohighlight">\(k_\pm = k_0 n_pm = k_0 (n \pm \kappa)\)</span> with the refractive index
+<span class="math notranslate nohighlight">\(n = \sqrt{\epsilon \mu}\)</span>.</p>
+<p>The alternative definition of the Riemann-Silberstein vectors <span class="math notranslate nohighlight">\(\sqrt{2}
+\boldsymbol F_\pm = \frac{1}{\epsilon_0 \epsilon} \boldsymbol D \pm \mathrm i
+\frac{c}{n} \boldsymbol B\)</span> using the displacement field and the magnetic flux density
+instead of the electric and magnetic field is related to the definition above by
+<span class="math notranslate nohighlight">\(\boldsymbol F_\pm = \frac{n_\pm}{n} \boldsymbol G_\pm\)</span> (<code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.ffield()</span></code>).</p>
+<p>In isotropic media the divergence equations simply become <span class="math notranslate nohighlight">\(\nabla
+\boldsymbol G_\pm = 0 = \nabla \boldsymbol F_\pm\)</span>.</p>
+<section id="solutions-to-the-vector-helmholtz-equation">
+<h2>Solutions to the vector Helmholtz equation<a class="headerlink" href="#solutions-to-the-vector-helmholtz-equation" title="Permalink to this heading">¶</a></h2>
+<p>Instead of immediatly solving Maxwell’s equations from above, we will study the
+Helmholtz equation which is commonly encountered when studying wave phenomena first.
+This section mainly relies on <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<p>The vector Helmholtz equation is</p>
+<div class="math notranslate nohighlight">
+\[(\Delta + k^2) \boldsymbol f
+=
+\nabla (\nabla \boldsymbol f)
+- \nabla \times \nabla \times \boldsymbol f
++ k^2 \boldsymbol f
+= 0\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Delta\)</span> is the Laplace operator. Note, that by applying the curl operator
+twice on the Riemann-Silberstein vectors (in the case of an achiral material this is
+also true for the electric and magnetic fields) and using the transversality condition
+for the fields, the vector Helmholtz equation can be easily obtained.</p>
+<p>Solutions to the vector Helmholtz equation can be obtained from solutions to the scalar
+Helmholtz equation <span class="math notranslate nohighlight">\((\Delta + k^2) f = \nabla (\nabla f) - k^2 f = 0\)</span> by using the
+construction</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\boldsymbol L = \boldsymbol v f \\
+\boldsymbol M = \nabla \times (\boldsymbol v f) \\
+\boldsymbol N = \nabla \times \nabla \times (\boldsymbol v f)\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol v\)</span> is a steering vector that depends on the coordinate system
+used for the solution <span class="math notranslate nohighlight">\(f\)</span>. We will focus the following discussion on the three
+cases of planar, cylindrical, and spherical solutions, where the coordinate systems are
+chosen to be Cartesian, cylindrical, and spherical. Also, we will limit the discussion
+of the first type of solution, because it is not transverse.</p>
+<section id="plane-waves">
+<h3>Plane waves<a class="headerlink" href="#plane-waves" title="Permalink to this heading">¶</a></h3>
+<p>In Cartesian coordinates the solution to the scalar Helmholtz equation are simple
+plane waves <span class="math notranslate nohighlight">\(\mathrm e^{\mathrm i \boldsymbol k \boldsymbol r}\)</span> where the wave
+vector fulfils <span class="math notranslate nohighlight">\(\boldsymbol k^2 = k_x^2 + k_y^2 + k_z^2 = k^2\)</span>. The steering
+vector is constant and conventionally chosen to be the unit vector along the z-axis
+<span class="math notranslate nohighlight">\(\boldsymbol{\hat z}\)</span>. Then, the solutions</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\boldsymbol M_{\boldsymbol k} (k, \boldsymbol r)
+=
+\mathrm i
+\frac{k_y \boldsymbol{\hat x} - k_x \boldsymbol{\hat y}}{\sqrt{k_x^2 + k_y^2}}
+\mathrm e^{\mathrm i \boldsymbol k \boldsymbol r}
+=
+-\mathrm i \boldsymbol{\hat \varphi}_{\boldsymbol k}
+\mathrm e^{\mathrm i \boldsymbol k \boldsymbol r}
+\\
+\boldsymbol N_{\boldsymbol k} (k, \boldsymbol r)
+=
+\frac{-k_x k_z \boldsymbol{\hat x} - k_y k_z \boldsymbol{\hat y} + (k_x^2 + k_y^2)
+\boldsymbol{\hat z}}{k\sqrt{k_x^2 + k_y^2}}
+\mathrm e^{\mathrm i \boldsymbol k \boldsymbol r}
+= -\boldsymbol{\hat \theta}_{\boldsymbol k}
+\mathrm e^{\mathrm i \boldsymbol k \boldsymbol r}\end{split}\]</div>
+<p>are found (<a class="reference internal" href="generated/ptsa.special.vpw_M.html#ptsa.special.vpw_M" title="ptsa.special.vpw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vpw_M()</span></code></a> and <a class="reference internal" href="generated/ptsa.special.vpw_N.html#ptsa.special.vpw_N" title="ptsa.special.vpw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vpw_N()</span></code></a>). We normalized
+these solutions such that they have unit strength for real-valued wave vectors. The
+solution <span class="math notranslate nohighlight">\(\boldsymbol M_{\boldsymbol k}\)</span> is always perpendicular to the z-axis.
+Thus, with respect to the x-y-plane those solutions are often referred to as <cite>TE</cite>, when
+taken for the electric field. Similarly, the solutions
+<span class="math notranslate nohighlight">\(\boldsymbol M_{\boldsymbol k}\)</span> are referred to as <cite>TM</cite>.</p>
+</section>
+<section id="cylindrical-waves">
+<h3>Cylindrical waves<a class="headerlink" href="#cylindrical-waves" title="Permalink to this heading">¶</a></h3>
+<p>The cylindrical solutions can be constructed mostly analogously to the plane waves. The
+steering vector stays <span class="math notranslate nohighlight">\(\boldsymbol{\hat z}\)</span>. The solutions in cylindrical
+coordinates are <span class="math notranslate nohighlight">\(Z_m^{(n)}(k_\rho \rho) \mathrm e^{\mathrm i (m \varphi + k_z z}\)</span>
+where <span class="math notranslate nohighlight">\(k_z \in \mathbb R\)</span> and <span class="math notranslate nohighlight">\(m \in \mathbb Z\)</span> are the parameters of the
+solution. The radial part of the wave vector is defined as <span class="math notranslate nohighlight">\(k_\rho =
+\sqrt{k^2 - k_z^2}\)</span> with the imaginary part of the square root to be taken non-negative.
+The functions <span class="math notranslate nohighlight">\(Z_m^{(n)}\)</span> are the Bessel and Hankel functions. For a complete set
+of solutions it is necessary to select two of them. We generally use the (regular)
+Bessel functions <span class="math notranslate nohighlight">\(J_m = Z_m^{(1)}\)</span> and the Hankel functions of the first kind
+<span class="math notranslate nohighlight">\(H_m^{(1)} = Z_m^{(3)}\)</span> which are singular and correspond to radiating waves
+(<a class="reference internal" href="generated/ptsa.special.jv.html#ptsa.special.jv" title="ptsa.special.jv"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.jv()</span></code></a>, <a class="reference internal" href="generated/ptsa.special.hankel1.html#ptsa.special.hankel1" title="ptsa.special.hankel1"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.hankel1()</span></code></a>). So, the cylindrical wave
+solutions are</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\boldsymbol M_{k_z, m}^{(n)} (k, \boldsymbol r)
+=
+\left(\frac{\mathrm i m}{k_\rho \rho} Z_m^{(n)}(k_\rho \rho) \boldsymbol{\hat \rho}
+- {Z_m^{(n)}}'(k_\rho \rho) \boldsymbol{\hat \varphi}\right)
+\mathrm e^{\mathrm i (m \varphi + k_z z)}
+\\
+\boldsymbol N_{k_z, m}^{(n)} (k, \boldsymbol r)
+=
+\left(\frac{\mathrm i k_z}{k} {Z_m^{(1)}}'(k_\rho \rho) \boldsymbol{\hat \rho}
+- \frac{m k_z}{k k_\rho \rho} Z_m^{(1)}(k_\rho \rho) \boldsymbol{\hat \varphi}
++ \frac{k_\rho}{k} Z_m^{(1)}(k_\rho \rho) \boldsymbol{\hat z}\right)
+\mathrm e^{\mathrm i (k_z z + m \varphi)}\end{split}\]</div>
+<p>where we, again, normalized the functions (<a class="reference internal" href="generated/ptsa.special.vcw_rM.html#ptsa.special.vcw_rM" title="ptsa.special.vcw_rM"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vcw_rM()</span></code></a>,
+<a class="reference internal" href="generated/ptsa.special.vcw_M.html#ptsa.special.vcw_M" title="ptsa.special.vcw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vcw_M()</span></code></a>, <a class="reference internal" href="generated/ptsa.special.vcw_rN.html#ptsa.special.vcw_rN" title="ptsa.special.vcw_rN"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vcw_rN()</span></code></a>, and
+<a class="reference internal" href="generated/ptsa.special.vcw_N.html#ptsa.special.vcw_N" title="ptsa.special.vcw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vcw_N()</span></code></a>). Since the steering vector is in the direction of the
+z-axis, the solutions <span class="math notranslate nohighlight">\(\boldsymbol M_{k_z, m}^{(n)}\)</span> lie always in the x-y-plane.</p>
+</section>
+<section id="spherical-waves">
+<h3>Spherical waves<a class="headerlink" href="#spherical-waves" title="Permalink to this heading">¶</a></h3>
+<p>Finally, we define the spherical solutions starting from the scalar solutions
+<span class="math notranslate nohighlight">\(z_l^{(n)}(kr) Y_{lm}(\theta, \phi)\)</span> where <span class="math notranslate nohighlight">\(z_l^{(n)}\)</span> are the spherical
+Bessel and Hankel functions (and we choose <span class="math notranslate nohighlight">\(j_l = z_l^{(1)}\)</span> and
+<span class="math notranslate nohighlight">\(h_l^{(1)} = z_l^{(n)}\)</span> in complete analogy to the cylindrical case) and
+<span class="math notranslate nohighlight">\(Y_{lm}\)</span> are the spherical harmonics (<a class="reference internal" href="generated/ptsa.special.spherical_jn.html#ptsa.special.spherical_jn" title="ptsa.special.spherical_jn"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.spherical_jn()</span></code></a>,
+<a class="reference internal" href="generated/ptsa.special.spherical_hankel1.html#ptsa.special.spherical_hankel1" title="ptsa.special.spherical_hankel1"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.spherical_hankel1()</span></code></a>, and <a class="reference internal" href="generated/ptsa.special.sph_harm.html#ptsa.special.sph_harm" title="ptsa.special.sph_harm"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.sph_harm()</span></code></a>). The value
+<span class="math notranslate nohighlight">\(l \in \mathbb N\)</span> refers to the angular momentum. The value <span class="math notranslate nohighlight">\(l = 0\)</span> is only
+possible for longitudinal modes. So, for electromagnetic waves generally
+<span class="math notranslate nohighlight">\(l \geq 1\)</span>. The projection of the angular momentum onto the z-axis is <span class="math notranslate nohighlight">\(m \in
+\mathbb Z\)</span> with <span class="math notranslate nohighlight">\(|m| \leq l\)</span>. The steering vector for the spherical coordinate
+solution is <span class="math notranslate nohighlight">\(\boldsymbol r\)</span>. Then, the vector spherical waves are defined as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\boldsymbol M_{lm}^{(n)} (k, \boldsymbol r)
+= z_l^{(n)} (kr) \boldsymbol X_{lm}(\theta, \varphi)
+\\
+\boldsymbol N_{lm}^{(n)} (k, \boldsymbol r)
+=
+\left({h_l^{(1)}}'(kr) + \frac{h_l^{(1)}(kr)}{kr}\right)
+\boldsymbol Y_{lm}(\theta, \varphi)
++ \sqrt{l (l + 1)} \frac{h_l^{(1)}(kr)}{kr} \boldsymbol Z_{lm}(\theta, \varphi)\end{split}\]</div>
+<p>(<a class="reference internal" href="generated/ptsa.special.vsw_rM.html#ptsa.special.vsw_rM" title="ptsa.special.vsw_rM"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_rM()</span></code></a>, <a class="reference internal" href="generated/ptsa.special.vsw_M.html#ptsa.special.vsw_M" title="ptsa.special.vsw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_M()</span></code></a>, <a class="reference internal" href="generated/ptsa.special.vsw_rN.html#ptsa.special.vsw_rN" title="ptsa.special.vsw_rN"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_rN()</span></code></a>,
+and <a class="reference internal" href="generated/ptsa.special.vsw_N.html#ptsa.special.vsw_N" title="ptsa.special.vsw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_N()</span></code></a>) where</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\boldsymbol X_{lm} (\theta, \varphi)
+= \mathrm i \sqrt{\frac{2 l + 1}{4 \pi l (l + 1)} \frac{(l - m)!}{(l + m)!}}
+\left(\mathrm i \pi_l^m(\cos\theta) \boldsymbol{\hat\theta}
+- \tau_l^m (\cos\theta) \boldsymbol{\hat\varphi}\right)
+\mathrm e^{\mathrm i m \varphi}
+\\
+\boldsymbol Y_{lm} (\theta, \varphi)
+= \mathrm i \sqrt{\frac{2 l + 1}{4 \pi l (l + 1)} \frac{(l - m)!}{(l + m)!}}
+\left(\tau_l^m (\cos\theta) \boldsymbol{\hat\theta}
++ \mathrm i \pi_l^m (\cos\theta) \boldsymbol{\hat\varphi}\right)
+\mathrm e^{\mathrm i m \varphi}
+\\
+\boldsymbol Z_{lm} (\theta, \varphi)
+= \mathrm i Y_{lm}(\theta, \varphi) \boldsymbol{\hat r}\end{split}\]</div>
+<p>are the vector spherical harmonics (<a class="reference internal" href="generated/ptsa.special.vsh_X.html#ptsa.special.vsh_X" title="ptsa.special.vsh_X"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsh_X()</span></code></a>,
+<a class="reference internal" href="generated/ptsa.special.vsh_Y.html#ptsa.special.vsh_Y" title="ptsa.special.vsh_Y"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsh_Y()</span></code></a>, and <a class="reference internal" href="generated/ptsa.special.vsh_Z.html#ptsa.special.vsh_Z" title="ptsa.special.vsh_Z"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsh_Z()</span></code></a>). These are themselves
+defined by the functions <span class="math notranslate nohighlight">\(\pi_l^m(x) = \frac{m P_l^m(x)}{\sqrt{1 - x^2}}\)</span>,
+<span class="math notranslate nohighlight">\(\tau_l^m(x) = \frac{\mathrm d}{\mathrm d \theta}P_l^m(x = \cos\theta)\)</span>, and
+the associated Legendre polynomials <span class="math notranslate nohighlight">\(P_l^m\)</span> (<a class="reference internal" href="generated/ptsa.special.pi_fun.html#ptsa.special.pi_fun" title="ptsa.special.pi_fun"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.pi_fun()</span></code></a>,
+<a class="reference internal" href="generated/ptsa.special.tau_fun.html#ptsa.special.tau_fun" title="ptsa.special.tau_fun"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.tau_fun()</span></code></a>, and <a class="reference internal" href="generated/ptsa.special.lpmv.html#ptsa.special.lpmv" title="ptsa.special.lpmv"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.lpmv()</span></code></a>). The vector spherical
+harmonics are orthogonal to each other and normalized to 1 upon integration over the
+solid angle.</p>
+<p>The solutions <span class="math notranslate nohighlight">\(\boldsymbol M_{lm}^{(n)}\)</span> are transverse to a sphere due to the
+steering vector pointing in the radial direction. They are referred to as <cite>TE</cite> but
+– confusingly – also as <cite>magnetic</cite> because they correspond to the electric field of a
+magnetic multipole. Conversely, the solutions <span class="math notranslate nohighlight">\(\boldsymbol N_{lm}^{(n)}\)</span> are
+called <cite>TM</cite> or <cite>electric</cite>.</p>
+</section>
+</section>
+<section id="solutions-to-maxwell-s-equations">
+<h2>Solutions to Maxwell’s equations<a class="headerlink" href="#solutions-to-maxwell-s-equations" title="Permalink to this heading">¶</a></h2>
+<p>Up to now, we set up Maxwell’s equations together with constitutive relations for chiral
+media and found solutions to the vector Helmholtz equation. Next, we want to combine
+those results.</p>
+<section id="modes-of-well-defined-helicity">
+<h3>Modes of well-defined helicity<a class="headerlink" href="#modes-of-well-defined-helicity" title="Permalink to this heading">¶</a></h3>
+<p>First, we want to find solutions to the Riemann-Silberstein vectors
+<span class="math notranslate nohighlight">\(\boldsymbol G_\pm\)</span>. Although we can obtain the vector Helmholtz equation from
+<span class="math notranslate nohighlight">\(\nabla \times \boldsymbol G_\pm = \pm k_\pm \boldsymbol G_\pm\)</span>, we observe that
+this equation is more restrictive, namely our solutions <span class="math notranslate nohighlight">\(\boldsymbol M_\nu\)</span> and
+<span class="math notranslate nohighlight">\(\boldsymbol N_\nu\)</span>, where <span class="math notranslate nohighlight">\(\nu\)</span> is just a placeholder for the actual
+parameters that indexes the concrete set of solutions, are no solutions for it. However,
+with the above definitions we find that <span class="math notranslate nohighlight">\(\nabla \times
+\boldsymbol M_\nu (k, \boldsymbol r) = k \boldsymbol N_\nu (k, \boldsymbol r)\)</span> and
+<span class="math notranslate nohighlight">\(\nabla \times \boldsymbol N_\nu(k, \boldsymbol r) = k \boldsymbol M_\nu
+(k, \boldsymbol r)\)</span>. So, the combinations <span class="math notranslate nohighlight">\(\sqrt{2} \boldsymbol A_{\pm,\nu}
+(k, \boldsymbol r) = \boldsymbol N_\nu (k, \boldsymbol r) \pm \boldsymbol M_\nu
+(k, \boldsymbol r)\)</span> are indeed solutions for the respective Riemann-Silberstein vectors
+(<a class="reference internal" href="generated/ptsa.special.vpw_A.html#ptsa.special.vpw_A" title="ptsa.special.vpw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vpw_A()</span></code></a>, <a class="reference internal" href="generated/ptsa.special.vcw_rA.html#ptsa.special.vcw_rA" title="ptsa.special.vcw_rA"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vcw_rA()</span></code></a>, <a class="reference internal" href="generated/ptsa.special.vcw_A.html#ptsa.special.vcw_A" title="ptsa.special.vcw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vcw_A()</span></code></a>,
+<a class="reference internal" href="generated/ptsa.special.vsw_rA.html#ptsa.special.vsw_rA" title="ptsa.special.vsw_rA"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_rA()</span></code></a>, and <a class="reference internal" href="generated/ptsa.special.vsw_A.html#ptsa.special.vsw_A" title="ptsa.special.vsw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_A()</span></code></a>). The solution for Maxwell’s
+equations are then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\boldsymbol G_\pm(\boldsymbol r)
+= \sqrt{2} \sum_\nu a_{\pm,\nu} \boldsymbol A_{\pm,\nu} (k_\pm, \boldsymbol r)
+\\
+\boldsymbol F_\pm(\boldsymbol r)
+=
+\sqrt{2} \frac{n_\pm}{n}
+\sum_\nu a_{\pm,\nu}\boldsymbol A_{\pm,\nu} (k_\pm, \boldsymbol r)
+\\
+\boldsymbol E(\boldsymbol r)
+= \sum_{s,\nu} a_{s,\nu} \boldsymbol A_{s,\nu} (k_s, \boldsymbol r)
+\\
+Z_0 \boldsymbol H(\boldsymbol r)
+= -\frac{\mathrm i}{Z}
+\sum_{s,\nu} s a_{s,\nu} \boldsymbol A_{s,\nu} (k_s, \boldsymbol r)
+\\
+\frac{1}{\epsilon_0} \boldsymbol D(\boldsymbol r)
+= \frac{1}{Z} \sum_{s,\nu} n_s a_{s,\nu} \boldsymbol A_{s,\nu} (k_s, \boldsymbol r)
+\\
+c \boldsymbol B(\boldsymbol r)
+= -\mathrm i \sum_{s,\nu} s n_s a_{s,\nu} \boldsymbol A_{s,\nu} (k_s, \boldsymbol r)\end{split}\]</div>
+<p>and, because each of the individual modes is an eigenmode of the helicity operator
+<span class="math notranslate nohighlight">\(\frac{\nabla\times}{k}\)</span>, we call them <cite>helicity</cite> modes. Modes of well-defined
+helicity are suitable solutions chiral media.</p>
+</section>
+<section id="parity-modes">
+<h3>Parity modes<a class="headerlink" href="#parity-modes" title="Permalink to this heading">¶</a></h3>
+<p>When considering only achiral media, it is quite common to not use modes of well-defined
+helicity but modes with well-defined parity, which are exactly the modes
+<span class="math notranslate nohighlight">\(\boldsymbol M_\nu\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol N_\nu\)</span> defined above, with the former
+having negative and the latter having positive parity. For achiral materials, we have
+<span class="math notranslate nohighlight">\(k_\pm = k\)</span> and by substituting <span class="math notranslate nohighlight">\(\sqrt{2} a_{\pm,\nu} = a_{N,\nu} \pm
+a_{M,\nu}\)</span> for the expansion coefficients we find the solutions</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\boldsymbol E(\boldsymbol r)
+= \sum_\nu (a_{M,\nu} \boldsymbol M_\nu (k, \boldsymbol r)
++ a_{N,\nu} \boldsymbol N_\nu (k, \boldsymbol r))
+\\
+Z_0 \boldsymbol H(\boldsymbol r)
+= -\frac{\mathrm i}{Z}
+\sum_\nu (a_{N,\nu} \boldsymbol M_\nu (k, \boldsymbol r)
++ a_{M,\nu} \boldsymbol N_\nu (k, \boldsymbol r))
+\\
+\frac{1}{\epsilon_0} \boldsymbol D(\boldsymbol r)
+= \epsilon \sum_\nu (a_{M,\nu} \boldsymbol M_\nu (k, \boldsymbol r)
++ a_{N,\nu} \boldsymbol N_\nu (k, \boldsymbol r))
+\\
+c \boldsymbol B(\boldsymbol r)
+= -\mathrm i n \sum_\nu (a_{N,\nu} \boldsymbol M_\nu (k, \boldsymbol r)
++ a_{M,\nu} \boldsymbol N_\nu (k, \boldsymbol r))\end{split}\]</div>
+<p>for the parity modes.</p>
+</section>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">¶</a></h2>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>P. M. Morse and H. Feshbach, Methods of Theoretical Physics
+(McGraw-Hill, New York, 1953).</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ptsa.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ptsa.html#modules">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+</ul>
+
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="theory.html"
+                          title="previous chapter">Theory</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="polarizations.html"
+                          title="next chapter">Polarizations</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/maxwell.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="polarizations.html" title="Polarizations"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="theory.html" title="Theory"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.2.2.dev92+g9ab8508 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="theory.html" >Theory</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Maxwell’s equations and chiral constitutive relations</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Dominik Beutel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>
