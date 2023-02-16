@@ -11,10 +11,6 @@ Most functions rely on at least one of the external packages `h5py` or `gmsh`.
    mesh_spheres
    save_hdf5
    load_hdf5
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 """
 
 import importlib.metadata
