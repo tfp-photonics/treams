@@ -197,7 +197,7 @@ class AnnotationSequence(collections.abc.Sequence):
 
         Indexing works with integers and slices like regular tuples. Additionally, it is
         possible to get a copy of the object with `()`, or a new sequence of mappings in
-         a list (or other iterable) of integers.
+        a list (or other iterable) of integers.
 
         Args:
             key (iterable, slice, int)
@@ -492,7 +492,7 @@ def register_properties(obj):
     Returns:
         type
     """
-    for prop in obj._properties:
+    for prop, (doc, *_) in obj._properties.items():
         setattr(
             obj,
             prop,
@@ -500,6 +500,7 @@ def register_properties(obj):
                 functools.partial(_pget, prop),
                 functools.partial(_pset, prop),
                 functools.partial(_pdel, prop),
+                doc,
             ),
         )
     return obj
@@ -537,7 +538,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
     """
 
     _scales = set()
-    _properties = set()
+    _properties = {}
 
     def __init__(self, array, ann=(), **kwargs):
         """Initalization."""

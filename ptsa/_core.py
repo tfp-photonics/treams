@@ -1061,13 +1061,33 @@ class PhysicsDict(util.AnnotationDict):
     """
 
     properties = {
-        "k0": (lambda x: isinstance(x, float), float),
-        "basis": (lambda x: isinstance(x, BasisSet), _raise_basis_error),
-        "poltype": (lambda x: isinstance(x, str), str),
-        "modetype": (lambda x: isinstance(x, str), str),
-        "material": (lambda x: isinstance(x, Material), Material),
-        "lattice": (lambda x: isinstance(x, Lattice), Lattice),
-        "kpar": (lambda x: isinstance(x, list), list),
+        "k0": ("Wave number.", lambda x: isinstance(x, float), float),
+        "basis": (
+            ":class:`~ptsa.BasisSet`.",
+            lambda x: isinstance(x, BasisSet),
+            _raise_basis_error,
+        ),
+        "poltype": (
+            ":ref:`polarizations:Polarizations`.",
+            lambda x: isinstance(x, str),
+            str,
+        ),
+        "modetype": ("Mode type.", lambda x: isinstance(x, str), str),
+        "material": (
+            ":class:`~ptsa.Material`.",
+            lambda x: isinstance(x, Material),
+            Material,
+        ),
+        "lattice": (
+            ":class:`~ptsa.Lattice`.",
+            lambda x: isinstance(x, Lattice),
+            Lattice,
+        ),
+        "kpar": (
+            "Wave vector components tangential to the lattice.",
+            lambda x: isinstance(x, list),
+            list,
+        ),
     }
     """Special properties tracked by the PhysicsDict."""
 
@@ -1085,7 +1105,7 @@ class PhysicsDict(util.AnnotationDict):
         Warns:
             AnnotationWarning
         """
-        testfunc, castfunc = self.properties.get(key, (lambda x: True, None))
+        _, testfunc, castfunc = self.properties.get(key, (lambda x: True, None))
         if not testfunc(val):
             val = castfunc(val)
         super().__setitem__(key, val)
