@@ -1,3 +1,7 @@
+============================
+Polarizations and mode types
+============================
+
 Polarizations
 =============
 
@@ -19,3 +23,24 @@ The helicity waves are defined in :func:`ptsa.special.vsw_A`,
 and :func:`ptsa.special.vpw_A`.
 
 The default polarization type to be used can be defined in :mod:`ptsa.config`.
+
+Mode types
+==========
+
+For some basis sets there exist two different types of modes, that distinguish
+propagation features. For the spherical and cylindrical basis theses are `regular`
+and `singular` modes. The former come through the use of (spherical) Bessel Functions
+and the latter through the use of (spherical) Hankel functions of the first kind. The
+regular modes are finite in the whole space. Thus, they are suitable for describing
+incident modes or to expand a plane wave. The singular modes fulfil the radiation
+condition and as such are used for the scattered fields.
+
+For the, here, so-called partial plane wave basis (:class:`~ptsa.PlaneWaveBasisPartial`)
+only two components of the wave vector are given and the third component is only
+implicitly defined by the wave number and the material parameters. The application for
+this basis is mostly within stratified media that are uniform or periodic in the two
+other dimensions. Thus, the two given components of the wave vectors are conserved up
+to reciprocal lattice vectors. To lift the ambiguity of the definition of the third
+component, the mode types `up` and `down` are possible. They define, if the modes
+propagate -- or decay for evanescent modes -- along the positive or negative direction
+with respect to the third axis.
