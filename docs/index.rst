@@ -1,5 +1,5 @@
 =================================
-Welcome to treams's documentation!
+Welcome to treams' documentation!
 =================================
 
 .. toctree::
@@ -12,12 +12,12 @@ Welcome to treams's documentation!
    dev
    about
 
-The package **p**\ eriodic **T**-matrix **s**\ cattering **a**\ lgorithms provides a
-framework to simplify computations of the electromagnetic scattering of waves at finite
-and periodically infinite arrangements of particles. All methods are suitable for the
-use of chiral materials. The periodic systems can have one-, two-, or three-dimensional
-lattices. The lattice computations are accelerated by converting the occurring slowly
-converging summations to exponentially fast convergent series.
+The package **treams** provides a framework to simplify computations of the
+electromagnetic scattering of waves at finite and periodically infinite arrangements of
+particles. All methods are suitable for the use of chiral materials. The periodic
+systems can have one-, two-, or three-dimensional lattices. The lattice computations are
+accelerated by converting the occurring slowly converging summations to exponentially
+fast convergent series.
 
 To accommodate the periodic structures of different dimensionalities, three types of
 solutions to the vectorial Helmholtz equation are employed: plane waves, cylindrical
