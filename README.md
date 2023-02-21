@@ -1,8 +1,8 @@
-# ptsa
+# treams
 
-The package "**p**eriodic **T**-matrix **s**cattering **a**lgorithms" provides a
-framework to simplify computations of the electromagnetic scattering of waves at finite
-and at periodic arrangements of particles.
+The package `treams` provides a framework to simplify computations of the
+electromagnetic scattering of waves at finite and at periodic arrangements of particles
+based on the T-matrix method.
 
 ## Installation
 
@@ -11,7 +11,7 @@ and at periodic arrangements of particles.
 To install the package with pip, use
 
 ```sh
-pip install git+https://github.com/tfp-photonics/ptsa.git
+pip install git+https://github.com/tfp-photonics/treams.git
 ```
 
 If you're using the system wide installed version of python, you might consider the
@@ -19,16 +19,16 @@ If you're using the system wide installed version of python, you might consider 
 
 ### Running on Windows
 
-For Windows, there are currently two tested ways how to install ptsa. The first option
+For Windows, there are currently two tested ways how to install treams. The first option
 is using the
 [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/en-us/windows/wsl/install).
-Within WSL ptsa can be installed just as described above. The second option, that was
+Within WSL treams can be installed just as described above. The second option, that was
 tested is using [MSYS2](https://www.msys2.org/) with the ``mingw64`` environment.
 Likely, other python versions based on ``mingw-w64`` might also work.
 
 ## Documentation
 
-The documentation can be found at https://tfp-photonics.github.io/ptsa.
+The documentation can be found at https://tfp-photonics.github.io/treams.
 
 ## Publications
 

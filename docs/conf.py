@@ -20,10 +20,10 @@ import numpy as np
 
 # -- Project information -----------------------------------------------------
 
-project = "ptsa"
+project = "treams"
 copyright = "2023, Dominik Beutel"
 author = "Dominik Beutel"
-release = version("ptsa")
+release = version("treams")
 version = ".".join(release.split(".")[:3])
 
 

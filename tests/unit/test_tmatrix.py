@@ -2,8 +2,8 @@ import copy
 
 import numpy as np
 
-import ptsa
-from ptsa import TMatrix
+import treams
+from treams import TMatrix
 
 
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
@@ -17,8 +17,8 @@ class TestInit:
             np.all(tm == np.eye(6))
             and tm.k0 == 1
             and tm.material == (1, 1, 0)
-            and tm.basis == ptsa.SphericalWaveBasis.default(1)
-            and tm.poltype == ptsa.config.POLTYPE
+            and tm.basis == treams.SphericalWaveBasis.default(1)
+            and tm.poltype == treams.config.POLTYPE
         )
 
     def test_complex(self):
@@ -26,20 +26,20 @@ class TestInit:
             np.diag([1, 2]),
             k0=3,
             material=[2, 8, 1],
-            basis=ptsa.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]], [1, 0, 0]),
+            basis=treams.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]], [1, 0, 0]),
         )
         assert (
             np.all(tm == np.diag([1, 2]))
             and tm.k0 == 3
             and tm.material == (2, 8, 1)
-            and tm.basis == ptsa.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]], [1, 0, 0])
+            and tm.basis == treams.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]], [1, 0, 0])
         )
 
 
 class TestSphere:
     def test(self):
         tm = TMatrix.sphere(2, 3, 4, [(2, 1, 1), (9, 1, 2)])
-        m = ptsa.coeffs.mie([1, 2], [12], [2, 9], [1, 1], [1, 2])
+        m = treams.coeffs.mie([1, 2], [12], [2, 9], [1, 1], [1, 2])
         assert (
             np.all(np.diag(tm)[:6:2] == m[0, 1, 1])
             and np.all(np.diag(tm)[1:6:2] == m[0, 0, 0])
@@ -58,7 +58,7 @@ class TestSphere:
             and tm.k0 == 3
             and tm.material == (9, 1, 2)
             and tm.poltype == "helicity"
-            and tm.basis == ptsa.SphericalWaveBasis.default(2)
+            and tm.basis == treams.SphericalWaveBasis.default(2)
         )
 
 
@@ -104,8 +104,8 @@ class TestProperties:
 class TestXs:
     def test(self):
         tm = TMatrix.sphere(2, 3, [4], [(2 + 1j, 1, 1), (9, 1, 2)])
-        illu = ptsa.PhysicsArray(
-            [[0.5]], basis=ptsa.PlaneWaveBasis([[0, 0, tm.ks[0], 0]])
+        illu = treams.PhysicsArray(
+            [[0.5]], basis=treams.PlaneWaveBasis([[0, 0, tm.ks[0], 0]])
         )
         illu = illu.expand(tm.basis, k0=tm.k0, material=tm.material) @ illu
         xs = tm.xs(illu, 0.125)

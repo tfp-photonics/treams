@@ -15,11 +15,11 @@ jobs:
     - uses: actions/setup-python@v4
       with:
         python-version: '3.10' 
-    - name: Build ptsa
+    - name: Build treams
       run: python -m pip install -e .
     - name: Build html
       run: |
-        python -m pip install ptsa[docs]
+        python -m pip install treams[docs]
         sphinx-build -b html docs docs/_build/html
     - name: Upload artifacts
       uses: actions/upload-artifact@v3

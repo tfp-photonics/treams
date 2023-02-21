@@ -1,19 +1,19 @@
 import numpy as np
 
-import ptsa
-from ptsa import SMatrix
+import treams
+from treams import SMatrix
 
 
 def test_init():
-    b = ptsa.PlaneWaveBasisPartial.default([0, 0])
+    b = treams.PlaneWaveBasisPartial.default([0, 0])
     sm = SMatrix(np.zeros((2, 2, 2, 2)), basis=b, k0=1)
     assert (sm["up", "down"] == np.zeros((2, 2))).all()
 
 
 def test_interface():
-    b = ptsa.PlaneWaveBasisPartial.default([1, 2])
+    b = treams.PlaneWaveBasisPartial.default([1, 2])
     sm = SMatrix.interface(2, b, [(2, 2, 1), (9, 1, 2)])
-    m = ptsa.coeffs.fresnel(
+    m = treams.coeffs.fresnel(
         [[2, 6], [2, 10]], [[1j, np.sqrt(31)], [1j, np.sqrt(95)]], [1, 1 / 3]
     )
     assert (
@@ -28,7 +28,7 @@ def test_interface():
 
 
 def test_slab():
-    b = ptsa.PlaneWaveBasisPartial.default([1, 2])
+    b = treams.PlaneWaveBasisPartial.default([1, 2])
     sm = SMatrix.slab(6, b, 3, [1, 2, 3])
     stest = SMatrix.interface(6, b, [1, 2])
     stest = stest.add(SMatrix.propagation([0, 0, 3], 6, b, 2))
@@ -38,9 +38,9 @@ def test_slab():
 
 class TestArray:
     # a = np.eye(2)
-    # b = ptsa.lattice.reciprocal(a)
-    # kpars = [0.5, -1] + ptsa.lattice.diffr_orders_circle(b, 7) @ b
-    basis = ptsa.PlaneWaveBasisPartial.diffr_orders([0.5, -1], np.eye(2), 7)
+    # b = treams.lattice.reciprocal(a)
+    # kpars = [0.5, -1] + treams.lattice.diffr_orders_circle(b, 7) @ b
+    basis = treams.PlaneWaveBasisPartial.diffr_orders([0.5, -1], np.eye(2), 7)
     expect = np.zeros((2, 2, 10, 10), complex)
     expect[0, 0, :, :] = [
         [
@@ -532,7 +532,7 @@ class TestArray:
     ]
 
     def test(self):
-        tm = ptsa.TMatrix.sphere(4, 3, [0.2], [4, 1])
+        tm = treams.TMatrix.sphere(4, 3, [0.2], [4, 1])
         sm = SMatrix.from_array(tm, self.basis)
         assert all(
             np.all(np.abs(sm[i, j] - self.expect[i, j]) < 1e-8)
@@ -541,10 +541,10 @@ class TestArray:
         )
 
     # def test_cyl(self):
-    #     tm = ptsa.TMatrix.sphere(4, 3, [0.2], [4, 1])
+    #     tm = treams.TMatrix.sphere(4, 3, [0.2], [4, 1])
     #     # A larger range for kz (which later is kx) is needed for convergence
-    #     cwb = ptsa.CylindricalWaveBasis.with_periodicity(.5, 4, 1, 10)
-    #     tmc = ptsa.TMatrixC.from_array(tm, cwb)
+    #     cwb = treams.CylindricalWaveBasis.with_periodicity(.5, 4, 1, 10)
+    #     tmc = treams.TMatrixC.from_array(tm, cwb)
     #     qm = SMatrix.array(tmc, basis.permute())
     #     assert np.all(np.abs(qm.q - self.expect) < 1e-8)
 
@@ -673,12 +673,12 @@ class TestArray:
 #     def test_helicity(self):
 #         qm = QMatrix(np.eye(2), 5, modes=([-4, -4], [0, 0], [0, 1]))
 #         r = [1, 2, 3]
-#         expect = ptsa.special.vpw_A(-4, 0, 3, *r, [0, 1])
+#         expect = treams.special.vpw_A(-4, 0, 3, *r, [0, 1])
 #         assert np.all(np.abs(qm.field(r) - expect) < 1e-16)
 #     def test_parity(self):
 #         qm = QMatrix(np.eye(2), 5, modes=([-4, -4], [0, 0], [0, 1]), helicity=False)
 #         r = [1, 2, 3]
-#         expect = np.stack((ptsa.special.vpw_M(-4, 0, -3, *r), ptsa.special.vpw_N(-4, 0, -3, *r)))
+#         expect = np.stack((treams.special.vpw_M(-4, 0, -3, *r), treams.special.vpw_N(-4, 0, -3, *r)))
 #         assert np.all(np.abs(qm.field(r, direction=-1) - expect) < 1e-16)
 
 # class TestTR:

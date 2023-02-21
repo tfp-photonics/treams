@@ -5,8 +5,8 @@ import gmsh
 import h5py
 import numpy as np
 
-import ptsa
-from ptsa import io
+import treams
+from treams import io
 
 
 class TestMeshSpheres:
@@ -30,7 +30,7 @@ class TestSaveHdf5:
             m = np.arange(4 * 3 * 16 * 16).reshape((4, 3, 16, 16))
             tms = [
                 [
-                    ptsa.TMatrix(m[i, j], 7, epsilon=i + 1, mu=j + 1, kappa=0.5)
+                    treams.TMatrix(m[i, j], 7, epsilon=i + 1, mu=j + 1, kappa=0.5)
                     for j in range(3)
                 ]
                 for i in range(4)
@@ -69,7 +69,7 @@ class TestSaveHdf5:
             m = np.arange(4 * 3 * 16 * 16).reshape((4, 3, 16, 16))
             tms = [
                 [
-                    ptsa.TMatrix(m[i, j], i + 1, epsilon=1, mu=1, helicity=False)
+                    treams.TMatrix(m[i, j], i + 1, epsilon=1, mu=1, helicity=False)
                     for j in range(3)
                 ]
                 for i in range(4)

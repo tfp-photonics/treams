@@ -8,4 +8,4 @@ profile = "black"
 [tool.setuptools_scm]
 
 [tool.pylint.messages_control]
-extension-pkg-whitelist = "ptsa"
+extension-pkg-whitelist = "treams"

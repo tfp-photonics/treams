@@ -1,27 +1,27 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-import ptsa
+import treams
 
 k0 = 2 * np.pi / 1000
-air = ptsa.Material()
-snow = ptsa.Material(16 + 0.1j)
+air = treams.Material()
+snow = treams.Material(16 + 0.1j)
 lmax = 4
 radii = [150, 100, 40, 30]  # head, body, right and left hand
 
-snowballs = [ptsa.TMatrix.sphere(lmax, k0, r, [snow, air]) for r in radii]
+snowballs = [treams.TMatrix.sphere(lmax, k0, r, [snow, air]) for r in radii]
 
 positions = [[0, 0, -100], [0, 0, 150], [-85, 145, -5], [-80, -135, -7.5]]
-snowman = ptsa.TMatrix.cluster(snowballs, positions).interacted()
+snowman = treams.TMatrix.cluster(snowballs, positions).interacted()
 
-pw = ptsa.plane_wave(k0, 0, 0, 0)
+pw = treams.plane_wave(k0, 0, 0, 0)
 xs = snowman.xs(pw)
 print(f"scattering cross section: {xs[0]}, extinction cross section: {xs[1]}")
 
 grid = np.mgrid[-300:300:101j, 0:1, -300:300:101j].squeeze().transpose((1, 2, 0))
 field = np.zeros_like(grid, complex)
 
-snowman_global = snowman.globalmat(ptsa.SphericalWaveBasis.default(6))
+snowman_global = snowman.globalmat(treams.SphericalWaveBasis.default(6))
 valid = snowman_global.valid_points(grid, [250])
 sca = snowman_global @ pw.expand(snowman_global.basis) @ pw
 field[valid, :] = (sca.efield(grid[valid, :]) * sca[:, None]).sum(axis=-2)

@@ -1,6 +1,6 @@
 import numpy as np
 
-from ptsa import pw
+from treams import pw
 
 
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):

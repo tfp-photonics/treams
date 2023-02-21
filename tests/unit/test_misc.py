@@ -1,6 +1,6 @@
 import numpy as np
 
-from ptsa import misc
+from treams import misc
 
 
 class TestRefractiveIndex:

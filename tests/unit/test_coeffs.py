@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 
-import ptsa.coeffs as cf
+import treams.coeffs as cf
 
 EPS = 2e-7
 EPSSQ = 4e-14

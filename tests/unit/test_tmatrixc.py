@@ -2,8 +2,8 @@ import copy
 
 import numpy as np
 
-import ptsa
-from ptsa import TMatrixC
+import treams
+from treams import TMatrixC
 
 
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
@@ -57,7 +57,7 @@ class TestInit:
 class TestCylinder:
     def test(self):
         tm = TMatrixC.cylinder([1], 2, 3, [4], [2, 9], kappa=[1, 2])
-        m = ptsa.coeffs.mie_cyl(1, [-2, -1, 0, 1, 2], 3, [4], [2, 9], [1, 1], [1, 2])
+        m = treams.coeffs.mie_cyl(1, [-2, -1, 0, 1, 2], 3, [4], [2, 9], [1, 1], [1, 2])
         assert (
             tm.t[0, 0] == m[0, 1, 1]
             and tm.t[1, 1] == m[0, 0, 0]

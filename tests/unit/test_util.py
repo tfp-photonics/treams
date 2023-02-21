@@ -1,6 +1,6 @@
 import pytest
 
-from ptsa import util
+from treams import util
 
 
 class TestAnnotationDict:

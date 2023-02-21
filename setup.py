@@ -1,4 +1,4 @@
-"""Packaging of ptsa."""
+"""Packaging of treams."""
 import os
 
 import numpy as np
@@ -69,26 +69,26 @@ if os.environ.get("CYTHON_COVERAGE", False):
     compiler_directives["linetrace"] = True
 
 extension_names = [
-    "ptsa.coeffs",
-    "ptsa.config",
-    "ptsa.cw",
-    "ptsa.pw",
-    "ptsa.sw",
-    "ptsa.lattice._dsum",
-    "ptsa.lattice._esum",
-    "ptsa.lattice._gufuncs",
-    "ptsa.lattice._misc",
-    "ptsa.lattice.cython_lattice",
-    "ptsa.special._bessel",
-    "ptsa.special._coord",
-    "ptsa.special._gufuncs",
-    "ptsa.special._integrals",
-    "ptsa.special._misc",
-    "ptsa.special._ufuncs",
-    "ptsa.special._waves",
-    "ptsa.special._wigner3j",
-    "ptsa.special._wignerd",
-    "ptsa.special.cython_special",
+    "treams.coeffs",
+    "treams.config",
+    "treams.cw",
+    "treams.pw",
+    "treams.sw",
+    "treams.lattice._dsum",
+    "treams.lattice._esum",
+    "treams.lattice._gufuncs",
+    "treams.lattice._misc",
+    "treams.lattice.cython_lattice",
+    "treams.special._bessel",
+    "treams.special._coord",
+    "treams.special._gufuncs",
+    "treams.special._integrals",
+    "treams.special._misc",
+    "treams.special._ufuncs",
+    "treams.special._waves",
+    "treams.special._wigner3j",
+    "treams.special._wignerd",
+    "treams.special.cython_special",
 ]
 extensions = [
     Extension(name, [f"{name.replace('.', '/')}.pyx"], **keys)

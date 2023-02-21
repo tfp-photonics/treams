@@ -36,13 +36,13 @@ and
 
 where :math:`\boldsymbol E`, :math:`\boldsymbol H`, :math:`\boldsymbol D`, and
 :math:`\boldsymbol B` are the electric and magnetic fields, the displacement field, and
-the magnetic flux density (:func:`ptsa.efield`, :func:`ptsa.hfield`,
-:func:`ptsa.dfield`, :func:`ptsa.bfield`). All these quantities are complex valued
+the magnetic flux density (:func:`treams.efield`, :func:`treams.hfield`,
+:func:`treams.dfield`, :func:`treams.bfield`). All these quantities are complex valued
 fields, that depend on the angular frequency :math:`\omega` and the position
 :math:`\boldsymbol r`, which we omitted here for a conciser notation. The speed of light
 (in vacuum) :math:`c`, the free space impedance :math:`Z_0`, and the vacuum permittivity
 :math:`\epsilon_0` are chosen as constant prefactors such that all fields are normalized
-to the same units. Conventionally, within ptsa the (vacuum) wave number
+to the same units. Conventionally, within treams the (vacuum) wave number
 :math:`k_0 = \frac{\omega}{c}` is generally used to express the frequency.
 
 For the transformation to the time domain we use for a general function
@@ -82,7 +82,7 @@ of the four electromagnetic fields can be expressed by
     \end{pmatrix}
 
 where :math:`\epsilon`, :math:`\mu`, and :math:`\kappa` are the relative permittivity,
-relative permeability, and chirality parameter (:class:`ptsa.Material`). Due to the
+relative permeability, and chirality parameter (:class:`treams.Material`). Due to the
 requirement of isotropy these quantities are all scalar.
 
 The combination of the curl equation and the constitutive relations leads to the
@@ -126,7 +126,7 @@ that can be diagonalized to yield
     \end{pmatrix}
 
 where the Riemann-Silberstein vectors :math:`\sqrt{2} \boldsymbol G_\pm = \boldsymbol E
-\pm \mathrm i Z_0 Z \boldsymbol H` appear (:func:`ptsa.gfield`), with the relative
+\pm \mathrm i Z_0 Z \boldsymbol H` appear (:func:`treams.gfield`), with the relative
 impedance defined as :math:`Z = \sqrt{\frac{\mu}{\epsilon}}`. The wave numbers in the
 medium are :math:`k_\pm = k_0 n_pm = k_0 (n \pm \kappa)` with the refractive index
 :math:`n = \sqrt{\epsilon \mu}`.
@@ -135,7 +135,7 @@ The alternative definition of the Riemann-Silberstein vectors :math:`\sqrt{2}
 \boldsymbol F_\pm = \frac{1}{\epsilon_0 \epsilon} \boldsymbol D \pm \mathrm i
 \frac{c}{n} \boldsymbol B` using the displacement field and the magnetic flux density
 instead of the electric and magnetic field is related to the definition above by
-:math:`\boldsymbol F_\pm = \frac{n_\pm}{n} \boldsymbol G_\pm` (:func:`ptsa.ffield`).
+:math:`\boldsymbol F_\pm = \frac{n_\pm}{n} \boldsymbol G_\pm` (:func:`treams.ffield`).
 
 In isotropic media the divergence equations simply become :math:`\nabla
 \boldsymbol G_\pm = 0 = \nabla \boldsymbol F_\pm`.
@@ -207,7 +207,7 @@ vector is constant and conventionally chosen to be the unit vector along the z-a
     = -\boldsymbol{\hat \theta}_{\boldsymbol k}
     \mathrm e^{\mathrm i \boldsymbol k \boldsymbol r}
 
-are found (:func:`ptsa.special.vpw_M` and :func:`ptsa.special.vpw_N`). We normalized
+are found (:func:`treams.special.vpw_M` and :func:`treams.special.vpw_N`). We normalized
 these solutions such that they have unit strength for real-valued wave vectors. The
 solution :math:`\boldsymbol M_{\boldsymbol k}` is always perpendicular to the z-axis.
 Thus, with respect to the x-y-plane those solutions are often referred to as `TE`, when
@@ -227,7 +227,7 @@ The functions :math:`Z_m^{(n)}` are the Bessel and Hankel functions. For a compl
 of solutions it is necessary to select two of them. We generally use the (regular)
 Bessel functions :math:`J_m = Z_m^{(1)}` and the Hankel functions of the first kind
 :math:`H_m^{(1)} = Z_m^{(3)}` which are singular and correspond to radiating waves
-(:func:`ptsa.special.jv`, :func:`ptsa.special.hankel1`). So, the cylindrical wave
+(:func:`treams.special.jv`, :func:`treams.special.hankel1`). So, the cylindrical wave
 solutions are
 
 .. math::
@@ -245,9 +245,9 @@ solutions are
     + \frac{k_\rho}{k} Z_m^{(1)}(k_\rho \rho) \boldsymbol{\hat z}\right)
     \mathrm e^{\mathrm i (k_z z + m \varphi)}
 
-where we, again, normalized the functions (:func:`ptsa.special.vcw_rM`,
-:func:`ptsa.special.vcw_M`, :func:`ptsa.special.vcw_rN`, and
-:func:`ptsa.special.vcw_N`). Since the steering vector is in the direction of the
+where we, again, normalized the functions (:func:`treams.special.vcw_rM`,
+:func:`treams.special.vcw_M`, :func:`treams.special.vcw_rN`, and
+:func:`treams.special.vcw_N`). Since the steering vector is in the direction of the
 z-axis, the solutions :math:`\boldsymbol M_{k_z, m}^{(n)}` lie always in the x-y-plane.
 
 Spherical waves
@@ -257,10 +257,10 @@ Finally, we define the spherical solutions starting from the scalar solutions
 :math:`z_l^{(n)}(kr) Y_{lm}(\theta, \phi)` where :math:`z_l^{(n)}` are the spherical
 Bessel and Hankel functions (and we choose :math:`j_l = z_l^{(1)}` and
 :math:`h_l^{(1)} = z_l^{(n)}` in complete analogy to the cylindrical case) and
-:math:`Y_{lm}` are the spherical harmonics (:func:`ptsa.special.spherical_jn`,
-:func:`ptsa.special.spherical_hankel1`, and :func:`ptsa.special.sph_harm`). The value
-:math:`l \in \mathbb N` refers to the angular momentum. The value :math:`l = 0` is only
-possible for longitudinal modes. So, for electromagnetic waves generally
+:math:`Y_{lm}` are the spherical harmonics (:func:`treams.special.spherical_jn`,
+:func:`treams.special.spherical_hankel1`, and :func:`treams.special.sph_harm`). The
+value :math:`l \in \mathbb N` refers to the angular momentum. The value :math:`l = 0` is
+only possible for longitudinal modes. So, for electromagnetic waves generally
 :math:`l \geq 1`. The projection of the angular momentum onto the z-axis is :math:`m \in
 \mathbb Z` with :math:`|m| \leq l`. The steering vector for the spherical coordinate
 solution is :math:`\boldsymbol r`. Then, the vector spherical waves are defined as
@@ -276,8 +276,8 @@ solution is :math:`\boldsymbol r`. Then, the vector spherical waves are defined 
     \boldsymbol Y_{lm}(\theta, \varphi)
     + \sqrt{l (l + 1)} \frac{h_l^{(1)}(kr)}{kr} \boldsymbol Z_{lm}(\theta, \varphi)
 
-(:func:`ptsa.special.vsw_rM`, :func:`ptsa.special.vsw_M`, :func:`ptsa.special.vsw_rN`,
-and :func:`ptsa.special.vsw_N`) where
+(:func:`treams.special.vsw_rM`, :func:`treams.special.vsw_M`,
+:func:`treams.special.vsw_rN`, and :func:`treams.special.vsw_N`) where
 
 .. math::
 
@@ -296,12 +296,12 @@ and :func:`ptsa.special.vsw_N`) where
     \boldsymbol Z_{lm} (\theta, \varphi)
     = \mathrm i Y_{lm}(\theta, \varphi) \boldsymbol{\hat r}
 
-are the vector spherical harmonics (:func:`ptsa.special.vsh_X`,
-:func:`ptsa.special.vsh_Y`, and :func:`ptsa.special.vsh_Z`). These are themselves
+are the vector spherical harmonics (:func:`treams.special.vsh_X`,
+:func:`treams.special.vsh_Y`, and :func:`treams.special.vsh_Z`). These are themselves
 defined by the functions :math:`\pi_l^m(x) = \frac{m P_l^m(x)}{\sqrt{1 - x^2}}`,
 :math:`\tau_l^m(x) = \frac{\mathrm d}{\mathrm d \theta}P_l^m(x = \cos\theta)`, and
-the associated Legendre polynomials :math:`P_l^m` (:func:`ptsa.special.pi_fun`,
-:func:`ptsa.special.tau_fun`, and :func:`ptsa.special.lpmv`). The vector spherical
+the associated Legendre polynomials :math:`P_l^m` (:func:`treams.special.pi_fun`,
+:func:`treams.special.tau_fun`, and :func:`treams.special.lpmv`). The vector spherical
 harmonics are orthogonal to each other and normalized to 1 upon integration over the
 solid angle.
 
@@ -333,9 +333,9 @@ with the above definitions we find that :math:`\nabla \times
 (k, \boldsymbol r)`. So, the combinations :math:`\sqrt{2} \boldsymbol A_{\pm,\nu}
 (k, \boldsymbol r) = \boldsymbol N_\nu (k, \boldsymbol r) \pm \boldsymbol M_\nu
 (k, \boldsymbol r)` are indeed solutions for the respective Riemann-Silberstein vectors
-(:func:`ptsa.special.vpw_A`, :func:`ptsa.special.vcw_rA`, :func:`ptsa.special.vcw_A`,
-:func:`ptsa.special.vsw_rA`, and :func:`ptsa.special.vsw_A`). The solution for Maxwell's
-equations are then
+(:func:`treams.special.vpw_A`, :func:`treams.special.vcw_rA`,
+:func:`treams.special.vcw_A`, :func:`treams.special.vsw_rA`, and
+:func:`treams.special.vsw_A`). The solution for Maxwell's equations are then
 
 .. math::
 

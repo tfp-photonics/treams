@@ -1,37 +1,37 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-import ptsa
+import treams
 
 k0 = 2 * np.pi / 700  # Wave number in vacuum
-materials = [ptsa.Material(-16.5 + 1j), ptsa.Material()]
+materials = [treams.Material(-16.5 + 1j), treams.Material()]
 lmax = 2
 radii = [75, 75]
-spheres = [ptsa.TMatrix.sphere(lmax, k0, r, materials) for r in radii]
+spheres = [treams.TMatrix.sphere(lmax, k0, r, materials) for r in radii]
 positions = [[-25, 0, -73], [25, 0, 73]]
-chain_sph = ptsa.TMatrix.cluster(spheres, positions)
+chain_sph = treams.TMatrix.cluster(spheres, positions)
 pitch = 300
 kz = 0
 chain_sph = chain_sph.interacted_lattice(pitch, kz)
 
-pw = ptsa.plane_wave(k0, 0, 0, 0)
+pw = treams.plane_wave(k0, 0, 0, 0)
 grid = np.mgrid[-150:150:51j, 0:1, -150:150:51j].squeeze().transpose((1, 2, 0))
 field = np.zeros_like(grid, complex)
 
 valid = chain_sph.valid_points(grid, radii) & (np.abs(grid[:, :, 0]) < 100)
 sca = chain_sph @ pw.expand(chain_sph.basis) @ pw
 for i, ii in zip(*np.where(valid)):
-    probe = ptsa.SphericalWaveBasis.default(1, positions=grid[i, ii, :])
+    probe = treams.SphericalWaveBasis.default(1, positions=grid[i, ii, :])
     field[i, ii, :] = (
-        ptsa.efield(grid[i, ii, :], basis=probe, k0=k0).T
+        treams.efield(grid[i, ii, :], basis=probe, k0=k0).T
         @ sca.expandlattice(basis=probe)
         @ sca
     )
 
-cwb = ptsa.CylindricalWaveBasis.with_periodicity(
+cwb = treams.CylindricalWaveBasis.with_periodicity(
     0, 2, pitch, 13 / pitch, nmax=2, positions=positions
 )
-chain = ptsa.TMatrixC.from_array(chain_sph, cwb)
+chain = treams.TMatrixC.from_array(chain_sph, cwb)
 valid = chain.valid_points(grid, radii)
 field[valid, :] = np.sum(
     chain.efield(grid[valid]) * (chain @ pw.expand(chain.basis) @ pw)[:, None], axis=-2

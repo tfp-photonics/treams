@@ -9,14 +9,14 @@ Examples
 .. contents:: Table of contents
    :local:
 
-The computations implemented in ptsa mainly revolve around three different types of
+The computations implemented in treams mainly revolve around three different types of
 matrices: the (spherical) T-matrix, the cylindrical T-matrix and the S-matrices. These
 three types of matrices emerge from using either spherical, cylindrical, or plane waves
 as solutions to Maxwell's equations. The examples are sorted into these three topics.
 Each of these topics start with a short introduction on the particular type of matrix
 before using it.
 
-In all examples we assume that ``import numpy as np`` and ``import ptsa`` is used.
+In all examples we assume that ``import numpy as np`` and ``import treams`` is used.
 
 T-matrix examples
 =================
@@ -41,17 +41,17 @@ convenience we store the T-matrices in a simple list:
    :language: python
    :lines: 12
 
-Examining the call of `ptsa` in this example shows a simple structure. We use the
-:class:`ptsa.TMatrix` for our object and then define the sphere. As a minimum the
+Examining the call of `treams` in this example shows a simple structure. We use the
+:class:`treams.TMatrix` for our object and then define the sphere. As a minimum the
 maximal multipole order has to be given, then the vacuum wave number. Then, we define
 the radius and finally the relative permittivities. The materials are given from the
 inside to the outside.
 
 .. note::
 
-  The method :func:`ptsa.TMatrix.sphere` is actually more general. It can calculate the
-  T-matrix of spherical core-shell particles with an arbitrary number of shells. Also,
-  each material can be chiral.
+   The method :func:`treams.TMatrix.sphere` is actually more general. It can calculate
+   the T-matrix of spherical core-shell particles with an arbitrary number of shells.
+   Also, each material can be chiral.
 
 Now, we want to create a cluster of these T-matrices:
 
@@ -61,10 +61,10 @@ Now, we want to create a cluster of these T-matrices:
 
 We first create the cluster by giving the T-matrices of all its constituent particles
 and specifying their positions. It is advised to always put the origin in a symmetry
-point if possible. The invocation of :func:`ptsa.TMatrix.cluster` does create a
+point if possible. The invocation of :func:`treams.TMatrix.cluster` does create a
 block-diagonal T-matrix from all its constituents. However, the interaction between all
 these particles has to computed in a separate step by using the method
-:func:`ptsa.TMatrix.interacted`. Now, ``snowman`` contains the *local* T-matrix. This
+:func:`treams.TMatrix.interacted`. Now, ``snowman`` contains the *local* T-matrix. This
 means that the full scattered field is described by spherical waves at multiple origins.
 This has the benefit, that one can usually obtain correct fields closer to the geometric
 object.

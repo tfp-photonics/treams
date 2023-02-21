@@ -3,8 +3,8 @@ import pytest
 import numpy as np
 import scipy.special as ssc
 
-import ptsa.special as sc
-import ptsa.special.cython_special as cs
+import treams.special as sc
+import treams.special.cython_special as cs
 
 
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):

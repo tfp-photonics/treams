@@ -1,7 +1,7 @@
 import numpy as np
 import scipy.special as sc
 
-from ptsa import cw
+from treams import cw
 
 
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):

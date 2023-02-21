@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-import ptsa.lattice as la
+import treams.lattice as la
 
 
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):

@@ -1,4 +1,4 @@
-from ptsa import sw
+from treams import sw
 
 
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):

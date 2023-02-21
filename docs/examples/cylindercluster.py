@@ -1,17 +1,17 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-import ptsa
+import treams
 
 k0 = 2 * np.pi / 1000  # Wave number in vacuum
 kz = 0
 mmax = 4
 radii = [150, 100]
 cylinders = [
-    ptsa.TMatrixC.cylinder(kz, mmax, k0, r, [4, 16 + 1j], kappa=[0.5, 0]) for r in radii
+    treams.TMatrixC.cylinder(kz, mmax, k0, r, [4, 16 + 1j], kappa=[0.5, 0]) for r in radii
 ]
 positions = [[75, 75, 0], [-110, -110, 0]]
-cluster = ptsa.TMatrixC.cluster(cylinders, positions)
+cluster = treams.TMatrixC.cluster(cylinders, positions)
 cluster.interact()
 
 illu = cluster.illuminate_pw(np.real(cluster.ks[0]), 0, 0, 0)
@@ -24,7 +24,7 @@ valid = np.logical_and(
 )
 scattered_field_coeff = cluster.field(grid[valid, :])
 field[valid, :] = np.sum(scattered_field_coeff * (cluster.t @ illu), axis=-2)
-field[valid, :] += ptsa.special.vpw_A(
+field[valid, :] += treams.special.vpw_A(
     cluster.ks[0].real, 0, 0, grid[valid, 0], grid[valid, 1], grid[valid, 2], 0
 )
 

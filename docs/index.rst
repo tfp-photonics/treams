@@ -1,6 +1,6 @@
-================================
-Welcome to ptsa's documentation!
-================================
+=================================
+Welcome to treams's documentation!
+=================================
 
 .. toctree::
    :maxdepth: 1
@@ -8,7 +8,7 @@ Welcome to ptsa's documentation!
    gettingstarted
    examples
    theory
-   ptsa
+   treams
    dev
    about
 
