@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.cumprod
+==================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotatedArray.cumprod

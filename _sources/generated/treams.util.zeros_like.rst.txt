@@ -1,0 +1,6 @@
+treams.util.zeros\_like
+=======================
+
+.. currentmodule:: treams.util
+
+.. autofunction:: zeros_like

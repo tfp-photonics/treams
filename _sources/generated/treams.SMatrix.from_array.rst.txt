@@ -1,0 +1,6 @@
+treams.SMatrix.from\_array
+==========================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.from_array

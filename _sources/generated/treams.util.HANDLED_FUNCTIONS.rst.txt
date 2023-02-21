@@ -1,0 +1,6 @@
+treams.util.HANDLED\_FUNCTIONS
+==============================
+
+.. currentmodule:: treams.util
+
+.. autodata:: HANDLED_FUNCTIONS

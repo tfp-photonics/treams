@@ -1,6 +1,0 @@
-﻿ptsa.expandlattice
-==================
-
-.. currentmodule:: ptsa
-
-.. autofunction:: expandlattice

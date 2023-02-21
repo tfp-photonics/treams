@@ -1,0 +1,6 @@
+treams.util.AnnotationDict.\_\_ge\_\_
+=====================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotationDict.__ge__

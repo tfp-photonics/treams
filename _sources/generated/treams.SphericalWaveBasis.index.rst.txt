@@ -1,0 +1,6 @@
+treams.SphericalWaveBasis.index
+===============================
+
+.. currentmodule:: treams
+
+.. automethod:: SphericalWaveBasis.index

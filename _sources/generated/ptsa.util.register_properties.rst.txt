@@ -1,6 +1,0 @@
-ptsa.util.register\_properties
-==============================
-
-.. currentmodule:: ptsa.util
-
-.. autofunction:: register_properties

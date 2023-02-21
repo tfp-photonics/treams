@@ -1,6 +1,0 @@
-ptsa.TMatrixC.modetype
-======================
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: TMatrixC.modetype

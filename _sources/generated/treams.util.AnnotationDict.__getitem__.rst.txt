@@ -1,0 +1,6 @@
+treams.util.AnnotationDict.\_\_getitem\_\_
+==========================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotationDict.__getitem__

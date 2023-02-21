@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.relax
+================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotatedArray.relax

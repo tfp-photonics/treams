@@ -1,0 +1,6 @@
+treams.TMatrixC.\_\_abs\_\_
+===========================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrixC.__abs__

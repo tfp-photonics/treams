@@ -1,6 +1,0 @@
-ptsa.util.AnnotationDict.clear
-==============================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotationDict.clear

@@ -1,0 +1,6 @@
+treams.Lattice.hexagonal
+========================
+
+.. currentmodule:: treams
+
+.. automethod:: Lattice.hexagonal

@@ -1,6 +1,0 @@
-﻿ptsa.pw.to\_cw
-==============
-
-.. currentmodule:: ptsa.pw
-
-.. autodata:: to_cw

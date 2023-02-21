@@ -1,6 +1,0 @@
-ptsa.special.incgamma
-=====================
-
-.. currentmodule:: ptsa.special
-
-.. autodata:: incgamma

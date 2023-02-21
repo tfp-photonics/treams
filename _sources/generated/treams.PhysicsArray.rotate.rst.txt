@@ -1,0 +1,6 @@
+treams.PhysicsArray.rotate
+==========================
+
+.. currentmodule:: treams
+
+.. autoattribute:: PhysicsArray.rotate

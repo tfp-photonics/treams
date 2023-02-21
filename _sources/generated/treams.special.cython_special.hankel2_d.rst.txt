@@ -1,0 +1,6 @@
+treams.special.cython\_special.hankel2\_d
+=========================================
+
+.. currentmodule:: treams.special.cython_special
+
+.. autofunction:: hankel2_d

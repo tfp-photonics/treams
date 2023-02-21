@@ -1,6 +1,0 @@
-ptsa.TMatrix.rotate
-===================
-
-.. currentmodule:: ptsa
-
-.. autoattribute:: TMatrix.rotate

@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.\_\_eq\_\_
+=====================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotatedArray.__eq__

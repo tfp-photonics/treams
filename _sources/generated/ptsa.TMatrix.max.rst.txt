@@ -1,6 +1,0 @@
-ptsa.TMatrix.max
-================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrix.max

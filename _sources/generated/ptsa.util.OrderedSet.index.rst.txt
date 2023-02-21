@@ -1,6 +1,0 @@
-ptsa.util.OrderedSet.index
-==========================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: OrderedSet.index

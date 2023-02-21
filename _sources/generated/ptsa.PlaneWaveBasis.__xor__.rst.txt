@@ -1,6 +1,0 @@
-ptsa.PlaneWaveBasis.\_\_xor\_\_
-===============================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PlaneWaveBasis.__xor__

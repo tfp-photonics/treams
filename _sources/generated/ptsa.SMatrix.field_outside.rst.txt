@@ -1,6 +1,0 @@
-ptsa.SMatrix.field\_outside
-===========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: SMatrix.field_outside

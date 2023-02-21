@@ -1,6 +1,0 @@
-ptsa.util.AnnotationDict.keys
-=============================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotationDict.keys

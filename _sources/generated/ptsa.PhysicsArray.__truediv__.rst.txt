@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.\_\_truediv\_\_
-=================================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PhysicsArray.__truediv__

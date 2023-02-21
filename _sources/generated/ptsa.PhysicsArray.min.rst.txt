@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.min
-=====================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PhysicsArray.min

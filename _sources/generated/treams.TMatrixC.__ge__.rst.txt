@@ -1,0 +1,6 @@
+treams.TMatrixC.\_\_ge\_\_
+==========================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrixC.__ge__

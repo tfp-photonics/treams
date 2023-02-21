@@ -1,6 +1,0 @@
-ptsa.util.AnnotatedArray.sum
-============================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotatedArray.sum

@@ -1,0 +1,6 @@
+treams.SphericalWaveBasis.default
+=================================
+
+.. currentmodule:: treams
+
+.. automethod:: SphericalWaveBasis.default

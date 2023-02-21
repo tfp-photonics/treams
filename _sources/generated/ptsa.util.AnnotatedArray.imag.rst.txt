@@ -1,6 +1,0 @@
-ptsa.util.AnnotatedArray.imag
-=============================
-
-.. currentmodule:: ptsa.util
-
-.. autoproperty:: AnnotatedArray.imag

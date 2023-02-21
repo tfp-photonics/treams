@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.\_\_neg\_\_
-=============================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PhysicsArray.__neg__

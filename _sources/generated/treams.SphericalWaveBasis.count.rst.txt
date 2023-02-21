@@ -1,0 +1,6 @@
+treams.SphericalWaveBasis.count
+===============================
+
+.. currentmodule:: treams
+
+.. automethod:: SphericalWaveBasis.count

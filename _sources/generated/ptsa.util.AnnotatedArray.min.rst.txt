@@ -1,6 +1,0 @@
-ptsa.util.AnnotatedArray.min
-============================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotatedArray.min

@@ -1,0 +1,6 @@
+treams.PlaneWaveBasis.\_\_str\_\_
+=================================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasis.__str__

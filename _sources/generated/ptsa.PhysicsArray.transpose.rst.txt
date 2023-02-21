@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.transpose
-===========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PhysicsArray.transpose

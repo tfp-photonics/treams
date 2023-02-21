@@ -1,6 +1,0 @@
-ptsa.util.AnnotatedArray.\_\_pos\_\_
-====================================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotatedArray.__pos__

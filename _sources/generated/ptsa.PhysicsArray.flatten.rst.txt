@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.flatten
-=========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PhysicsArray.flatten

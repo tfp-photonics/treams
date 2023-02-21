@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.k0
-====================
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: PhysicsArray.k0

@@ -1,0 +1,6 @@
+treams.TMatrixC.krhos
+=====================
+
+.. currentmodule:: treams
+
+.. autoproperty:: TMatrixC.krhos

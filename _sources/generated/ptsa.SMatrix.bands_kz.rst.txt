@@ -1,6 +1,0 @@
-ptsa.SMatrix.bands\_kz
-======================
-
-.. currentmodule:: ptsa
-
-.. automethod:: SMatrix.bands_kz

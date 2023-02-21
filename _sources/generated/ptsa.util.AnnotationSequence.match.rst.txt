@@ -1,6 +1,0 @@
-ptsa.util.AnnotationSequence.match
-==================================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotationSequence.match

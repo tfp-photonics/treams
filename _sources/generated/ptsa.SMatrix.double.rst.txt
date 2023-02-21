@@ -1,6 +1,0 @@
-ptsa.SMatrix.double
-===================
-
-.. currentmodule:: ptsa
-
-.. automethod:: SMatrix.double

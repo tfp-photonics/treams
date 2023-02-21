@@ -1,0 +1,6 @@
+treams.util.ones\_like
+======================
+
+.. currentmodule:: treams.util
+
+.. autofunction:: ones_like

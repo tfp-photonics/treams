@@ -1,0 +1,6 @@
+treams.SphericalWaveBasis.positions
+===================================
+
+.. currentmodule:: treams
+
+.. autoproperty:: SphericalWaveBasis.positions

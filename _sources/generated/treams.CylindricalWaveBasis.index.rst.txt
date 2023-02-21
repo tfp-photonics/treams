@@ -1,0 +1,6 @@
+treams.CylindricalWaveBasis.index
+=================================
+
+.. currentmodule:: treams
+
+.. automethod:: CylindricalWaveBasis.index

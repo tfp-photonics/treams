@@ -1,0 +1,6 @@
+treams.SMatrix.slab
+===================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.slab

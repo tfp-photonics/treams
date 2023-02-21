@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.\_\_array\_ufunc\_\_
+===============================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotatedArray.__array_ufunc__

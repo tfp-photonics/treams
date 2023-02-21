@@ -1,6 +1,0 @@
-﻿ptsa.sw.translate\_periodic
-===========================
-
-.. currentmodule:: ptsa.sw
-
-.. autofunction:: translate_periodic

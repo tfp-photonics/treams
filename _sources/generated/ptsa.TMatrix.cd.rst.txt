@@ -1,6 +1,0 @@
-ptsa.TMatrix.cd
-===============
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: TMatrix.cd

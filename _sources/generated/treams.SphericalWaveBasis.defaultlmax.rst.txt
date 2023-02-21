@@ -1,0 +1,6 @@
+treams.SphericalWaveBasis.defaultlmax
+=====================================
+
+.. currentmodule:: treams
+
+.. automethod:: SphericalWaveBasis.defaultlmax

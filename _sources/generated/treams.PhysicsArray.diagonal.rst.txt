@@ -1,0 +1,6 @@
+treams.PhysicsArray.diagonal
+============================
+
+.. currentmodule:: treams
+
+.. automethod:: PhysicsArray.diagonal

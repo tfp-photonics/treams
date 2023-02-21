@@ -1,0 +1,6 @@
+treams.Lattice.rectangular
+==========================
+
+.. currentmodule:: treams
+
+.. automethod:: Lattice.rectangular

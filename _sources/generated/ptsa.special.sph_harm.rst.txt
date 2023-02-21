@@ -1,6 +1,0 @@
-ptsa.special.sph\_harm
-======================
-
-.. currentmodule:: ptsa.special
-
-.. autodata:: sph_harm

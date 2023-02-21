@@ -1,0 +1,6 @@
+treams.special.cython\_special.tl\_vsw\_rB
+==========================================
+
+.. currentmodule:: treams.special.cython_special
+
+.. autofunction:: tl_vsw_rB

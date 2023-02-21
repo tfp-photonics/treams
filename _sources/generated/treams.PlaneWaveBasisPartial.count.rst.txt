@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisPartial.count
+==================================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasisPartial.count

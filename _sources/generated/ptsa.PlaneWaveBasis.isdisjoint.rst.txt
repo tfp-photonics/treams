@@ -1,6 +1,0 @@
-ptsa.PlaneWaveBasis.isdisjoint
-==============================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PlaneWaveBasis.isdisjoint

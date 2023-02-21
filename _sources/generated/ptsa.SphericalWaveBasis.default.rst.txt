@@ -1,6 +1,0 @@
-ptsa.SphericalWaveBasis.default
-===============================
-
-.. currentmodule:: ptsa
-
-.. automethod:: SphericalWaveBasis.default

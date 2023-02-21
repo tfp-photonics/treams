@@ -1,6 +1,0 @@
-ptsa.Lattice.alignment
-======================
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: Lattice.alignment

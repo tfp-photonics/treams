@@ -1,6 +1,0 @@
-ptsa.special.car2pol
-====================
-
-.. currentmodule:: ptsa.special
-
-.. autodata:: car2pol

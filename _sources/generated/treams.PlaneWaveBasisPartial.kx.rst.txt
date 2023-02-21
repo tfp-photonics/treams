@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisPartial.kx
+===============================
+
+.. currentmodule:: treams
+
+.. autoproperty:: PlaneWaveBasisPartial.kx

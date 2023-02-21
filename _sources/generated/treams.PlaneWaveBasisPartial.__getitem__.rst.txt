@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisPartial.\_\_getitem\_\_
+============================================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasisPartial.__getitem__

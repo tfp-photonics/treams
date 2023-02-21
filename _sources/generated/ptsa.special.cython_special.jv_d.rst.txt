@@ -1,6 +1,0 @@
-ptsa.special.cython\_special.jv\_d
-==================================
-
-.. currentmodule:: ptsa.special.cython_special
-
-.. autofunction:: jv_d

@@ -1,0 +1,6 @@
+treams.SMatrix.cd
+=================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.cd

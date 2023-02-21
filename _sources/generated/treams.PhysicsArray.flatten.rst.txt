@@ -1,0 +1,6 @@
+treams.PhysicsArray.flatten
+===========================
+
+.. currentmodule:: treams
+
+.. automethod:: PhysicsArray.flatten

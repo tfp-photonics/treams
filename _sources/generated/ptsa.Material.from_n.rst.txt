@@ -1,6 +1,0 @@
-ptsa.Material.from\_n
-=====================
-
-.. currentmodule:: ptsa
-
-.. automethod:: Material.from_n

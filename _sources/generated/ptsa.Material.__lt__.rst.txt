@@ -1,6 +1,0 @@
-ptsa.Material.\_\_lt\_\_
-========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: Material.__lt__

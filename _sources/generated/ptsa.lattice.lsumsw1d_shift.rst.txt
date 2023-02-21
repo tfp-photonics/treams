@@ -1,6 +1,0 @@
-ptsa.lattice.lsumsw1d\_shift
-============================
-
-.. currentmodule:: ptsa.lattice
-
-.. autodata:: lsumsw1d_shift

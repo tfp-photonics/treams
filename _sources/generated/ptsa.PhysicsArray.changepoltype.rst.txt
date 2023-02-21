@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.changepoltype
-===============================
-
-.. currentmodule:: ptsa
-
-.. autoattribute:: PhysicsArray.changepoltype

@@ -1,6 +1,0 @@
-ptsa.SMatrix.changebasis
-========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: SMatrix.changebasis

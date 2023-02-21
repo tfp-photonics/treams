@@ -1,0 +1,6 @@
+treams.PhysicsArray.min
+=======================
+
+.. currentmodule:: treams
+
+.. automethod:: PhysicsArray.min

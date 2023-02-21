@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.\_\_truediv\_\_
+==========================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotatedArray.__truediv__

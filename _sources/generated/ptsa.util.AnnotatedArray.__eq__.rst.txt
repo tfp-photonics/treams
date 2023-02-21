@@ -1,6 +1,0 @@
-ptsa.util.AnnotatedArray.\_\_eq\_\_
-===================================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotatedArray.__eq__

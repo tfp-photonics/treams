@@ -1,6 +1,0 @@
-ptsa.TMatrix.transpose
-======================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrix.transpose

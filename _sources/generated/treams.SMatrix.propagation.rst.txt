@@ -1,0 +1,6 @@
+treams.SMatrix.propagation
+==========================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.propagation

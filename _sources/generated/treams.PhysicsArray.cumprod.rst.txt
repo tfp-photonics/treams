@@ -1,0 +1,6 @@
+treams.PhysicsArray.cumprod
+===========================
+
+.. currentmodule:: treams
+
+.. automethod:: PhysicsArray.cumprod

@@ -1,6 +1,0 @@
-ptsa.Material.nmp
-=================
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: Material.nmp

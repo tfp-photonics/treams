@@ -1,0 +1,6 @@
+treams.PhysicsArray.max
+=======================
+
+.. currentmodule:: treams
+
+.. automethod:: PhysicsArray.max

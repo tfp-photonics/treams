@@ -1,0 +1,6 @@
+treams.util.AnnotationDict.update
+=================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotationDict.update

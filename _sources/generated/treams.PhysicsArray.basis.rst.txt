@@ -1,0 +1,6 @@
+treams.PhysicsArray.basis
+=========================
+
+.. currentmodule:: treams
+
+.. autoproperty:: PhysicsArray.basis

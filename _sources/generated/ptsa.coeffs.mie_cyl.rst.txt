@@ -1,6 +1,0 @@
-﻿ptsa.coeffs.mie\_cyl
-====================
-
-.. currentmodule:: ptsa.coeffs
-
-.. autodata:: mie_cyl

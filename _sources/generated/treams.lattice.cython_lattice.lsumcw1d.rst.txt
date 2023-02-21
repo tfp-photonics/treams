@@ -1,0 +1,6 @@
+treams.lattice.cython\_lattice.lsumcw1d
+=======================================
+
+.. currentmodule:: treams.lattice.cython_lattice
+
+.. autofunction:: lsumcw1d

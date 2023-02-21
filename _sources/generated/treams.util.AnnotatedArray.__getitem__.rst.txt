@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.\_\_getitem\_\_
+==========================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotatedArray.__getitem__

@@ -1,0 +1,6 @@
+treams.TMatrixC.permute
+=======================
+
+.. currentmodule:: treams
+
+.. autoattribute:: TMatrixC.permute

@@ -1,6 +1,0 @@
-ptsa.CylindricalWaveBasis.defaultmmax
-=====================================
-
-.. currentmodule:: ptsa
-
-.. automethod:: CylindricalWaveBasis.defaultmmax

@@ -1,6 +1,0 @@
-ptsa.util.AnnotationSequence.\_\_getitem\_\_
-============================================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotationSequence.__getitem__

@@ -1,0 +1,6 @@
+treams.PhysicsArray.expand
+==========================
+
+.. currentmodule:: treams
+
+.. autoattribute:: PhysicsArray.expand

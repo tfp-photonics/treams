@@ -1,6 +1,0 @@
-ptsa.CylindricalWaveBasis.\_\_getitem\_\_
-=========================================
-
-.. currentmodule:: ptsa
-
-.. automethod:: CylindricalWaveBasis.__getitem__

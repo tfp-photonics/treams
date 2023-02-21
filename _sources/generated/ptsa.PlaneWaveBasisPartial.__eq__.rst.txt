@@ -1,6 +1,0 @@
-ptsa.PlaneWaveBasisPartial.\_\_eq\_\_
-=====================================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PlaneWaveBasisPartial.__eq__

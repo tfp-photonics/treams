@@ -1,6 +1,0 @@
-ptsa.util.diag
-==============
-
-.. currentmodule:: ptsa.util
-
-.. autofunction:: diag

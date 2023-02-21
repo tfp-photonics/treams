@@ -1,0 +1,6 @@
+treams.util.register\_properties
+================================
+
+.. currentmodule:: treams.util
+
+.. autofunction:: register_properties

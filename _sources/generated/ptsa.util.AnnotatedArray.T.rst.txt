@@ -1,6 +1,0 @@
-ptsa.util.AnnotatedArray.T
-==========================
-
-.. currentmodule:: ptsa.util
-
-.. autoproperty:: AnnotatedArray.T

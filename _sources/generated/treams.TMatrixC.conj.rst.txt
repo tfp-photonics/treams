@@ -1,0 +1,6 @@
+treams.TMatrixC.conj
+====================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrixC.conj

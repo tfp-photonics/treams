@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.flatten
+==================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotatedArray.flatten

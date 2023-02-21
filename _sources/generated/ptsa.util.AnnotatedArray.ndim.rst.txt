@@ -1,6 +1,0 @@
-ptsa.util.AnnotatedArray.ndim
-=============================
-
-.. currentmodule:: ptsa.util
-
-.. autoproperty:: AnnotatedArray.ndim

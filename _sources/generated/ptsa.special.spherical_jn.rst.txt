@@ -1,6 +1,0 @@
-ptsa.special.spherical\_jn
-==========================
-
-.. currentmodule:: ptsa.special
-
-.. autofunction:: spherical_jn

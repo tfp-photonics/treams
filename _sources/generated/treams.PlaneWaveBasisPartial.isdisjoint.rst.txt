@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisPartial.isdisjoint
+=======================================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasisPartial.isdisjoint

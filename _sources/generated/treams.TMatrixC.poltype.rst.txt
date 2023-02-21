@@ -1,0 +1,6 @@
+treams.TMatrixC.poltype
+=======================
+
+.. currentmodule:: treams
+
+.. autoproperty:: TMatrixC.poltype

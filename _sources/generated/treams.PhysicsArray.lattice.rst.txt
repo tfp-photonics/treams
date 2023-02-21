@@ -1,0 +1,6 @@
+treams.PhysicsArray.lattice
+===========================
+
+.. currentmodule:: treams
+
+.. autoproperty:: PhysicsArray.lattice

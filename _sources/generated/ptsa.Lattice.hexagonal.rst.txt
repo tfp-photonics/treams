@@ -1,6 +1,0 @@
-ptsa.Lattice.hexagonal
-======================
-
-.. currentmodule:: ptsa
-
-.. automethod:: Lattice.hexagonal

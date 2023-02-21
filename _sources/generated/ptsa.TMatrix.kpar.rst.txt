@@ -1,6 +1,0 @@
-ptsa.TMatrix.kpar
-=================
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: TMatrix.kpar

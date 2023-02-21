@@ -1,0 +1,6 @@
+treams.CylindricalWaveBasis.default
+===================================
+
+.. currentmodule:: treams
+
+.. automethod:: CylindricalWaveBasis.default

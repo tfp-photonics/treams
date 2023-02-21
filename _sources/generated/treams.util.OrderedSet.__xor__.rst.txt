@@ -1,0 +1,6 @@
+treams.util.OrderedSet.\_\_xor\_\_
+==================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: OrderedSet.__xor__

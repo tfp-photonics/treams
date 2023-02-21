@@ -1,0 +1,60 @@
+﻿treams.SphericalWaveBasis
+=========================
+
+.. currentmodule:: treams
+
+.. autoclass:: SphericalWaveBasis
+
+  
+  
+      .. rubric:: Attributes
+
+      .. autosummary::
+         :toctree:
+      
+         ~SphericalWaveBasis.isglobal
+         ~SphericalWaveBasis.positions
+  
+  
+
+  
+      .. rubric:: Methods
+
+      .. autosummary::
+         :toctree:
+
+      
+         ~SphericalWaveBasis.__and__
+         ~SphericalWaveBasis.__eq__
+         ~SphericalWaveBasis.__ge__
+         ~SphericalWaveBasis.__getitem__
+         ~SphericalWaveBasis.__gt__
+         ~SphericalWaveBasis.__le__
+         ~SphericalWaveBasis.__len__
+         ~SphericalWaveBasis.__lt__
+         ~SphericalWaveBasis.__ne__
+         ~SphericalWaveBasis.__or__
+         ~SphericalWaveBasis.__repr__
+         ~SphericalWaveBasis.__str__
+         ~SphericalWaveBasis.__sub__
+         ~SphericalWaveBasis.__xor__
+         ~SphericalWaveBasis.count
+         ~SphericalWaveBasis.default
+         ~SphericalWaveBasis.defaultdim
+         ~SphericalWaveBasis.defaultlmax
+         ~SphericalWaveBasis.ebcm
+         ~SphericalWaveBasis.index
+         ~SphericalWaveBasis.isdisjoint
+      
+         ~SphericalWaveBasis.__len__
+         ~SphericalWaveBasis.__ne__
+         ~SphericalWaveBasis.__str__
+         ~SphericalWaveBasis.__ge__
+         ~SphericalWaveBasis.__and__
+         ~SphericalWaveBasis.__le__
+         ~SphericalWaveBasis.__lt__
+         ~SphericalWaveBasis.__gt__
+         ~SphericalWaveBasis.__sub__
+         ~SphericalWaveBasis.__or__
+         ~SphericalWaveBasis.__xor__
+  

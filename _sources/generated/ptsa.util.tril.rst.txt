@@ -1,6 +1,0 @@
-ptsa.util.tril
-==============
-
-.. currentmodule:: ptsa.util
-
-.. autofunction:: tril

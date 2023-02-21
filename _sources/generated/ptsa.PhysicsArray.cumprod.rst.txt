@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.cumprod
-=========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PhysicsArray.cumprod

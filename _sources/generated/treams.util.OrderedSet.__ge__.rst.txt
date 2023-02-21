@@ -1,0 +1,6 @@
+treams.util.OrderedSet.\_\_ge\_\_
+=================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: OrderedSet.__ge__

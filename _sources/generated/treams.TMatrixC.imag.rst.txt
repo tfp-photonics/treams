@@ -1,0 +1,6 @@
+treams.TMatrixC.imag
+====================
+
+.. currentmodule:: treams
+
+.. autoproperty:: TMatrixC.imag

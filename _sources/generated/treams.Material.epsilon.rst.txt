@@ -1,0 +1,6 @@
+treams.Material.epsilon
+=======================
+
+.. currentmodule:: treams
+
+.. autoproperty:: Material.epsilon

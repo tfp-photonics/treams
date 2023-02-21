@@ -1,0 +1,6 @@
+treams.util.AnnotationDict.\_\_ne\_\_
+=====================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotationDict.__ne__

@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.imag
+===============================
+
+.. currentmodule:: treams.util
+
+.. autoproperty:: AnnotatedArray.imag

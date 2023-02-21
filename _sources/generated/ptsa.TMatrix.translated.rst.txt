@@ -1,6 +1,0 @@
-ptsa.TMatrix.translated
-=======================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrix.translated

@@ -1,0 +1,6 @@
+treams.special.cython\_special.wignerd
+======================================
+
+.. currentmodule:: treams.special.cython_special
+
+.. autofunction:: wignerd

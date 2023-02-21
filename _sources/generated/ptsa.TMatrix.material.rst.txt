@@ -1,6 +1,0 @@
-ptsa.TMatrix.material
-=====================
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: TMatrix.material

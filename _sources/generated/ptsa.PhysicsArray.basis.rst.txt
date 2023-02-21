@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.basis
-=======================
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: PhysicsArray.basis

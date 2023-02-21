@@ -1,6 +1,0 @@
-ptsa.TMatrixC.ann
-=================
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: TMatrixC.ann

@@ -1,6 +1,0 @@
-ptsa.SMatrix.\_\_repr\_\_
-=========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: SMatrix.__repr__

@@ -1,0 +1,53 @@
+﻿treams.Material
+===============
+
+.. currentmodule:: treams
+
+.. autoclass:: Material
+
+  
+  
+      .. rubric:: Attributes
+
+      .. autosummary::
+         :toctree:
+      
+         ~Material.epsilon
+         ~Material.impedance
+         ~Material.ischiral
+         ~Material.isreal
+         ~Material.kappa
+         ~Material.mu
+         ~Material.n
+         ~Material.nmp
+  
+  
+
+  
+      .. rubric:: Methods
+
+      .. autosummary::
+         :toctree:
+
+      
+         ~Material.__call__
+         ~Material.__eq__
+         ~Material.__ge__
+         ~Material.__gt__
+         ~Material.__le__
+         ~Material.__lt__
+         ~Material.__ne__
+         ~Material.__repr__
+         ~Material.__str__
+         ~Material.from_n
+         ~Material.from_nmp
+         ~Material.krhos
+         ~Material.ks
+         ~Material.kzs
+      
+         ~Material.__le__
+         ~Material.__lt__
+         ~Material.__ne__
+         ~Material.__ge__
+         ~Material.__gt__
+  

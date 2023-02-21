@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.\_\_setitem\_\_
-=================================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PhysicsArray.__setitem__

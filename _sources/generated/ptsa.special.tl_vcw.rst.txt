@@ -1,6 +1,0 @@
-ptsa.special.tl\_vcw
-====================
-
-.. currentmodule:: ptsa.special
-
-.. autodata:: tl_vcw

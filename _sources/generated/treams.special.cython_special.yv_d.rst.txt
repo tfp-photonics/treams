@@ -1,0 +1,6 @@
+treams.special.cython\_special.yv\_d
+====================================
+
+.. currentmodule:: treams.special.cython_special
+
+.. autofunction:: yv_d

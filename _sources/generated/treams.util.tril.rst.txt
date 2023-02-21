@@ -1,0 +1,6 @@
+treams.util.tril
+================
+
+.. currentmodule:: treams.util
+
+.. autofunction:: tril

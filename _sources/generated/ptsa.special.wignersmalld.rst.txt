@@ -1,6 +1,0 @@
-ptsa.special.wignersmalld
-=========================
-
-.. currentmodule:: ptsa.special
-
-.. autodata:: wignersmalld

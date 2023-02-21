@@ -1,0 +1,6 @@
+treams.TMatrix.astype
+=====================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrix.astype

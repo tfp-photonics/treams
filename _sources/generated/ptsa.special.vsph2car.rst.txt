@@ -1,6 +1,0 @@
-ptsa.special.vsph2car
-=====================
-
-.. currentmodule:: ptsa.special
-
-.. autodata:: vsph2car

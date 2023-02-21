@@ -1,0 +1,6 @@
+treams.TMatrixC.sum
+===================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrixC.sum

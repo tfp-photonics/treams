@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.max
-=====================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PhysicsArray.max

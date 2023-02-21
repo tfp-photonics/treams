@@ -1,0 +1,6 @@
+treams.TMatrixC.expandlattice
+=============================
+
+.. currentmodule:: treams
+
+.. autoattribute:: TMatrixC.expandlattice

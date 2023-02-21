@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>treams.Lattice &#8212; treams 0.2.2.dev94+gf11285d documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/no-nobiles.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev94+gf11285d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">treams.Lattice</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="treams-lattice">
+<h1>treams.Lattice<a class="headerlink" href="#treams-lattice" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="treams.Lattice">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">treams.</span></span><span class="sig-name descname"><span class="pre">Lattice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alignment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#treams.Lattice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lattice definition.</p>
+<p>The lattice can be one-, two-, or three-dimensional. If it is not three-dimensional
+it is required to be embedded into a lower dimensional subspace that is aligned with
+the Cartesian axes. The default alignment for one-dimensional lattices is along the
+z-axis and for two-dimensional lattices it is in the x-y-plane.</p>
+<p>For a one-dimensional lattice the definition consists of simply the value of the
+lattice pitch. Higher-dimensional lattices are defined by (2, 2)- or (3, 3)-arrays.
+If the arrays are diagonal it is sufficient to specify the (2,)- or (3,)-array
+diagonals. Alternatively, if another instance of a Lattice is given, the defined
+alignment is extracted, which can be used to separate a lower-dimensional
+sublattice.</p>
+<p>Lattices are immutable objects.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Lattice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="go">Lattice([[1. 0.]</span>
+<span class="go">        [0. 2.]], alignment=&#39;xy&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Lattice</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="go">Lattice(1.0, alignment=&#39;x&#39;)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arr</strong> (<em>float</em><em>, </em><em>array</em><em>, </em><a class="reference internal" href="#treams.Lattice" title="treams.Lattice"><em>Lattice</em></a>) – Lattice definition. Each row corresponds to one
+lattice vector, each column to the axis defined in <cite>alignment</cite>.</p></li>
+<li><p><strong>alignment</strong> (<em>str</em><em>, </em><em>optional</em>) – Alignment of the lattice. Possible values are ‘x’,
+‘y’, ‘z’, ‘xy’, ‘yz’, ‘zx’, and ‘xyz’.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Lattice.alignment.html#treams.Lattice.alignment" title="treams.Lattice.alignment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alignment</span></code></a></p></td>
+<td><p>The alignment of the lattice in three-dimensional space.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Lattice.dim.html#treams.Lattice.dim" title="treams.Lattice.dim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dim</span></code></a></p></td>
+<td><p>Dimension of the lattice.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Lattice.reciprocal.html#treams.Lattice.reciprocal" title="treams.Lattice.reciprocal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reciprocal</span></code></a></p></td>
+<td><p>Reciprocal lattice.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Lattice.volume.html#treams.Lattice.volume" title="treams.Lattice.volume"><code class="xref py py-obj docutils literal notranslate"><span class="pre">volume</span></code></a></p></td>
+<td><p>(Generalized) volume of the lattice.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Lattice.__and__.html#treams.Lattice.__and__" title="treams.Lattice.__and__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__and__</span></code></a>(other)</p></td>
+<td><p>Intersect two lattices.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Lattice.__eq__.html#treams.Lattice.__eq__" title="treams.Lattice.__eq__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__eq__</span></code></a>(other)</p></td>
+<td><p>Equality.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Lattice.__ge__.html#treams.Lattice.__ge__" title="treams.Lattice.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(value, /)</p></td>
+<td><p>Return self&gt;=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Lattice.__getitem__.html#treams.Lattice.__getitem__" title="treams.Lattice.__getitem__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__getitem__</span></code></a>(idx)</p></td>
+<td><p>Index into the lattice.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Lattice.__gt__.html#treams.Lattice.__gt__" title="treams.Lattice.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(value, /)</p></td>
+<td><p>Return self&gt;value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Lattice.__le__.html#treams.Lattice.__le__" title="treams.Lattice.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(other)</p></td>
+<td><p>Test if one lattice includes another.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Lattice.__lt__.html#treams.Lattice.__lt__" title="treams.Lattice.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(value, /)</p></td>
+<td><p>Return self&lt;value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Lattice.__ne__.html#treams.Lattice.__ne__" title="treams.Lattice.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(value, /)</p></td>
+<td><p>Return self!=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Lattice.__or__.html#treams.Lattice.__or__" title="treams.Lattice.__or__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__or__</span></code></a>(other)</p></td>
+<td><p>Merge two lattices.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Lattice.__repr__.html#treams.Lattice.__repr__" title="treams.Lattice.__repr__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__repr__</span></code></a>()</p></td>
+<td><p>Representation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Lattice.__str__.html#treams.Lattice.__str__" title="treams.Lattice.__str__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__str__</span></code></a>()</p></td>
+<td><p>String representation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Lattice.cubic.html#treams.Lattice.cubic" title="treams.Lattice.cubic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cubic</span></code></a>(pitch[, alignment])</p></td>
+<td><p>Create a three-dimensional cubic lattice.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Lattice.hexagonal.html#treams.Lattice.hexagonal" title="treams.Lattice.hexagonal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hexagonal</span></code></a>(pitch[, height, alignment])</p></td>
+<td><p>Create a hexagonal lattice.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Lattice.isdisjoint.html#treams.Lattice.isdisjoint" title="treams.Lattice.isdisjoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isdisjoint</span></code></a>(other)</p></td>
+<td><p>Test if lattices are disjoint.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Lattice.orthorhombic.html#treams.Lattice.orthorhombic" title="treams.Lattice.orthorhombic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orthorhombic</span></code></a>(x, y, z[, alignment])</p></td>
+<td><p>Create a three-dimensional orthorhombic lattice.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Lattice.permute.html#treams.Lattice.permute" title="treams.Lattice.permute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">permute</span></code></a>([n])</p></td>
+<td><p>Permute the lattice orientation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Lattice.rectangular.html#treams.Lattice.rectangular" title="treams.Lattice.rectangular"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rectangular</span></code></a>(x, y[, alignment])</p></td>
+<td><p>Create a two-dimensional rectangular lattice.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Lattice.square.html#treams.Lattice.square" title="treams.Lattice.square"><code class="xref py py-obj docutils literal notranslate"><span class="pre">square</span></code></a>(pitch[, alignment])</p></td>
+<td><p>Create a two-dimensional square lattice.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Lattice.__lt__.html#treams.Lattice.__lt__" title="treams.Lattice.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(value, /)</p></td>
+<td><p>Return self&lt;value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Lattice.__ne__.html#treams.Lattice.__ne__" title="treams.Lattice.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(value, /)</p></td>
+<td><p>Return self!=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Lattice.__ge__.html#treams.Lattice.__ge__" title="treams.Lattice.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(value, /)</p></td>
+<td><p>Return self&gt;=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Lattice.__gt__.html#treams.Lattice.__gt__" title="treams.Lattice.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(value, /)</p></td>
+<td><p>Return self&gt;value.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/generated/treams.Lattice.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev94+gf11285d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">treams.Lattice</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Dominik Beutel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+treams.lattice.cython\_lattice.nedge
+====================================
+
+.. currentmodule:: treams.lattice.cython_lattice
+
+.. autofunction:: nedge

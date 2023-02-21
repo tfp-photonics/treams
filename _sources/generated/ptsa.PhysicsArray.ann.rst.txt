@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.ann
-=====================
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: PhysicsArray.ann

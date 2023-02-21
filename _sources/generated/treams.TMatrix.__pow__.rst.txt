@@ -1,0 +1,6 @@
+treams.TMatrix.\_\_pow\_\_
+==========================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrix.__pow__

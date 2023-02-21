@@ -1,0 +1,6 @@
+﻿treams.io.load\_hdf5
+====================
+
+.. currentmodule:: treams.io
+
+.. autofunction:: load_hdf5

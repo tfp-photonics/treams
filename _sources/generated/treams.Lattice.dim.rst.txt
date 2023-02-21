@@ -1,0 +1,6 @@
+treams.Lattice.dim
+==================
+
+.. currentmodule:: treams
+
+.. autoproperty:: Lattice.dim

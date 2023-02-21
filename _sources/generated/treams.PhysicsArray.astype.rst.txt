@@ -1,0 +1,6 @@
+treams.PhysicsArray.astype
+==========================
+
+.. currentmodule:: treams
+
+.. automethod:: PhysicsArray.astype

@@ -1,0 +1,6 @@
+treams.Material.\_\_call\_\_
+============================
+
+.. currentmodule:: treams
+
+.. automethod:: Material.__call__

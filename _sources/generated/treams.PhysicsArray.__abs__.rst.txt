@@ -1,0 +1,6 @@
+treams.PhysicsArray.\_\_abs\_\_
+===============================
+
+.. currentmodule:: treams
+
+.. automethod:: PhysicsArray.__abs__

@@ -1,6 +1,0 @@
-ptsa.TMatrixC.changepoltype
-===========================
-
-.. currentmodule:: ptsa
-
-.. autoattribute:: TMatrixC.changepoltype

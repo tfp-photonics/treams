@@ -1,6 +1,0 @@
-﻿ptsa.pw.permute\_xyz
-====================
-
-.. currentmodule:: ptsa.pw
-
-.. autofunction:: permute_xyz

@@ -1,0 +1,6 @@
+treams.Lattice.permute
+======================
+
+.. currentmodule:: treams
+
+.. automethod:: Lattice.permute

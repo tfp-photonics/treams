@@ -1,0 +1,6 @@
+treams.TMatrix.conjugate
+========================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrix.conjugate

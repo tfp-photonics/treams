@@ -1,0 +1,6 @@
+treams.PhysicsArray.sum
+=======================
+
+.. currentmodule:: treams
+
+.. automethod:: PhysicsArray.sum

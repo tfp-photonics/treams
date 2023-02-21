@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.\_\_divmod\_\_
+=========================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotatedArray.__divmod__

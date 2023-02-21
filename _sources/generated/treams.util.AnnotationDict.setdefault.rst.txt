@@ -1,0 +1,6 @@
+treams.util.AnnotationDict.setdefault
+=====================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotationDict.setdefault

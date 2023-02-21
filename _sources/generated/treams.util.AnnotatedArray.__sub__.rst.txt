@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.\_\_sub\_\_
+======================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotatedArray.__sub__

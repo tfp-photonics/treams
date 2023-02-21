@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.sum
+==============================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotatedArray.sum

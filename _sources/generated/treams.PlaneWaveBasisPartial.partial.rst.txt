@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisPartial.partial
+====================================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasisPartial.partial

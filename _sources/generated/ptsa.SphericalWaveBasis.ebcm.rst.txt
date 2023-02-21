@@ -1,6 +1,0 @@
-ptsa.SphericalWaveBasis.ebcm
-============================
-
-.. currentmodule:: ptsa
-
-.. automethod:: SphericalWaveBasis.ebcm

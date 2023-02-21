@@ -1,0 +1,6 @@
+treams.PhysicsArray.modetype
+============================
+
+.. currentmodule:: treams
+
+.. autoproperty:: PhysicsArray.modetype

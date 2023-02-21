@@ -1,6 +1,0 @@
-ptsa.TMatrix.permute
-====================
-
-.. currentmodule:: ptsa
-
-.. autoattribute:: TMatrix.permute

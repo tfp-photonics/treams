@@ -1,0 +1,6 @@
+treams.TMatrix.\_\_floordiv\_\_
+===============================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrix.__floordiv__

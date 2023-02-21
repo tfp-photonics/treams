@@ -1,0 +1,6 @@
+treams.util.AnnotationSequence.\_\_ne\_\_
+=========================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotationSequence.__ne__

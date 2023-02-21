@@ -1,0 +1,6 @@
+treams.CylindricalWaveBasis.\_\_ge\_\_
+======================================
+
+.. currentmodule:: treams
+
+.. automethod:: CylindricalWaveBasis.__ge__

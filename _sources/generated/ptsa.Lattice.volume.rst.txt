@@ -1,6 +1,0 @@
-ptsa.Lattice.volume
-===================
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: Lattice.volume

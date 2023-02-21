@@ -1,0 +1,6 @@
+treams.TMatrixC.real
+====================
+
+.. currentmodule:: treams
+
+.. autoproperty:: TMatrixC.real

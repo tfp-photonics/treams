@@ -1,0 +1,6 @@
+treams.Material.\_\_gt\_\_
+==========================
+
+.. currentmodule:: treams
+
+.. automethod:: Material.__gt__

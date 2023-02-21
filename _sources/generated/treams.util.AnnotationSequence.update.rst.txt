@@ -1,0 +1,6 @@
+treams.util.AnnotationSequence.update
+=====================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotationSequence.update

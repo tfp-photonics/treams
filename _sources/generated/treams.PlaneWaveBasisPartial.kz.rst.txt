@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisPartial.kz
+===============================
+
+.. currentmodule:: treams
+
+.. autoproperty:: PlaneWaveBasisPartial.kz

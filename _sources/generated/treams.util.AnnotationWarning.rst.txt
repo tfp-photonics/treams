@@ -1,0 +1,6 @@
+treams.util.AnnotationWarning
+=============================
+
+.. currentmodule:: treams.util
+
+.. autoexception:: AnnotationWarning

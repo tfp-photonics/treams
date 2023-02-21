@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.\_\_repr\_\_
-==============================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PhysicsArray.__repr__

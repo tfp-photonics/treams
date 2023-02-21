@@ -10,25 +10,25 @@ Setting up the development environment
 1.
 Clone the repository with ::
 
-   git clone git@git.scc.kit.edu/photonics/ptsa.git
+   git clone git@git.scc.kit.edu/photonics/treams.git
 
 or ::
 
-   git clone https://git.scc.kit.edu/photonics/ptsa.git
+   git clone https://git.scc.kit.edu/photonics/treams.git
 
 and enter the directory ::
 
-   cd ptsa
+   cd treams
 
 2.
 Create a conda environment with ::
 
    conda env create -f environment.yml
 
-which installs all packages needed for building and running ptsa, testing, different
+which installs all packages needed for building and running treams, testing, different
 benchmarks, and building the documentation. Activate the environment::
 
-   conda activate ptsa-dev
+   conda activate treams-dev
 
 3.
 Setup the package with ::
@@ -50,11 +50,11 @@ but for development a more fine grained selection can be made by passing a direc
 file as an argument. Additionally, the option ``-k`` allows to define keywords when
 selecting test.
 
-Some integration tests for the module :ref:`generated/ptsa.lattice:ptsa.lattice` take a
-long time to finish and are therefore disabled by default. You can add them with the
-option ``--runslow``.
+Some integration tests for the module :ref:`generated/treams.lattice:treams.lattice`
+take a long time to finish and are therefore disabled by default. You can add them with
+the option ``--runslow``.
 
-If coverage reports should be included on can use the option ``--cov ptsa``. However,
+If coverage reports should be included on can use the option ``--cov treams``. However,
 this will only report on the pure python files. To also get coverage reports for the
 cython part, it is necessary to compile it with linetracing support. This can be
 achieved by setting the environment variable ``CYTHON_COVERAGE``, for example with ::
@@ -77,16 +77,16 @@ from the root directory of the package to build the documentation as html pages.
 Building the code on Windows
 ============================
 
-The main issue with using ptsa on Windows is the compilation step. For Windows Python is
-usually compiled with MSVC for Visual Studio. However, especially for calculations with
-complex numbers, Cython creates code that conforms to the (C99-) standard.Thus, it is
-not compatible with the non-standard implementation of complex numbers by Microsoft.
+The main issue with using treams on Windows is the compilation step. For Windows Python
+is usually compiled with MSVC for Visual Studio. However, especially for calculations
+with complex numbers, Cython creates code that conforms to the (C99-) standard.Thus, it
+is not compatible with the non-standard implementation of complex numbers by Microsoft.
 
 As I understand, even large projects like numpy and scipy do not compile their code with
-MSVC, at least not completely) for the Windows distribution.
+MSVC (at least not completely) for the Windows distribution.
 
-Below you find three tested ways, how one can use ptsa with Windows. The first two ways
-actually use a non-Windows version of Python, but have a more straightforward
+Below you find three tested ways, how one can use treams with Windows. The first two
+ways actually use a non-Windows version of Python, but have a more straightforward
 installation procedure. However, the last one works with Windows' version of Python e.g.
 when installed with conda under Windows.
 
@@ -108,8 +108,8 @@ Pure MSYS2
 ----------
 
 Using `MSYS2 <https://www.msys2.org/>`_, it is also possible to compile and install
-ptsa. First, install MSYS2 and update it according to the instructions. Then, also
-install python and, if you want, the dependencies of ptsa. Otherwise, the dependencies
+treams. First, install MSYS2 and update it according to the instructions. Then, also
+install python and, if you want, the dependencies of treams. Otherwise, the dependencies
 are installed by pip.
 
 Compilation with mingw-w64 for MSVC Python
@@ -117,8 +117,8 @@ Compilation with mingw-w64 for MSVC Python
 
 This is approach is different from the others, since it finally combines binaries from
 two different compilers. Although it works and was tested on some systems, it is not
-guaranteed that it will work for all systems. The following part describes, how ptsa can
-be built for Windows. It was initially inspired by
+guaranteed that it will work for all systems. The following part describes, how treams
+can be built for Windows. It was initially inspired by
 `<https://docs.scipy.org/doc/scipy/reference/building/windows.html>`_. However, it is
 not completely tested, which steps could possible be omitted.
 
@@ -139,7 +139,7 @@ necessary to patch distutils' `cygwinccompiler.py` to return `vcruntime140` inst
 
 Within MSYS2 install `mingw-w64-x86_64-gcc`.
 
-The compilation is steered from the command line. First go into the directory of ptsa.
+The compilation is steered from the command line. First go into the directory of treams.
 Then, set up your path by prepending the direction for MSYS2's mingw64 binaries with
 ``set PATH=C:\msys64\mingw64\bin;%PATH%`` (adjust accordingly if you have installed
 MSYS2 with non-default parameters). Check that gcc from MSYS2 is recognized correctly

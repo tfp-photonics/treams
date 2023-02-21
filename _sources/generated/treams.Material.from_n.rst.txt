@@ -1,0 +1,6 @@
+treams.Material.from\_n
+=======================
+
+.. currentmodule:: treams
+
+.. automethod:: Material.from_n

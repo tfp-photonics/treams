@@ -1,0 +1,6 @@
+treams.util.AnnotationSequence.\_\_eq\_\_
+=========================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotationSequence.__eq__

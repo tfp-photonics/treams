@@ -1,0 +1,6 @@
+treams.CylindricalWaveBasis.defaultmmax
+=======================================
+
+.. currentmodule:: treams
+
+.. automethod:: CylindricalWaveBasis.defaultmmax

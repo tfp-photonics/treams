@@ -1,0 +1,63 @@
+﻿treams.PlaneWaveBasisPartial
+============================
+
+.. currentmodule:: treams
+
+.. autoclass:: PlaneWaveBasisPartial
+
+  
+  
+      .. rubric:: Attributes
+
+      .. autosummary::
+         :toctree:
+      
+         ~PlaneWaveBasisPartial.isglobal
+         ~PlaneWaveBasisPartial.kx
+         ~PlaneWaveBasisPartial.ky
+         ~PlaneWaveBasisPartial.kz
+  
+  
+
+  
+      .. rubric:: Methods
+
+      .. autosummary::
+         :toctree:
+
+      
+         ~PlaneWaveBasisPartial.__and__
+         ~PlaneWaveBasisPartial.__eq__
+         ~PlaneWaveBasisPartial.__ge__
+         ~PlaneWaveBasisPartial.__getitem__
+         ~PlaneWaveBasisPartial.__gt__
+         ~PlaneWaveBasisPartial.__le__
+         ~PlaneWaveBasisPartial.__len__
+         ~PlaneWaveBasisPartial.__lt__
+         ~PlaneWaveBasisPartial.__ne__
+         ~PlaneWaveBasisPartial.__or__
+         ~PlaneWaveBasisPartial.__repr__
+         ~PlaneWaveBasisPartial.__str__
+         ~PlaneWaveBasisPartial.__sub__
+         ~PlaneWaveBasisPartial.__xor__
+         ~PlaneWaveBasisPartial.complete
+         ~PlaneWaveBasisPartial.count
+         ~PlaneWaveBasisPartial.default
+         ~PlaneWaveBasisPartial.diffr_orders
+         ~PlaneWaveBasisPartial.index
+         ~PlaneWaveBasisPartial.isdisjoint
+         ~PlaneWaveBasisPartial.partial
+      
+         ~PlaneWaveBasisPartial.__len__
+         ~PlaneWaveBasisPartial.__ne__
+         ~PlaneWaveBasisPartial.__repr__
+         ~PlaneWaveBasisPartial.__str__
+         ~PlaneWaveBasisPartial.__ge__
+         ~PlaneWaveBasisPartial.__and__
+         ~PlaneWaveBasisPartial.__le__
+         ~PlaneWaveBasisPartial.__lt__
+         ~PlaneWaveBasisPartial.__gt__
+         ~PlaneWaveBasisPartial.__sub__
+         ~PlaneWaveBasisPartial.__or__
+         ~PlaneWaveBasisPartial.__xor__
+  

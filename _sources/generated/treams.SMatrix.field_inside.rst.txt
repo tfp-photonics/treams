@@ -1,0 +1,6 @@
+treams.SMatrix.field\_inside
+============================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.field_inside

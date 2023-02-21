@@ -1,0 +1,6 @@
+treams.util.AnnotationDict.keys
+===============================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotationDict.keys

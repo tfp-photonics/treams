@@ -1,6 +1,0 @@
-ptsa.TMatrixC.\_\_divmod\_\_
-============================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrixC.__divmod__

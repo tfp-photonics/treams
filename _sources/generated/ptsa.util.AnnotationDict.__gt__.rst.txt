@@ -1,6 +1,0 @@
-ptsa.util.AnnotationDict.\_\_gt\_\_
-===================================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotationDict.__gt__

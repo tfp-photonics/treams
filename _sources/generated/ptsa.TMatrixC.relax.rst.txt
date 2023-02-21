@@ -1,6 +1,0 @@
-ptsa.TMatrixC.relax
-===================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrixC.relax

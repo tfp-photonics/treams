@@ -1,0 +1,143 @@
+﻿treams.TMatrix
+==============
+
+.. currentmodule:: treams
+
+.. autoclass:: TMatrix
+
+  
+  
+      .. rubric:: Attributes
+
+      .. autosummary::
+         :toctree:
+      
+         ~TMatrix.T
+         ~TMatrix.ann
+         ~TMatrix.basis
+         ~TMatrix.cd
+         ~TMatrix.changepoltype
+         ~TMatrix.chi
+         ~TMatrix.db
+         ~TMatrix.efield
+         ~TMatrix.expand
+         ~TMatrix.expandlattice
+         ~TMatrix.imag
+         ~TMatrix.isglobal
+         ~TMatrix.k0
+         ~TMatrix.kpar
+         ~TMatrix.ks
+         ~TMatrix.lattice
+         ~TMatrix.material
+         ~TMatrix.modetype
+         ~TMatrix.ndim
+         ~TMatrix.permute
+         ~TMatrix.poltype
+         ~TMatrix.real
+         ~TMatrix.rotate
+         ~TMatrix.shape
+         ~TMatrix.size
+         ~TMatrix.translate
+         ~TMatrix.xs_ext_avg
+         ~TMatrix.xs_sca_avg
+  
+  
+
+  
+      .. rubric:: Methods
+
+      .. autosummary::
+         :toctree:
+
+      
+         ~TMatrix.__abs__
+         ~TMatrix.__add__
+         ~TMatrix.__and__
+         ~TMatrix.__array__
+         ~TMatrix.__array_function__
+         ~TMatrix.__array_ufunc__
+         ~TMatrix.__divmod__
+         ~TMatrix.__eq__
+         ~TMatrix.__floordiv__
+         ~TMatrix.__ge__
+         ~TMatrix.__getitem__
+         ~TMatrix.__gt__
+         ~TMatrix.__invert__
+         ~TMatrix.__le__
+         ~TMatrix.__lshift__
+         ~TMatrix.__lt__
+         ~TMatrix.__matmul__
+         ~TMatrix.__mod__
+         ~TMatrix.__mul__
+         ~TMatrix.__ne__
+         ~TMatrix.__neg__
+         ~TMatrix.__or__
+         ~TMatrix.__pos__
+         ~TMatrix.__pow__
+         ~TMatrix.__repr__
+         ~TMatrix.__rshift__
+         ~TMatrix.__setitem__
+         ~TMatrix.__str__
+         ~TMatrix.__sub__
+         ~TMatrix.__truediv__
+         ~TMatrix.__xor__
+         ~TMatrix.all
+         ~TMatrix.any
+         ~TMatrix.astype
+         ~TMatrix.cluster
+         ~TMatrix.conj
+         ~TMatrix.conjugate
+         ~TMatrix.couple
+         ~TMatrix.couple_lattice
+         ~TMatrix.cumprod
+         ~TMatrix.cumsum
+         ~TMatrix.diagonal
+         ~TMatrix.flatten
+         ~TMatrix.globalmat
+         ~TMatrix.interacted
+         ~TMatrix.interacted_lattice
+         ~TMatrix.max
+         ~TMatrix.min
+         ~TMatrix.prod
+         ~TMatrix.relax
+         ~TMatrix.rotated
+         ~TMatrix.sphere
+         ~TMatrix.sum
+         ~TMatrix.trace
+         ~TMatrix.translated
+         ~TMatrix.transpose
+         ~TMatrix.valid_points
+         ~TMatrix.xs
+      
+         ~TMatrix.__floordiv__
+         ~TMatrix.__repr__
+         ~TMatrix.__truediv__
+         ~TMatrix.__and__
+         ~TMatrix.__mod__
+         ~TMatrix.__or__
+         ~TMatrix.__mul__
+         ~TMatrix.__array__
+         ~TMatrix.__ge__
+         ~TMatrix.__array_function__
+         ~TMatrix.__eq__
+         ~TMatrix.__lshift__
+         ~TMatrix.__rshift__
+         ~TMatrix.__abs__
+         ~TMatrix.__pow__
+         ~TMatrix.__add__
+         ~TMatrix.__setitem__
+         ~TMatrix.__invert__
+         ~TMatrix.__divmod__
+         ~TMatrix.__le__
+         ~TMatrix.__matmul__
+         ~TMatrix.__lt__
+         ~TMatrix.__pos__
+         ~TMatrix.__sub__
+         ~TMatrix.__array_ufunc__
+         ~TMatrix.__ne__
+         ~TMatrix.__str__
+         ~TMatrix.__neg__
+         ~TMatrix.__gt__
+         ~TMatrix.__getitem__
+         ~TMatrix.__xor__
+  

@@ -1,0 +1,6 @@
+treams.TMatrixC.modetype
+========================
+
+.. currentmodule:: treams
+
+.. autoproperty:: TMatrixC.modetype

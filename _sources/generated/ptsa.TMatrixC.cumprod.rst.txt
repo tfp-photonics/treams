@@ -1,6 +1,0 @@
-ptsa.TMatrixC.cumprod
-=====================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrixC.cumprod

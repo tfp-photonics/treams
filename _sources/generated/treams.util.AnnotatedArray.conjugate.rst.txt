@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.conjugate
+====================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotatedArray.conjugate

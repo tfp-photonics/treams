@@ -1,6 +1,0 @@
-ptsa.util.AnnotatedArray.\_\_truediv\_\_
-========================================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotatedArray.__truediv__

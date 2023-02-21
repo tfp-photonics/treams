@@ -1,0 +1,6 @@
+treams.SMatrix.\_\_ne\_\_
+=========================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.__ne__

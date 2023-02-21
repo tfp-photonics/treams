@@ -1,6 +1,0 @@
-ptsa.util.AnnotatedArray.\_\_invert\_\_
-=======================================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotatedArray.__invert__

@@ -1,0 +1,6 @@
+treams.TMatrix.rotated
+======================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrix.rotated

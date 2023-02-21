@@ -1,6 +1,0 @@
-ptsa.util.AnnotatedArray.cumsum
-===============================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotatedArray.cumsum

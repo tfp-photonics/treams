@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.T
+============================
+
+.. currentmodule:: treams.util
+
+.. autoproperty:: AnnotatedArray.T

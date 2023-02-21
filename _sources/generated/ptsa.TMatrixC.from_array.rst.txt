@@ -1,6 +1,0 @@
-ptsa.TMatrixC.from\_array
-=========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrixC.from_array

@@ -1,0 +1,60 @@
+﻿treams.CylindricalWaveBasis
+===========================
+
+.. currentmodule:: treams
+
+.. autoclass:: CylindricalWaveBasis
+
+  
+  
+      .. rubric:: Attributes
+
+      .. autosummary::
+         :toctree:
+      
+         ~CylindricalWaveBasis.isglobal
+         ~CylindricalWaveBasis.positions
+  
+  
+
+  
+      .. rubric:: Methods
+
+      .. autosummary::
+         :toctree:
+
+      
+         ~CylindricalWaveBasis.__and__
+         ~CylindricalWaveBasis.__eq__
+         ~CylindricalWaveBasis.__ge__
+         ~CylindricalWaveBasis.__getitem__
+         ~CylindricalWaveBasis.__gt__
+         ~CylindricalWaveBasis.__le__
+         ~CylindricalWaveBasis.__len__
+         ~CylindricalWaveBasis.__lt__
+         ~CylindricalWaveBasis.__ne__
+         ~CylindricalWaveBasis.__or__
+         ~CylindricalWaveBasis.__repr__
+         ~CylindricalWaveBasis.__str__
+         ~CylindricalWaveBasis.__sub__
+         ~CylindricalWaveBasis.__xor__
+         ~CylindricalWaveBasis.count
+         ~CylindricalWaveBasis.default
+         ~CylindricalWaveBasis.defaultdim
+         ~CylindricalWaveBasis.defaultmmax
+         ~CylindricalWaveBasis.diffr_orders
+         ~CylindricalWaveBasis.index
+         ~CylindricalWaveBasis.isdisjoint
+      
+         ~CylindricalWaveBasis.__len__
+         ~CylindricalWaveBasis.__ne__
+         ~CylindricalWaveBasis.__str__
+         ~CylindricalWaveBasis.__ge__
+         ~CylindricalWaveBasis.__and__
+         ~CylindricalWaveBasis.__le__
+         ~CylindricalWaveBasis.__lt__
+         ~CylindricalWaveBasis.__gt__
+         ~CylindricalWaveBasis.__sub__
+         ~CylindricalWaveBasis.__or__
+         ~CylindricalWaveBasis.__xor__
+  

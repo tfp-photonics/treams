@@ -1,0 +1,6 @@
+treams.Material.krhos
+=====================
+
+.. currentmodule:: treams
+
+.. automethod:: Material.krhos

@@ -1,6 +1,0 @@
-ptsa.TMatrix.valid\_points
-==========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrix.valid_points

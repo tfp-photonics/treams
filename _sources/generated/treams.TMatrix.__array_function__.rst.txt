@@ -1,0 +1,6 @@
+treams.TMatrix.\_\_array\_function\_\_
+======================================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrix.__array_function__

@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.min
+==============================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotatedArray.min

@@ -1,0 +1,6 @@
+﻿treams.cw.periodic\_to\_pw
+==========================
+
+.. currentmodule:: treams.cw
+
+.. autodata:: periodic_to_pw

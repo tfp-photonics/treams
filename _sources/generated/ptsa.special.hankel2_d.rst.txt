@@ -1,6 +1,0 @@
-ptsa.special.hankel2\_d
-=======================
-
-.. currentmodule:: ptsa.special
-
-.. autodata:: hankel2_d

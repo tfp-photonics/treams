@@ -1,6 +1,0 @@
-ptsa.util.triu
-==============
-
-.. currentmodule:: ptsa.util
-
-.. autofunction:: triu

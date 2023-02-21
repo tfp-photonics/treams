@@ -1,6 +1,0 @@
-ptsa.SphericalWaveBasis.\_\_sub\_\_
-===================================
-
-.. currentmodule:: ptsa
-
-.. automethod:: SphericalWaveBasis.__sub__

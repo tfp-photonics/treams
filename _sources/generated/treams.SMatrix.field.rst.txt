@@ -1,0 +1,6 @@
+treams.SMatrix.field
+====================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.field

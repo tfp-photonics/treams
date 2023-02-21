@@ -1,6 +1,0 @@
-ptsa.TMatrix.\_\_pos\_\_
-========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrix.__pos__

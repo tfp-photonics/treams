@@ -1,6 +1,0 @@
-ptsa.SMatrix.\_\_getitem\_\_
-============================
-
-.. currentmodule:: ptsa
-
-.. automethod:: SMatrix.__getitem__

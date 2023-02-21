@@ -1,6 +1,0 @@
-ptsa.Lattice.square
-===================
-
-.. currentmodule:: ptsa
-
-.. automethod:: Lattice.square

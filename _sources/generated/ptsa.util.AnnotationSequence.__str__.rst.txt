@@ -1,6 +1,0 @@
-ptsa.util.AnnotationSequence.\_\_str\_\_
-========================================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotationSequence.__str__

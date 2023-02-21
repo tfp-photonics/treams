@@ -1,6 +1,0 @@
-ptsa.lattice.area
-=================
-
-.. currentmodule:: ptsa.lattice
-
-.. autodata:: area

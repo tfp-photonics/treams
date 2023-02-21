@@ -1,6 +1,0 @@
-ptsa.TMatrix.\_\_eq\_\_
-=======================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrix.__eq__

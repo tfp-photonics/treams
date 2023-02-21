@@ -1,0 +1,6 @@
+treams.TMatrix.\_\_eq\_\_
+=========================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrix.__eq__

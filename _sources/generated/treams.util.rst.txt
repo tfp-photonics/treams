@@ -1,0 +1,64 @@
+﻿treams.util
+===========
+
+.. automodule:: treams.util
+
+   
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+      :toctree:
+   
+      HANDLED_FUNCTIONS
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      diag
+      implements
+      lstsq
+      ones_like
+      register_properties
+      solve
+      svd
+      tril
+      triu
+      zeros_like
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+   
+      AnnotatedArray
+      AnnotationDict
+      AnnotationSequence
+      OrderedSet
+   
+   
+
+   
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+      :toctree:
+   
+      AnnotationError
+      AnnotationWarning
+   
+   
+
+
+

@@ -1,6 +1,0 @@
-ptsa.TMatrix.couple
-===================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrix.couple

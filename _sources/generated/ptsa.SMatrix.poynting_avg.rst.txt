@@ -1,6 +1,0 @@
-ptsa.SMatrix.poynting\_avg
-==========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: SMatrix.poynting_avg

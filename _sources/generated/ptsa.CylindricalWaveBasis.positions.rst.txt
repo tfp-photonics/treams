@@ -1,6 +1,0 @@
-ptsa.CylindricalWaveBasis.positions
-===================================
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: CylindricalWaveBasis.positions

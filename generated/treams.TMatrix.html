@@ -1,0 +1,549 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>treams.TMatrix &#8212; treams 0.2.2.dev94+gf11285d documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/no-nobiles.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev94+gf11285d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">treams.TMatrix</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="treams-tmatrix">
+<h1>treams.TMatrix<a class="headerlink" href="#treams-tmatrix" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="treams.TMatrix">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">treams.</span></span><span class="sig-name descname"><span class="pre">TMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ann</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#treams.TMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>T-matrix for spherical modes</p>
+<p>The T-matrix is square, with the modes defined in the corresponding fields. The
+order of the T-matrix can be arbitrary, but the normalization is fixed to that of
+the modes defined in <a class="reference internal" href="treams.special.vsw_A.html#treams.special.vsw_A" title="treams.special.vsw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_A()</span></code></a>, <a class="reference internal" href="treams.special.vsw_M.html#treams.special.vsw_M" title="treams.special.vsw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_M()</span></code></a>,
+and <a class="reference internal" href="treams.special.vsw_N.html#treams.special.vsw_N" title="treams.special.vsw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_N()</span></code></a>. A default order according to
+<code class="xref py py-func docutils literal notranslate"><span class="pre">TMatrix.defaultmodes()</span></code> is assumed if not specified. Helicity and parity modes
+are possible, but not mixed.</p>
+<p>The embedding medium is described by permittivity, permeability, and the chirality
+parameter.</p>
+<p>The T-matrix can be global or local. For a local T-matrix multiple positions have to
+be specified. Also modes must have as first element a position index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arr</strong> (<em>float</em><em> or </em><em>complex</em><em>, </em><em>array</em>) – T-matrix itself</p></li>
+<li><p><strong>k0</strong> (<em>float</em>) – Wave number in vacuum</p></li>
+<li><p><strong>basis</strong> (<a class="reference internal" href="treams.SphericalWaveBasis.html#treams.SphericalWaveBasis" title="treams.SphericalWaveBasis"><em>SphericalWaveBasis</em></a><em>, </em><em>optional</em>) – Basis definition</p></li>
+<li><p><strong>material</strong> (<a class="reference internal" href="treams.Material.html#treams.Material" title="treams.Material"><em>Material</em></a><em>, </em><em>optional</em>) – Embedding material, defaults to vacuum</p></li>
+<li><p><strong>poltype</strong> (<em>str</em><em>, </em><em>optional</em>) – Helicity or parity basis, defauts to config.POLTYPE</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="treams.TMatrix.t">
+<span class="sig-name descname"><span class="pre">t</span></span><a class="headerlink" href="#treams.TMatrix.t" title="Permalink to this definition">¶</a></dt>
+<dd><p>T-matrix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or complex, (N,N)-array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="treams.TMatrix.k0">
+<span class="sig-name descname"><span class="pre">k0</span></span><a class="headerlink" href="#treams.TMatrix.k0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wave number in vacuum</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="treams.TMatrix.basis">
+<span class="sig-name descname"><span class="pre">basis</span></span><a class="headerlink" href="#treams.TMatrix.basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basis modes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="treams.SphericalWaveBasis.html#treams.SphericalWaveBasis" title="treams.SphericalWaveBasis">SphericalWaveBasis</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="treams.TMatrix.material">
+<span class="sig-name descname"><span class="pre">material</span></span><a class="headerlink" href="#treams.TMatrix.material" title="Permalink to this definition">¶</a></dt>
+<dd><p>Material definition</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="treams.Material.html#treams.Material" title="treams.Material">Material</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="treams.TMatrix.poltype">
+<span class="sig-name descname"><span class="pre">poltype</span></span><a class="headerlink" href="#treams.TMatrix.poltype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helicity or parity basis</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.T.html#treams.TMatrix.T" title="treams.TMatrix.T"><code class="xref py py-obj docutils literal notranslate"><span class="pre">T</span></code></a></p></td>
+<td><p>Transpose.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.ann.html#treams.TMatrix.ann" title="treams.TMatrix.ann"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ann</span></code></a></p></td>
+<td><p>Array annotations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.basis.html#treams.TMatrix.basis" title="treams.TMatrix.basis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">basis</span></code></a></p></td>
+<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">BasisSet</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.cd.html#treams.TMatrix.cd" title="treams.TMatrix.cd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cd</span></code></a></p></td>
+<td><p>Circular dichroism</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.changepoltype.html#treams.TMatrix.changepoltype" title="treams.TMatrix.changepoltype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">changepoltype</span></code></a></p></td>
+<td><p>Polarization change matrix, see also <code class="xref py py-class docutils literal notranslate"><span class="pre">treams.operators.ChangePoltype</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.chi.html#treams.TMatrix.chi" title="treams.TMatrix.chi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chi</span></code></a></p></td>
+<td><p>Electromagnetic chirality</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.db.html#treams.TMatrix.db" title="treams.TMatrix.db"><code class="xref py py-obj docutils literal notranslate"><span class="pre">db</span></code></a></p></td>
+<td><p>Duality breaking</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.efield.html#treams.TMatrix.efield" title="treams.TMatrix.efield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">efield</span></code></a></p></td>
+<td><p>Field evaluation matrix, see also <code class="xref py py-class docutils literal notranslate"><span class="pre">treams.operators.EField</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.expand.html#treams.TMatrix.expand" title="treams.TMatrix.expand"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expand</span></code></a></p></td>
+<td><p>Expansion matrix, see also <code class="xref py py-class docutils literal notranslate"><span class="pre">treams.operators.Expand</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.expandlattice.html#treams.TMatrix.expandlattice" title="treams.TMatrix.expandlattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expandlattice</span></code></a></p></td>
+<td><p>Lattice expansion matrix, see also <code class="xref py py-class docutils literal notranslate"><span class="pre">treams.operators.ExpandLattice</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.imag.html#treams.TMatrix.imag" title="treams.TMatrix.imag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">imag</span></code></a></p></td>
+<td><p>Imaginary part of the array.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.isglobal.html#treams.TMatrix.isglobal" title="treams.TMatrix.isglobal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isglobal</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.k0.html#treams.TMatrix.k0" title="treams.TMatrix.k0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">k0</span></code></a></p></td>
+<td><p>Wave number.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.kpar.html#treams.TMatrix.kpar" title="treams.TMatrix.kpar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kpar</span></code></a></p></td>
+<td><p>Wave vector components tangential to the lattice.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.ks.html#treams.TMatrix.ks" title="treams.TMatrix.ks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ks</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.lattice.html#treams.TMatrix.lattice" title="treams.TMatrix.lattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lattice</span></code></a></p></td>
+<td><p><a class="reference internal" href="treams.Lattice.html#treams.Lattice" title="treams.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.material.html#treams.TMatrix.material" title="treams.TMatrix.material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">material</span></code></a></p></td>
+<td><p><a class="reference internal" href="treams.Material.html#treams.Material" title="treams.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">Material</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.modetype.html#treams.TMatrix.modetype" title="treams.TMatrix.modetype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modetype</span></code></a></p></td>
+<td><p>Mode type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.ndim.html#treams.TMatrix.ndim" title="treams.TMatrix.ndim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndim</span></code></a></p></td>
+<td><p>Number of array dimensions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.permute.html#treams.TMatrix.permute" title="treams.TMatrix.permute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">permute</span></code></a></p></td>
+<td><p>Permutation matrix, see also <code class="xref py py-class docutils literal notranslate"><span class="pre">treams.operators.Permute</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.poltype.html#treams.TMatrix.poltype" title="treams.TMatrix.poltype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">poltype</span></code></a></p></td>
+<td><p><a class="reference internal" href="../polarizations.html#polarizations"><span class="std std-ref">Polarizations</span></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.real.html#treams.TMatrix.real" title="treams.TMatrix.real"><code class="xref py py-obj docutils literal notranslate"><span class="pre">real</span></code></a></p></td>
+<td><p>Real part of the array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.rotate.html#treams.TMatrix.rotate" title="treams.TMatrix.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a></p></td>
+<td><p>Rotation matrix, see also <code class="xref py py-class docutils literal notranslate"><span class="pre">treams.operators.Rotate</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.shape.html#treams.TMatrix.shape" title="treams.TMatrix.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
+<td><p>Array shape.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.size.html#treams.TMatrix.size" title="treams.TMatrix.size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code></a></p></td>
+<td><p>Array size.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.translate.html#treams.TMatrix.translate" title="treams.TMatrix.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a></p></td>
+<td><p>Translation matrix, see also <code class="xref py py-class docutils literal notranslate"><span class="pre">treams.operators.Translate</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.xs_ext_avg.html#treams.TMatrix.xs_ext_avg" title="treams.TMatrix.xs_ext_avg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xs_ext_avg</span></code></a></p></td>
+<td><p>Rotational average of the extinction cross section</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.xs_sca_avg.html#treams.TMatrix.xs_sca_avg" title="treams.TMatrix.xs_sca_avg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xs_sca_avg</span></code></a></p></td>
+<td><p>Rotational average of the scattering cross section</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__abs__.html#treams.TMatrix.__abs__" title="treams.TMatrix.__abs__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__abs__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__add__.html#treams.TMatrix.__add__" title="treams.TMatrix.__add__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__add__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__and__.html#treams.TMatrix.__and__" title="treams.TMatrix.__and__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__and__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__array__.html#treams.TMatrix.__array__" title="treams.TMatrix.__array__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__array__</span></code></a>([dtype])</p></td>
+<td><p>Convert to an numpy array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__array_function__.html#treams.TMatrix.__array_function__" title="treams.TMatrix.__array_function__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__array_function__</span></code></a>(func, types, args, kwargs)</p></td>
+<td><p>Function calls on the array.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__array_ufunc__.html#treams.TMatrix.__array_ufunc__" title="treams.TMatrix.__array_ufunc__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__array_ufunc__</span></code></a>(ufunc, method, *inputs, **kwargs)</p></td>
+<td><p>Implement ufunc API.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__divmod__.html#treams.TMatrix.__divmod__" title="treams.TMatrix.__divmod__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__divmod__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__eq__.html#treams.TMatrix.__eq__" title="treams.TMatrix.__eq__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__eq__</span></code></a>(other)</p></td>
+<td><p>Return self==value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__floordiv__.html#treams.TMatrix.__floordiv__" title="treams.TMatrix.__floordiv__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__floordiv__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__ge__.html#treams.TMatrix.__ge__" title="treams.TMatrix.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__getitem__.html#treams.TMatrix.__getitem__" title="treams.TMatrix.__getitem__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__getitem__</span></code></a>(key)</p></td>
+<td><p>Get an item from the AnnotatedArray.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__gt__.html#treams.TMatrix.__gt__" title="treams.TMatrix.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__invert__.html#treams.TMatrix.__invert__" title="treams.TMatrix.__invert__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__invert__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__le__.html#treams.TMatrix.__le__" title="treams.TMatrix.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(other)</p></td>
+<td><p>Return self&lt;=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__lshift__.html#treams.TMatrix.__lshift__" title="treams.TMatrix.__lshift__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lshift__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__lt__.html#treams.TMatrix.__lt__" title="treams.TMatrix.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(other)</p></td>
+<td><p>Return self&lt;value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__matmul__.html#treams.TMatrix.__matmul__" title="treams.TMatrix.__matmul__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__matmul__</span></code></a>(other, *args, **kwargs)</p></td>
+<td><p>Matrix multiplication.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__mod__.html#treams.TMatrix.__mod__" title="treams.TMatrix.__mod__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__mod__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__mul__.html#treams.TMatrix.__mul__" title="treams.TMatrix.__mul__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__mul__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__ne__.html#treams.TMatrix.__ne__" title="treams.TMatrix.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(other)</p></td>
+<td><p>Return self!=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__neg__.html#treams.TMatrix.__neg__" title="treams.TMatrix.__neg__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__neg__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__or__.html#treams.TMatrix.__or__" title="treams.TMatrix.__or__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__or__</span></code></a>(other)</p></td>
+<td><p>Return self|value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__pos__.html#treams.TMatrix.__pos__" title="treams.TMatrix.__pos__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__pos__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__pow__.html#treams.TMatrix.__pow__" title="treams.TMatrix.__pow__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__pow__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__repr__.html#treams.TMatrix.__repr__" title="treams.TMatrix.__repr__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__repr__</span></code></a>()</p></td>
+<td><p>String representation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__rshift__.html#treams.TMatrix.__rshift__" title="treams.TMatrix.__rshift__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__rshift__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__setitem__.html#treams.TMatrix.__setitem__" title="treams.TMatrix.__setitem__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__setitem__</span></code></a>(key, value)</p></td>
+<td><p>Set values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__str__.html#treams.TMatrix.__str__" title="treams.TMatrix.__str__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__str__</span></code></a>()</p></td>
+<td><p>String of the array itself.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__sub__.html#treams.TMatrix.__sub__" title="treams.TMatrix.__sub__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__sub__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__truediv__.html#treams.TMatrix.__truediv__" title="treams.TMatrix.__truediv__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__truediv__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__xor__.html#treams.TMatrix.__xor__" title="treams.TMatrix.__xor__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__xor__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.all.html#treams.TMatrix.all" title="treams.TMatrix.all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span></code></a>([axis, dtype, out, keepdims, where])</p></td>
+<td><p>Test if all elements (along an axis) are True.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.any.html#treams.TMatrix.any" title="treams.TMatrix.any"><code class="xref py py-obj docutils literal notranslate"><span class="pre">any</span></code></a>([axis, dtype, out, keepdims, where])</p></td>
+<td><p>Test if any element (along an axis) is True.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.astype.html#treams.TMatrix.astype" title="treams.TMatrix.astype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">astype</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Return array as given type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.cluster.html#treams.TMatrix.cluster" title="treams.TMatrix.cluster"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cluster</span></code></a>(tmats, positions)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.conj.html#treams.TMatrix.conj" title="treams.TMatrix.conj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conj</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Complex conjugate elementwise.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.conjugate.html#treams.TMatrix.conjugate" title="treams.TMatrix.conjugate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conjugate</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Complex conjugate elementwise.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.couple.html#treams.TMatrix.couple" title="treams.TMatrix.couple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">couple</span></code></a>()</p></td>
+<td><p>Calculate the coupling term of a blockdiagonal T-matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.couple_lattice.html#treams.TMatrix.couple_lattice" title="treams.TMatrix.couple_lattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">couple_lattice</span></code></a>(lattice, kpar, *[, eta])</p></td>
+<td><p>Calculate the coupling term of a blockdiagonal T-matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.cumprod.html#treams.TMatrix.cumprod" title="treams.TMatrix.cumprod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cumprod</span></code></a>([axis, dtype, out])</p></td>
+<td><p>Cumulative product of elements (along an axis).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.cumsum.html#treams.TMatrix.cumsum" title="treams.TMatrix.cumsum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cumsum</span></code></a>([axis, dtype, out])</p></td>
+<td><p>Cumulative sum of elements (along an axis).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.diagonal.html#treams.TMatrix.diagonal" title="treams.TMatrix.diagonal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diagonal</span></code></a>([offset, axis1, axis2])</p></td>
+<td><p>Get the diagonal of the array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.flatten.html#treams.TMatrix.flatten" title="treams.TMatrix.flatten"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flatten</span></code></a>([order])</p></td>
+<td><p>Flatten array to one dimension.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.globalmat.html#treams.TMatrix.globalmat" title="treams.TMatrix.globalmat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">globalmat</span></code></a>([basis])</p></td>
+<td><p>Global T-matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.interacted.html#treams.TMatrix.interacted" title="treams.TMatrix.interacted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interacted</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.interacted_lattice.html#treams.TMatrix.interacted_lattice" title="treams.TMatrix.interacted_lattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interacted_lattice</span></code></a>(lattice, kpar, *[, eta])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.max.html#treams.TMatrix.max" title="treams.TMatrix.max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max</span></code></a>([axis, out, keepdims, initial, where])</p></td>
+<td><p>Maximum (along an axis).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.min.html#treams.TMatrix.min" title="treams.TMatrix.min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min</span></code></a>([axis, out, keepdims, initial, where])</p></td>
+<td><p>Minimum (along an axis).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.prod.html#treams.TMatrix.prod" title="treams.TMatrix.prod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prod</span></code></a>([axis, dtype, out, keepdims, initial, ...])</p></td>
+<td><p>Product of elements (along an axis).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.relax.html#treams.TMatrix.relax" title="treams.TMatrix.relax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relax</span></code></a>(*args[, mro])</p></td>
+<td><p>Try creating AnnotatedArray subclasses if possible.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.rotated.html#treams.TMatrix.rotated" title="treams.TMatrix.rotated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotated</span></code></a>(phi[, theta, psi])</p></td>
+<td><p>Rotate the T-Matrix by the euler angles</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.sphere.html#treams.TMatrix.sphere" title="treams.TMatrix.sphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sphere</span></code></a>(lmax, k0, radii, materials)</p></td>
+<td><p>T-Matrix of a sphere</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.sum.html#treams.TMatrix.sum" title="treams.TMatrix.sum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sum</span></code></a>([axis, dtype, out, keepdims, initial, where])</p></td>
+<td><p>Sum of elements (along an axis).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.trace.html#treams.TMatrix.trace" title="treams.TMatrix.trace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trace</span></code></a>([offset, axis1, axis2, dtype, out])</p></td>
+<td><p>Trace of an array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.translated.html#treams.TMatrix.translated" title="treams.TMatrix.translated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translated</span></code></a>(r, **kwargs)</p></td>
+<td><p>Translate the origin of the T-Matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.transpose.html#treams.TMatrix.transpose" title="treams.TMatrix.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>([axes])</p></td>
+<td><p>Transpose array dimensions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.valid_points.html#treams.TMatrix.valid_points" title="treams.TMatrix.valid_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">valid_points</span></code></a>(grid, radii)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.xs.html#treams.TMatrix.xs" title="treams.TMatrix.xs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xs</span></code></a>(illu[, flux])</p></td>
+<td><p>Scattering and extinction cross section</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__floordiv__.html#treams.TMatrix.__floordiv__" title="treams.TMatrix.__floordiv__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__floordiv__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__repr__.html#treams.TMatrix.__repr__" title="treams.TMatrix.__repr__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__repr__</span></code></a>()</p></td>
+<td><p>String representation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__truediv__.html#treams.TMatrix.__truediv__" title="treams.TMatrix.__truediv__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__truediv__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__and__.html#treams.TMatrix.__and__" title="treams.TMatrix.__and__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__and__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__mod__.html#treams.TMatrix.__mod__" title="treams.TMatrix.__mod__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__mod__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__or__.html#treams.TMatrix.__or__" title="treams.TMatrix.__or__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__or__</span></code></a>(other)</p></td>
+<td><p>Return self|value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__mul__.html#treams.TMatrix.__mul__" title="treams.TMatrix.__mul__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__mul__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__array__.html#treams.TMatrix.__array__" title="treams.TMatrix.__array__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__array__</span></code></a>([dtype])</p></td>
+<td><p>Convert to an numpy array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__ge__.html#treams.TMatrix.__ge__" title="treams.TMatrix.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__array_function__.html#treams.TMatrix.__array_function__" title="treams.TMatrix.__array_function__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__array_function__</span></code></a>(func, types, args, kwargs)</p></td>
+<td><p>Function calls on the array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__eq__.html#treams.TMatrix.__eq__" title="treams.TMatrix.__eq__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__eq__</span></code></a>(other)</p></td>
+<td><p>Return self==value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__lshift__.html#treams.TMatrix.__lshift__" title="treams.TMatrix.__lshift__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lshift__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__rshift__.html#treams.TMatrix.__rshift__" title="treams.TMatrix.__rshift__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__rshift__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__abs__.html#treams.TMatrix.__abs__" title="treams.TMatrix.__abs__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__abs__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__pow__.html#treams.TMatrix.__pow__" title="treams.TMatrix.__pow__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__pow__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__add__.html#treams.TMatrix.__add__" title="treams.TMatrix.__add__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__add__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__setitem__.html#treams.TMatrix.__setitem__" title="treams.TMatrix.__setitem__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__setitem__</span></code></a>(key, value)</p></td>
+<td><p>Set values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__invert__.html#treams.TMatrix.__invert__" title="treams.TMatrix.__invert__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__invert__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__divmod__.html#treams.TMatrix.__divmod__" title="treams.TMatrix.__divmod__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__divmod__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__le__.html#treams.TMatrix.__le__" title="treams.TMatrix.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(other)</p></td>
+<td><p>Return self&lt;=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__matmul__.html#treams.TMatrix.__matmul__" title="treams.TMatrix.__matmul__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__matmul__</span></code></a>(other, *args, **kwargs)</p></td>
+<td><p>Matrix multiplication.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__lt__.html#treams.TMatrix.__lt__" title="treams.TMatrix.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(other)</p></td>
+<td><p>Return self&lt;value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__pos__.html#treams.TMatrix.__pos__" title="treams.TMatrix.__pos__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__pos__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__sub__.html#treams.TMatrix.__sub__" title="treams.TMatrix.__sub__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__sub__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__array_ufunc__.html#treams.TMatrix.__array_ufunc__" title="treams.TMatrix.__array_ufunc__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__array_ufunc__</span></code></a>(ufunc, method, *inputs, **kwargs)</p></td>
+<td><p>Implement ufunc API.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__ne__.html#treams.TMatrix.__ne__" title="treams.TMatrix.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(other)</p></td>
+<td><p>Return self!=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__str__.html#treams.TMatrix.__str__" title="treams.TMatrix.__str__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__str__</span></code></a>()</p></td>
+<td><p>String of the array itself.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__neg__.html#treams.TMatrix.__neg__" title="treams.TMatrix.__neg__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__neg__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__gt__.html#treams.TMatrix.__gt__" title="treams.TMatrix.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.TMatrix.__getitem__.html#treams.TMatrix.__getitem__" title="treams.TMatrix.__getitem__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__getitem__</span></code></a>(key)</p></td>
+<td><p>Get an item from the AnnotatedArray.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.TMatrix.__xor__.html#treams.TMatrix.__xor__" title="treams.TMatrix.__xor__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__xor__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/generated/treams.TMatrix.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev94+gf11285d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">treams.TMatrix</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Dominik Beutel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

@@ -1,6 +1,0 @@
-ptsa.TMatrix.xs
-===============
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrix.xs

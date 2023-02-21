@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.modetype
-==========================
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: PhysicsArray.modetype

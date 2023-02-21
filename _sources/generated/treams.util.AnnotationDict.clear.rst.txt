@@ -1,0 +1,6 @@
+treams.util.AnnotationDict.clear
+================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotationDict.clear

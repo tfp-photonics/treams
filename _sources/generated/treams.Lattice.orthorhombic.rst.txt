@@ -1,0 +1,6 @@
+treams.Lattice.orthorhombic
+===========================
+
+.. currentmodule:: treams
+
+.. automethod:: Lattice.orthorhombic

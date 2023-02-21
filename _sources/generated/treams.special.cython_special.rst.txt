@@ -1,0 +1,38 @@
+treams.special.cython\_special
+==============================
+
+.. automodule:: treams.special.cython_special
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      _tl_vsw_helper
+      hankel1_d
+      hankel2_d
+      incgamma
+      intkambe
+      jv_d
+      lpmv
+      pi_fun
+      sph_harm
+      spherical_hankel1
+      spherical_hankel1_d
+      spherical_hankel2
+      spherical_hankel2_d
+      tau_fun
+      tl_vcw
+      tl_vcw_r
+      tl_vsw_A
+      tl_vsw_B
+      tl_vsw_rA
+      tl_vsw_rB
+      wigner3j
+      wignerd
+      wignersmalld
+      yv_d
+   
+   

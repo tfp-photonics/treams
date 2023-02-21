@@ -1,6 +1,0 @@
-ptsa.TMatrixC.ndim
-==================
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: TMatrixC.ndim

@@ -1,0 +1,6 @@
+treams.TMatrixC.valid\_points
+=============================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrixC.valid_points

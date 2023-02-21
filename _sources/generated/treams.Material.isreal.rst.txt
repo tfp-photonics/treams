@@ -1,0 +1,6 @@
+treams.Material.isreal
+======================
+
+.. currentmodule:: treams
+
+.. autoproperty:: Material.isreal

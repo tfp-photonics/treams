@@ -1,6 +1,0 @@
-ptsa.TMatrix.\_\_ge\_\_
-=======================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrix.__ge__

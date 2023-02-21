@@ -1,0 +1,6 @@
+treams.Lattice.\_\_ne\_\_
+=========================
+
+.. currentmodule:: treams
+
+.. automethod:: Lattice.__ne__

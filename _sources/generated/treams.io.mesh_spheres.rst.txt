@@ -1,0 +1,6 @@
+﻿treams.io.mesh\_spheres
+=======================
+
+.. currentmodule:: treams.io
+
+.. autofunction:: mesh_spheres

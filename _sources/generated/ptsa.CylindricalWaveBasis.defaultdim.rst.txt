@@ -1,6 +1,0 @@
-ptsa.CylindricalWaveBasis.defaultdim
-====================================
-
-.. currentmodule:: ptsa
-
-.. automethod:: CylindricalWaveBasis.defaultdim

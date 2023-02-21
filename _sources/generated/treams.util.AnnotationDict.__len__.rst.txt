@@ -1,0 +1,6 @@
+treams.util.AnnotationDict.\_\_len\_\_
+======================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotationDict.__len__

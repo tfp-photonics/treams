@@ -1,6 +1,0 @@
-ptsa.Lattice.orthorhombic
-=========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: Lattice.orthorhombic

@@ -1,0 +1,6 @@
+treams.util.lstsq
+=================
+
+.. currentmodule:: treams.util
+
+.. autofunction:: lstsq

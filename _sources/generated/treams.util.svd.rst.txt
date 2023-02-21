@@ -1,0 +1,6 @@
+treams.util.svd
+===============
+
+.. currentmodule:: treams.util
+
+.. autofunction:: svd

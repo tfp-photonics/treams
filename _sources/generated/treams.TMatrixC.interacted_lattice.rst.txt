@@ -1,0 +1,6 @@
+treams.TMatrixC.interacted\_lattice
+===================================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrixC.interacted_lattice

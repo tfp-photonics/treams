@@ -1,0 +1,6 @@
+treams.util.OrderedSet.\_\_len\_\_
+==================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: OrderedSet.__len__

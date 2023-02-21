@@ -1,6 +1,0 @@
-ptsa.SphericalWaveBasis.positions
-=================================
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: SphericalWaveBasis.positions

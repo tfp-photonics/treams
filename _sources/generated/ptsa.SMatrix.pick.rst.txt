@@ -1,6 +1,0 @@
-ptsa.SMatrix.pick
-=================
-
-.. currentmodule:: ptsa
-
-.. automethod:: SMatrix.pick

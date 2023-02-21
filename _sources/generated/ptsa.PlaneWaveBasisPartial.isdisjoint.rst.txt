@@ -1,6 +1,0 @@
-ptsa.PlaneWaveBasisPartial.isdisjoint
-=====================================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PlaneWaveBasisPartial.isdisjoint

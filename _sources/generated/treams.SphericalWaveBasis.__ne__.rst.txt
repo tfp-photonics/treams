@@ -1,0 +1,6 @@
+treams.SphericalWaveBasis.\_\_ne\_\_
+====================================
+
+.. currentmodule:: treams
+
+.. automethod:: SphericalWaveBasis.__ne__

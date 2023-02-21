@@ -1,0 +1,6 @@
+treams.TMatrix.db
+=================
+
+.. currentmodule:: treams
+
+.. autoproperty:: TMatrix.db

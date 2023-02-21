@@ -1,6 +1,0 @@
-ptsa.util.AnnotatedArray.conjugate
-==================================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotatedArray.conjugate

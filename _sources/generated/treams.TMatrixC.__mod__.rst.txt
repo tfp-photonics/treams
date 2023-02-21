@@ -1,0 +1,6 @@
+treams.TMatrixC.\_\_mod\_\_
+===========================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrixC.__mod__

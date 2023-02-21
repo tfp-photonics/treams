@@ -1,0 +1,6 @@
+treams.PhysicsArray.poltype
+===========================
+
+.. currentmodule:: treams
+
+.. autoproperty:: PhysicsArray.poltype

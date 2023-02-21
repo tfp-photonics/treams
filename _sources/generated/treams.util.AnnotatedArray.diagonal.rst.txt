@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.diagonal
+===================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotatedArray.diagonal

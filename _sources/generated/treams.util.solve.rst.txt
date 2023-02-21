@@ -1,0 +1,6 @@
+treams.util.solve
+=================
+
+.. currentmodule:: treams.util
+
+.. autofunction:: solve

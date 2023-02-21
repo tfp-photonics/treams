@@ -1,0 +1,6 @@
+treams.SMatrix.pick
+===================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.pick

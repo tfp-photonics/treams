@@ -1,0 +1,6 @@
+treams.TMatrix.\_\_add\_\_
+==========================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrix.__add__

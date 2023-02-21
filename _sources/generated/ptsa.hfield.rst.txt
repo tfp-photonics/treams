@@ -1,6 +1,0 @@
-﻿ptsa.hfield
-===========
-
-.. currentmodule:: ptsa
-
-.. autofunction:: hfield

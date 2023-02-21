@@ -1,0 +1,6 @@
+treams.CylindricalWaveBasis.diffr\_orders
+=========================================
+
+.. currentmodule:: treams
+
+.. automethod:: CylindricalWaveBasis.diffr_orders

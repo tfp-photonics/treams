@@ -1,6 +1,0 @@
-ptsa.SMatrix.propagation
-========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: SMatrix.propagation

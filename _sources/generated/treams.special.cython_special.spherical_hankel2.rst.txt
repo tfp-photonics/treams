@@ -1,0 +1,6 @@
+treams.special.cython\_special.spherical\_hankel2
+=================================================
+
+.. currentmodule:: treams.special.cython_special
+
+.. autofunction:: spherical_hankel2

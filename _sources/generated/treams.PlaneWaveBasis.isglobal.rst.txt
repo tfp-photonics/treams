@@ -1,0 +1,6 @@
+treams.PlaneWaveBasis.isglobal
+==============================
+
+.. currentmodule:: treams
+
+.. autoattribute:: PlaneWaveBasis.isglobal

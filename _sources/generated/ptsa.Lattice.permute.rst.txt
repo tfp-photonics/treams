@@ -1,6 +1,0 @@
-ptsa.Lattice.permute
-====================
-
-.. currentmodule:: ptsa
-
-.. automethod:: Lattice.permute

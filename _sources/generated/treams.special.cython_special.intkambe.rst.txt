@@ -1,0 +1,6 @@
+treams.special.cython\_special.intkambe
+=======================================
+
+.. currentmodule:: treams.special.cython_special
+
+.. autofunction:: intkambe

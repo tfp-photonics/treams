@@ -1,6 +1,0 @@
-ptsa.util.AnnotationDict.pop
-============================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotationDict.pop

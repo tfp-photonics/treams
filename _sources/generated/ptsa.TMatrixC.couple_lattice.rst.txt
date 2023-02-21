@@ -1,6 +1,0 @@
-ptsa.TMatrixC.couple\_lattice
-=============================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrixC.couple_lattice

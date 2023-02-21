@@ -1,6 +1,0 @@
-ptsa.TMatrixC.xw
-================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrixC.xw

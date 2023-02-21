@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>treams.special.tl_vsw_rB &#8212; treams 0.2.2.dev94+gf11285d documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/no-nobiles.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev94+gf11285d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">treams.special.tl_vsw_rB</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="treams-special-tl-vsw-rb">
+<h1>treams.special.tl_vsw_rB<a class="headerlink" href="#treams-special-tl-vsw-rb" title="Permalink to this heading">¶</a></h1>
+<dl class="py data">
+<dt class="sig sig-object py" id="treams.special.tl_vsw_rB">
+<span class="sig-prename descclassname"><span class="pre">treams.special.</span></span><span class="sig-name descname"><span class="pre">tl_vsw_rB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lambda</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ufunc</span> <span class="pre">'tl_vsw_rB'&gt;</span></em><a class="headerlink" href="#treams.special.tl_vsw_rB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Translation coefficient for vector spherical waves with opposite parity</p>
+<p>Definded by <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}B_{\lambda\mu lm}^{(1)}(x, \theta, \varphi) =
+\frac{\gamma_{lm}}{\gamma_{\lambda\mu}}
+(-1)^m \frac{2\lambda + 1}{\lambda (\lambda + 1)} \mathrm i^{\lambda - l}
+\sqrt{\pi \frac{(l + m)!(\lambda - \mu)!}{(l - m)!(\lambda + \mu)!}} \\ \cdot
+\sum_{p} \mathrm i^p\sqrt{2p + 1}
+j_p(kr) Y_{p, m - \mu}(\theta, \varphi)
+\begin{pmatrix}
+    l &amp; \lambda &amp; p \\
+    m &amp; -\mu &amp; -m + \mu
+\end{pmatrix} \\ \cdot
+\begin{pmatrix}
+    l &amp; \lambda &amp; p - 1 \\
+    0 &amp; 0 &amp; 0
+\end{pmatrix}
+\sqrt{\left[(l + \lambda + 1)^2 - p^2\right]\left[p^2 - (l - \lambda)^2\right]}\end{split}\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[\gamma_{lm} = \mathrm i \sqrt{\frac{2l + 1}{4\pi l (l + 1)}\frac{(l - m)!}{(l + m)!}}\]</div>
+<p>and the Wigner 3j-symbols (<a class="reference internal" href="treams.special.wigner3j.html#treams.special.wigner3j" title="treams.special.wigner3j"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.wigner3j()</span></code></a>) and the spherical Bessel
+functions. The summation runs over all
+<span class="math notranslate nohighlight">\(p \in \{\lambda + l - 1, \lambda + l - 3, \dots, \max(|\lambda - l| + 1, |\mu - m|)\}\)</span>.</p>
+<p>These coefficients are used to translate from incident to incident modes and from
+scattered to scattered modes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lambda</strong> (<em>integer</em><em>, </em><em>array_like</em>) – Degree of the destination mode</p></li>
+<li><p><strong>mu</strong> (<em>integer</em><em>, </em><em>array_like</em>) – Order of the destination mode</p></li>
+<li><p><strong>l</strong> (<em>integer</em><em>, </em><em>array_like</em>) – Degree of the source mode</p></li>
+<li><p><strong>m</strong> (<em>integer</em><em>, </em><em>array_like</em>) – Order of the source mode</p></li>
+<li><p><strong>x</strong> (<em>complex</em><em>, </em><em>array_like</em>) – Translation in units of the wave number</p></li>
+<li><p><strong>theta</strong> (<em>float</em><em> or </em><em>complex</em><em>, </em><em>array_like</em>) – Polar angle</p></li>
+<li><p><strong>phi</strong> (<em>float</em><em>, </em><em>array_like</em>) – Azimuthal angel</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>complex</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<ol class="upperalpha simple" start="12">
+<li><p>Tsang, J. A. Kong, and R. T. Shi, Theory of Microwave Remote Sensing (Wiley Series in Remote Sensing and Image Processing) (Wiley-Interscience, 1985).</p></li>
+</ol>
+</aside>
+</aside>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/generated/treams.special.tl_vsw_rB.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev94+gf11285d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">treams.special.tl_vsw_rB</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Dominik Beutel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

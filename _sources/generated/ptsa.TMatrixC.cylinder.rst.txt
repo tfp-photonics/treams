@@ -1,6 +1,0 @@
-ptsa.TMatrixC.cylinder
-======================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrixC.cylinder

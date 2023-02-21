@@ -1,6 +1,0 @@
-ptsa.TMatrix.k0
-===============
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: TMatrix.k0

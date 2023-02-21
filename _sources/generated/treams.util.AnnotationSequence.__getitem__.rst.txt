@@ -1,0 +1,6 @@
+treams.util.AnnotationSequence.\_\_getitem\_\_
+==============================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotationSequence.__getitem__

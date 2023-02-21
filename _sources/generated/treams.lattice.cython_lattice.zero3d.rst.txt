@@ -1,0 +1,6 @@
+treams.lattice.cython\_lattice.zero3d
+=====================================
+
+.. currentmodule:: treams.lattice.cython_lattice
+
+.. autofunction:: zero3d

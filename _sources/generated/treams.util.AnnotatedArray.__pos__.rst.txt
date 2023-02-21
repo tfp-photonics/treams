@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.\_\_pos\_\_
+======================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotatedArray.__pos__

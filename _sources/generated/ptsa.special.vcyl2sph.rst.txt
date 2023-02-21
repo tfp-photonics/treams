@@ -1,6 +1,0 @@
-ptsa.special.vcyl2sph
-=====================
-
-.. currentmodule:: ptsa.special
-
-.. autodata:: vcyl2sph

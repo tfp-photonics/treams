@@ -1,0 +1,6 @@
+treams.SMatrix.interface
+========================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.interface

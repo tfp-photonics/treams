@@ -1,6 +1,0 @@
-ptsa.SphericalWaveBasis.index
-=============================
-
-.. currentmodule:: ptsa
-
-.. automethod:: SphericalWaveBasis.index

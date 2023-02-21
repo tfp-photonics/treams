@@ -1,0 +1,6 @@
+treams.CylindricalWaveBasis.positions
+=====================================
+
+.. currentmodule:: treams
+
+.. autoproperty:: CylindricalWaveBasis.positions

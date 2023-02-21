@@ -1,0 +1,6 @@
+treams.lattice.cython\_lattice.recsumcw1d
+=========================================
+
+.. currentmodule:: treams.lattice.cython_lattice
+
+.. autofunction:: recsumcw1d

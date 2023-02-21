@@ -1,6 +1,0 @@
-﻿ptsa.io.mesh\_spheres
-=====================
-
-.. currentmodule:: ptsa.io
-
-.. autofunction:: mesh_spheres

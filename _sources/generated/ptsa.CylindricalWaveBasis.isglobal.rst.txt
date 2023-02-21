@@ -1,6 +1,0 @@
-ptsa.CylindricalWaveBasis.isglobal
-==================================
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: CylindricalWaveBasis.isglobal

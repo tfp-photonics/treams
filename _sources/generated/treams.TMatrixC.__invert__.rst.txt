@@ -1,0 +1,6 @@
+treams.TMatrixC.\_\_invert\_\_
+==============================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrixC.__invert__

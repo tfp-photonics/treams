@@ -1,6 +1,0 @@
-ptsa.TMatrix.expand
-===================
-
-.. currentmodule:: ptsa
-
-.. autoattribute:: TMatrix.expand

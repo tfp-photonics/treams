@@ -1,6 +1,0 @@
-﻿ptsa.misc.wave\_vec\_z
-======================
-
-.. currentmodule:: ptsa.misc
-
-.. autofunction:: wave_vec_z

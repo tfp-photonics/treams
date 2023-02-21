@@ -1,6 +1,0 @@
-ptsa.util.AnnotationDict.\_\_setitem\_\_
-========================================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotationDict.__setitem__

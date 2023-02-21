@@ -1,6 +1,0 @@
-ptsa.TMatrix.flatten
-====================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrix.flatten

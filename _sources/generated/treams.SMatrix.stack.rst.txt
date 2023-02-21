@@ -1,0 +1,6 @@
+treams.SMatrix.stack
+====================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.stack

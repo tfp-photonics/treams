@@ -1,0 +1,6 @@
+treams.PhysicsArray.expandlattice
+=================================
+
+.. currentmodule:: treams
+
+.. autoattribute:: PhysicsArray.expandlattice

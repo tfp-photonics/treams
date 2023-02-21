@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.relax
-=======================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PhysicsArray.relax

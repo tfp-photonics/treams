@@ -1,6 +1,0 @@
-ptsa.TMatrixC.\_\_invert\_\_
-============================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrixC.__invert__

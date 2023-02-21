@@ -1,0 +1,6 @@
+treams.util.AnnotationError
+===========================
+
+.. currentmodule:: treams.util
+
+.. autoexception:: AnnotationError

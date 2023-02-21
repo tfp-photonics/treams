@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.expandlattice
-===============================
-
-.. currentmodule:: ptsa
-
-.. autoattribute:: PhysicsArray.expandlattice

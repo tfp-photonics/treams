@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.astype
-========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PhysicsArray.astype

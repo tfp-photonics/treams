@@ -1,0 +1,6 @@
+treams.SphericalWaveBasis.ebcm
+==============================
+
+.. currentmodule:: treams
+
+.. automethod:: SphericalWaveBasis.ebcm

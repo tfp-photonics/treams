@@ -1,0 +1,6 @@
+treams.TMatrixC.ann
+===================
+
+.. currentmodule:: treams
+
+.. autoproperty:: TMatrixC.ann

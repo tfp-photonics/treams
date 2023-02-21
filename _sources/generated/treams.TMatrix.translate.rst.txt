@@ -1,0 +1,6 @@
+treams.TMatrix.translate
+========================
+
+.. currentmodule:: treams
+
+.. autoattribute:: TMatrix.translate

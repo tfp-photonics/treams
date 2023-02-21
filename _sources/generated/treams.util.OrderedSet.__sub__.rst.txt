@@ -1,0 +1,6 @@
+treams.util.OrderedSet.\_\_sub\_\_
+==================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: OrderedSet.__sub__

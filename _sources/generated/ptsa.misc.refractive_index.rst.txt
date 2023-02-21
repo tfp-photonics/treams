@@ -1,6 +1,0 @@
-﻿ptsa.misc.refractive\_index
-===========================
-
-.. currentmodule:: ptsa.misc
-
-.. autofunction:: refractive_index

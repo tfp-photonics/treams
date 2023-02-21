@@ -1,6 +1,0 @@
-ptsa.CylindricalWaveBasis.\_\_repr\_\_
-======================================
-
-.. currentmodule:: ptsa
-
-.. automethod:: CylindricalWaveBasis.__repr__

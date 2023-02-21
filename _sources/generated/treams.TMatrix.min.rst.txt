@@ -1,0 +1,6 @@
+treams.TMatrix.min
+==================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrix.min

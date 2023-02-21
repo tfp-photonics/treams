@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.\_\_setitem\_\_
+==========================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotatedArray.__setitem__

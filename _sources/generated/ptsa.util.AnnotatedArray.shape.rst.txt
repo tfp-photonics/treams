@@ -1,6 +1,0 @@
-ptsa.util.AnnotatedArray.shape
-==============================
-
-.. currentmodule:: ptsa.util
-
-.. autoproperty:: AnnotatedArray.shape

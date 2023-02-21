@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Polarizations &#8212; ptsa 0.2.2.dev92+g9ab8508 documentation</title>
+    <title>Polarizations and mode types &#8212; treams 0.2.2.dev94+gf11285d documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
@@ -17,7 +17,7 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Reference" href="ptsa.html" />
+    <link rel="next" title="Development and contributing" href="dev.html" />
     <link rel="prev" title="Maxwell’s equations and chiral constitutive relations" href="maxwell.html" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
@@ -37,14 +37,14 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="ptsa.html" title="Reference"
+          <a href="dev.html" title="Development and contributing"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="maxwell.html" title="Maxwell’s equations and chiral constitutive relations"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.2.2.dev92+g9ab8508 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev94+gf11285d documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="theory.html" accesskey="U">Theory</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Polarizations</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Polarizations and mode types</a></li> 
       </ul>
     </div>  
 
@@ -53,24 +53,47 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="polarizations">
-<h1>Polarizations<a class="headerlink" href="#polarizations" title="Permalink to this heading">¶</a></h1>
+  <section id="polarizations-and-mode-types">
+<h1>Polarizations and mode types<a class="headerlink" href="#polarizations-and-mode-types" title="Permalink to this heading">¶</a></h1>
+<section id="polarizations">
+<h2>Polarizations<a class="headerlink" href="#polarizations" title="Permalink to this heading">¶</a></h2>
 <p>Two polarization types are supported: <cite>helicity</cite> and <cite>parity</cite>. The first allows the use
 of chiral material parameters. Each polarization type contains two polarizations that
 are indicated by the integers <cite>0</cite> and <cite>1</cite> throughout the code. For helicity
 polarizations <cite>0</cite> stands for negative helicity and <cite>1</cite> for positive helicity. In the
 case of parity polarizations <cite>0</cite> stands for <cite>TE</cite> or <cite>magnetic</cite> polarization and <cite>1</cite> for
 <cite>TM</cite> or <cite>electric</cite> polarizations. The magnetic parity waves are defined in
-<a class="reference internal" href="generated/ptsa.special.vsw_M.html#ptsa.special.vsw_M" title="ptsa.special.vsw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_M()</span></code></a>, <a class="reference internal" href="generated/ptsa.special.vsw_rM.html#ptsa.special.vsw_rM" title="ptsa.special.vsw_rM"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_rM()</span></code></a>, <a class="reference internal" href="generated/ptsa.special.vcw_M.html#ptsa.special.vcw_M" title="ptsa.special.vcw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vcw_M()</span></code></a>,
-<a class="reference internal" href="generated/ptsa.special.vcw_rM.html#ptsa.special.vcw_rM" title="ptsa.special.vcw_rM"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vcw_rM()</span></code></a>, and <a class="reference internal" href="generated/ptsa.special.vpw_M.html#ptsa.special.vpw_M" title="ptsa.special.vpw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vpw_M()</span></code></a>. For spherical waves they
-are transverse with respect to the radial direction, for cylindrical and plane waves
-they are transverse to the z-axis. The corresponding electric parity waves are
-<a class="reference internal" href="generated/ptsa.special.vsw_N.html#ptsa.special.vsw_N" title="ptsa.special.vsw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_N()</span></code></a>, <a class="reference internal" href="generated/ptsa.special.vsw_rN.html#ptsa.special.vsw_rN" title="ptsa.special.vsw_rN"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_rN()</span></code></a>, <a class="reference internal" href="generated/ptsa.special.vcw_N.html#ptsa.special.vcw_N" title="ptsa.special.vcw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vcw_N()</span></code></a>,
-<a class="reference internal" href="generated/ptsa.special.vcw_rN.html#ptsa.special.vcw_rN" title="ptsa.special.vcw_rN"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vcw_rN()</span></code></a>, and <a class="reference internal" href="generated/ptsa.special.vpw_N.html#ptsa.special.vpw_N" title="ptsa.special.vpw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vpw_N()</span></code></a>.</p>
-<p>The helicity waves are defined in <a class="reference internal" href="generated/ptsa.special.vsw_A.html#ptsa.special.vsw_A" title="ptsa.special.vsw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_A()</span></code></a>,
-<a class="reference internal" href="generated/ptsa.special.vsw_rA.html#ptsa.special.vsw_rA" title="ptsa.special.vsw_rA"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vsw_rA()</span></code></a>, <a class="reference internal" href="generated/ptsa.special.vcw_A.html#ptsa.special.vcw_A" title="ptsa.special.vcw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vcw_A()</span></code></a>, <a class="reference internal" href="generated/ptsa.special.vcw_rA.html#ptsa.special.vcw_rA" title="ptsa.special.vcw_rA"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vcw_rA()</span></code></a>,
-and <a class="reference internal" href="generated/ptsa.special.vpw_A.html#ptsa.special.vpw_A" title="ptsa.special.vpw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">ptsa.special.vpw_A()</span></code></a>.</p>
-<p>The default polarization type to be used can be defined in <a class="reference internal" href="ptsa.config.html#module-ptsa.config" title="ptsa.config"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ptsa.config</span></code></a>.</p>
+<a class="reference internal" href="generated/treams.special.vsw_M.html#treams.special.vsw_M" title="treams.special.vsw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_M()</span></code></a>, <a class="reference internal" href="generated/treams.special.vsw_rM.html#treams.special.vsw_rM" title="treams.special.vsw_rM"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_rM()</span></code></a>,
+<a class="reference internal" href="generated/treams.special.vcw_M.html#treams.special.vcw_M" title="treams.special.vcw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_M()</span></code></a>, <a class="reference internal" href="generated/treams.special.vcw_rM.html#treams.special.vcw_rM" title="treams.special.vcw_rM"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_rM()</span></code></a>, and
+<a class="reference internal" href="generated/treams.special.vpw_M.html#treams.special.vpw_M" title="treams.special.vpw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vpw_M()</span></code></a>. For spherical waves they are transverse with respect to
+the radial direction, for cylindrical and plane waves they are transverse to the z-axis.
+The corresponding electric parity waves are <a class="reference internal" href="generated/treams.special.vsw_N.html#treams.special.vsw_N" title="treams.special.vsw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_N()</span></code></a>,
+<a class="reference internal" href="generated/treams.special.vsw_rN.html#treams.special.vsw_rN" title="treams.special.vsw_rN"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_rN()</span></code></a>, <a class="reference internal" href="generated/treams.special.vcw_N.html#treams.special.vcw_N" title="treams.special.vcw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_N()</span></code></a>,
+<a class="reference internal" href="generated/treams.special.vcw_rN.html#treams.special.vcw_rN" title="treams.special.vcw_rN"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_rN()</span></code></a>, and <a class="reference internal" href="generated/treams.special.vpw_N.html#treams.special.vpw_N" title="treams.special.vpw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vpw_N()</span></code></a>.</p>
+<p>The helicity waves are defined in <a class="reference internal" href="generated/treams.special.vsw_A.html#treams.special.vsw_A" title="treams.special.vsw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_A()</span></code></a>,
+<a class="reference internal" href="generated/treams.special.vsw_rA.html#treams.special.vsw_rA" title="treams.special.vsw_rA"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_rA()</span></code></a>, <a class="reference internal" href="generated/treams.special.vcw_A.html#treams.special.vcw_A" title="treams.special.vcw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_A()</span></code></a>, <a class="reference internal" href="generated/treams.special.vcw_rA.html#treams.special.vcw_rA" title="treams.special.vcw_rA"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_rA()</span></code></a>,
+and <a class="reference internal" href="generated/treams.special.vpw_A.html#treams.special.vpw_A" title="treams.special.vpw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vpw_A()</span></code></a>.</p>
+<p>The default polarization type to be used can be defined in <a class="reference internal" href="treams..config.html#module-treams.config" title="treams.config"><code class="xref py py-mod docutils literal notranslate"><span class="pre">treams.config</span></code></a>.</p>
+</section>
+<section id="mode-types">
+<h2>Mode types<a class="headerlink" href="#mode-types" title="Permalink to this heading">¶</a></h2>
+<p>For some basis sets there exist two different types of modes, that distinguish
+propagation features. For the spherical and cylindrical basis theses are <cite>regular</cite>
+and <cite>singular</cite> modes. The former come through the use of (spherical) Bessel Functions
+and the latter through the use of (spherical) Hankel functions of the first kind. The
+regular modes are finite in the whole space. Thus, they are suitable for describing
+incident modes or to expand a plane wave. The singular modes fulfil the radiation
+condition and as such are used for the scattered fields.</p>
+<p>For the, here, so-called partial plane wave basis (<a class="reference internal" href="generated/treams.PlaneWaveBasisPartial.html#treams.PlaneWaveBasisPartial" title="treams.PlaneWaveBasisPartial"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlaneWaveBasisPartial</span></code></a>)
+only two components of the wave vector are given and the third component is only
+implicitly defined by the wave number and the material parameters. The application for
+this basis is mostly within stratified media that are uniform or periodic in the two
+other dimensions. Thus, the two given components of the wave vectors are conserved up
+to reciprocal lattice vectors. To lift the ambiguity of the definition of the third
+component, the mode types <cite>up</cite> and <cite>down</cite> are possible. They define, if the modes
+propagate – or decay for evanescent modes – along the positive or negative direction
+with respect to the third axis.</p>
+</section>
 </section>
 
 
@@ -85,8 +108,6 @@ and <a class="reference internal" href="generated/ptsa.special.vpw_A.html#ptsa.s
 <li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="theory.html">Theory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ptsa.html">Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ptsa.html#modules">Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev.html">Development and contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 </ul>
@@ -98,8 +119,8 @@ and <a class="reference internal" href="generated/ptsa.special.vpw_A.html#ptsa.s
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="ptsa.html"
-                          title="next chapter">Reference</a></p>
+    <p class="topless"><a href="dev.html"
+                          title="next chapter">Development and contributing</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -132,14 +153,14 @@ and <a class="reference internal" href="generated/ptsa.special.vpw_A.html#ptsa.s
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="ptsa.html" title="Reference"
+          <a href="dev.html" title="Development and contributing"
              >next</a> |</li>
         <li class="right" >
           <a href="maxwell.html" title="Maxwell’s equations and chiral constitutive relations"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">ptsa 0.2.2.dev92+g9ab8508 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev94+gf11285d documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="theory.html" >Theory</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Polarizations</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Polarizations and mode types</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

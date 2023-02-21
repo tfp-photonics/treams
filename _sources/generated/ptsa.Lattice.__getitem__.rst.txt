@@ -1,6 +1,0 @@
-ptsa.Lattice.\_\_getitem\_\_
-============================
-
-.. currentmodule:: ptsa
-
-.. automethod:: Lattice.__getitem__

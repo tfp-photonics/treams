@@ -1,6 +1,0 @@
-ptsa.Lattice.\_\_gt\_\_
-=======================
-
-.. currentmodule:: ptsa
-
-.. automethod:: Lattice.__gt__

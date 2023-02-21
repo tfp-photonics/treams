@@ -1,6 +1,0 @@
-ptsa.TMatrix.expandlattice
-==========================
-
-.. currentmodule:: ptsa
-
-.. autoattribute:: TMatrix.expandlattice

@@ -1,6 +1,0 @@
-ptsa.Material.\_\_ge\_\_
-========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: Material.__ge__

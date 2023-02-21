@@ -1,0 +1,6 @@
+treams.TMatrix.relax
+====================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrix.relax

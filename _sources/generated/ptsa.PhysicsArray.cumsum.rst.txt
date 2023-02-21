@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.cumsum
-========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PhysicsArray.cumsum

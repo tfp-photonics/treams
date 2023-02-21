@@ -1,6 +1,0 @@
-ptsa.TMatrix.\_\_setitem\_\_
-============================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrix.__setitem__

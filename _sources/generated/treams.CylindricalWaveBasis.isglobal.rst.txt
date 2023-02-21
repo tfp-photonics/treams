@@ -1,0 +1,6 @@
+treams.CylindricalWaveBasis.isglobal
+====================================
+
+.. currentmodule:: treams
+
+.. autoproperty:: CylindricalWaveBasis.isglobal

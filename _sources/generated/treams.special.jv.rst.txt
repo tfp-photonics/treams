@@ -1,0 +1,6 @@
+treams.special.jv
+=================
+
+.. currentmodule:: treams.special
+
+.. autodata:: jv

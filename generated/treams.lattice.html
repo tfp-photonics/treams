@@ -1,0 +1,255 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>treams.lattice &#8212; treams 0.2.2.dev94+gf11285d documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/no-nobiles.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev94+gf11285d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">treams.lattice</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-treams.lattice">
+<span id="treams-lattice"></span><h1>treams.lattice<a class="headerlink" href="#module-treams.lattice" title="Permalink to this heading">¶</a></h1>
+<p>Lattice sums.</p>
+<p>Calculates the lattice sums of the forms</p>
+<div class="math notranslate nohighlight">
+\[D_{lm}(k, \boldsymbol k_\parallel, \boldsymbol r, \Lambda_d)
+= \sideset{}{'}{\sum_{\boldsymbol R \in \Lambda_d}}
+h_l^{(1)}(k|\boldsymbol r + \boldsymbol R|)
+Y_{lm}
+(\theta_{-\boldsymbol r - \boldsymbol R}, \varphi_{-\boldsymbol r - \boldsymbol R})
+\mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[D_{m}(k, \boldsymbol k_\parallel, \boldsymbol r, \Lambda_d)
+= \sideset{}{'}{\sum_{\boldsymbol R \in \Lambda_d}}
+H_m^{(1)}(k|\boldsymbol r + \boldsymbol R|)
+\mathrm e^{\mathrm i m \varphi_{-\boldsymbol r - \boldsymbol R}}
+\mathrm e^{\mathrm i \boldsymbol k_\parallel \boldsymbol R}\]</div>
+<p>that arise when translating and summing the spherical and cylindrical solutions
+of the Helmholtz equation in a periodic arrangement. These sums have a notoriously slow
+convergence and at least for lattices with a dimension <span class="math notranslate nohighlight">\(d &gt; 1\)</span> it is not advisable
+to use the direct approach. Fortunately, it is possible to convert them to exponentially
+convergent series, which are implemented here. For details on the math, see the
+references below.</p>
+<p>The lattice of dimension <span class="math notranslate nohighlight">\(d \leq 3\)</span> (<span class="math notranslate nohighlight">\(d \leq 2\)</span> in the second case) is
+denoted with <span class="math notranslate nohighlight">\(\Lambda_d\)</span> and consists of all vectors
+<span class="math notranslate nohighlight">\(\boldsymbol R = \sum_{i=1}^{d} n_i \boldsymbol a_i\)</span> with <span class="math notranslate nohighlight">\(\boldsymbol a_i\)</span>
+being basis vectors of the lattice and <span class="math notranslate nohighlight">\(n_i \in \mathbb Z\)</span>. For <span class="math notranslate nohighlight">\(d = 2\)</span> the
+lattice is in the <cite>z = 0</cite> plane and for <span class="math notranslate nohighlight">\(d = 1\)</span> it is along the z-axis. The vector
+<span class="math notranslate nohighlight">\(\boldsymbol r\)</span> is arbitrary but for best convergence it should be reduced to the
+Wigner-Seitz cell of the lattice. The summation excludes the point
+<span class="math notranslate nohighlight">\(\boldsymbol R + \boldsymbol r = 0\)</span> if it exists, which is indicated by the prime
+next to the summation sign.</p>
+<p>The wave in the lattice is defined by its – possibly complex-valued – wave number
+<span class="math notranslate nohighlight">\(k\)</span> and the (real) components of the wave vector
+<span class="math notranslate nohighlight">\(\boldsymbol k_\parallel \in \mathbb R^d\)</span> that are parallel to the lattice.</p>
+<p>The expressions include the (spherical) Hankel functions of first kind <span class="math notranslate nohighlight">\(H_m^{(1)}\)</span>
+(<span class="math notranslate nohighlight">\(h_l^{(1)}\)</span>) and the spherical harmonics <span class="math notranslate nohighlight">\(Y_{lm}\)</span>. The angles
+<span class="math notranslate nohighlight">\(\theta\)</span> and <span class="math notranslate nohighlight">\(\varphi\)</span> are the polar and azimuthal angle, when expressing
+the points in spherical coordinates. In the first case, the degree is
+<span class="math notranslate nohighlight">\(l \in \mathbb N_0\)</span> and the order is <span class="math notranslate nohighlight">\(\mathbb Z \ni m \leq l\)</span>. In the second
+case <span class="math notranslate nohighlight">\(m \in \mathbb Z\)</span>.</p>
+<section id="available-functions">
+<h2>Available functions<a class="headerlink" href="#available-functions" title="Permalink to this heading">¶</a></h2>
+<section id="accelerated-lattice-summations">
+<h3>Accelerated lattice summations<a class="headerlink" href="#accelerated-lattice-summations" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.lattice.lsumcw1d.html#treams.lattice.lsumcw1d" title="treams.lattice.lsumcw1d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lsumcw1d</span></code></a>(l, k, kpar, a, r, eta)</p></td>
+<td><p>Fast summation of cylindrical functions on a 1d lattice</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.lattice.lsumcw1d_shift.html#treams.lattice.lsumcw1d_shift" title="treams.lattice.lsumcw1d_shift"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lsumcw1d_shift</span></code></a>(l, k, kpar, a, r, eta)</p></td>
+<td><p>Fast summation of cylindrical functions on a 1d lattice with out of lattice shifts</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.lattice.lsumcw2d.html#treams.lattice.lsumcw2d" title="treams.lattice.lsumcw2d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lsumcw2d</span></code></a>(l, k, kpar, a, r, eta)</p></td>
+<td><p>Fast summation of cylindrical functions on a 2d lattice</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.lattice.lsumsw1d.html#treams.lattice.lsumsw1d" title="treams.lattice.lsumsw1d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lsumsw1d</span></code></a>(l, k, kpar, a, r, eta)</p></td>
+<td><p>Fast summation of spherical functions on a 1d lattice</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.lattice.lsumsw1d_shift.html#treams.lattice.lsumsw1d_shift" title="treams.lattice.lsumsw1d_shift"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lsumsw1d_shift</span></code></a>(l, m, k, kpar, a, r, eta)</p></td>
+<td><p>Fast summation of spherical functions on a 1d lattice with out of lattice shifts</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.lattice.lsumsw2d.html#treams.lattice.lsumsw2d" title="treams.lattice.lsumsw2d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lsumsw2d</span></code></a>(l, m, k, kpar, a, r, eta)</p></td>
+<td><p>Fast summation of spherical functions on a 2d lattice</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.lattice.lsumsw2d_shift.html#treams.lattice.lsumsw2d_shift" title="treams.lattice.lsumsw2d_shift"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lsumsw2d_shift</span></code></a>(l, m, k, kpar, a, r, eta)</p></td>
+<td><p>Fast summation of spherical functions on a 2d lattice with out of lattice shifts</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.lattice.lsumsw3d.html#treams.lattice.lsumsw3d" title="treams.lattice.lsumsw3d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lsumsw3d</span></code></a>(l, m, k, kpar, a, r, eta)</p></td>
+<td><p>Fast summation of spherical functions on a 3d lattice</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="direct-summations">
+<h3>Direct summations<a class="headerlink" href="#direct-summations" title="Permalink to this heading">¶</a></h3>
+<p>The functions are almost only here for benchmarking and comparison.</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.lattice.dsumcw1d.html#treams.lattice.dsumcw1d" title="treams.lattice.dsumcw1d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dsumcw1d</span></code></a>(l, k, kpar, a, r, i)</p></td>
+<td><p>Direct summation of cylindrical functions on a 1d lattice</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.lattice.dsumcw1d_shift.html#treams.lattice.dsumcw1d_shift" title="treams.lattice.dsumcw1d_shift"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dsumcw1d_shift</span></code></a>(l, k, kpar, a, r, i)</p></td>
+<td><p>Direct summation of cylindrical functions on a 1d lattice with out of lattice shifts</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.lattice.dsumcw2d.html#treams.lattice.dsumcw2d" title="treams.lattice.dsumcw2d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dsumcw2d</span></code></a>(l, k, kpar, a, r, i)</p></td>
+<td><p>Direct summation of cylindrical functions on a 2d lattice</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.lattice.dsumsw1d.html#treams.lattice.dsumsw1d" title="treams.lattice.dsumsw1d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dsumsw1d</span></code></a>(l, k, kpar, a, r, i)</p></td>
+<td><p>Direct summation of spherical functions on a 1d lattice</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.lattice.dsumsw1d_shift.html#treams.lattice.dsumsw1d_shift" title="treams.lattice.dsumsw1d_shift"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dsumsw1d_shift</span></code></a>(l, m, k, kpar, a, r, i)</p></td>
+<td><p>Fast summation of spherical functions on a 1d lattice with out of lattice shifts</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.lattice.dsumsw2d.html#treams.lattice.dsumsw2d" title="treams.lattice.dsumsw2d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dsumsw2d</span></code></a>(l, m, k, kpar, a, r, i)</p></td>
+<td><p>Direct summation of spherical functions on a 2d lattice</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.lattice.dsumsw2d_shift.html#treams.lattice.dsumsw2d_shift" title="treams.lattice.dsumsw2d_shift"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dsumsw2d_shift</span></code></a>(l, m, k, kpar, a, r, i)</p></td>
+<td><p>Direct summation of spherical functions on a 2d lattice with out of lattice shifts</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.lattice.dsumsw3d.html#treams.lattice.dsumsw3d" title="treams.lattice.dsumsw3d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dsumsw3d</span></code></a>(l, m, k, kpar, a, r, i)</p></td>
+<td><p>Direct summation of spherical functions on a 3d lattice</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="miscellaneous-functions">
+<h3>Miscellaneous functions<a class="headerlink" href="#miscellaneous-functions" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.lattice.area.html#treams.lattice.area" title="treams.lattice.area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">area</span></code></a>(a)</p></td>
+<td><p>Calculate the signed volume (area)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.lattice.cube.html#treams.lattice.cube" title="treams.lattice.cube"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cube</span></code></a>(d, n)</p></td>
+<td><p>All integer points in a d-dimensional cube of sidelength 2n</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.lattice.cubeedge.html#treams.lattice.cubeedge" title="treams.lattice.cubeedge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cubeedge</span></code></a>(d, n)</p></td>
+<td><p>All integer points on the surface of a d-dimensional cube of sidelength 2n</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.lattice.diffr_orders_circle.html#treams.lattice.diffr_orders_circle" title="treams.lattice.diffr_orders_circle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diffr_orders_circle</span></code></a>(b, rmax)</p></td>
+<td><p>Diffraction orders in a circle.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.lattice.reciprocal.html#treams.lattice.reciprocal" title="treams.lattice.reciprocal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reciprocal</span></code></a>(a)</p></td>
+<td><p>Reciprocal vectors in two- and three-dimensional space</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.lattice.volume.html#treams.lattice.volume" title="treams.lattice.volume"><code class="xref py py-obj docutils literal notranslate"><span class="pre">volume</span></code></a>(a)</p></td>
+<td><p>Calculate the signed volume (area)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cython-module">
+<h3>Cython module<a class="headerlink" href="#cython-module" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.lattice.cython_lattice.html#module-treams.lattice.cython_lattice" title="treams.lattice.cython_lattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cython_lattice</span></code></a></p></td>
+<td><p>Cython versions of lattice functions.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://doi.org/10.1515/zna-1967-0305">[1] K. Kambe, Zeitschrift Für Naturforschung A 22, 3 (1967).</a></p></li>
+<li><p><a class="reference external" href="https://doi.org/10.1515/zna-1968-0908">[2] K. Kambe, Zeitschrift Für Naturforschung A 23, 9 (1968).</a></p></li>
+<li><p><a class="reference external" href="https://doi.org/10.1137/09075130X">[3] C. M. Linton, SIAM Rev. 52, 630 (2010).</a></p></li>
+<li><p><a class="reference external" href="https://doi.org/10.1364/JOSAB.419645">[4] D. Beutel el al., J. Opt. Soc. Am. B (2021).</a></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/generated/treams.lattice.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev94+gf11285d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">treams.lattice</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Dominik Beutel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

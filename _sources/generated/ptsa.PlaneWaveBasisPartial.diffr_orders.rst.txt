@@ -1,6 +1,0 @@
-ptsa.PlaneWaveBasisPartial.diffr\_orders
-========================================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PlaneWaveBasisPartial.diffr_orders

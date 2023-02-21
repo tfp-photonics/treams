@@ -1,6 +1,0 @@
-ptsa.CylindricalWaveBasis.\_\_len\_\_
-=====================================
-
-.. currentmodule:: ptsa
-
-.. automethod:: CylindricalWaveBasis.__len__

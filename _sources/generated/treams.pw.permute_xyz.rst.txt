@@ -1,0 +1,6 @@
+﻿treams.pw.permute\_xyz
+======================
+
+.. currentmodule:: treams.pw
+
+.. autofunction:: permute_xyz

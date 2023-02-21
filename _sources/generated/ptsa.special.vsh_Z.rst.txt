@@ -1,6 +1,0 @@
-ptsa.special.vsh\_Z
-===================
-
-.. currentmodule:: ptsa.special
-
-.. autodata:: vsh_Z

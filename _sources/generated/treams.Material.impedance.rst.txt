@@ -1,0 +1,6 @@
+treams.Material.impedance
+=========================
+
+.. currentmodule:: treams
+
+.. autoproperty:: Material.impedance

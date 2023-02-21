@@ -1,6 +1,0 @@
-ptsa.util.AnnotationDict.\_\_getitem\_\_
-========================================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotationDict.__getitem__

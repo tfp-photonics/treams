@@ -1,0 +1,6 @@
+﻿treams.pw.translate
+===================
+
+.. currentmodule:: treams.pw
+
+.. autofunction:: translate

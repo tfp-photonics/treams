@@ -1,6 +1,0 @@
-ptsa.util.AnnotatedArray.\_\_pow\_\_
-====================================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotatedArray.__pow__

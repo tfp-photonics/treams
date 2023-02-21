@@ -1,0 +1,395 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>treams.special &#8212; treams 0.2.2.dev94+gf11285d documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/no-nobiles.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev94+gf11285d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">treams.special</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-treams.special">
+<span id="treams-special"></span><h1>treams.special<a class="headerlink" href="#module-treams.special" title="Permalink to this heading">¶</a></h1>
+<p>Special (mathematical) functions.</p>
+<p>Special mathematical functions used in <a class="reference internal" href="../treams..html#module-treams" title="treams"><code class="xref py py-mod docutils literal notranslate"><span class="pre">treams</span></code></a>. Some functions are reexported from
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/special.html#module-scipy.special" title="(in SciPy v1.10.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.special</span></code></a>. Most functions are available as Numpy universal functions
+(<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="(in NumPy v1.24)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ufunc</span></code></a>) or as generalized universal functions
+(<span class="xref std std-doc">reference/c-api/generalized-ufuncs</span>).</p>
+<section id="available-functions">
+<h2>Available functions<a class="headerlink" href="#available-functions" title="Permalink to this heading">¶</a></h2>
+<section id="bessel-and-hankel-functions-with-their-spherical-counterparts-derivatives">
+<h3>Bessel and Hankel functions, with their spherical counterparts, derivatives<a class="headerlink" href="#bessel-and-hankel-functions-with-their-spherical-counterparts-derivatives" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.hankel1_d.html#treams.special.hankel1_d" title="treams.special.hankel1_d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hankel1_d</span></code></a>(v, z)</p></td>
+<td><p>Derivative of the Hankel function of the first kind.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.hankel2_d.html#treams.special.hankel2_d" title="treams.special.hankel2_d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hankel2_d</span></code></a>(v, z)</p></td>
+<td><p>Derivative of the Hankel function of the second kind</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.jv_d.html#treams.special.jv_d" title="treams.special.jv_d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jv_d</span></code></a>(v, z)</p></td>
+<td><p>Derivative of the Bessel function of the first kind</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.yv_d.html#treams.special.yv_d" title="treams.special.yv_d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">yv_d</span></code></a>(v, z)</p></td>
+<td><p>Derivative of the Bessel function of the second kind</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.spherical_hankel1.html#treams.special.spherical_hankel1" title="treams.special.spherical_hankel1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spherical_hankel1</span></code></a>(n, z)</p></td>
+<td><p>Spherical Hankel function of the first kind</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.spherical_hankel2.html#treams.special.spherical_hankel2" title="treams.special.spherical_hankel2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spherical_hankel2</span></code></a>(n, z)</p></td>
+<td><p>Spherical Hankel function of the second kind</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.spherical_hankel1_d.html#treams.special.spherical_hankel1_d" title="treams.special.spherical_hankel1_d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spherical_hankel1_d</span></code></a>(n, z)</p></td>
+<td><p>Derivative of the spherical Hankel function of the first kind.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.spherical_hankel2_d.html#treams.special.spherical_hankel2_d" title="treams.special.spherical_hankel2_d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spherical_hankel2_d</span></code></a>(n, z)</p></td>
+<td><p>Derivative of the spherical Hankel function of the second kind</p></td>
+</tr>
+</tbody>
+</table>
+<p>Those functions are just reexported from Scipy. So, one only needs to import this
+subpackage within treams.</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.hankel1.html#treams.special.hankel1" title="treams.special.hankel1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hankel1</span></code></a>(v, z[, out])</p></td>
+<td><p>Hankel function of the first kind</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.hankel2.html#treams.special.hankel2" title="treams.special.hankel2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hankel2</span></code></a>(v, z[, out])</p></td>
+<td><p>Hankel function of the second kind</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.jv.html#treams.special.jv" title="treams.special.jv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jv</span></code></a>(v, z[, out])</p></td>
+<td><p>Bessel function of the first kind of real order and complex argument.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.yv.html#treams.special.yv" title="treams.special.yv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">yv</span></code></a>(v, z[, out])</p></td>
+<td><p>Bessel function of the second kind of real order and complex argument.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.spherical_jn.html#treams.special.spherical_jn" title="treams.special.spherical_jn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spherical_jn</span></code></a>(n, z[, derivative])</p></td>
+<td><p>Spherical Bessel function of the first kind or its derivative.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.spherical_yn.html#treams.special.spherical_yn" title="treams.special.spherical_yn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spherical_yn</span></code></a>(n, z[, derivative])</p></td>
+<td><p>Spherical Bessel function of the second kind or its derivative.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Those functions just wrap Scipy functions with special optional arguments to be able to
+analogously access them like their non-spherical counterparts:</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.spherical_jn_d.html#treams.special.spherical_jn_d" title="treams.special.spherical_jn_d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spherical_jn_d</span></code></a>(n, z)</p></td>
+<td><p>Derivative of the spherical Bessel function of the first kind.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.spherical_yn_d.html#treams.special.spherical_yn_d" title="treams.special.spherical_yn_d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spherical_yn_d</span></code></a>(n, z)</p></td>
+<td><p>Derivative of the spherical Bessel function of the second kind.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="scipy-functions-with-enhanced-domain">
+<h3>Scipy functions with enhanced domain<a class="headerlink" href="#scipy-functions-with-enhanced-domain" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.sph_harm.html#treams.special.sph_harm" title="treams.special.sph_harm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sph_harm</span></code></a>(m, l, phi, theta)</p></td>
+<td><p>Spherical harmonics of real and complex argument</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.lpmv.html#treams.special.lpmv" title="treams.special.lpmv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lpmv</span></code></a>(m, v, z)</p></td>
+<td><p>Associated legendre polynomials of real and complex argument</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="integrals-for-the-ewald-summation">
+<h3>Integrals for the Ewald summation<a class="headerlink" href="#integrals-for-the-ewald-summation" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.incgamma.html#treams.special.incgamma" title="treams.special.incgamma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">incgamma</span></code></a>(l, z)</p></td>
+<td><p>Upper incomplete Gamma function of integer and half-integer degree and real and complex argument</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.intkambe.html#treams.special.intkambe" title="treams.special.intkambe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intkambe</span></code></a>(n, z, eta)</p></td>
+<td><p>Integral appearing in the accelerated lattice summations</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wigner-d-and-wigner-d-matrix-elements">
+<h3>Wigner d- and Wigner D-matrix elements<a class="headerlink" href="#wigner-d-and-wigner-d-matrix-elements" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.wignersmalld.html#treams.special.wignersmalld" title="treams.special.wignersmalld"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wignersmalld</span></code></a>(l, m, k, theta)</p></td>
+<td><p>Wigner-d matrix element</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.wignerd.html#treams.special.wignerd" title="treams.special.wignerd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wignerd</span></code></a>(l, m, k, phi, theta, psi)</p></td>
+<td><p>Wigner-D matrix element</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wigner-3j-symbols">
+<h3>Wigner 3j-symbols<a class="headerlink" href="#wigner-3j-symbols" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.wigner3j.html#treams.special.wigner3j" title="treams.special.wigner3j"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wigner3j</span></code></a>(j1, j2, j3, m1, m2, m3)</p></td>
+<td><p>Wigner-3j symbol</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vector-wave-functions">
+<h3>Vector wave functions<a class="headerlink" href="#vector-wave-functions" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.pi_fun.html#treams.special.pi_fun" title="treams.special.pi_fun"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pi_fun</span></code></a>(l, m, x)</p></td>
+<td><p>Angular function pi</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.tau_fun.html#treams.special.tau_fun" title="treams.special.tau_fun"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tau_fun</span></code></a>(l, m, x)</p></td>
+<td><p>Angular function tau</p></td>
+</tr>
+</tbody>
+</table>
+<p>Spherical waves and translation coefficients</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.vsh_X.html#treams.special.vsh_X" title="treams.special.vsh_X"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vsh_X</span></code></a>(l, m, theta, phi)</p></td>
+<td><p>Vector spherical harmonic X in spherical coordinates</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.vsh_Y.html#treams.special.vsh_Y" title="treams.special.vsh_Y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vsh_Y</span></code></a>(l, m, theta, phi)</p></td>
+<td><p>Vector spherical harmonic Y in spherical coordinates</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.vsh_Z.html#treams.special.vsh_Z" title="treams.special.vsh_Z"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vsh_Z</span></code></a>(l, m, theta, phi)</p></td>
+<td><p>Vector spherical harmonic Z in spherical coordinates</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.vsw_M.html#treams.special.vsw_M" title="treams.special.vsw_M"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vsw_M</span></code></a>(l, m, x, theta, phi)</p></td>
+<td><p>Singular vector spherical wave M</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.vsw_N.html#treams.special.vsw_N" title="treams.special.vsw_N"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vsw_N</span></code></a>(l, m, x, theta, phi)</p></td>
+<td><p>Singular vector spherical wave N</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.vsw_A.html#treams.special.vsw_A" title="treams.special.vsw_A"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vsw_A</span></code></a>(l, m, x, theta, phi, p)</p></td>
+<td><p>Singular helical vector spherical wave</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.vsw_rM.html#treams.special.vsw_rM" title="treams.special.vsw_rM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vsw_rM</span></code></a>(l, m, x, theta, phi)</p></td>
+<td><p>Regular vector spherical wave M</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.vsw_rN.html#treams.special.vsw_rN" title="treams.special.vsw_rN"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vsw_rN</span></code></a>(l, m, x, theta, phi)</p></td>
+<td><p>Regular vector spherical wave N</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.vsw_rA.html#treams.special.vsw_rA" title="treams.special.vsw_rA"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vsw_rA</span></code></a>(l, m, x, theta, phi, p)</p></td>
+<td><p>Regular helical vector spherical wave</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.tl_vsw_A.html#treams.special.tl_vsw_A" title="treams.special.tl_vsw_A"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl_vsw_A</span></code></a>(lambda, mu, l, m, x, theta, phi)</p></td>
+<td><p>Translation coefficient for vector spherical waves with the same parity</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.tl_vsw_B.html#treams.special.tl_vsw_B" title="treams.special.tl_vsw_B"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl_vsw_B</span></code></a>(lambda, mu, l, m, x, theta, phi)</p></td>
+<td><p>Translation coefficient for vector spherical waves with opposite parity</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.tl_vsw_rA.html#treams.special.tl_vsw_rA" title="treams.special.tl_vsw_rA"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl_vsw_rA</span></code></a>(lambda, mu, l, m, x, theta, phi)</p></td>
+<td><p>Translation coefficient for vector spherical waves with the same parity</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.tl_vsw_rB.html#treams.special.tl_vsw_rB" title="treams.special.tl_vsw_rB"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl_vsw_rB</span></code></a>(lambda, mu, l, m, x, theta, phi)</p></td>
+<td><p>Translation coefficient for vector spherical waves with opposite parity</p></td>
+</tr>
+</tbody>
+</table>
+<p>Cylindrical waves</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.vcw_M.html#treams.special.vcw_M" title="treams.special.vcw_M"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vcw_M</span></code></a>(kz, m, xrho, phi, z)</p></td>
+<td><p>Singular vector cylindrical wave M</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.vcw_N.html#treams.special.vcw_N" title="treams.special.vcw_N"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vcw_N</span></code></a>(kz, m, xrho, phi, z, k)</p></td>
+<td><p>Singular vector cylindrical wave N</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.vcw_A.html#treams.special.vcw_A" title="treams.special.vcw_A"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vcw_A</span></code></a>(kz, m, xrho, phi, z, k, pol)</p></td>
+<td><p>Singular helical vector cylindrical wave</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.vcw_rM.html#treams.special.vcw_rM" title="treams.special.vcw_rM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vcw_rM</span></code></a>(kz, m, xrho, phi, z)</p></td>
+<td><p>Regular vector cylindrical wave M</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.vcw_rN.html#treams.special.vcw_rN" title="treams.special.vcw_rN"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vcw_rN</span></code></a>(kz, m, xrho, phi, z, k)</p></td>
+<td><p>Regular vector cylindrical wave N</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.vcw_rA.html#treams.special.vcw_rA" title="treams.special.vcw_rA"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vcw_rA</span></code></a>(kz, m, xrho, phi, z, k)</p></td>
+<td><p>Regular helical vector cylindrical wave</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.tl_vcw.html#treams.special.tl_vcw" title="treams.special.tl_vcw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl_vcw</span></code></a>(kz1, mu, kz2, m, k, xrho, phi, z)</p></td>
+<td><p>Translation coefficient for vector cylindrical waves from scattered to incident modes</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.tl_vcw_r.html#treams.special.tl_vcw_r" title="treams.special.tl_vcw_r"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl_vcw_r</span></code></a>(kz1, mu, kz2, m, k, xrho, phi, z)</p></td>
+<td><p>Translation coefficient for vector cylindrical waves of the same kind</p></td>
+</tr>
+</tbody>
+</table>
+<p>Plane waves</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.vpw_M.html#treams.special.vpw_M" title="treams.special.vpw_M"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vpw_M</span></code></a>(kx, ky, kz, x, y, z)</p></td>
+<td><p>Vector plane wave M</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.vpw_N.html#treams.special.vpw_N" title="treams.special.vpw_N"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vpw_N</span></code></a>(kx, ky, kz, x, y, z)</p></td>
+<td><p>Vector plane wave N</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.vpw_A.html#treams.special.vpw_A" title="treams.special.vpw_A"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vpw_A</span></code></a>(kx, ky, kz, x, y, z, p)</p></td>
+<td><p>Vector plane wave of well-defined helicity</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="coordinate-system-transformations">
+<h3>Coordinate system transformations<a class="headerlink" href="#coordinate-system-transformations" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.car2cyl.html#treams.special.car2cyl" title="treams.special.car2cyl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">car2cyl</span></code></a>(r)</p></td>
+<td><p>Convert cartesian to cylindrical coordinates</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.car2sph.html#treams.special.car2sph" title="treams.special.car2sph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">car2sph</span></code></a>(r)</p></td>
+<td><p>Convert cartesian to spherical coordinates</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.cyl2car.html#treams.special.cyl2car" title="treams.special.cyl2car"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cyl2car</span></code></a>(r)</p></td>
+<td><p>Convert cylindrical to cartesian coordinates</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.cyl2sph.html#treams.special.cyl2sph" title="treams.special.cyl2sph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cyl2sph</span></code></a>(r)</p></td>
+<td><p>Convert cylindrical to spherical coordinates</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.sph2car.html#treams.special.sph2car" title="treams.special.sph2car"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sph2car</span></code></a>(r)</p></td>
+<td><p>Convert spherical to cartesian coordinates</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.sph2cyl.html#treams.special.sph2cyl" title="treams.special.sph2cyl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sph2cyl</span></code></a>(r)</p></td>
+<td><p>Convert spherical to cylindrical coordinates</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.vcar2cyl.html#treams.special.vcar2cyl" title="treams.special.vcar2cyl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vcar2cyl</span></code></a>(v, r)</p></td>
+<td><p>Convert vector in cartesian coordinates to vector in cylindrical coordinates</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.vcar2sph.html#treams.special.vcar2sph" title="treams.special.vcar2sph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vcar2sph</span></code></a>(v, r)</p></td>
+<td><p>Convert vector in cartesian coordinates to vector in spherical coordinates</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.vcyl2car.html#treams.special.vcyl2car" title="treams.special.vcyl2car"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vcyl2car</span></code></a>(v, r)</p></td>
+<td><p>Convert vector in cylindrical coordinates to vector in cartesian coordinates</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.vcyl2sph.html#treams.special.vcyl2sph" title="treams.special.vcyl2sph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vcyl2sph</span></code></a>(v, r)</p></td>
+<td><p>Convert vector in cylindrical coordinates to vector in spherical coordinates</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.vsph2car.html#treams.special.vsph2car" title="treams.special.vsph2car"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vsph2car</span></code></a>(v, r)</p></td>
+<td><p>Convert vector in spherical coordinates to vector in cartesian coordinates</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.vsph2cyl.html#treams.special.vsph2cyl" title="treams.special.vsph2cyl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vsph2cyl</span></code></a>(v, r)</p></td>
+<td><p>Convert vector in spherical coordinates to vector in cylindrical coordinates</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.car2pol.html#treams.special.car2pol" title="treams.special.car2pol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">car2pol</span></code></a>(r)</p></td>
+<td><p>Convert cartesian to polar coordinates</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.pol2car.html#treams.special.pol2car" title="treams.special.pol2car"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pol2car</span></code></a>(r)</p></td>
+<td><p>Convert polar to cartesian coordinates</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.vcar2pol.html#treams.special.vcar2pol" title="treams.special.vcar2pol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vcar2pol</span></code></a>(v, r)</p></td>
+<td><p>Convert vector in cartesian coordinates to vector in polar coordinates</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.special.vpol2car.html#treams.special.vpol2car" title="treams.special.vpol2car"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vpol2car</span></code></a>(v, r)</p></td>
+<td><p>Convert vector in polar coordinates to vector in cartesian coordinates</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cython-module">
+<h3>Cython module<a class="headerlink" href="#cython-module" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.cython_special.html#module-treams.special.cython_special" title="treams.special.cython_special"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cython_special</span></code></a></p></td>
+<td><p>Cython versions of special functions.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/generated/treams.special.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev94+gf11285d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">treams.special</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Dominik Beutel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

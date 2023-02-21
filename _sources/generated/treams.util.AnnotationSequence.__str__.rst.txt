@@ -1,0 +1,6 @@
+treams.util.AnnotationSequence.\_\_str\_\_
+==========================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotationSequence.__str__

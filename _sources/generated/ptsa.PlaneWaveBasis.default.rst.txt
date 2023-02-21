@@ -1,6 +1,0 @@
-ptsa.PlaneWaveBasis.default
-===========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PlaneWaveBasis.default

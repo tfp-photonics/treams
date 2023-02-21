@@ -1,6 +1,0 @@
-ptsa.TMatrix.sphere
-===================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrix.sphere

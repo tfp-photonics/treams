@@ -1,6 +1,0 @@
-ptsa.util.OrderedSet.\_\_xor\_\_
-================================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: OrderedSet.__xor__

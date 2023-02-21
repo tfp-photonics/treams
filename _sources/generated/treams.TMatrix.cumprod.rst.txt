@@ -1,0 +1,6 @@
+treams.TMatrix.cumprod
+======================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrix.cumprod

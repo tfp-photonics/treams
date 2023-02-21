@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.\_\_xor\_\_
-=============================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PhysicsArray.__xor__

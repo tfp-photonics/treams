@@ -1,0 +1,6 @@
+treams.TMatrixC.trace
+=====================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrixC.trace

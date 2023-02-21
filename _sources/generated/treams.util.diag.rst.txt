@@ -1,0 +1,6 @@
+treams.util.diag
+================
+
+.. currentmodule:: treams.util
+
+.. autofunction:: diag

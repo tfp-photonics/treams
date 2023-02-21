@@ -1,6 +1,0 @@
-ptsa.util.AnnotatedArray.\_\_lt\_\_
-===================================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotatedArray.__lt__

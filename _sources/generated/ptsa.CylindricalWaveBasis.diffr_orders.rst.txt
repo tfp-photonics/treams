@@ -1,6 +1,0 @@
-ptsa.CylindricalWaveBasis.diffr\_orders
-=======================================
-
-.. currentmodule:: ptsa
-
-.. automethod:: CylindricalWaveBasis.diffr_orders

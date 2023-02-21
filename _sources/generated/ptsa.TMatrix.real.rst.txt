@@ -1,6 +1,0 @@
-ptsa.TMatrix.real
-=================
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: TMatrix.real

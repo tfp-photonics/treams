@@ -1,0 +1,6 @@
+treams.util.triu
+================
+
+.. currentmodule:: treams.util
+
+.. autofunction:: triu

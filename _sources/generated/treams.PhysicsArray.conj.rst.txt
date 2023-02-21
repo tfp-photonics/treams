@@ -1,0 +1,6 @@
+treams.PhysicsArray.conj
+========================
+
+.. currentmodule:: treams
+
+.. automethod:: PhysicsArray.conj

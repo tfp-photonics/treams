@@ -1,6 +1,0 @@
-ptsa.SphericalWaveBasis.defaultlmax
-===================================
-
-.. currentmodule:: ptsa
-
-.. automethod:: SphericalWaveBasis.defaultlmax

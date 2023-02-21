@@ -1,0 +1,6 @@
+treams.TMatrix.interacted
+=========================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrix.interacted

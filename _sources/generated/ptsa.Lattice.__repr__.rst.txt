@@ -1,6 +1,0 @@
-ptsa.Lattice.\_\_repr\_\_
-=========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: Lattice.__repr__

@@ -1,0 +1,6 @@
+treams.PlaneWaveBasis.default
+=============================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasis.default

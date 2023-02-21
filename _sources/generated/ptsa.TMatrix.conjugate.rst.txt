@@ -1,6 +1,0 @@
-ptsa.TMatrix.conjugate
-======================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrix.conjugate

@@ -1,6 +1,0 @@
-ptsa.util.AnnotatedArray.\_\_ge\_\_
-===================================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotatedArray.__ge__

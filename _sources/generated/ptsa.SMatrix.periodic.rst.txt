@@ -1,6 +1,0 @@
-ptsa.SMatrix.periodic
-=====================
-
-.. currentmodule:: ptsa
-
-.. automethod:: SMatrix.periodic

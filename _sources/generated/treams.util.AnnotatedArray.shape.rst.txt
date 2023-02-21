@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.shape
+================================
+
+.. currentmodule:: treams.util
+
+.. autoproperty:: AnnotatedArray.shape

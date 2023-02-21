@@ -1,0 +1,6 @@
+﻿treams.misc.firstbrillouin1d
+============================
+
+.. currentmodule:: treams.misc
+
+.. autofunction:: firstbrillouin1d

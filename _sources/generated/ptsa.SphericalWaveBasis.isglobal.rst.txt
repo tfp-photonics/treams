@@ -1,6 +1,0 @@
-ptsa.SphericalWaveBasis.isglobal
-================================
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: SphericalWaveBasis.isglobal

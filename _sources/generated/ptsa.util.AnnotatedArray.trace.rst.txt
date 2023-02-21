@@ -1,6 +1,0 @@
-ptsa.util.AnnotatedArray.trace
-==============================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotatedArray.trace

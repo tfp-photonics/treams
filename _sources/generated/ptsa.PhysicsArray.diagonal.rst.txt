@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.diagonal
-==========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PhysicsArray.diagonal

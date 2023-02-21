@@ -1,6 +1,0 @@
-ptsa.TMatrixC.\_\_abs\_\_
-=========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrixC.__abs__

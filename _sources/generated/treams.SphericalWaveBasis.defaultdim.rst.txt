@@ -1,0 +1,6 @@
+treams.SphericalWaveBasis.defaultdim
+====================================
+
+.. currentmodule:: treams
+
+.. automethod:: SphericalWaveBasis.defaultdim

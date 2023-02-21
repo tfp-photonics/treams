@@ -1,6 +1,0 @@
-ptsa.special.tau\_fun
-=====================
-
-.. currentmodule:: ptsa.special
-
-.. autodata:: tau_fun

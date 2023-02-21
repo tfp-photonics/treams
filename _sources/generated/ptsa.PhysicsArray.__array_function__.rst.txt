@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.\_\_array\_function\_\_
-=========================================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PhysicsArray.__array_function__

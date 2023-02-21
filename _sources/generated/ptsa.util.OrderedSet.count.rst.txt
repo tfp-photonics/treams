@@ -1,6 +1,0 @@
-ptsa.util.OrderedSet.count
-==========================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: OrderedSet.count

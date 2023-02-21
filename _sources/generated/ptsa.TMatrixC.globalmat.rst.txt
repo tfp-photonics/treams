@@ -1,6 +1,0 @@
-ptsa.TMatrixC.globalmat
-=======================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrixC.globalmat

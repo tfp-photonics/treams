@@ -1,0 +1,6 @@
+treams.SMatrix.periodic
+=======================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.periodic

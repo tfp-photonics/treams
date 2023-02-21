@@ -1,6 +1,0 @@
-ptsa.SMatrix.from\_array
-========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: SMatrix.from_array

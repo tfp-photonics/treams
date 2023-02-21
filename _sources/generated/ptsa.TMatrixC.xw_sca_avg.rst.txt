@@ -1,6 +1,0 @@
-ptsa.TMatrixC.xw\_sca\_avg
-==========================
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: TMatrixC.xw_sca_avg

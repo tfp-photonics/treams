@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.ndim
+===============================
+
+.. currentmodule:: treams.util
+
+.. autoproperty:: AnnotatedArray.ndim

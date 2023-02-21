@@ -1,0 +1,6 @@
+treams.TMatrix.expand
+=====================
+
+.. currentmodule:: treams
+
+.. autoattribute:: TMatrix.expand

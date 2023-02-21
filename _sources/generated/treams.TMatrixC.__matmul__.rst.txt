@@ -1,0 +1,6 @@
+treams.TMatrixC.\_\_matmul\_\_
+==============================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrixC.__matmul__

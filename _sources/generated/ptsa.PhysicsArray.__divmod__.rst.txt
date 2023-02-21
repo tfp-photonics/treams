@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.\_\_divmod\_\_
-================================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PhysicsArray.__divmod__

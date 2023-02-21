@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.poltype
-=========================
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: PhysicsArray.poltype

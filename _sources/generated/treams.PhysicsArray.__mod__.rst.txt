@@ -1,0 +1,6 @@
+treams.PhysicsArray.\_\_mod\_\_
+===============================
+
+.. currentmodule:: treams
+
+.. automethod:: PhysicsArray.__mod__

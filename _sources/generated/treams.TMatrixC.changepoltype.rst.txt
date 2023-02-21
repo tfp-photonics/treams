@@ -1,0 +1,6 @@
+treams.TMatrixC.changepoltype
+=============================
+
+.. currentmodule:: treams
+
+.. autoattribute:: TMatrixC.changepoltype

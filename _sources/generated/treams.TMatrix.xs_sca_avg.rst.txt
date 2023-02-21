@@ -1,0 +1,6 @@
+treams.TMatrix.xs\_sca\_avg
+===========================
+
+.. currentmodule:: treams
+
+.. autoproperty:: TMatrix.xs_sca_avg

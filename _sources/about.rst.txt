@@ -2,7 +2,7 @@
 About
 =====
 
-ptsa is developed at the `Karlsruhe Institute of Technology <https://www.kit.edu>`_ by
+treams is developed at the `Karlsruhe Institute of Technology <https://www.kit.edu>`_ by
 the
 `Institute of Theoretical Solid State Physics <https://www.tfp.kit.edu/rockstuhl.php>`_.
 

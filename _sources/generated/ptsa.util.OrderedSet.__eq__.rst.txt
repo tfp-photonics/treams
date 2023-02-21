@@ -1,6 +1,0 @@
-ptsa.util.OrderedSet.\_\_eq\_\_
-===============================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: OrderedSet.__eq__

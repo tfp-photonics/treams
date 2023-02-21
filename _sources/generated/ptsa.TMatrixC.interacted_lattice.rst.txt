@@ -1,6 +1,0 @@
-ptsa.TMatrixC.interacted\_lattice
-=================================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrixC.interacted_lattice

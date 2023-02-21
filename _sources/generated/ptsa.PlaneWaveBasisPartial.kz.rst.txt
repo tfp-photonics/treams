@@ -1,6 +1,0 @@
-ptsa.PlaneWaveBasisPartial.kz
-=============================
-
-.. currentmodule:: ptsa
-
-.. autoproperty:: PlaneWaveBasisPartial.kz

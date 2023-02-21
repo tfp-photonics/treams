@@ -1,6 +1,0 @@
-ptsa.util.AnnotatedArray.\_\_ne\_\_
-===================================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: AnnotatedArray.__ne__

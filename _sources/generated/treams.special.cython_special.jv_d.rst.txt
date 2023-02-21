@@ -1,0 +1,6 @@
+treams.special.cython\_special.jv\_d
+====================================
+
+.. currentmodule:: treams.special.cython_special
+
+.. autofunction:: jv_d

@@ -1,6 +1,0 @@
-ptsa.special.cyl2car
-====================
-
-.. currentmodule:: ptsa.special
-
-.. autodata:: cyl2car

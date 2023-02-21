@@ -1,6 +1,0 @@
-ptsa.SphericalWaveBasis.isdisjoint
-==================================
-
-.. currentmodule:: ptsa
-
-.. automethod:: SphericalWaveBasis.isdisjoint

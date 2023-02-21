@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.\_\_gt\_\_
+=====================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotatedArray.__gt__

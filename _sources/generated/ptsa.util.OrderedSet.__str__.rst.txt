@@ -1,6 +1,0 @@
-ptsa.util.OrderedSet.\_\_str\_\_
-================================
-
-.. currentmodule:: ptsa.util
-
-.. automethod:: OrderedSet.__str__

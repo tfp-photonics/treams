@@ -1,6 +1,0 @@
-ptsa.SMatrix.field\_inside
-==========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: SMatrix.field_inside

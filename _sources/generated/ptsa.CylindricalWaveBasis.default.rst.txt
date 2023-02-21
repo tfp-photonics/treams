@@ -1,6 +1,0 @@
-ptsa.CylindricalWaveBasis.default
-=================================
-
-.. currentmodule:: ptsa
-
-.. automethod:: CylindricalWaveBasis.default

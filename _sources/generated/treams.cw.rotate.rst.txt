@@ -1,0 +1,6 @@
+﻿treams.cw.rotate
+================
+
+.. currentmodule:: treams.cw
+
+.. autodata:: rotate

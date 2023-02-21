@@ -1,0 +1,6 @@
+treams.util.implements
+======================
+
+.. currentmodule:: treams.util
+
+.. autofunction:: implements

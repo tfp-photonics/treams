@@ -1,0 +1,6 @@
+treams.TMatrix.\_\_or\_\_
+=========================
+
+.. currentmodule:: treams
+
+.. automethod:: TMatrix.__or__

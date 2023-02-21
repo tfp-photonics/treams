@@ -1,0 +1,6 @@
+treams.Material.kappa
+=====================
+
+.. currentmodule:: treams
+
+.. autoproperty:: Material.kappa

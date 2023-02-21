@@ -1,6 +1,0 @@
-ptsa.TMatrix.astype
-===================
-
-.. currentmodule:: ptsa
-
-.. automethod:: TMatrix.astype

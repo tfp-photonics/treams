@@ -1,0 +1,6 @@
+treams.util.AnnotationDict.\_\_setitem\_\_
+==========================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotationDict.__setitem__

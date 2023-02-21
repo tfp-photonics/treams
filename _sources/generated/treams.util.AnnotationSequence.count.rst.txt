@@ -1,0 +1,6 @@
+treams.util.AnnotationSequence.count
+====================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotationSequence.count

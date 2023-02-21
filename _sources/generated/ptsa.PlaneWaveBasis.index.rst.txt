@@ -1,6 +1,0 @@
-ptsa.PlaneWaveBasis.index
-=========================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PlaneWaveBasis.index

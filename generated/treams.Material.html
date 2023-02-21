@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>treams.Material &#8212; treams 0.2.2.dev94+gf11285d documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/no-nobiles.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev94+gf11285d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">treams.Material</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="treams-material">
+<h1>treams.Material<a class="headerlink" href="#treams-material" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="treams.Material">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">treams.</span></span><span class="sig-name descname"><span class="pre">Material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#treams.Material" title="Permalink to this definition">¶</a></dt>
+<dd><p>Material definition.</p>
+<p>The material properties are defined in the frequency domain through scalar values
+for permittivity <span class="math notranslate nohighlight">\(\epsilon\)</span>, permeability <span class="math notranslate nohighlight">\(\mu\)</span>, and the chirality
+parameter  <span class="math notranslate nohighlight">\(\kappa\)</span>. Materials are, thus, assumed to be linear,
+time-invariant, homogeneous, isotropic, and local. Also, it is assumed that they
+have no gain. The relation of the electric and magnetic fields is defined by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{pmatrix}
+    \frac{1}{\epsilon_0} \boldsymbol D \\
+    c \boldsymbol B
+\end{pmatrix}
+=
+\begin{pmatrix}
+    \epsilon &amp; \mathrm i \kappa \\
+    -\mathrm i \kappa &amp; \mu
+\end{pmatrix}
+\begin{pmatrix}
+    \boldsymbol E \\
+    Z_0 \boldsymbol H
+\end{pmatrix}\end{split}\]</div>
+<p>for a fixed vacuum wave number <span class="math notranslate nohighlight">\(k_0\)</span> and spatial position
+<span class="math notranslate nohighlight">\(\boldsymbol r\)</span> with <span class="math notranslate nohighlight">\(\epsilon_0\)</span> the vacuum permittivity, <span class="math notranslate nohighlight">\(c\)</span> the
+speed of light in vacuum, and <span class="math notranslate nohighlight">\(Z_0\)</span> the vacuum impedance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>epsilon</strong> (<em>optional</em><em>, </em><em>complex</em>) – Relative permittivity. Defaults to 1.</p></li>
+<li><p><strong>mu</strong> (<em>optional</em><em>, </em><em>complex</em>) – Relative permeability. Defaults to 1.</p></li>
+<li><p><strong>kappa</strong> (<em>optional</em><em>, </em><em>complex</em>) – Chirality parameter. Defaults to 0.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Material.epsilon.html#treams.Material.epsilon" title="treams.Material.epsilon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">epsilon</span></code></a></p></td>
+<td><p>Relative permittivity.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Material.impedance.html#treams.Material.impedance" title="treams.Material.impedance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">impedance</span></code></a></p></td>
+<td><p>Relative impedance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Material.ischiral.html#treams.Material.ischiral" title="treams.Material.ischiral"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ischiral</span></code></a></p></td>
+<td><p>Test if the material is chiral.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Material.isreal.html#treams.Material.isreal" title="treams.Material.isreal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isreal</span></code></a></p></td>
+<td><p>Test if the material has purely real parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Material.kappa.html#treams.Material.kappa" title="treams.Material.kappa"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kappa</span></code></a></p></td>
+<td><p>Chirality parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Material.mu.html#treams.Material.mu" title="treams.Material.mu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mu</span></code></a></p></td>
+<td><p>Relative permeability.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Material.n.html#treams.Material.n" title="treams.Material.n"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n</span></code></a></p></td>
+<td><p>Refractive index.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Material.nmp.html#treams.Material.nmp" title="treams.Material.nmp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nmp</span></code></a></p></td>
+<td><p>Refractive indices of both helicities.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Material.__call__.html#treams.Material.__call__" title="treams.Material.__call__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code></a>()</p></td>
+<td><p>Return a tuple containing all material parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Material.__eq__.html#treams.Material.__eq__" title="treams.Material.__eq__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__eq__</span></code></a>(other)</p></td>
+<td><p>Compare material parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Material.__ge__.html#treams.Material.__ge__" title="treams.Material.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(value, /)</p></td>
+<td><p>Return self&gt;=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Material.__gt__.html#treams.Material.__gt__" title="treams.Material.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(value, /)</p></td>
+<td><p>Return self&gt;value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Material.__le__.html#treams.Material.__le__" title="treams.Material.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(value, /)</p></td>
+<td><p>Return self&lt;=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Material.__lt__.html#treams.Material.__lt__" title="treams.Material.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(value, /)</p></td>
+<td><p>Return self&lt;value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Material.__ne__.html#treams.Material.__ne__" title="treams.Material.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(value, /)</p></td>
+<td><p>Return self!=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Material.__repr__.html#treams.Material.__repr__" title="treams.Material.__repr__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__repr__</span></code></a>()</p></td>
+<td><p>Representation that allows recreating the object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Material.__str__.html#treams.Material.__str__" title="treams.Material.__str__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__str__</span></code></a>()</p></td>
+<td><p>All three material parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Material.from_n.html#treams.Material.from_n" title="treams.Material.from_n"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_n</span></code></a>([n, impedance, kappa])</p></td>
+<td><p>Create material from refractive index and relative impedance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Material.from_nmp.html#treams.Material.from_nmp" title="treams.Material.from_nmp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_nmp</span></code></a>([ns, impedance])</p></td>
+<td><p>Create material from refractive indices of both helicities.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Material.krhos.html#treams.Material.krhos" title="treams.Material.krhos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">krhos</span></code></a>(k0, kz, pol)</p></td>
+<td><p>The (cylindrically) radial part of the wave vector.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Material.ks.html#treams.Material.ks" title="treams.Material.ks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ks</span></code></a>(k0)</p></td>
+<td><p>Return the wave numbers in the medium for both polarizations.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Material.kzs.html#treams.Material.kzs" title="treams.Material.kzs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kzs</span></code></a>(k0, kx, ky, pol)</p></td>
+<td><p>The z-component of the wave vector.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Material.__le__.html#treams.Material.__le__" title="treams.Material.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(value, /)</p></td>
+<td><p>Return self&lt;=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Material.__lt__.html#treams.Material.__lt__" title="treams.Material.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(value, /)</p></td>
+<td><p>Return self&lt;value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Material.__ne__.html#treams.Material.__ne__" title="treams.Material.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(value, /)</p></td>
+<td><p>Return self!=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Material.__ge__.html#treams.Material.__ge__" title="treams.Material.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(value, /)</p></td>
+<td><p>Return self&gt;=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Material.__gt__.html#treams.Material.__gt__" title="treams.Material.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(value, /)</p></td>
+<td><p>Return self&gt;value.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/generated/treams.Material.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev94+gf11285d documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">treams.Material</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Dominik Beutel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

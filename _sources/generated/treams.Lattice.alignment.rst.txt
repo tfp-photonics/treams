@@ -1,0 +1,6 @@
+treams.Lattice.alignment
+========================
+
+.. currentmodule:: treams
+
+.. autoproperty:: Lattice.alignment

@@ -1,0 +1,6 @@
+treams.lattice.cython\_lattice.diffr\_orders\_circle
+====================================================
+
+.. currentmodule:: treams.lattice.cython_lattice
+
+.. autofunction:: diffr_orders_circle

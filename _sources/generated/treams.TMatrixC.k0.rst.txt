@@ -1,0 +1,6 @@
+treams.TMatrixC.k0
+==================
+
+.. currentmodule:: treams
+
+.. autoproperty:: TMatrixC.k0

@@ -1,6 +1,0 @@
-ptsa.SphericalWaveBasis.\_\_xor\_\_
-===================================
-
-.. currentmodule:: ptsa
-
-.. automethod:: SphericalWaveBasis.__xor__

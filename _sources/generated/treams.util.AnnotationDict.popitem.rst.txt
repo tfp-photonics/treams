@@ -1,0 +1,6 @@
+treams.util.AnnotationDict.popitem
+==================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotationDict.popitem

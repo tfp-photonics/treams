@@ -1,6 +1,0 @@
-ptsa.PhysicsArray.\_\_invert\_\_
-================================
-
-.. currentmodule:: ptsa
-
-.. automethod:: PhysicsArray.__invert__

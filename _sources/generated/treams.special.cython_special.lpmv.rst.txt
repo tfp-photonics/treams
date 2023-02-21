@@ -1,0 +1,6 @@
+treams.special.cython\_special.lpmv
+===================================
+
+.. currentmodule:: treams.special.cython_special
+
+.. autofunction:: lpmv

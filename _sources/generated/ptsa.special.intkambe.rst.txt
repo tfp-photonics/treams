@@ -1,6 +1,0 @@
-ptsa.special.intkambe
-=====================
-
-.. currentmodule:: ptsa.special
-
-.. autodata:: intkambe

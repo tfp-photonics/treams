@@ -1,6 +1,0 @@
-ptsa.special.pi\_fun
-====================
-
-.. currentmodule:: ptsa.special
-
-.. autodata:: pi_fun

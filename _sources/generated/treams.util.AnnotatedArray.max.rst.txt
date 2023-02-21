@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.max
+==============================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotatedArray.max
