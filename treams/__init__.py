@@ -1,9 +1,11 @@
-"""Package treams.
+"""TREAMS: T-Matrix scattering code for nanophotonic computations.
 
 .. currentmodule:: treams
 
 Classes
 =======
+
+The top-level classes and functions allow a high-level access to the functionality.
 
 Basis sets
 ----------

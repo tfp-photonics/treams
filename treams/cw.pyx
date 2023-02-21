@@ -1,7 +1,4 @@
-"""
-===========================================
-Functions associated with cylindrical waves
-===========================================
+"""Cylindrical wave module.
 
 .. autosummary::
    :toctree: generated/
@@ -200,7 +197,7 @@ _translate_r = np.PyUFunc_FromFuncAndData(
 def translate(kz, mu, pol, qz, m, qol, krr, phi, z, singular=True, *args, **kwargs):
     r"""translate(kz, mu, pol, qz, m, qol, krr, phi, z, singular=True)
 
-    Translation coefficient for cylindrical modes
+    Translation coefficient for cylindrical modes.
 
     Returns the correct translation coefficient from :func:`treams.special.tl_vcw` and
     :func:`treams.special.tl_vcw_r` or a combination thereof for the specified mode. A
@@ -296,7 +293,7 @@ rotate = np.PyUFunc_FromFuncAndData(
     'rotate',
     """rotate(kz, mu, pol, qz, m, qol, phi)
 
-Rotation coefficient for cylindrical modes
+Rotation coefficient for cylindrical modes.
 
 Returns the correct rotation coefficient or a combination thereof for the specified
 mode. A basis does not have to be specified since the coefficients are the same in
@@ -442,7 +439,7 @@ periodic_to_pw = np.PyUFunc_FromFuncAndData(
     'periodic_to_pw',
     """periodic_to_pw(kx, ky, kz, pol, qz, m, qol, area)
 
-Convert periodic cylindrical wave to plane wave
+Convert periodic cylindrical wave to plane wave.
 
 Returns the coefficient for the basis change in a periodic arrangement of cylindrical
 modes to plane waves. For multiple positions only diagonal values (with respect to
@@ -589,7 +586,7 @@ _to_sw_p = np.PyUFunc_FromFuncAndData(
 def to_sw(l, m, polsw, kz, mu, polcw, k, poltype=None, *args, **kwargs):
     """to_sw(l, m, polsw, kz, mu, polcw, k, helicity=True)
 
-    Coefficient for the expansion of a cylindrical wave in spherical waves
+    Coefficient for the expansion of a cylindrical wave in spherical waves.
 
     Returns the coefficient for the basis change from a plane wave to a spherical wave.
     For multiple positions only diagonal values (with respect to the position) are
@@ -623,7 +620,7 @@ def to_sw(l, m, polsw, kz, mu, polcw, k, poltype=None, *args, **kwargs):
 def translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, eta=0):
     """translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, eta=0)
 
-    Translation coefficients in a lattice
+    Translation coefficients in a lattice.
 
     Returns the translation coefficents for the given modes in a lattice. The
     calculation uses the fast converging sums of :mod:`treams.lattice`.

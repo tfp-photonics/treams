@@ -3,3 +3,7 @@
 body {
     font-family: sans-serif;
 }
+
+table.align-default {
+    margin-left: 0;
+}

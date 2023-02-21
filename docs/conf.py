@@ -66,7 +66,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # a list of builtin themes.
 #
 html_theme = "pyramid"
-html_css_files = ["no-nobiles.css"]
+html_css_files = ["custom.css"]
 html_sidebars = {
     "**": ["globaltoc.html", "relations.html", "sourcelink.html", "searchbox.html"]
 }

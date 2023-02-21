@@ -1,7 +1,4 @@
-"""
-=====================================
-Functions associated with plane waves
-=====================================
+"""Plane wave module.
 
 .. autosummary::
    :toctree: generated/

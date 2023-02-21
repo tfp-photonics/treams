@@ -1,4 +1,4 @@
-"""Configuration values.
+"""Configuration.
 
 This is the place to define global configuration variables. Use, e.g.,
 

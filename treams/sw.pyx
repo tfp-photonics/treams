@@ -1,7 +1,4 @@
-"""
-=========================================
-Functions associated with spherical waves
-=========================================
+"""Spherical wave module.
 
 .. autosummary::
    :toctree: generated/
@@ -255,7 +252,7 @@ _translate_rp = np.PyUFunc_FromFuncAndData(
 def translate(lambda_, mu, pol, l, m, qol, kr, theta, phi, poltype=None, singular=True, *args, **kwargs):
     """translate(lambda_, mu, pol, l, m, qol, kr, theta, phi, helicity=True, singular=True)
 
-    Translation coefficient for spherical modes
+    Translation coefficient for spherical modes.
 
     Returns the correct translation coefficient from :func:`treams.special.tl_vsw_A`,
     :func:`treams.special.tl_vsw_B`, :func:`treams.special.tl_vsw_rA`, and
@@ -341,7 +338,7 @@ _rotate = np.PyUFunc_FromFuncAndData(
 def rotate(lambda_, mu, pol, l, m, qol, phi, theta=0, psi=0, *args, **kwargs):
     """rotate(lambda_, mu, pol, l, m, qol, phi, theta=0, psi=0)
 
-    Rotation coefficient for spherical modes
+    Rotation coefficient for spherical modes.
 
     Returns the correct rotation coefficient from :func:`treams.special.wignerd`. The
     angles are given as Euler angles in `z-y-z`-convention. In the intrinsic (object
@@ -581,7 +578,7 @@ _translate_periodic_p = np.PyUFunc_FromFuncAndDataAndSignature(
 def translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, poltype=None, eta=0, func=lattice.lsumsw):
     """translate_periodic(ks, kpar, a, rs, out, in_=None, rsin=None, helicity=True, eta=0)
 
-    Translation coefficients in a lattice
+    Translation coefficients in a lattice.
 
     Returns the translation coefficents for the given modes in a lattice. The calculation
     uses the fast converging sums of :mod:`treams.lattice`.
@@ -834,7 +831,7 @@ _periodic_to_pw_p = np.PyUFunc_FromFuncAndData(
 def periodic_to_pw(kx, ky, kz, pol, l, m, qol, area, poltype=None, *args, **kwargs):
     """periodic_to_pw(kx, ky, kz, pol, l, m, qol, area, helicity=True)
 
-    Convert periodic spherical wave to plane wave
+    Convert periodic spherical wave to plane wave.
 
     Returns the coefficient for the basis change in a periodic arrangement of spherical
     modes to plane waves. For multiple positions only diagonal values (with respect to
@@ -980,7 +977,7 @@ _periodic_to_cw_p = np.PyUFunc_FromFuncAndData(
 def periodic_to_cw(kz, m, pol, l, mu, qol, k, area, poltype=None, *args, **kwargs):
     """periodic_to_cw(kz, m, pol, l, mu, qol, k, area, helicity=True)
 
-    Convert periodic spherical wave to plane wave
+    Convert periodic spherical wave to plane wave.
 
     Returns the coefficient for the basis change in a periodic arrangement of spherical
     modes to plane waves. For multiple positions only diagonal values (with respect to

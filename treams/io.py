@@ -1,7 +1,4 @@
-"""
-========================
-Loading and storing data
-========================
+"""Loading and storing data.
 
 Most functions rely on at least one of the external packages `h5py` or `gmsh`.
 
@@ -266,7 +263,7 @@ def save_hdf5(
         [["readonly"]] + [["writeonly", "allocate"]] * 4,
         [None, float, complex, complex, complex],
     ) as it:
-        for (tmat, k0, epsilon, mu, kappa) in it:
+        for tmat, k0, epsilon, mu, kappa in it:
             tmat = tmat.item()
             if (
                 np.any(tmat.l != tmat_first.l)
@@ -364,7 +361,8 @@ def _write_hdf5(
     datafile.create_dataset("modes/l", data=ls)
     datafile.create_dataset("modes/m", data=ms)
     datafile.create_dataset(
-        "modes/polarization", data=_translate_polarizations(pols, helicity=helicity),
+        "modes/polarization",
+        data=_translate_polarizations(pols, helicity=helicity),
     )
     datafile.create_dataset("modes/position_index", data=pidxs)
     datafile["modes/position_index"].attrs[

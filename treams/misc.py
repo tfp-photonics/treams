@@ -1,9 +1,4 @@
-"""
-=======================
-Miscellaneous functions
-=======================
-
-.. rubric:: Functions
+"""Miscellaneous functions.
 
 .. autosummary::
    :toctree: generated/
@@ -23,8 +18,7 @@ import treams.lattice as la
 
 
 def refractive_index(epsilon=1, mu=1, kappa=0):
-    r"""
-    Refractive index of a (chiral) medium
+    r"""Refractive index of a (chiral) medium.
 
     The refractive indeces in a chiral medium :math:`\sqrt{\epsilon\mu} \mp \kappa` are
     returned with the negative helicity result first.
@@ -49,8 +43,7 @@ def refractive_index(epsilon=1, mu=1, kappa=0):
 
 
 def basischange(out, in_=None):
-    """
-    Coefficients for the basis change between helicity and parity modes
+    """Coefficients for the basis change between helicity and parity modes.
 
     Args:
         out (3- or 4-tuple of (M,)-arrays): Output modes, the last array is taken as
@@ -76,8 +69,7 @@ def basischange(out, in_=None):
 
 
 def pickmodes(out, in_):
-    """
-    Coefficients to pick modes
+    """Coefficients to pick modes.
 
     Args:
         out (3- or 4-tuple of (M,)-arrays): Output modes, the last array is taken as
@@ -112,8 +104,7 @@ def pickmodes(out, in_):
 
 
 def wave_vec_z(kx, ky, k):
-    r"""
-    Z component of the wave vector with positive imaginary part
+    r"""Z component of the wave vector with positive imaginary part.
 
     The result is :math:`k_z = \sqrt{k^2 - k_x^2 - k_y^2}` with
     :math:`\arg k_z \in \[ 0, \pi )`.
@@ -138,7 +129,8 @@ def wave_vec_z(kx, ky, k):
 
 
 def firstbrillouin1d(kpar, b):
-    """
+    """Map wave vector to first Brillouin zone in 1D.
+
     Reduce the 1d wave vector (actually just a number) to the first Brillouin zone, i.e.
     the range `(-b/2, b/2]`
 
@@ -158,8 +150,7 @@ def firstbrillouin1d(kpar, b):
 
 
 def firstbrillouin2d(kpar, b, n=2):
-    """
-    Reduce the 2d wave vector to the first Brillouin zone.
+    """Map wave vector to first Brillouin zone in 2D.
 
     The reduction to the first Brillouin zone is first approximated roughly. From this
     approximated vector and its 8 neighbours, the shortest one is picked. As a
@@ -202,8 +193,7 @@ def firstbrillouin2d(kpar, b, n=2):
 
 
 def firstbrillouin3d(kpar, b, n=2):
-    """
-    Reduce the 3d wave vector to the first Brillouin zone.
+    """Map wave vector to first Brillouin zone in 3D.
 
     The reduction to the first Brillouin zone is first approximated roughly. From this
     approximated vector and its 26 neighbours, the shortest one is picked. As a

@@ -1,7 +1,4 @@
-"""
-==========================================
-Scattering coefficients for selected cases
-==========================================
+"""Scattering coefficients for high-symmetry cases.
 
 Calculate the scattering coefficients for cases where they can be obtained analytically
 easily. This is a (multilayered) sphere using spherical waves (Mie coefficients), a
@@ -35,7 +32,7 @@ cdef extern from "<complex.h>" nogil:
     double complex csqrt(double complex z)
 
 cdef void _interface(long l, number_t x[2][2], number_t *z, double complex m[4][4]) nogil:
-    """Fill a matrix for the relation at a spherical interface
+    """Fill a matrix for the relation at a spherical interface.
 
     Note:
         The result is stored in column major order, because it is later processed with
@@ -85,7 +82,7 @@ cdef void _interface(long l, number_t x[2][2], number_t *z, double complex m[4][
 
 
 cdef void _innermost_interface(long l, number_t x[2][2], number_t *z, double complex m[2][4]) nogil:
-    """Fill a matrix for the relation at the innermost spherical interface
+    """Fill a matrix for the relation at the innermost spherical interface.
 
     This function is essentially the same as `_interface` but neglecting the singular
     modes on the inner side, because they must vanish.
@@ -130,7 +127,7 @@ cdef void _innermost_interface(long l, number_t x[2][2], number_t *z, double com
 
 
 cdef void _mie(long l, double *x, number_t *epsilon, number_t *mu, number_t *kappa, long n, double complex res[2][2]) nogil:
-    """Calculate the mie coefficients for degree l"""
+    """Calculate the mie coefficients for degree l."""
     cdef double complex mfull[4][4]
     cdef double complex mtmp[2][4]  # Column major
     cdef double complex m[2][4]  # Column major
@@ -268,7 +265,7 @@ mie = np.PyUFunc_FromFuncAndDataAndSignature(
     'mie',  # function name
     r"""mie(l, x, epsilon, mu, kappa)
 
-Mie coefficient of degree l in helicity basis
+Mie coefficient of degree l in helicity basis.
 
 The sphere is defined by its size parameter :math:`k_0 r`, where :math:`r` is the
 radius and :math:`k_0` the wave number in vacuum. A multilayered sphere is defined
@@ -429,7 +426,7 @@ fresnel = np.PyUFunc_FromFuncAndDataAndSignature(
     'fresnel',  # function name
     r"""fresnel(ks, kzs, zs)
 
-Fresnel coefficient for a planar interface
+Fresnel coefficient for a planar interface.
 
 The first dimension contains the numbers for the two media, the second dimenison
 indexes the polarizations.
@@ -591,7 +588,7 @@ mie_cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     'mie_cyl',  # function name
     r"""mie_cyl(kz, m, k0, radii, epsilon, mu, kappa)
 
-Coefficient for scattering at an infinite cylinder in helicity basis
+Coefficient for scattering at an infinite cylinder in helicity basis.
 
 The cylinder is defined by its radii :math:`\rho`. A multilayered cylinder is defined
 by giving an array of ascending numbers, that define its shells starting from the center.
