@@ -85,7 +85,10 @@ def _cw_rotate(phi, basis, to_basis, where):
     """Rotate cylindrical waves."""
     where = np.logical_and(where, to_basis.pidx[:, None] == basis.pidx)
     res = cw.rotate(
-        *(m[:, None] for m in to_basis["kzmp"]), *basis["kzmp"], phi, where=where,
+        *(m[:, None] for m in to_basis["kzmp"]),
+        *basis["kzmp"],
+        phi,
+        where=where,
     )
     res[..., ~where] = 0
     return core.PhysicsArray(res, basis=(to_basis, basis))
@@ -214,7 +217,10 @@ def _cw_translate(r, basis, k0, to_basis, material, where):
     )
     res[..., np.logical_not(where)] = 0
     return core.PhysicsArray(
-        res, k0=(k0, k0), basis=(to_basis, basis), material=(material, material),
+        res,
+        k0=(k0, k0),
+        basis=(to_basis, basis),
+        material=(material, material),
     )
 
 
@@ -268,7 +274,7 @@ def translate(
         k0 (float, optional): Wave number.
         material (:class:`~treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode, only used for
-        :class:`~treams.PlaneWaveBasisPartial`.
+            :class:`~treams.PlaneWaveBasisPartial`.
         poltype (str, optional): Polarization, see also
             :ref:`polarizations:Polarizations`.
         where (array-like, bool, optional): Only evaluate parts of the translation
@@ -557,7 +563,9 @@ def _cw_pw_expand(basis, to_basis, k0, material, modetype, where):
     else:
         basis_c = basis
     res = pw.to_cw(
-        *(m[:, None] for m in to_basis["kzmp"]), *basis_c[()], where=where,
+        *(m[:, None] for m in to_basis["kzmp"]),
+        *basis_c[()],
+        where=where,
     ) * pw.translate(
         basis_c.kx,
         basis_c.ky,
@@ -605,7 +613,13 @@ def _pw_pw_expand(basis, to_basis, k0, material, modetype, where):
 
 
 def expand(
-    basis, modetype=None, *, k0=None, material=Material(), poltype=None, where=True,
+    basis,
+    modetype=None,
+    *,
+    k0=None,
+    material=Material(),
+    poltype=None,
+    where=True,
 ):
     """Expansion matrix.
 
@@ -1210,13 +1224,29 @@ def _pw_efield(r, basis, poltype):
     res = None
     if poltype == "helicity":
         res = sc.vpw_A(
-            basis.kx, basis.ky, basis.kz, r[..., 0], r[..., 1], r[..., 2], basis.pol,
+            basis.kx,
+            basis.ky,
+            basis.kz,
+            r[..., 0],
+            r[..., 1],
+            r[..., 2],
+            basis.pol,
         )
     elif poltype == "parity":
         res = (1 - basis.pol[:, None]) * sc.vpw_M(
-            basis.kx, basis.ky, basis.kz, r[..., 0], r[..., 1], r[..., 2],
+            basis.kx,
+            basis.ky,
+            basis.kz,
+            r[..., 0],
+            r[..., 1],
+            r[..., 2],
         ) + basis.pol[:, None] * sc.vpw_N(
-            basis.kx, basis.ky, basis.kz, r[..., 0], r[..., 1], r[..., 2],
+            basis.kx,
+            basis.ky,
+            basis.kz,
+            r[..., 0],
+            r[..., 1],
+            r[..., 2],
         )
     if res is None:
         raise ValueError("invalid parameters")
@@ -1433,13 +1463,29 @@ def _pw_hfield(r, basis, material, poltype):
     res = None
     if poltype == "helicity":
         res = (2 * basis.pol[:, None] - 1) * sc.vpw_A(
-            basis.kx, basis.ky, basis.kz, r[..., 0], r[..., 1], r[..., 2], basis.pol,
+            basis.kx,
+            basis.ky,
+            basis.kz,
+            r[..., 0],
+            r[..., 1],
+            r[..., 2],
+            basis.pol,
         )
     elif poltype == "parity":
         res = basis.pol[:, None] * sc.vpw_M(
-            basis.kx, basis.ky, basis.kz, r[..., 0], r[..., 1], r[..., 2],
+            basis.kx,
+            basis.ky,
+            basis.kz,
+            r[..., 0],
+            r[..., 1],
+            r[..., 2],
         ) + (1 - basis.pol[:, None]) * sc.vpw_N(
-            basis.kx, basis.ky, basis.kz, r[..., 0], r[..., 1], r[..., 2],
+            basis.kx,
+            basis.ky,
+            basis.kz,
+            r[..., 0],
+            r[..., 1],
+            r[..., 2],
         )
     res *= -1j / material.impedance
     if res is None:
@@ -1849,13 +1895,29 @@ def _pw_gfield(pol, r, basis, poltype):
     res = None
     if poltype == "helicity":
         res = (basis.pol[:, None] == pol) * sc.vpw_A(
-            basis.kx, basis.ky, basis.kz, r[..., 0], r[..., 1], r[..., 2], basis.pol,
+            basis.kx,
+            basis.ky,
+            basis.kz,
+            r[..., 0],
+            r[..., 1],
+            r[..., 2],
+            basis.pol,
         )
     elif poltype == "parity":
         res = (1 + 2 * (pol - 1) * basis.pol[:, None]) * sc.vpw_M(
-            basis.kx, basis.ky, basis.kz, r[..., 0], r[..., 1], r[..., 2],
+            basis.kx,
+            basis.ky,
+            basis.kz,
+            r[..., 0],
+            r[..., 1],
+            r[..., 2],
         ) + (2 * pol - 1 - 2 * (pol - 1) * basis.pol[:, None]) * sc.vpw_N(
-            basis.kx, basis.ky, basis.kz, r[..., 0], r[..., 1], r[..., 2],
+            basis.kx,
+            basis.ky,
+            basis.kz,
+            r[..., 0],
+            r[..., 1],
+            r[..., 2],
         )
     if res is None:
         raise ValueError("invalid parameters")
