@@ -1,6 +1,4 @@
 treams.PhysicsArray.permute
 ===========================
 
-.. currentmodule:: treams
-
-.. autoattribute:: PhysicsArray.permute
+.. autoattribute:: treams.PhysicsArray.permute

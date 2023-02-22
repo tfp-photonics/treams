@@ -6,11 +6,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>treams.TMatrixC.cylinder &#8212; treams 0.2.2.dev96+g61b32af documentation</title>
+    <title>treams.TMatrixC.cylinder &#8212; treams 0.2.2.dev100+g172e8a6 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/no-nobiles.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="treams.TMatrixC.cumsum.html" title="treams.TMatrixC.cumsum"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev96+g61b32af documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev100+g172e8a6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.TMatrixC.html" accesskey="U">treams.TMatrixC</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.TMatrixC.cylinder</a></li> 
@@ -59,21 +59,22 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="treams.TMatrixC.cylinder">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TMatrixC.</span></span><span class="sig-name descname"><span class="pre">cylinder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kzs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">materials</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#treams.TMatrixC.cylinder" title="Permalink to this definition">¶</a></dt>
-<dd><p>T-Matrix of a cylinder</p>
+<dd><p>T-Matrix of a (multi-layered) cylinder.</p>
+<p>Construct the T-matrix of the given order and material for an infinitely
+extended cylinder. The object can also consist of multiple concentric
+cylindrical shells with an arbitrary number of layers. The calculation is always
+done in helicity basis.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>kzs</strong> (<em>float</em><em>, </em><em>array_like</em>) – Z component of the cylindrical wave</p></li>
-<li><p><strong>mmax</strong> (<em>int</em>) – Positive integer for the maximum order of the T-matrix</p></li>
-<li><p><strong>k0</strong> (<em>int</em>) – Wave number in vacuum</p></li>
-<li><p><strong>radii</strong> (<em>float array</em>) – Radii from inside to outside of the sphere and
-multiple shells</p></li>
-<li><p><strong>epsilon</strong> (<em>complex arrays</em>) – Relative permittivity, permeability
-and chirality parameter from inside to outside</p></li>
-<li><p><strong>mu</strong> (<em>complex arrays</em>) – Relative permittivity, permeability
-and chirality parameter from inside to outside</p></li>
-<li><p><strong>kappa</strong> (<em>complex arrays</em>) – Relative permittivity, permeability
-and chirality parameter from inside to outside</p></li>
+<li><p><strong>kzs</strong> (<em>float</em><em>, </em><em>array_like</em>) – Z component of the cylindrical wave.</p></li>
+<li><p><strong>mmax</strong> (<em>int</em>) – Positive integer for the maximum order of the T-matrix.</p></li>
+<li><p><strong>k0</strong> (<em>float</em>) – Wave number in vacuum.</p></li>
+<li><p><strong>radii</strong> (<em>float</em><em> or </em><em>array</em>) – Radii from inside to outside of the cylinder. For a
+simple cylinder the radius can be given as a single number, for a multi-
+layered cylinder it is a list of increasing radii for all shells.</p></li>
+<li><p><strong>material</strong> (<em>list</em><em>[</em><a class="reference internal" href="treams.Material.html#treams.Material" title="treams.Material"><em>Material</em></a><em>]</em>) – The material parameters from the inside to the
+outside. The last material in the list specifies the embedding medium.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -97,7 +98,6 @@ and chirality parameter from inside to outside</p></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../treams.html">Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../treams.html#modules">Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 </ul>
@@ -148,7 +148,7 @@ and chirality parameter from inside to outside</p></li>
         <li class="right" >
           <a href="treams.TMatrixC.cumsum.html" title="treams.TMatrixC.cumsum"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev96+g61b32af documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev100+g172e8a6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.TMatrixC.html" >treams.TMatrixC</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.TMatrixC.cylinder</a></li> 

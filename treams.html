@@ -6,11 +6,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Reference &#8212; treams 0.2.2.dev96+g61b32af documentation</title>
+    <title>Reference &#8212; treams 0.2.2.dev100+g172e8a6 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="_static/no-nobiles.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/sphinx_highlight.js"></script>
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="polarizations.html" title="Polarizations and mode types"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev96+g61b32af documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev100+g172e8a6 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Reference</a></li> 
       </ul>
     </div>  
@@ -54,9 +54,10 @@
             
   <section id="module-treams">
 <span id="reference"></span><h1>Reference<a class="headerlink" href="#module-treams" title="Permalink to this heading">¶</a></h1>
-<p>Package treams.</p>
+<p>TREAMS: T-Matrix scattering code for nanophotonic computations.</p>
 <section id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h2>
+<p>The top-level classes and functions allow a high-level access to the functionality.</p>
 <section id="basis-sets">
 <h3>Basis sets<a class="headerlink" href="#basis-sets" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
@@ -87,10 +88,10 @@
 <td><p>S-matrix (plane wave basis)</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.TMatrix.html#treams.TMatrix" title="treams.TMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TMatrix</span></code></a>(arr[, ann])</p></td>
-<td><p>T-matrix for spherical modes</p></td>
+<td><p>T-matrix with a spherical basis.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/treams.TMatrixC.html#treams.TMatrixC" title="treams.TMatrixC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TMatrixC</span></code></a>(arr[, ann])</p></td>
-<td><p>T-matrix for cylindrical modes</p></td>
+<td><p>T-matrix with a cylindrical basis.</p></td>
 </tr>
 </tbody>
 </table>
@@ -146,62 +147,79 @@
 </tbody>
 </table>
 </section>
-<section id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading">¶</a></h2>
+<section id="modules">
+<h2>Modules<a class="headerlink" href="#modules" title="Permalink to this heading">¶</a></h2>
+<p>These modules provide basic functionality for transformations within one basis set, i.e.
+one module, like translations and rotations as well as transformations among them.
+The functions in there provide an intermediate stage between the purely mathematical
+functions found in the two subpackages <code class="xref py py-mod docutils literal notranslate"><span class="pre">lattice</span></code> and <code class="xref py py-mod docutils literal notranslate"><span class="pre">special</span></code> and the
+higher-level classes and functions.</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.lattice.html#module-treams.lattice" title="treams.lattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">treams.lattice</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.sw.html#module-treams.sw" title="treams.sw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sw</span></code></a></p></td>
+<td><p>Spherical wave module.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/treams.cw.html#module-treams.cw" title="treams.cw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cw</span></code></a></p></td>
+<td><p>Cylindrical wave module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.pw.html#module-treams.pw" title="treams.pw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pw</span></code></a></p></td>
+<td><p>Plane wave module.</p></td>
+</tr>
+</tbody>
+</table>
+<p>This module is for loading and storing data in HDF5 files and also for creating meshes
+of sphere ensembles.</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.io.html#module-treams.io" title="treams.io"><code class="xref py py-obj docutils literal notranslate"><span class="pre">io</span></code></a></p></td>
+<td><p>Loading and storing data.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Finally, two modules for calculating scattering coefficients and doing miscellaneous
+tasks.</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.coeffs.html#module-treams.coeffs" title="treams.coeffs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coeffs</span></code></a></p></td>
+<td><p>Scattering coefficients for high-symmetry cases.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/treams.misc.html#module-treams.misc" title="treams.misc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">misc</span></code></a></p></td>
+<td><p>Miscellaneous functions.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Global configuration variables are stored in</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.config.html#module-treams.config" title="treams.config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">config</span></code></a></p></td>
+<td><p>Configuration.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Some convenience classes for the implementation are defined in</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.util.html#module-treams.util" title="treams.util"><code class="xref py py-obj docutils literal notranslate"><span class="pre">util</span></code></a></p></td>
+<td><p>Utilities.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading">¶</a></h2>
+<p>These subpackages allow a low-level access to the implementation of the lattice sums and
+mathematical functions</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.lattice.html#module-treams.lattice" title="treams.lattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lattice</span></code></a></p></td>
 <td><p>Lattice sums.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/treams.special.html#module-treams.special" title="treams.special"><code class="xref py py-obj docutils literal notranslate"><span class="pre">treams.special</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/treams.special.html#module-treams.special" title="treams.special"><code class="xref py py-obj docutils literal notranslate"><span class="pre">special</span></code></a></p></td>
 <td><p>Special (mathematical) functions.</p></td>
 </tr>
 </tbody>
 </table>
 </section>
-</section>
-<section id="modules">
-<h1>Modules<a class="headerlink" href="#modules" title="Permalink to this heading">¶</a></h1>
-<p>These modules provide basic functionality for transformations within one basis set, i.e.
-one module, like translations and rotations as well as transformations among them.
-The functions in there provide an intermediate stage between the purely mathematical
-functions found in the two subpackages <code class="xref py py-mod docutils literal notranslate"><span class="pre">lattice</span></code> and <code class="xref py py-mod docutils literal notranslate"><span class="pre">special</span></code> and the
-higher-level classes.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="treams.sw.html">Spherical wave module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="treams.cw.html">Cylindrical wave module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="treams.pw.html">Plane wave module</a></li>
-</ul>
-</div>
-<p>This module is for loading and storing data in HDF5 files and also for creating meshes
-of sphere ensembles.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="treams.io.html">Loading and storing data</a></li>
-</ul>
-</div>
-<p>Finally, two modules for calculating scattering coefficients and doing miscellaneous
-tasks.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="treams.coeffs.html">treams.coeffs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="treams.misc.html">treams.misc</a></li>
-</ul>
-</div>
-<p>Global configuration variables are stored in</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="treams.config.html">Configuration (<code class="xref py py-mod docutils literal notranslate"><span class="pre">treams.config</span></code>)</a></li>
-</ul>
-</div>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.util.html#module-treams.util" title="treams.util"><code class="xref py py-obj docutils literal notranslate"><span class="pre">treams.util</span></code></a></p></td>
-<td><p>Utilities.</p></td>
-</tr>
-</tbody>
-</table>
 </section>
 
 
@@ -217,7 +235,6 @@ tasks.</p>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#modules">Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev.html">Development and contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 </ul>
@@ -268,7 +285,7 @@ tasks.</p>
         <li class="right" >
           <a href="polarizations.html" title="Polarizations and mode types"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev96+g61b32af documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev100+g172e8a6 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Reference</a></li> 
       </ul>
     </div>

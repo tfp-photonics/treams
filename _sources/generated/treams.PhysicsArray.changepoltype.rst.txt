@@ -1,6 +1,4 @@
 treams.PhysicsArray.changepoltype
 =================================
 
-.. currentmodule:: treams
-
-.. autoattribute:: PhysicsArray.changepoltype
+.. autoattribute:: treams.PhysicsArray.changepoltype

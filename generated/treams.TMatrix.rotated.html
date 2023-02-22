@@ -6,11 +6,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>treams.TMatrix.rotated &#8212; treams 0.2.2.dev96+g61b32af documentation</title>
+    <title>treams.TMatrix.rotated &#8212; treams 0.2.2.dev100+g172e8a6 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/no-nobiles.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="treams.TMatrix.relax.html" title="treams.TMatrix.relax"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev96+g61b32af documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev100+g172e8a6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.TMatrix.html" accesskey="U">treams.TMatrix</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.TMatrix.rotated</a></li> 
@@ -59,7 +59,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="treams.TMatrix.rotated">
 <span class="sig-prename descclassname"><span class="pre">TMatrix.</span></span><span class="sig-name descname"><span class="pre">rotated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#treams.TMatrix.rotated" title="Permalink to this definition">¶</a></dt>
-<dd><p>Rotate the T-Matrix by the euler angles</p>
+<dd><p>Rotated T-Matrix.</p>
 <p>Rotation is done in-place. If you need the original T-Matrix make a deepcopy
 first. Rotations can only be applied to global T-Matrices. The angles are given
 in the zyz-convention. In the intrinsic (object fixed coordinate system)
@@ -72,8 +72,6 @@ rotations are applied psi first, theta second, phi third.</p>
 <li><p><strong>phi</strong> (<em>float</em>) – Euler angles</p></li>
 <li><p><strong>theta</strong> (<em>float</em>) – Euler angles</p></li>
 <li><p><strong>psi</strong> (<em>float</em>) – Euler angles</p></li>
-<li><p><strong>modes</strong> (<em>array</em>) – While rotating also take only specific output modes into</p></li>
-<li><p><strong>account</strong> – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -97,7 +95,6 @@ rotations are applied psi first, theta second, phi third.</p>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../treams.html">Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../treams.html#modules">Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 </ul>
@@ -148,7 +145,7 @@ rotations are applied psi first, theta second, phi third.</p>
         <li class="right" >
           <a href="treams.TMatrix.relax.html" title="treams.TMatrix.relax"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev96+g61b32af documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev100+g172e8a6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.TMatrix.html" >treams.TMatrix</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.TMatrix.rotated</a></li> 

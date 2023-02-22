@@ -1,6 +1,4 @@
 treams.PhysicsArray.translate
 =============================
 
-.. currentmodule:: treams
-
-.. autoattribute:: PhysicsArray.translate
+.. autoattribute:: treams.PhysicsArray.translate

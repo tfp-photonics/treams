@@ -1,4 +1,4 @@
-﻿treams.misc.refractive\_index
+treams.misc.refractive\_index
 =============================
 
 .. currentmodule:: treams.misc

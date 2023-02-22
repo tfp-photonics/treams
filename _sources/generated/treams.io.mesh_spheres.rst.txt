@@ -1,4 +1,4 @@
-﻿treams.io.mesh\_spheres
+treams.io.mesh\_spheres
 =======================
 
 .. currentmodule:: treams.io

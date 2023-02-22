@@ -1,6 +1,4 @@
 treams.TMatrixC.efield
 ======================
 
-.. currentmodule:: treams
-
-.. autoattribute:: TMatrixC.efield
+.. autoattribute:: treams.TMatrixC.efield

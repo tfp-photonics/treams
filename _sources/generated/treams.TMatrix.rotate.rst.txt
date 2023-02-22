@@ -1,6 +1,4 @@
 treams.TMatrix.rotate
 =====================
 
-.. currentmodule:: treams
-
-.. autoattribute:: TMatrix.rotate
+.. autoattribute:: treams.TMatrix.rotate

@@ -1,4 +1,4 @@
-﻿treams.io.save\_hdf5
+treams.io.save\_hdf5
 ====================
 
 .. currentmodule:: treams.io

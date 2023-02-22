@@ -1,6 +1,0 @@
-﻿treams.cw.to\_sw
-================
-
-.. currentmodule:: treams.cw
-
-.. autofunction:: to_sw

@@ -1,4 +1,4 @@
-﻿treams.misc.basischange
+treams.misc.basischange
 =======================
 
 .. currentmodule:: treams.misc

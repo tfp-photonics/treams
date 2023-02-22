@@ -1,4 +1,4 @@
-﻿treams.misc.wave\_vec\_z
+treams.misc.wave\_vec\_z
 ========================
 
 .. currentmodule:: treams.misc

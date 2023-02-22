@@ -1,6 +1,4 @@
 treams.TMatrix.expand
 =====================
 
-.. currentmodule:: treams
-
-.. autoattribute:: TMatrix.expand
+.. autoattribute:: treams.TMatrix.expand

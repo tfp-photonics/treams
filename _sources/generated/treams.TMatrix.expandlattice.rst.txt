@@ -1,6 +1,4 @@
 treams.TMatrix.expandlattice
 ============================
 
-.. currentmodule:: treams
-
-.. autoattribute:: TMatrix.expandlattice
+.. autoattribute:: treams.TMatrix.expandlattice

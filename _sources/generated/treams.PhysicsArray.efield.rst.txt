@@ -1,6 +1,4 @@
 treams.PhysicsArray.efield
 ==========================
 
-.. currentmodule:: treams
-
-.. autoattribute:: PhysicsArray.efield
+.. autoattribute:: treams.PhysicsArray.efield

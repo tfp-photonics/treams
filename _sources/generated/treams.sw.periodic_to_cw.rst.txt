@@ -1,6 +1,0 @@
-﻿treams.sw.periodic\_to\_cw
-==========================
-
-.. currentmodule:: treams.sw
-
-.. autofunction:: periodic_to_cw

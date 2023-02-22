@@ -6,18 +6,18 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>treams.translate &#8212; treams 0.2.2.dev96+g61b32af documentation</title>
+    <title>treams.translate &#8212; treams 0.2.2.dev100+g172e8a6 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/no-nobiles.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="treams.lattice" href="treams.lattice.html" />
+    <link rel="next" title="treams.sw" href="treams.sw.html" />
     <link rel="prev" title="treams.rotate" href="treams.rotate.html" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
@@ -37,12 +37,12 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="treams.lattice.html" title="treams.lattice"
+          <a href="treams.sw.html" title="treams.sw"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="treams.rotate.html" title="treams.rotate"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev96+g61b32af documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev100+g172e8a6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" accesskey="U">Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.translate</a></li> 
       </ul>
@@ -69,19 +69,13 @@ basis sets the output and input modes are taken accordingly, else both sets
 of modes are the same.</p></li>
 <li><p><strong>k0</strong> (<em>float</em><em>, </em><em>optional</em>) – Wave number.</p></li>
 <li><p><strong>material</strong> (<a class="reference internal" href="treams.Material.html#treams.Material" title="treams.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">Material</span></code></a> or tuple, optional) – Material parameters.</p></li>
-<li><p><strong>modetype</strong> (<em>str</em><em>, </em><em>optional</em>) – Wave mode, only used for</p></li>
+<li><p><strong>modetype</strong> (<em>str</em><em>, </em><em>optional</em>) – Wave mode, only used for
+<a class="reference internal" href="treams.PlaneWaveBasisPartial.html#treams.PlaneWaveBasisPartial" title="treams.PlaneWaveBasisPartial"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlaneWaveBasisPartial</span></code></a>.</p></li>
+<li><p><strong>poltype</strong> (<em>str</em><em>, </em><em>optional</em>) – Polarization, see also
+<a class="reference internal" href="../polarizations.html#polarizations"><span class="std std-ref">Polarizations</span></a>.</p></li>
+<li><p><strong>where</strong> (<em>array-like</em><em>, </em><em>bool</em><em>, </em><em>optional</em>) – Only evaluate parts of the translation
+matrix, the given array must have a shape that matches the output shape.</p></li>
 </ul>
-</dd>
-</dl>
-<p>:param <a class="reference internal" href="treams.PlaneWaveBasisPartial.html#treams.PlaneWaveBasisPartial" title="treams.PlaneWaveBasisPartial"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlaneWaveBasisPartial</span></code></a>.:
-:param poltype: Polarization, see also</p>
-<blockquote>
-<div><p><a class="reference internal" href="../polarizations.html#polarizations"><span class="std std-ref">Polarizations</span></a>.</p>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>where</strong> (<em>array-like</em><em>, </em><em>bool</em><em>, </em><em>optional</em>) – Only evaluate parts of the translation
-matrix, the given array must have a shape that matches the output shape.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -101,7 +95,6 @@ matrix, the given array must have a shape that matches the output shape.</p>
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../treams.html">Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../treams.html#modules">Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 </ul>
@@ -113,8 +106,8 @@ matrix, the given array must have a shape that matches the output shape.</p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="treams.lattice.html"
-                          title="next chapter">treams.lattice</a></p>
+    <p class="topless"><a href="treams.sw.html"
+                          title="next chapter">treams.sw</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -147,12 +140,12 @@ matrix, the given array must have a shape that matches the output shape.</p>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="treams.lattice.html" title="treams.lattice"
+          <a href="treams.sw.html" title="treams.sw"
              >next</a> |</li>
         <li class="right" >
           <a href="treams.rotate.html" title="treams.rotate"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev96+g61b32af documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev100+g172e8a6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.translate</a></li> 
       </ul>

@@ -1,6 +1,4 @@
 treams.TMatrix.permute
 ======================
 
-.. currentmodule:: treams
-
-.. autoattribute:: TMatrix.permute
+.. autoattribute:: treams.TMatrix.permute

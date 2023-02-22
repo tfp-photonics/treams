@@ -1,4 +1,4 @@
-﻿treams.misc.firstbrillouin1d
+treams.misc.firstbrillouin1d
 ============================
 
 .. currentmodule:: treams.misc

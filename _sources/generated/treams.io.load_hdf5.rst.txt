@@ -1,4 +1,4 @@
-﻿treams.io.load\_hdf5
+treams.io.load\_hdf5
 ====================
 
 .. currentmodule:: treams.io

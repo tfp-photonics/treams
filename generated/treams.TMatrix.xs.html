@@ -6,11 +6,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>treams.TMatrix.xs &#8212; treams 0.2.2.dev96+g61b32af documentation</title>
+    <title>treams.TMatrix.xs &#8212; treams 0.2.2.dev100+g172e8a6 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/no-nobiles.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="treams.TMatrix.valid_points.html" title="treams.TMatrix.valid_points"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev96+g61b32af documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev100+g172e8a6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.TMatrix.html" accesskey="U">treams.TMatrix</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.TMatrix.xs</a></li> 
@@ -60,8 +60,21 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="treams.TMatrix.xs">
 <span class="sig-prename descclassname"><span class="pre">TMatrix.</span></span><span class="sig-name descname"><span class="pre">xs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">illu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#treams.TMatrix.xs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Scattering and extinction cross section</p>
-<p>Possible for all T-matrices (global and local) in non-absorbing embedding.</p>
+<dd><p>Scattering and extinction cross section.</p>
+<p>Possible for all T-matrices (global and local) in non-absorbing embedding. The
+values are calculated by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\sigma_\mathrm{sca}
+= \frac{1}{2 I}
+a_{slm}^\ast T_{s'l'm',slm}^\ast k_{s'}^{-2} C_{s'l'm',s''l''m''}^{(1)}
+T_{s''l''m'',s'''l'''m'''} a_{s'''l'''m'''} \\
+\sigma_\mathrm{ext}
+= \frac{1}{2 I}
+a_{slm}^\ast k_s^{-2} T_{slm,s'l'm'} a_{s'l'm'}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(a_{slm}\)</span> are the expansion coefficients of the illumination,
+<span class="math notranslate nohighlight">\(T\)</span> is the T-matrix, <span class="math notranslate nohighlight">\(C^{(1)}\)</span> is the (regular) translation
+matrix and <span class="math notranslate nohighlight">\(k_s\)</span> are the wave numbers in the medium. All repeated indices
+are summed over. The incoming flux is <span class="math notranslate nohighlight">\(I\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -74,7 +87,7 @@ has the flux <cite>0.5</cite> in this normalization, which is used as default.</
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>float, (2,)-tuple</p>
+<dd class="field-even"><p>tuple[float]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -94,7 +107,6 @@ has the flux <cite>0.5</cite> in this normalization, which is used as default.</
 <li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../treams.html">Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../treams.html#modules">Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 </ul>
@@ -145,7 +157,7 @@ has the flux <cite>0.5</cite> in this normalization, which is used as default.</
         <li class="right" >
           <a href="treams.TMatrix.valid_points.html" title="treams.TMatrix.valid_points"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev96+g61b32af documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev100+g172e8a6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.TMatrix.html" >treams.TMatrix</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.TMatrix.xs</a></li> 
