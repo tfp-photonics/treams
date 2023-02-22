@@ -10,7 +10,6 @@ interface (Fresnel coefficients).
    which is less commonly used than parity basis.
 
 .. autosummary::
-   :toctree: generated/
 
    mie
    mie_cyl

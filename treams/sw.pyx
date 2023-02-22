@@ -1,7 +1,6 @@
 """Spherical wave module.
 
 .. autosummary::
-   :toctree: generated/
 
    periodic_to_cw
    periodic_to_pw

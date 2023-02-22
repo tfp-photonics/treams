@@ -3,7 +3,6 @@
 Most functions rely on at least one of the external packages `h5py` or `gmsh`.
 
 .. autosummary::
-   :toctree: generated/
 
    mesh_spheres
    save_hdf5

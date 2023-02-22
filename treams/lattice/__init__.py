@@ -54,7 +54,7 @@ Available functions
 ===================
 
 Accelerated lattice summations
--------------------------------
+------------------------------
 
 .. autosummary::
    :toctree:
@@ -221,4 +221,3 @@ def dsumcw(dim, m, k, kpar, a, r, i, out=None, **kwargs):
     elif dim == 2:
         return dsumcw2d(m, k, kpar, a, r, i, out=out, **kwargs)  # noqa: F405
     raise ValueError(f"invalid dimension '{dim}'")
-

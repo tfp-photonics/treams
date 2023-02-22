@@ -1,7 +1,6 @@
 """Cylindrical wave module.
 
 .. autosummary::
-   :toctree: generated/
 
    periodic_to_pw
    rotate

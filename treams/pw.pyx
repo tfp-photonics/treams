@@ -1,7 +1,6 @@
 """Plane wave module.
 
 .. autosummary::
-   :toctree: generated/
 
    to_cw
    to_sw

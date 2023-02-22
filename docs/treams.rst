@@ -7,6 +7,7 @@ Reference
    :no-inherited-members:
    :no-special-members:
 
+
 Modules
 =======
 
@@ -15,7 +16,6 @@ one module, like translations and rotations as well as transformations among the
 The functions in there provide an intermediate stage between the purely mathematical
 functions found in the two subpackages :mod:`lattice` and :mod:`special` and the
 higher-level classes and functions.
-
 
 .. autosummary::
    :toctree: generated/

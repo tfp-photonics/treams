@@ -1,7 +1,6 @@
 """Miscellaneous functions.
 
 .. autosummary::
-   :toctree: generated/
 
    basischange
    firstbrillouin1d
