@@ -14,38 +14,30 @@ from treams.util import AnnotationError
 
 
 class TMatrix(PhysicsArray):
-    """
-    T-matrix for spherical modes
+    """T-matrix with a spherical basis.
 
-    The T-matrix is square, with the modes defined in the corresponding fields. The
-    order of the T-matrix can be arbitrary, but the normalization is fixed to that of
-    the modes defined in :func:`treams.special.vsw_A`, :func:`treams.special.vsw_M`,
-    and :func:`treams.special.vsw_N`. A default order according to
-    :func:`TMatrix.defaultmodes` is assumed if not specified. Helicity and parity modes
-    are possible, but not mixed.
-
-    The embedding medium is described by permittivity, permeability, and the chirality
-    parameter.
-
-    The T-matrix can be global or local. For a local T-matrix multiple positions have to
-    be specified. Also modes must have as first element a position index.
+    The T-matrix is square relating incident (regular) fields
+    :func:`treams.special.vsw_rA` (helical polarizations) or
+    :func:`treams.special.vsw_rN` and :func:`treams.special.vsw_rM` (parity
+    polarizations) to the corresponding scattered fields :func:`treams.special.vsw_A` or
+    :func:`treams.special.vsw_N` and :func:`treams.special.vsw_M`. The modes themselves
+    are defined in :attr:`basis`, the polarization type in :attr:`poltype`. Also, the
+    wave number :attr:`k0` and, if not vacuum, the material :attr:`material` are
+    specified.
 
     Args:
-        arr (float or complex, array): T-matrix itself
-        k0 (float): Wave number in vacuum
-        basis (SphericalWaveBasis, optional): Basis definition
-        material (Material, optional): Embedding material, defaults to vacuum
-        poltype (str, optional): Helicity or parity basis, defauts to config.POLTYPE
-
-    Attributes:
-        t (float or complex, (N,N)-array): T-matrix
-        k0 (float): Wave number in vacuum
-        basis (SphericalWaveBasis): Basis modes
-        material (Material): Material definition
-        poltype (str): Helicity or parity basis
+        arr (float or complex, array-like): T-matrix itself.
+        k0 (float): Wave number in vacuum.
+        basis (SphericalWaveBasis, optional): Basis definition.
+        material (Material, optional): Embedding material, defaults to vacuum.
+        poltype (str, optional): Polarization type (:ref:`polarizations:Polarizations`).
+        lattice (Lattice, optional): Lattice definition. If specified the T-Matrix is
+            assumed to be periodically repeated in the defined lattice.
+        kpar (list, optional): Phase factor for the periodic T-Matrix.
     """
 
     def _check(self):
+        """Fill in default values or raise errors for missing attributes."""
         super()._check()
         if not isinstance(self.k0, (int, float, np.floating, np.integer)):
             raise AnnotationError("invalid k0")
@@ -70,20 +62,28 @@ class TMatrix(PhysicsArray):
 
     @property
     def ks(self):
+        """Wave numbers (in medium).
+
+        The wave numbers for both polarizations.
+        """
         return self.material.ks(self.k0)
 
     @classmethod
     def sphere(cls, lmax, k0, radii, materials):
-        """
-        T-Matrix of a sphere
+        """T-Matrix of a (multi-layered) sphere.
+
+        Construct the T-matrix of the given order and material for a sphere. The object
+        can also consist of multiple concentric spherical shells with an arbitrary
+        number of layers. The calculation is always done in helicity basis.
 
         Args:
-            lmax (int): Positive integer for the maximum degree of the T-matrix
-            k0 (int): Wave number in vacuum
-            radii (float array): Radii from inside to outside of the sphere and
-                multiple shells
-            epsilon, mu, kappa (complex arrays): Relative permittivity, permeability
-                and chirality parameter from inside to outside
+            lmax (int): Positive integer for the maximum degree of the T-matrix.
+            k0 (float): Wave number in vacuum.
+            radii (float or array): Radii from inside to outside of the sphere. For a
+                simple sphere the radius can be given as a single number, for a multi-
+                layered sphere it is a list of increasing radii for all shells.
+            material (list[Material]): The material parameters from the inside to the
+                outside. The last material in the list specifies the embedding medium.
 
         Returns:
             TMatrix
@@ -105,6 +105,33 @@ class TMatrix(PhysicsArray):
 
     @classmethod
     def cluster(cls, tmats, positions):
+        r"""Block-diagonal T-matrix of multiple objects.
+
+        Construct the initial block-diagonal T-matrix for a cluster of objects. The
+        T-matrices in the list are placed together into a block-diagonal matrix and the
+        complete (local) basis is defined based on the individual T-matrices and their
+        bases together with the defined positions. In mathematical terms the matrix
+
+        .. math::
+
+            \begin{pmatrix}
+                T_0 & 0 & \dots & 0 \\
+                0 & T_1 & \ddots & \vdots \\
+                \vdots & \ddots & \ddots & 0 \\
+                0 & \dots & 0 & T_{N-1} \\
+            \end{pmatrix}
+
+        is created from the list of T-matrices :math:`(T_0, \dots, T_{N-1})`. Only
+        T-matrices of the same wave number, embedding material, and polarization type
+        can be combined.
+
+        Args:
+            tmats (Sequence): List of T-matrices.
+            positions (array): The positions of all individual objects in the cluster.
+
+        Returns:
+            TMatrix
+        """
         for tm in tmats:
             if not tm.basis.isglobal:
                 raise ValueError("global basis required")
@@ -153,14 +180,26 @@ class TMatrix(PhysicsArray):
 
     @property
     def isglobal(self):
+        """Test if a T-matrix is global.
+
+        A T-matrix is considered global, when its basis refers to only a single point
+        and it is not placed periodically in a lattice.
+        """
         return self.basis.isglobal and self.lattice is None and self.kpar is None
 
     @property
     def xs_ext_avg(self):
-        """
-        Rotational average of the extinction cross section
+        r"""Rotation and polarization averaged extinction cross section.
 
-        Only implemented for global T-matrices.
+        The average is calculated as
+
+        .. math::
+
+            \langle \sigma_\mathrm{ext} \rangle
+            = -2 \pi \sum_{slm} \frac{\Re(T_{slm,slm})}{k_s^2}
+
+        where :math:`k_s` is the wave number in the embedding medium for the
+        polarization :math:`s`. It is only implemented for global T-matrices.
 
         Returns:
             float or complex
@@ -183,10 +222,18 @@ class TMatrix(PhysicsArray):
 
     @property
     def xs_sca_avg(self):
-        """
-        Rotational average of the scattering cross section
+        r"""Rotation and polarization averaged scattering cross section.
 
-        Only implemented for global T-matrices.
+        The average is calculated as
+
+        .. math::
+
+            \langle \sigma_\mathrm{sca} \rangle
+            = 2 \pi \sum_{slm} \sum_{s'l'm'}
+            \frac{|T_{slm,s'l'm'}|^2}{k_s^2}
+
+        where :math:`k_s` is the wave number in the embedding medium for the
+        polarization :math:`s`. It is only implemented for global T-matrices.
 
         Returns:
             float or complex
@@ -203,10 +250,24 @@ class TMatrix(PhysicsArray):
 
     @property
     def cd(self):
-        """
-        Circular dichroism
+        r"""Circular dichroism (CD).
 
-        Only implemented for global T-matrices.
+        The CD is calculated as
+
+        .. math::
+
+            CD
+            = \frac{\langle \sigma_\mathrm{abs} \rangle_+
+            - \langle \sigma_\mathrm{abs} \rangle_-}
+            {\langle \sigma_\mathrm{abs} \rangle_+
+            + \langle \sigma_\mathrm{abs} \rangle_-}
+
+        where :math:`\langle \sigma \rangle_s` is the rotationally averaged absorption
+        cross section under the illumination with the polarization :math:`s`.
+        It is only implemented for global T-matrices.
+
+        Returns:
+            float or complex
         """
         if not (self.isglobal and self.poltype == "helicity" and self.material.isreal):
             raise NotImplementedError
@@ -225,8 +286,7 @@ class TMatrix(PhysicsArray):
 
     @property
     def chi(self):
-        """
-        Electromagnetic chirality
+        """Electromagnetic chirality.
 
         Only implemented for global T-matrices.
 
@@ -246,8 +306,7 @@ class TMatrix(PhysicsArray):
 
     @property
     def db(self):
-        """
-        Duality breaking
+        """Duality breaking.
 
         Only implemented for global T-matrices.
 
@@ -267,10 +326,25 @@ class TMatrix(PhysicsArray):
         ) / (np.sum(np.power(np.abs(self), 2)))
 
     def xs(self, illu, flux=0.5):
-        r"""
-        Scattering and extinction cross section
+        r"""Scattering and extinction cross section.
 
-        Possible for all T-matrices (global and local) in non-absorbing embedding.
+        Possible for all T-matrices (global and local) in non-absorbing embedding. The
+        values are calculated by
+
+        .. math::
+
+            \sigma_\mathrm{sca}
+            = \frac{1}{2 I}
+            a_{slm}^\ast T_{s'l'm',slm}^\ast k_{s'}^{-2} C_{s'l'm',s''l''m''}^{(1)}
+            T_{s''l''m'',s'''l'''m'''} a_{s'''l'''m'''} \\
+            \sigma_\mathrm{ext}
+            = \frac{1}{2 I}
+            a_{slm}^\ast k_s^{-2} T_{slm,s'l'm'} a_{s'l'm'}
+
+        where :math:`a_{slm}` are the expansion coefficients of the illumination,
+        :math:`T` is the T-matrix, :math:`C^{(1)}` is the (regular) translation
+        matrix and :math:`k_s` are the wave numbers in the medium. All repeated indices
+        are summed over. The incoming flux is :math:`I`.
 
         Args:
             illu (complex, array): Illumination coefficients
@@ -281,7 +355,7 @@ class TMatrix(PhysicsArray):
                 has the flux `0.5` in this normalization, which is used as default.
 
         Returns:
-            float, (2,)-tuple
+            tuple[float]
         """
         if not self.material.isreal:
             raise NotImplementedError
@@ -300,8 +374,7 @@ class TMatrix(PhysicsArray):
         )
 
     def rotated(self, phi, theta=0, psi=0, **kwargs):
-        """
-        Rotate the T-Matrix by the euler angles
+        """Rotated T-Matrix.
 
         Rotation is done in-place. If you need the original T-Matrix make a deepcopy
         first. Rotations can only be applied to global T-Matrices. The angles are given
@@ -312,8 +385,6 @@ class TMatrix(PhysicsArray):
 
         Args:
             phi, theta, psi (float): Euler angles
-            modes (array): While rotating also take only specific output modes into
-            account
 
         Returns:
             TMatrix
@@ -322,14 +393,13 @@ class TMatrix(PhysicsArray):
         return TMatrix(r @ self @ r.conjugate().T)
 
     def translated(self, r, **kwargs):
-        """
-        Translate the origin of the T-Matrix
+        """Translated T-Matrix.
 
         Translation is done in-place. If you need the original T-Matrix make a copy
         first. Translations can only be applied to global T-Matrices.
 
         Args:
-            rvec (float array): Translation vector
+            r (float array): Translation vector
             modes (array): While translating also take only specific output modes into
             account
 
@@ -339,17 +409,15 @@ class TMatrix(PhysicsArray):
         return TMatrix(self.expand(r, **kwargs) @ self @ self.inv.expand(r, **kwargs))
 
     def couple(self):
-        """
-        Calculate the coupling term of a blockdiagonal T-matrix
-        """
+        """Calculate the coupling term of a block-diagonal T-matrix."""
         return np.eye(self.shape[0]) - self @ self.expand(modetype="regular")
 
     def interacted(self):
+        """T-matrix with the self-interaction included."""
         return TMatrix(np.linalg.solve(self.couple(), self))
 
     def globalmat(self, basis=None):
-        """
-        Global T-matrix
+        """Global T-matrix.
 
         Calculate the global T-matrix starting from a local one. This changes the
         T-matrix.
@@ -358,7 +426,7 @@ class TMatrix(PhysicsArray):
             origin (array, optional): The origin of the new T-matrix
             modes (array, optional): The modes that are considered for the global
                 T-matrix
-            interacted (bool, optional): If set to `False` the interaction is calulated
+            interacted (bool, optional): If set to `False` the interaction is calculated
                 first.
 
         Returns
@@ -368,9 +436,7 @@ class TMatrix(PhysicsArray):
         return TMatrix(self.expand(basis) @ self @ self.expand.inv(basis))
 
     def couple_lattice(self, lattice, kpar, *, eta=0):
-        """
-        Calculate the coupling term of a blockdiagonal T-matrix
-        """
+        """Calculate the coupling term of a block-diagonal T-matrix."""
         return np.eye(self.shape[0]) - self @ self.expandlattice(lattice, kpar, eta=eta)
 
     def interacted_lattice(self, lattice, kpar, *, eta=0):
@@ -391,53 +457,30 @@ class TMatrix(PhysicsArray):
 
 
 class TMatrixC(PhysicsArray):
-    """
-    T-matrix for cylindrical modes
+    """T-matrix with a cylindrical basis.
 
-    The T-matrix is square, with the modes defined in the corresponding fields. The
-    order of the T-matrix can be arbitrary, but the normalization is fixed to that of
-    the modes defined in :func:`treamsms.special.vcw_A`, :functreamseams.special.vcw_M`,
-    and :func:`treamsms.special.vcw_N`. Helicity and parity modes are possible, but not
-    mixed.
-
-    The embedding medium is described by permittivity, permeability and the chirality
-    parameter.
-
-    The T-matrix can be global or local. For a local T-matrix multiple positions have to
-    be specified. Also modes must have as first element a position index.
+    The T-matrix is square relating incident (regular) fields
+    :func:`treams.special.vcw_rA` (helical polarizations) or
+    :func:`treams.special.vcw_rN` and :func:`treams.special.vcw_rM` (parity
+    polarizations) to the corresponding scattered fields :func:`treams.special.vcw_A` or
+    :func:`treams.special.vcw_N` and :func:`treams.special.vcw_M`. The modes themselves
+    are defined in :attr:`basis`, the polarization type in :attr:`poltype`. Also, the
+    wave number :attr:`k0` and, if not vacuum, the material :attr:`material` are
+    specified.
 
     Args:
-        tmat (float or complex, array): T-matrix itself
-        k0 (float): Wave number in vacuum
-        epsilon (float or complex, optional): Relative permittivity of the embedding
-            medium
-        mu (complex): Relative permeability of the embedding medium
-        kappa (complex): Chirality parameter of the embedding medium
-        positions (float, (3,)- or (M,3)-array): Positions for a local T-matrix
-        helicity (bool): Helicity or parity modes
-        modes (iterable): Sorting of the T-matrix entries. Either four entries for
-            local T-Matrices, with the first specifying the corresponding position
-            or three entries only, specifying degree, order, and polarization.
-
-    Attributes:
-        t (float or complex, (N,N)-array): T-matrix
-        k0 (float): Wave number in vacuum
-        positions (float, (3,)- or (M,3)-array): Positions for a local T-matrix
-        epsilon (float or complex, optional): Relative permittivity of the embedding
-            medium
-        mu (complex): Relative permeability of the embedding medium
-        kappa (complex): Chirality parameter of the embedding medium
-        helicity (bool): Helicity or parity modes
-        pidx (int, (N,)-array): Position index for each column/row of the T-matrix
-        l (int, (N,)-array): Degree of the mode for each column/row of the T-matrix
-        m (int, (N,)-array): Order of the mode for each column/row of the T-matrix
-        pol (int, (N,)-array): Polarization of the mode for each column/row of the
-            T-matrix
-        ks (float or complex (2,)-array): Wave numbers in the medium for both
-            polarizations
+        arr (float or complex, array-like): T-matrix itself.
+        k0 (float): Wave number in vacuum.
+        basis (SphericalWaveBasis, optional): Basis definition.
+        material (Material, optional): Embedding material, defaults to vacuum.
+        poltype (str, optional): Polarization type (:ref:`polarizations:Polarizations`).
+        lattice (Lattice, optional): Lattice definition. If specified the T-Matrix is
+            assumed to be periodically repeated in the defined lattice.
+        kpar (list, optional): Phase factor for the periodic T-Matrix.
     """
 
     def _check(self):
+        """Fill in default values or raise errors for missing attributes."""
         super()._check()
         if not isinstance(self.k0, (int, float, np.floating, np.integer)):
             raise AnnotationError("invalid k0")
@@ -462,6 +505,10 @@ class TMatrixC(PhysicsArray):
 
     @property
     def ks(self):
+        """Wave numbers (in medium).
+
+        The wave numbers for both polarizations.
+        """
         return self.material.ks(self.k0)
 
     @property
@@ -469,26 +516,32 @@ class TMatrixC(PhysicsArray):
         r"""
         Radial part of the wave
 
-        Calculate :math:`\sqrt{k^2 - k_z^2}`.
+        Calculate :math:`\sqrt{k^2 - k_z^2}`, where :math:`k` is the wave number in the
+        medium for each illumination
 
         Returns:
-            float or complex, array
+            Sequence[complex]
         """
         return self.material.krhos(self.k0, self.basis.kz, self.basis.pol)
 
     @classmethod
     def cylinder(cls, kzs, mmax, k0, radii, materials):
-        """
-        T-Matrix of a cylinder
+        """T-Matrix of a (multi-layered) cylinder.
+
+        Construct the T-matrix of the given order and material for an infinitely
+        extended cylinder. The object can also consist of multiple concentric
+        cylindrical shells with an arbitrary number of layers. The calculation is always
+        done in helicity basis.
 
         Args:
-            kzs (float, array_like): Z component of the cylindrical wave
-            mmax (int): Positive integer for the maximum order of the T-matrix
-            k0 (int): Wave number in vacuum
-            radii (float array): Radii from inside to outside of the sphere and
-                multiple shells
-            epsilon, mu, kappa (complex arrays): Relative permittivity, permeability
-                and chirality parameter from inside to outside
+            kzs (float, array_like): Z component of the cylindrical wave.
+            mmax (int): Positive integer for the maximum order of the T-matrix.
+            k0 (float): Wave number in vacuum.
+            radii (float or array): Radii from inside to outside of the cylinder. For a
+                simple cylinder the radius can be given as a single number, for a multi-
+                layered cylinder it is a list of increasing radii for all shells.
+            material (list[Material]): The material parameters from the inside to the
+                outside. The last material in the list specifies the embedding medium.
 
         Returns:
             T-Matrix object
@@ -510,7 +563,7 @@ class TMatrixC(PhysicsArray):
 
     @classmethod
     def from_array(cls, tm, basis, eta=0):
-        """1d array of spherical T-matrices"""
+        """1d array of spherical T-matrices."""
         if tm.lattice is None:
             lattice = basis.hints["lattice"]
             kpar = basis.hints["kpar"]
