@@ -1,0 +1,6 @@
+treams.TMatrixC.isglobal
+========================
+
+.. currentmodule:: treams
+
+.. autoproperty:: TMatrixC.isglobal

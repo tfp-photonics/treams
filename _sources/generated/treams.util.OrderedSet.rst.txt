@@ -34,17 +34,17 @@ treams.util.OrderedSet
          ~OrderedSet.index
          ~OrderedSet.isdisjoint
       
-         ~OrderedSet.__le__
-         ~OrderedSet.__str__
-         ~OrderedSet.__ge__
-         ~OrderedSet.__gt__
-         ~OrderedSet.__xor__
-         ~OrderedSet.__ne__
-         ~OrderedSet.__and__
          ~OrderedSet.__sub__
-         ~OrderedSet.__repr__
-         ~OrderedSet.__len__
+         ~OrderedSet.__xor__
+         ~OrderedSet.__str__
+         ~OrderedSet.__ne__
+         ~OrderedSet.__ge__
          ~OrderedSet.__or__
-         ~OrderedSet.__lt__
+         ~OrderedSet.__and__
          ~OrderedSet.__getitem__
+         ~OrderedSet.__lt__
+         ~OrderedSet.__le__
+         ~OrderedSet.__len__
+         ~OrderedSet.__gt__
+         ~OrderedSet.__repr__
   

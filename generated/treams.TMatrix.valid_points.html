@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>treams.TMatrix.valid_points &#8212; treams 0.2.2.dev100+g172e8a6 documentation</title>
+    <title>treams.TMatrix.valid_points &#8212; treams 0.2.2.dev104+g93c403f documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="treams.TMatrix.transpose.html" title="treams.TMatrix.transpose"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev100+g172e8a6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev104+g93c403f documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.TMatrix.html" accesskey="U">treams.TMatrix</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.TMatrix.valid_points</a></li> 
@@ -59,7 +59,24 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="treams.TMatrix.valid_points">
 <span class="sig-prename descclassname"><span class="pre">TMatrix.</span></span><span class="sig-name descname"><span class="pre">valid_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#treams.TMatrix.valid_points" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Points on the grid where the expansion is valid.</p>
+<p>The expansion of the electromagnetic field is valid outside of the
+circumscribing spheres of each object. From a given set of coordinates mark
+those that are outside of the given radii.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grid</strong> (<em>array-like</em>) – Points to assess. The last dimension needs length three
+and corresponds to the Cartesian coordinates.</p></li>
+<li><p><strong>radii</strong> (<em>Sequence</em><em>[</em><em>float</em><em>]</em>) – Radii of the circumscribing spheres. Each radius
+corresponds to a position of the basis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 
@@ -126,7 +143,7 @@
         <li class="right" >
           <a href="treams.TMatrix.transpose.html" title="treams.TMatrix.transpose"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev100+g172e8a6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev104+g93c403f documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.TMatrix.html" >treams.TMatrix</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.TMatrix.valid_points</a></li> 

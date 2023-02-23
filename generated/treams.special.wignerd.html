@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>treams.special.wignerd &#8212; treams 0.2.2.dev100+g172e8a6 documentation</title>
+    <title>treams.special.wignerd &#8212; treams 0.2.2.dev104+g93c403f documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="treams.special.wignersmalld.html" title="treams.special.wignersmalld"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev100+g172e8a6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev104+g93c403f documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.special.html" accesskey="U">treams.special</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.special.wignerd</a></li> 
@@ -60,28 +60,35 @@
 <dl class="py data">
 <dt class="sig sig-object py" id="treams.special.wignerd">
 <span class="sig-prename descclassname"><span class="pre">treams.special.</span></span><span class="sig-name descname"><span class="pre">wignerd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span></em><span class="sig-paren">)</span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ufunc</span> <span class="pre">'wignerd'&gt;</span></em><a class="headerlink" href="#treams.special.wignerd" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div><p>Wigner-D matrix element</p>
+<dd><p>Wigner-D matrix element</p>
 <div class="math notranslate nohighlight">
-\[D^l_{mk}(\varphi, \theta, \psi) = \mathrm e^{-\mathrm i m \varphi} d^l_{mk}(\theta) \mathrm e^{-\mathrm i k \psi}\]</div>
+\[D^l_{mk}(\varphi, \theta, \psi)
+= \mathrm e^{-\mathrm i m \varphi} d^l_{mk}(\theta) \mathrm e^{-\mathrm i k \psi}\]</div>
 <p>See also <a class="reference internal" href="treams.special.wignersmalld.html#treams.special.wignersmalld" title="treams.special.wignersmalld"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.wignersmalld()</span></code></a>.</p>
-<dl class="simple">
-<dt>Note:</dt><dd><p>Mathematica uses a different sign convention, which means taking the negative
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Mathematica uses a different sign convention, which means taking the negative
 angles.</p>
-</dd>
-<dt>Args:</dt><dd><p>l (integer): Degree <span class="math notranslate nohighlight">\(l \geq 0\)</span>
-m (integer): Order <span class="math notranslate nohighlight">\(|m| \leq l\)</span>
-k (integer): Order <span class="math notranslate nohighlight">\(|k| \leq l\)</span>
-phi, theta, psi (float or complex): Angles</p>
-</dd>
-<dt>Returns:</dt><dd><p>complex</p>
-</dd>
-<dt>References:</dt><dd><ul class="simple">
-<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Wigner_D-matrix">Wikipedia: Wigner D-matrix</a></p></li>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l</strong> (<em>integer</em>) – Degree <span class="math notranslate nohighlight">\(l \geq 0\)</span></p></li>
+<li><p><strong>m</strong> (<em>integer</em>) – Order <span class="math notranslate nohighlight">\(|m| \leq l\)</span></p></li>
+<li><p><strong>k</strong> (<em>integer</em>) – Order <span class="math notranslate nohighlight">\(|k| \leq l\)</span></p></li>
+<li><p><strong>phi</strong> (<em>float</em><em> or </em><em>complex</em>) – Angles</p></li>
+<li><p><strong>theta</strong> (<em>float</em><em> or </em><em>complex</em>) – Angles</p></li>
+<li><p><strong>psi</strong> (<em>float</em><em> or </em><em>complex</em>) – Angles</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>complex</p>
+</dd>
 </dl>
-</div></blockquote>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Wigner_D-matrix">Wikipedia: Wigner D-matrix</a></p></li>
+</ul>
 </dd></dl>
 
 </section>
@@ -149,7 +156,7 @@ phi, theta, psi (float or complex): Angles</p>
         <li class="right" >
           <a href="treams.special.wignersmalld.html" title="treams.special.wignersmalld"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev100+g172e8a6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev104+g93c403f documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.special.html" >treams.special</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.special.wignerd</a></li> 

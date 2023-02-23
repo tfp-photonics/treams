@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>treams.TMatrixC.xw_ext_avg &#8212; treams 0.2.2.dev100+g172e8a6 documentation</title>
+    <title>treams.TMatrixC.xw_ext_avg &#8212; treams 0.2.2.dev104+g93c403f documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
@@ -14,6 +14,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -42,7 +43,7 @@
         <li class="right" >
           <a href="treams.TMatrixC.translate.html" title="treams.TMatrixC.translate"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev100+g172e8a6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev104+g93c403f documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.TMatrixC.html" accesskey="U">treams.TMatrixC</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.TMatrixC.xw_ext_avg</a></li> 
@@ -59,8 +60,16 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="treams.TMatrixC.xw_ext_avg">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TMatrixC.</span></span><span class="sig-name descname"><span class="pre">xw_ext_avg</span></span><a class="headerlink" href="#treams.TMatrixC.xw_ext_avg" title="Permalink to this definition">¶</a></dt>
-<dd><p>Rotational average of the extinction cross width</p>
-<p>Only implemented for global T-matrices.</p>
+<dd><p>Rotation and polarization averaged extinction cross width.</p>
+<p>The average is calculated as</p>
+<div class="math notranslate nohighlight">
+\[\langle \lambda_\mathrm{ext} \rangle
+= -\frac{2 \pi}{n_{k_z}} \sum_{sk_zm} \frac{\Re(T_{sk_zm,sk_zm})}{k_s}\]</div>
+<p>where <span class="math notranslate nohighlight">\(k_s\)</span> is the wave number in the embedding medium for the
+polarization <span class="math notranslate nohighlight">\(s\)</span> and <span class="math notranslate nohighlight">\(n_{k_z}\)</span> is the number of wave components
+<span class="math notranslate nohighlight">\(k_z\)</span> included in the T-matrix. The average is taken over all given
+z-components of the wave vector and rotations around the z-axis. It is only
+implemented for global T-matrices.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float or complex</p>
@@ -133,7 +142,7 @@
         <li class="right" >
           <a href="treams.TMatrixC.translate.html" title="treams.TMatrixC.translate"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev100+g172e8a6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev104+g93c403f documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.TMatrixC.html" >treams.TMatrixC</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.TMatrixC.xw_ext_avg</a></li> 

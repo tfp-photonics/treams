@@ -1,0 +1,6 @@
+treams.sw.rotate
+================
+
+.. currentmodule:: treams.sw
+
+.. autofunction:: rotate
