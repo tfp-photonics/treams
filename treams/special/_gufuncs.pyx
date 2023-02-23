@@ -6,40 +6,40 @@ from treams.special cimport _coord, _waves
 from treams.special._misc cimport double_complex
 
 __all__ = [
-    'car2cyl',
-    'car2sph',
-    'cyl2car',
-    'cyl2sph',
-    'sph2car',
-    'sph2cyl',
-    'vcar2cyl',
-    'vcar2sph',
-    'vcyl2car',
-    'vcyl2sph',
-    'vsph2car',
-    'vsph2cyl',
-    'car2pol',
-    'pol2car',
-    'vcar2pol',
-    'vpol2car',
-    'vsh_X',
-    'vsh_Y',
-    'vsh_Z',
-    'vsw_M',
-    'vsw_N',
-    'vsw_A',
-    'vsw_rM',
-    'vsw_rN',
-    'vsw_rA',
-    'vcw_M',
-    'vcw_N',
-    'vcw_A',
-    'vcw_rM',
-    'vcw_rN',
-    'vcw_rA',
-    'vpw_M',
-    'vpw_N',
-    'vpw_A',
+    "car2cyl",
+    "car2sph",
+    "cyl2car",
+    "cyl2sph",
+    "sph2car",
+    "sph2cyl",
+    "vcar2cyl",
+    "vcar2sph",
+    "vcyl2car",
+    "vcyl2sph",
+    "vsph2car",
+    "vsph2cyl",
+    "car2pol",
+    "pol2car",
+    "vcar2pol",
+    "vpol2car",
+    "vsh_X",
+    "vsh_Y",
+    "vsh_Z",
+    "vsw_M",
+    "vsw_N",
+    "vsw_A",
+    "vsw_rM",
+    "vsw_rN",
+    "vsw_rA",
+    "vcw_M",
+    "vcw_N",
+    "vcw_A",
+    "vcw_rM",
+    "vcw_rN",
+    "vcw_rA",
+    "vpw_M",
+    "vpw_N",
+    "vpw_A",
 ]
 
 
@@ -490,7 +490,7 @@ car2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'car2cyl',  # function name
+    "car2cyl",  # function name
     r"""car2cyl(r)
 
 Convert cartesian to cylindrical coordinates
@@ -506,7 +506,7 @@ Returns:
     float, 3-array
 """,  # docstring
     0,  # unused
-    '(3)->(3)',  # signature
+    "(3)->(3)",  # signature
 )
 
 
@@ -527,7 +527,7 @@ car2sph = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'car2sph',  # function name
+    "car2sph",  # function name
     r"""car2sph(r)
 
 Convert cartesian to spherical coordinates
@@ -543,7 +543,7 @@ Returns:
     float, 3-array
 """,  # docstring
     0,  # unused
-    '(3)->(3)',  # signature
+    "(3)->(3)",  # signature
 )
 
 
@@ -564,7 +564,7 @@ cyl2car = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'cyl2car',  # function name
+    "cyl2car",  # function name
     r"""cyl2car(r)
 
 Convert cylindrical to cartesian coordinates
@@ -580,7 +580,7 @@ Returns:
     float, 3-array
 """,  # docstring
     0,  # unused
-    '(3)->(3)',  # signature
+    "(3)->(3)",  # signature
 )
 
 
@@ -601,7 +601,7 @@ cyl2sph = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'cyl2sph',  # function name
+    "cyl2sph",  # function name
     r"""cyl2sph(r)
 
 Convert cylindrical to spherical coordinates
@@ -617,7 +617,7 @@ Returns:
     float, 3-array
 """,  # docstring
     0,  # unused
-    '(3)->(3)',  # signature
+    "(3)->(3)",  # signature
 )
 
 
@@ -638,7 +638,7 @@ sph2car = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'sph2car',  # function name
+    "sph2car",  # function name
     r"""sph2car(r)
 
 Convert spherical to cartesian coordinates
@@ -654,7 +654,7 @@ Returns:
     float, 3-array
 """,  # docstring
     0,  # unused
-    '(3)->(3)',  # signature
+    "(3)->(3)",  # signature
 )
 
 
@@ -675,7 +675,7 @@ sph2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'sph2cyl',  # function name
+    "sph2cyl",  # function name
     r"""sph2cylr(r)
 
 Convert spherical to cylindrical coordinates
@@ -691,7 +691,7 @@ Returns:
     float, 3-array
 """,  # docstring
     0,  # unused
-    '(3)->(3)',  # signature
+    "(3)->(3)",  # signature
 )
 
 
@@ -712,7 +712,7 @@ car2pol = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'car2pol',  # function name
+    "car2pol",  # function name
     r"""car2pol(r)
 
 Convert cartesian to polar coordinates
@@ -728,7 +728,7 @@ Returns:
     float, 2-array
 """,  # docstring
     0,  # unused
-    '(2)->(2)',  # signature
+    "(2)->(2)",  # signature
 )
 
 
@@ -749,7 +749,7 @@ pol2car = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'pol2car',  # function name
+    "pol2car",  # function name
     r"""pol2car(r)
 
 Convert polar to cartesian coordinates
@@ -765,7 +765,7 @@ Returns:
     float, 2-array
 """,  # docstring
     0,  # unused
-    '(2)->(2)',  # signature
+    "(2)->(2)",  # signature
 )
 
 
@@ -792,7 +792,7 @@ vcar2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vcar2cyl',  # function name
+    "vcar2cyl",  # function name
     r"""vcar2cyl(v, r)
 
 Convert vector in cartesian coordinates to vector in cylindrical coordinates
@@ -819,7 +819,7 @@ Returns:
     float or complex, 3-array
 """,  # docstring
     0,  # unused
-    '(3),(3)->(3)',  # signature
+    "(3),(3)->(3)",  # signature
 )
 
 
@@ -836,7 +836,7 @@ vcar2sph = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vcar2sph',  # function name
+    "vcar2sph",  # function name
     r"""vcar2cyl(v, r)
 
 Convert vector in cartesian coordinates to vector in spherical coordinates
@@ -863,7 +863,7 @@ Returns:
     float or complex, 3-array
 """,  # docstring
     0,  # unused
-    '(3),(3)->(3)',  # signature
+    "(3),(3)->(3)",  # signature
 )
 
 
@@ -879,7 +879,7 @@ vcyl2car = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vcyl2car',  # function name
+    "vcyl2car",  # function name
     r"""vcyl2car(v, r)
 
 Convert vector in cylindrical coordinates to vector in cartesian coordinates
@@ -906,7 +906,7 @@ Returns:
     float or complex, 3-array
 """,  # docstring
     0,  # unused
-    '(3),(3)->(3)',  # signature
+    "(3),(3)->(3)",  # signature
 )
 
 
@@ -922,7 +922,7 @@ vcyl2sph = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vcyl2sph',  # function name
+    "vcyl2sph",  # function name
     r"""vcyl2sph(v, r)
 
 Convert vector in cylindrical coordinates to vector in spherical coordinates
@@ -949,7 +949,7 @@ Returns:
     float or complex, 3-array
 """,  # docstring
     0,  # unused
-    '(3),(3)->(3)',  # signature
+    "(3),(3)->(3)",  # signature
 )
 
 
@@ -965,7 +965,7 @@ vsph2car = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vsph2car',  # function name
+    "vsph2car",  # function name
     r"""vsph2car(v, r)
 
 Convert vector in spherical coordinates to vector in cartesian coordinates
@@ -992,7 +992,7 @@ Returns:
     float or complex, 3-array
 """,  # docstring
     0,  # unused
-    '(3),(3)->(3)',  # signature
+    "(3),(3)->(3)",  # signature
 )
 
 
@@ -1008,7 +1008,7 @@ vsph2cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vsph2cyl',  # function name
+    "vsph2cyl",  # function name
     r"""vsph2cyl(v, r)
 
 Convert vector in spherical coordinates to vector in cylindrical coordinates
@@ -1035,7 +1035,7 @@ Returns:
     float or complex, 3-array
 """,  # docstring
     0,  # unused
-    '(3),(3)->(3)',  # signature
+    "(3),(3)->(3)",  # signature
 )
 
 
@@ -1051,7 +1051,7 @@ vcar2pol = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vcar2pol',  # function name
+    "vcar2pol",  # function name
     r"""vcar2pol(v, r)
 
 Convert vector in cartesian coordinates to vector in polar coordinates
@@ -1077,7 +1077,7 @@ Returns:
     float or complex, 2-array
 """,  # docstring
     0,  # unused
-    '(2),(2)->(2)',  # signature
+    "(2),(2)->(2)",  # signature
 )
 
 
@@ -1093,7 +1093,7 @@ vpol2car = np.PyUFunc_FromFuncAndDataAndSignature(
     2,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vpol2car',  # function name
+    "vpol2car",  # function name
     r"""vpol2car(v, r)
 
 Convert vector in polar coordinates to vector in cartesian coordinates
@@ -1119,7 +1119,7 @@ Returns:
     float or complex, 3-array
 """,  # docstring
     0,  # unused
-    '(2),(2)->(2)',  # signature
+    "(2),(2)->(2)",  # signature
 )
 
 
@@ -1150,7 +1150,7 @@ vsh_X = np.PyUFunc_FromFuncAndDataAndSignature(
     4,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vsh_X',  # function name
+    "vsh_X",  # function name
     r"""vsh_X(l, m, theta, phi)
 
 Vector spherical harmonic X in spherical coordinates
@@ -1169,7 +1169,8 @@ which can be expressed as
 
     \boldsymbol X_{lm}(\theta, \varphi)
     = \mathrm i \sqrt{\frac{2 l + 1}{4 \pi l (l + 1)} \frac{(l - m)!}{(l + m)!}}
-    \left(\mathrm i \pi_{lm}(\theta, \varphi) \boldsymbol{\hat\theta} - \tau_{lm}(\theta, \varphi) \boldsymbol{\hat\varphi}\right)
+    \left(\mathrm i \pi_{lm}(\theta, \varphi) \boldsymbol{\hat\theta}
+    - \tau_{lm}(\theta, \varphi) \boldsymbol{\hat\varphi}\right)
 
 with the angular functions :func:`treams.special.pi_fun` and
 :func:`treams.special.tau_fun`.
@@ -1184,7 +1185,7 @@ Returns:
     complex, 3-array
 """,  # docstring
     0,  # unused
-    '(),(),(),()->(3)',  # signature
+    "(),(),(),()->(3)",  # signature
 )
 
 
@@ -1215,20 +1216,22 @@ vsh_Y = np.PyUFunc_FromFuncAndDataAndSignature(
     4,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vsh_Y',  # function name
+    "vsh_Y",  # function name
     r"""vsh_Y(l, m, theta, phi)
 
 Vector spherical harmonic Y in spherical coordinates
 
 The vector spherical harmonics can be defined by
-:math:`\boldsymbol Y_{lm}(\theta, \varphi) = \boldsymbol{\hat r} \times \boldsymbol X_{lm}(\theta, \varphi)`
-using :func:`treams.special.vsh_X`. Alternatively, it can can be expressed as
+:math:`\boldsymbol Y_{lm}(\theta, \varphi) = \boldsymbol{\hat r} \times
+\boldsymbol X_{lm}(\theta, \varphi)` using :func:`treams.special.vsh_X`. Alternatively,
+it can can be expressed as
 
 .. math::
 
     \boldsymbol Y_{lm}(\theta, \varphi)
     = \mathrm i \sqrt{\frac{2 l + 1}{4 \pi l (l + 1)} \frac{(l - m)!}{(l + m)!}}
-    \left(\tau_{lm}(\theta, \varphi) \boldsymbol{\hat\theta} + \mathrm i \pi_{lm}(\theta, \varphi) \boldsymbol{\hat\varphi}\right)
+    \left(\tau_{lm}(\theta, \varphi) \boldsymbol{\hat\theta}
+    + \mathrm i \pi_{lm}(\theta, \varphi) \boldsymbol{\hat\varphi}\right)
 
 with the angular functions :func:`treams.special.pi_fun` and
 :func:`treams.special.tau_fun`.
@@ -1243,7 +1246,7 @@ Returns:
     complex, 3-array
 """,  # docstring
     0,  # unused
-    '(),(),(),()->(3)',  # signature
+    "(),(),(),()->(3)",  # signature
 )
 
 
@@ -1274,14 +1277,14 @@ vsh_Z = np.PyUFunc_FromFuncAndDataAndSignature(
     4,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vsh_Z',  # function name
+    "vsh_Z",  # function name
     r"""vsh_Z(l, m, theta, phi)
 
 Vector spherical harmonic Z in spherical coordinates
 
 The vector spherical harmonics can be defined via the (scalar) spherical harmonics
-(:func:`treams.special.sph_harm`) by
-:math:`\boldsymbol Z_{lm}(\theta, \varphi) = \mathrm i Y_{lm}(\theta, \varphi) \boldsymbol{\hat r}`.
+(:func:`treams.special.sph_harm`) by :math:`\boldsymbol Z_{lm}(\theta, \varphi) =
+\mathrm i Y_{lm}(\theta, \varphi) \boldsymbol{\hat r}`.
 
 Args:
     l (int, array_like): Degree :math:`l \geq 0`
@@ -1293,7 +1296,7 @@ Returns:
     complex, 3-array
 """,  # docstring
     0,  # unused
-    '(),(),(),()->(3)',  # signature
+    "(),(),(),()->(3)",  # signature
 )
 
 
@@ -1326,14 +1329,14 @@ vsw_M = np.PyUFunc_FromFuncAndDataAndSignature(
     5,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vsw_M',  # function name
+    "vsw_M",  # function name
     r"""vsw_M(l, m, x, theta, phi)
 
 Singular vector spherical wave M
 
-The vector spherical wave is defined by
-:math:`\boldsymbol M_{lm}^{(3)}(x, \theta, \varphi) = h_l^{(1)} (x) \boldsymbol X_{lm}(\theta, \varphi)`
-using :func:`treams.special.spherical_hankel1` and :func:`treams.special.vsh_X`.
+The vector spherical wave is defined by :math:`\boldsymbol M_{lm}^{(3)}
+(x, \theta, \varphi) = h_l^{(1)} (x) \boldsymbol X_{lm}(\theta, \varphi)` using
+:func:`treams.special.spherical_hankel1` and :func:`treams.special.vsh_X`.
 
 This function is describing a transverse solution to the vectorial Helmholtz wave
 equation, that is also tangential on a spherical surface. This is often used to
@@ -1351,7 +1354,7 @@ Returns:
     complex, 3-array
 """,  # docstring
     0,  # unused
-    '(),(),(),(),()->(3)',  # signature
+    "(),(),(),(),()->(3)",  # signature
 )
 
 
@@ -1384,7 +1387,7 @@ vsw_N = np.PyUFunc_FromFuncAndDataAndSignature(
     5,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vsw_N',  # function name
+    "vsw_N",  # function name
     r"""vsw_N(l, m, x, theta, phi)
 
 Singular vector spherical wave N
@@ -1395,7 +1398,8 @@ The vector spherical wave is defined by
 
     \boldsymbol N_{lm}^{(3)}(x, \theta, \varphi)
     = \nabla \times \boldsymbol M_{lm}^{(3)}(x, \theta, \varphi) \\
-    = \left(h_l^{(1)}'(x) + \frac{h_l^{(1)}(x)}{x}\right) \boldsymbol Y_{lm}(\theta, \varphi)
+    = \left({h_l^{(1)}}'(x)
+    + \frac{h_l^{(1)}(x)}{x}\right) \boldsymbol Y_{lm}(\theta, \varphi)
     + \sqrt{l (l + 1)} \frac{h_l^{(1)}(x)}{x} \boldsymbol Z_{lm}(\theta, \varphi)
 
 with :func:`treams.special.vsw_M`, :func:`treams.special.vsh_Y`,
@@ -1417,7 +1421,7 @@ Returns:
     complex, 3-array
 """,  # docstring
     0,  # unused
-    '(),(),(),(),()->(3)',  # signature
+    "(),(),(),(),()->(3)",  # signature
 )
 
 
@@ -1450,14 +1454,15 @@ vsw_rM = np.PyUFunc_FromFuncAndDataAndSignature(
     5,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vsw_rM',  # function name
+    "vsw_rM",  # function name
     r"""vsw_rM(l, m, x, theta, phi)
 
 Regular vector spherical wave M
 
 The vector spherical wave is defined by
-:math:`\boldsymbol M_{lm}^{(1)}(x, \theta, \varphi) = j_l(x) \boldsymbol X_{lm}(\theta, \varphi)`
-using :func:`treams.special.spherical_jn` and :func:`treams.special.vsh_X`.
+:math:`\boldsymbol M_{lm}^{(1)}(x, \theta, \varphi) = j_l(x)
+\boldsymbol X_{lm}(\theta, \varphi)` using :func:`treams.special.spherical_jn` and
+:func:`treams.special.vsh_X`.
 
 This function is describing a transverse solution to the vectorial Helmholtz wave
 equation, that is also tangential on a spherical surface. This is often used to
@@ -1475,7 +1480,7 @@ Returns:
     complex, 3-array
 """,  # docstring
     0,  # unused
-    '(),(),(),(),()->(3)',  # signature
+    "(),(),(),(),()->(3)",  # signature
 )
 
 
@@ -1508,7 +1513,7 @@ vsw_rN = np.PyUFunc_FromFuncAndDataAndSignature(
     5,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vsw_rN',  # function name
+    "vsw_rN",  # function name
     r"""vsw_rN(l, m, x, theta, phi)
 
 Regular vector spherical wave N
@@ -1541,7 +1546,7 @@ Returns:
     complex, 3-array
 """,  # docstring
     0,  # unused
-    '(),(),(),(),()->(3)',  # signature
+    "(),(),(),(),()->(3)",  # signature
 )
 
 
@@ -1576,7 +1581,7 @@ vsw_rA = np.PyUFunc_FromFuncAndDataAndSignature(
     6,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vsw_rA',  # function name
+    "vsw_rA",  # function name
     r"""vsw_rA(l, m, x, theta, phi, p)
 
 Regular helical vector spherical wave
@@ -1586,7 +1591,8 @@ The vector spherical wave is defined by
 .. math::
 
     \boldsymbol A_{lm\pm}^{(1)}(x, \theta, \varphi)
-    = \frac{\boldsymbol N_{lm}^{(1)}(x, \theta, \varphi) \pm \boldsymbol M_{lm}^{(1)}(x, \theta, \varphi)}{\sqrt{2}}
+    = \frac{\boldsymbol N_{lm}^{(1)}(x, \theta, \varphi)
+    \pm \boldsymbol M_{lm}^{(1)}(x, \theta, \varphi)}{\sqrt{2}}
 
 with :func:`treams.special.vsw_rM` and :func:`treams.special.vsw_rN`. The sign is
 determined by `p`, where `0` corresponds to negative and `1` to positive helicity.
@@ -1606,7 +1612,7 @@ Returns:
     complex, 3-array
 """,  # docstring
     0,  # unused
-    '(),(),(),(),(),()->(3)',  # signature
+    "(),(),(),(),(),()->(3)",  # signature
 )
 
 
@@ -1641,7 +1647,7 @@ vsw_A = np.PyUFunc_FromFuncAndDataAndSignature(
     6,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vsw_A',  # function name
+    "vsw_A",  # function name
     r"""vsw_A(l, m, x, theta, phi, p)
 
 Singular helical vector spherical wave
@@ -1651,7 +1657,8 @@ The vector spherical wave is defined by
 .. math::
 
     \boldsymbol A_{lm\pm}^{(3)}(x, \theta, \varphi)
-    = \frac{\boldsymbol N_{lm}^{(3)}(x, \theta, \varphi) \pm \boldsymbol M_{lm}^{(3)}(x, \theta, \varphi)}{\sqrt{2}}
+    = \frac{\boldsymbol N_{lm}^{(3)}(x, \theta, \varphi)
+    \pm \boldsymbol M_{lm}^{(3)}(x, \theta, \varphi)}{\sqrt{2}}
 
 with :func:`treams.special.vsw_M` and :func:`treams.special.vsw_N`. The sign is
 determined by `p`, where `0` corresponds to negative and `1` to positive helicity.
@@ -1671,7 +1678,7 @@ Returns:
     complex, 3-array
 """,  # docstring
     0,  # unused
-    '(),(),(),(),(),()->(3)',  # signature
+    "(),(),(),(),(),()->(3)",  # signature
 )
 
 
@@ -1696,7 +1703,7 @@ vcw_M = np.PyUFunc_FromFuncAndDataAndSignature(
     5,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vcw_M',  # function name
+    "vcw_M",  # function name
     r"""vcw_M(kz, m, xrho, phi, z)
 
 Singular vector cylindrical wave M
@@ -1706,7 +1713,8 @@ The vector cylindrical wave is defined by
 .. math::
 
     \boldsymbol M_{k_z m}^{(3)}(x_\rho, \varphi, z)
-    = \left(\frac{\mathrm i m}{x_\rho} H_m^{(1)}(x_\rho)\boldsymbol{\hat{\rho}} - H_m^{(1)}'(x_\rho) \boldsymbol{\hat{\varphi}}\right)
+    = \left(\frac{\mathrm i m}{x_\rho} H_m^{(1)}(x_\rho)\boldsymbol{\hat{\rho}}
+    - {H_m^{(1)}}'(x_\rho) \boldsymbol{\hat{\varphi}}\right)
     \mathrm e^{\mathrm i (k_z z + m \varphi)}
 
 using :func:`treams.special.hankel1`.
@@ -1726,7 +1734,7 @@ Returns:
     complex, 3-array
 """,  # docstring
     0,  # unused
-    '(),(),(),(),()->(3)',  # signature
+    "(),(),(),(),()->(3)",  # signature
 )
 
 
@@ -1759,7 +1767,7 @@ vcw_rM = np.PyUFunc_FromFuncAndDataAndSignature(
     5,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vcw_rM',  # function name
+    "vcw_rM",  # function name
     r"""vcw_rM(kz, m, xrho, phi, z)
 
 Regular vector cylindrical wave M
@@ -1769,7 +1777,8 @@ The vector cylindrical wave is defined by
 .. math::
 
     \boldsymbol M_{k_z m}^{(1)}(x_\rho, \varphi, z)
-    = \left(\frac{\mathrm i m}{x_\rho} J_m(x_\rho)\boldsymbol{\hat{\rho}} - J_m'(x_\rho) \boldsymbol{\hat{\varphi}}\right)
+    = \left(\frac{\mathrm i m}{x_\rho} J_m(x_\rho)\boldsymbol{\hat{\rho}}
+    - J_m'(x_\rho) \boldsymbol{\hat{\varphi}}\right)
     \mathrm e^{\mathrm i (k_z z + m \varphi)}
 
 using :func:`treams.special.jn`.
@@ -1789,7 +1798,7 @@ Returns:
     complex, 3-array
 """,  # docstring
     0,  # unused
-    '(),(),(),(),()->(3)',  # signature
+    "(),(),(),(),()->(3)",  # signature
 )
 
 
@@ -1815,7 +1824,7 @@ vcw_N = np.PyUFunc_FromFuncAndDataAndSignature(
     6,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vcw_N',  # function name
+    "vcw_N",  # function name
     r"""vcw_N(kz, m, xrho, phi, z, k)
 
 Singular vector cylindrical wave N
@@ -1825,7 +1834,9 @@ The vector cylindrical wave is defined by
 .. math::
 
     \boldsymbol N_{k_z m}^{(3)}(x_\rho, \varphi, z)
-    = \left(\frac{\mathrm i k_z}{k} H_m^{(1)}'(x_\rho)\boldsymbol{\hat{\rho}} - \frac{m k_z}{k x_\rho} H_m^{(1)}(x_\rho) \boldsymbol{\hat{\varphi}} + \frac{k_\rho}{k} H_m^{(1)}(x_\rho)\right)
+    = \left(\frac{\mathrm i k_z}{k} {H_m^{(1)}}'(x_\rho)\boldsymbol{\hat{\rho}}
+    - \frac{m k_z}{k x_\rho} H_m^{(1)}(x_\rho) \boldsymbol{\hat{\varphi}}
+    + \frac{k_\rho}{k} H_m^{(1)}(x_\rho) \boldsymbol{\hat{z}}\right)
     \mathrm e^{\mathrm i (k_z z + m \varphi)}
 
 using :func:`treams.special.hankel1`.
@@ -1837,7 +1848,8 @@ coordinates) (TM) wave.
 Args:
     kz (float, array_like): Z component of the wave
     m (int, array_like): Order :math:`|m| \leq l`
-    xrho (float or complex, array_like): Radial in units of the wave number :math:`k_\rho \rho`
+    xrho (float or complex, array_like): Radial in units of the wave number
+        :math:`k_\rho \rho`
     phi (float, array_like): Azimuthal angle
     z (float, array_like): Z coordinate
     k (float or complex): Wave number
@@ -1846,7 +1858,7 @@ Returns:
     complex, 3-array
 """,  # docstring
     0,  # unused
-    '(),(),(),(),(),()->(3)',  # signature
+    "(),(),(),(),(),()->(3)",  # signature
 )
 
 
@@ -1881,7 +1893,7 @@ vcw_rN = np.PyUFunc_FromFuncAndDataAndSignature(
     6,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vcw_rN',  # function name
+    "vcw_rN",  # function name
     r"""vcw_N(kz, m, xrho, phi, z, k)
 
 Regular vector cylindrical wave N
@@ -1891,7 +1903,9 @@ The vector cylindrical wave is defined by
 .. math::
 
     \boldsymbol N_{k_z m}^{(3)}(x_\rho, \varphi, z)
-    = \left(\frac{\mathrm i k_z}{k} J_m'(x_\rho)\boldsymbol{\hat{\rho}} - \frac{m k_z}{k x_\rho} J_m(x_\rho) \boldsymbol{\hat{\varphi}} + \frac{k_\rho}{k} J_m(x_\rho)\right)
+    = \left(\frac{\mathrm i k_z}{k} J_m'(x_\rho)\boldsymbol{\hat{\rho}}
+    - \frac{m k_z}{k x_\rho} J_m(x_\rho) \boldsymbol{\hat{\varphi}}
+    + \frac{k_\rho}{k} J_m(x_\rho) \boldsymbol{\hat{z}}\right)
     \mathrm e^{\mathrm i (k_z z + m \varphi)}
 
 using :func:`treams.special.jv`.
@@ -1903,7 +1917,8 @@ coordinates) (TM) wave.
 Args:
     kz (float, array_like): Z component of the wave
     m (int, array_like): Order :math:`|m| \leq l`
-    xrho (float or complex, array_like): Radial in units of the wave number :math:`k_\rho \rho`
+    xrho (float or complex, array_like): Radial in units of the wave number
+        :math:`k_\rho \rho`
     phi (float, array_like): Azimuthal angle
     z (float, array_like): Z coordinate
     k (float or complex): Wave number
@@ -1912,7 +1927,7 @@ Returns:
     complex, 3-array
 """,  # docstring
     0,  # unused
-    '(),(),(),(),(),()->(3)',  # signature
+    "(),(),(),(),(),()->(3)",  # signature
 )
 
 
@@ -1939,7 +1954,7 @@ vcw_A = np.PyUFunc_FromFuncAndDataAndSignature(
     7,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vcw_A',  # function name
+    "vcw_A",  # function name
     r"""vcw_A(kz, m, xrho, phi, z, k, pol)
 
 Singular helical vector cylindrical wave
@@ -1949,7 +1964,8 @@ The vector spherical wave is defined by
 .. math::
 
     \boldsymbol A_{k_z m \pm}^{(3)}(x_\rho, \varphi, z)
-    = \frac{\boldsymbol N_{k_z m}^{(3)}(x_\rho, \varphi, z) \pm \boldsymbol M_{k_z m}^{(3)}(x_\rho, \varphi, z)}{\sqrt{2}}
+    = \frac{\boldsymbol N_{k_z m}^{(3)}(x_\rho, \varphi, z)
+    \pm \boldsymbol M_{k_z m}^{(3)}(x_\rho, \varphi, z)}{\sqrt{2}}
 
 with :func:`treams.special.vcw_M` and :func:`treams.special.vcw_N`. The sign is
 determined by `p`, where `0` corresponds to negative and `1` to positive helicity.
@@ -1960,7 +1976,8 @@ equation. Additionally, it has a well-defined helicity.
 Args:
     kz (float, array_like): Z component of the wave
     m (int, array_like): Order :math:`|m| \leq l`
-    xrho (float or complex, array_like): Radial in units of the wave number :math:`k_\rho \rho`
+    xrho (float or complex, array_like): Radial in units of the wave number
+        :math:`k_\rho \rho`
     phi (float, array_like): Azimuthal angle
     z (float, array_like): Z coordinate
     k (float or complex): Wave number
@@ -1970,7 +1987,7 @@ Returns:
     complex, 3-array
 """,  # docstring
     0,  # unused
-    '(),(),(),(),(),(),()->(3)',  # signature
+    "(),(),(),(),(),(),()->(3)",  # signature
 )
 
 
@@ -2007,7 +2024,7 @@ vcw_rA = np.PyUFunc_FromFuncAndDataAndSignature(
     7,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vcw_rA',  # function name
+    "vcw_rA",  # function name
     r"""vcw_rA(kz, m, xrho, phi, z, k)
 
 Regular helical vector cylindrical wave
@@ -2017,7 +2034,8 @@ The vector spherical wave is defined by
 .. math::
 
     \boldsymbol A_{k_z m \pm}^{(1)}(x_\rho, \varphi, z)
-    = \frac{\boldsymbol N_{k_z m}^{(1)}(x_\rho, \varphi, z) \pm \boldsymbol M_{k_z m}^{(1)}(x_\rho, \varphi, z)}{\sqrt{2}}
+    = \frac{\boldsymbol N_{k_z m}^{(1)}(x_\rho, \varphi, z) \pm
+    \boldsymbol M_{k_z m}^{(1)}(x_\rho, \varphi, z)}{\sqrt{2}}
 
 with :func:`treams.special.vcw_rM` and :func:`treams.special.vcw_rN`. The sign is
 determined by `p`, where `0` corresponds to negative and `1` to positive helicity.
@@ -2038,7 +2056,7 @@ Returns:
     complex, 3-array
 """,  # docstring
     0,  # unused
-    '(),(),(),(),(),(),()->(3)',  # signature
+    "(),(),(),(),(),(),()->(3)",  # signature
 )
 
 
@@ -2073,7 +2091,7 @@ vpw_M = np.PyUFunc_FromFuncAndDataAndSignature(
     6,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vpw_M',  # function name
+    "vpw_M",  # function name
     r"""vpw_M(kx, ky, kz, x, y, z)
 
 Vector plane wave M
@@ -2083,7 +2101,8 @@ The vector plane wave is defined by
 .. math::
 
     \boldsymbol M_{\boldsymbol k}(\boldsymbol r)
-    = - \mathrm i \boldsymbol{\hat \varphi}_{\boldsymbol k} \mathrm e^{\mathrm i \boldsymbol k \boldsymbol r}.
+    = - \mathrm i \boldsymbol{\hat \varphi}_{\boldsymbol k}
+    \mathrm e^{\mathrm i \boldsymbol k \boldsymbol r}.
 
 This function is describing a transverse solution to the vectorial Helmholtz wave
 equation, that is also tangential on a planar surface. This is often used to
@@ -2101,7 +2120,7 @@ Returns:
     complex, 3-array
 """,  # docstring
     0,  # unused
-    '(),(),(),(),(),()->(3)',  # signature
+    "(),(),(),(),(),()->(3)",  # signature
 )
 
 
@@ -2136,7 +2155,7 @@ vpw_N = np.PyUFunc_FromFuncAndDataAndSignature(
     6,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vpw_N',  # function name
+    "vpw_N",  # function name
     r"""vpw_N(kx, ky, kz, x, y, z)
 
 Vector plane wave N
@@ -2146,7 +2165,8 @@ The vector plane wave is defined by
 .. math::
 
     \boldsymbol N_{\boldsymbol k}(\boldsymbol r)
-    = - \boldsymbol{\hat \theta}_{\boldsymbol k} \mathrm e^{\mathrm i \boldsymbol k \boldsymbol r}.
+    = - \boldsymbol{\hat \theta}_{\boldsymbol k}
+    \mathrm e^{\mathrm i \boldsymbol k \boldsymbol r}.
 
 This function is describing a transverse solution to the vectorial Helmholtz wave
 equation. This is often used to describe a transverse magnetic (TM) wave.
@@ -2163,7 +2183,7 @@ Returns:
     complex, 3-array
 """,  # docstring
     0,  # unused
-    '(),(),(),(),(),()->(3)',  # signature
+    "(),(),(),(),(),()->(3)",  # signature
 )
 
 
@@ -2200,7 +2220,7 @@ vpw_A = np.PyUFunc_FromFuncAndDataAndSignature(
     7,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'vpw_A',  # function name
+    "vpw_A",  # function name
     r"""vpw_A(kx, ky, kz, x, y, z, p)
 
 Vector plane wave of well-defined helicity
@@ -2210,7 +2230,8 @@ The vector plane wave is defined by
 .. math::
 
     \boldsymbol A_{\boldsymbol k \pm}(\boldsymbol r)
-    = \frac{\boldsymbol N_{\boldsymbol k \pm}(\boldsymbol r) \pm \boldsymbol M_{\boldsymbol k}(\boldsymbol r)}{\sqrt{2}}
+    = \frac{\boldsymbol N_{\boldsymbol k \pm}(\boldsymbol r)
+    \pm \boldsymbol M_{\boldsymbol k}(\boldsymbol r)}{\sqrt{2}}
 
 with :func:`treams.special.vpw_M` and :func:`treams.special.vpw_N`. The sign is
 determined by `p`, where `0` corresponds to negative and `1` to positive helicity.
@@ -2231,5 +2252,5 @@ Returns:
     complex, 3-array
 """,  # docstring
     0,  # unused
-    '(),(),(),(),(),(),()->(3)',  # signature
+    "(),(),(),(),(),(),()->(3)",  # signature
 )

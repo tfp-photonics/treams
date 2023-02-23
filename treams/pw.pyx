@@ -1,6 +1,7 @@
 """Plane wave module.
 
 .. autosummary::
+   :toctree:
 
    to_cw
    to_sw
@@ -187,8 +188,8 @@ _to_sw_h = np.PyUFunc_FromFuncAndData(
     7,
     1,
     0,
-    '_to_sw_h',
-    '',
+    "_to_sw_h",
+    "",
     0,
 )
 _to_sw_p = np.PyUFunc_FromFuncAndData(
@@ -199,8 +200,8 @@ _to_sw_p = np.PyUFunc_FromFuncAndData(
     7,
     1,
     0,
-    '_to_sw_p',
-    '',
+    "_to_sw_p",
+    "",
     0,
 )
 
@@ -349,7 +350,7 @@ to_cw = np.PyUFunc_FromFuncAndData(
     7,
     1,
     0,
-    'to_cw',
+    "to_cw",
     """to_cw(kzcw, m, polcw, kx, ky, kzpw, polpw)
 
 Coefficient for the expansion of a plane wave in cylindricrical waves
@@ -521,8 +522,8 @@ _xyz_to_zxy_h = np.PyUFunc_FromFuncAndData(
     5,
     1,
     0,
-    '_xyz_to_zxy_h',
-    '',
+    "_xyz_to_zxy_h",
+    "",
     0,
 )
 _xyz_to_zxy_p = np.PyUFunc_FromFuncAndData(
@@ -533,8 +534,8 @@ _xyz_to_zxy_p = np.PyUFunc_FromFuncAndData(
     5,
     1,
     0,
-    '_xyz_to_zxy_p',
-    '',
+    "_xyz_to_zxy_p",
+    "",
     0,
 )
 _xyz_to_yzx_h = np.PyUFunc_FromFuncAndData(
@@ -545,8 +546,8 @@ _xyz_to_yzx_h = np.PyUFunc_FromFuncAndData(
     5,
     1,
     0,
-    '_xyz_to_yzx_h',
-    '',
+    "_xyz_to_yzx_h",
+    "",
     0,
 )
 _xyz_to_yzx_p = np.PyUFunc_FromFuncAndData(
@@ -557,8 +558,8 @@ _xyz_to_yzx_p = np.PyUFunc_FromFuncAndData(
     5,
     1,
     0,
-    '_xyz_to_yzx_p',
-    '',
+    "_xyz_to_yzx_p",
+    "",
     0,
 )
 

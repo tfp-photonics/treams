@@ -7,30 +7,30 @@ from treams.special cimport _bessel, _integrals, _waves, _wigner3j, _wignerd
 from treams.special._misc cimport double_complex
 
 __all__ = [
-    'hankel1_d',
-    'hankel2_d',
-    'incgamma',
-    'intkambe',
-    'jv_d',
-    'lpmv',
-    'pi_fun',
-    'sph_harm',
-    'spherical_hankel1',
-    'spherical_hankel1_d',
-    'spherical_hankel2',
-    'spherical_hankel2_d',
-    'tau_fun',
-    'tl_vsw_A',
-    'tl_vsw_B',
-    'tl_vsw_rA',
-    'tl_vsw_rB',
-    'tl_vcw',
-    'tl_vcw_r',
-    'wignerd',
-    'wignersmalld',
-    'wigner3j',
-    'yv_d',
-    '_tl_vsw_helper',
+    "hankel1_d",
+    "hankel2_d",
+    "incgamma",
+    "intkambe",
+    "jv_d",
+    "lpmv",
+    "pi_fun",
+    "sph_harm",
+    "spherical_hankel1",
+    "spherical_hankel1_d",
+    "spherical_hankel2",
+    "spherical_hankel2_d",
+    "tau_fun",
+    "tl_vsw_A",
+    "tl_vsw_B",
+    "tl_vsw_rA",
+    "tl_vsw_rB",
+    "tl_vcw",
+    "tl_vcw_r",
+    "wignerd",
+    "wignersmalld",
+    "wigner3j",
+    "yv_d",
+    "_tl_vsw_helper",
 ]
 
 
@@ -454,7 +454,7 @@ lpmv = np.PyUFunc_FromFuncAndData(
     3,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'lpmv',  # function name
+    "lpmv",  # function name
     r"""lpmv(m, v, z)
 
 Associated legendre polynomials of real and complex argument
@@ -468,7 +468,8 @@ The function is defined as
 
 .. math::
 
-    P_v^m (z) = \frac{(-1)^m}{2^\nu \nu!} (1 - z^2)^\frac{m}{2} \frac{\mathrm d^{\nu + m}}{\mathrm d z^{\nu + m}} (z^2 - 1)^\nu
+    P_v^m (z) = \frac{(-1)^m}{2^\nu \nu!} (1 - z^2)^\frac{m}{2}
+    \frac{\mathrm d^{\nu + m}}{\mathrm d z^{\nu + m}} (z^2 - 1)^\nu
 
 for integer degree and order.
 
@@ -519,7 +520,7 @@ sph_harm = np.PyUFunc_FromFuncAndData(
     4,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'sph_harm',  # function name
+    "sph_harm",  # function name
     r"""sph_harm(m, l, phi, theta)
 
 Spherical harmonics of real and complex argument
@@ -532,7 +533,8 @@ For complex argument the spherical harmonics are computed with
 
 .. math::
 
-    Y_{lm}(\theta, \varphi) = \sqrt{\frac{2l + 1}{4\pi}\frac{(l - m)!}{(l + m)!}} P_l^m(\cos\theta) \mathrm e^{\mathrm i m \varphi}
+    Y_{lm}(\theta, \varphi) = \sqrt{\frac{2l + 1}{4\pi}\frac{(l - m)!}{(l + m)!}}
+    P_l^m(\cos\theta) \mathrm e^{\mathrm i m \varphi}
 
 for real arguments :py:data:`scipy.special.sph_harm` is used.
 
@@ -572,7 +574,7 @@ incgamma = np.PyUFunc_FromFuncAndData(
     2,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'incgamma',  # function name
+    "incgamma",  # function name
     r"""incgamma(l, z)
 
 Upper incomplete Gamma function of integer and half-integer degree and real and complex
@@ -625,7 +627,7 @@ intkambe = np.PyUFunc_FromFuncAndData(
     3,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'intkambe',  # function name
+    "intkambe",  # function name
     r"""intkambe(n, z, eta)
 
 Integral appearing in the accelerated lattice summations
@@ -685,7 +687,7 @@ wignersmalld = np.PyUFunc_FromFuncAndData(
     4,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'wignersmalld',  # function name
+    "wignersmalld",  # function name
     r"""wignersmalld(l, m, k, theta)
 
 Wigner-d matrix element
@@ -747,33 +749,34 @@ wignerd = np.PyUFunc_FromFuncAndData(
     6,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'wignerd',  # function name
+    "wignerd",  # function name
     r"""wignerd(l, m, k, phi, theta, psi)
 
-    Wigner-D matrix element
+Wigner-D matrix element
 
-    .. math::
+.. math::
 
-        D^l_{mk}(\varphi, \theta, \psi) = \mathrm e^{-\mathrm i m \varphi} d^l_{mk}(\theta) \mathrm e^{-\mathrm i k \psi}
+    D^l_{mk}(\varphi, \theta, \psi)
+    = \mathrm e^{-\mathrm i m \varphi} d^l_{mk}(\theta) \mathrm e^{-\mathrm i k \psi}
 
-    See also :func:`treams.special.wignersmalld`.
+See also :func:`treams.special.wignersmalld`.
 
-    Note:
-        Mathematica uses a different sign convention, which means taking the negative
-        angles.
+Note:
+    Mathematica uses a different sign convention, which means taking the negative
+    angles.
 
-    Args:
-        l (integer): Degree :math:`l \geq 0`
-        m (integer): Order :math:`|m| \leq l`
-        k (integer): Order :math:`|k| \leq l`
-        phi, theta, psi (float or complex): Angles
+Args:
+    l (integer): Degree :math:`l \geq 0`
+    m (integer): Order :math:`|m| \leq l`
+    k (integer): Order :math:`|k| \leq l`
+    phi, theta, psi (float or complex): Angles
 
-    Returns:
-        complex
+Returns:
+    complex
 
-    References:
-        - `Wikipedia: Wigner D-matrix <https://en.wikipedia.org/wiki/Wigner_D-matrix>`_
-    """,  # docstring
+References:
+    - `Wikipedia: Wigner D-matrix <https://en.wikipedia.org/wiki/Wigner_D-matrix>`_
+""",  # docstring
     0,  # unused
 )
 
@@ -800,33 +803,33 @@ wigner3j = np.PyUFunc_FromFuncAndData(
     6,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'wigner3j',  # function name
+    "wigner3j",  # function name
     r"""wigner3j(j1, j2, j3, m1, m2, m3)
 
-    Wigner-3j symbol
+Wigner-3j symbol
 
-    Calculate
+Calculate
 
-    .. math::
+.. math::
 
-       \begin{pmatrix} j_1 & j_2 & j_3 \\ m_1 & m_2 & m_3 \end{pmatrix}
+    \begin{pmatrix} j_1 & j_2 & j_3 \\ m_1 & m_2 & m_3 \end{pmatrix}
 
-    recursively by forward or backward recurstion.
-    Starting points are the extremal values for `j3.` The recursive function
-    calls are cached. For unphysical value combinations `0.0` is returned,
-    similar to Mathematica's behavior.
+recursively by forward or backward recurstion.
+Starting points are the extremal values for `j3.` The recursive function
+calls are cached. For unphysical value combinations `0.0` is returned,
+similar to Mathematica's behavior.
 
-    Args:
-        j1, j2, j3 (integer, array_like): Degrees
-        m1, m2, m3 (integer, array_like): Orders
+Args:
+    j1, j2, j3 (integer, array_like): Degrees
+    m1, m2, m3 (integer, array_like): Orders
 
-    Returns:
-        float
+Returns:
+    float
 
-    References:
-        - `Y.-L. Xu, J. Comput. Phys. 139, 137 - 165 (1998) <https://doi.org/10.1006/jcph.1997.5867>`_
-        - `DLMF: 34.3 <https://dlmf.nist.gov/34.3>`_
-    """,  # docstring
+References:
+    - `Y.-L. Xu, J. Comput. Phys. 139, 137 - 165 (1998) <https://doi.org/10.1006/jcph.1997.5867>`_
+    - `DLMF: 34.3 <https://dlmf.nist.gov/34.3>`_
+""",  # docstring
     0,  # unused
 )
 
@@ -854,27 +857,27 @@ jv_d = np.PyUFunc_FromFuncAndData(
     2,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'jv_d',  # function name
+    "jv_d",  # function name
     r"""jv_d(v, z)
 
-    Derivative of the Bessel function of the first kind
+Derivative of the Bessel function of the first kind
 
-    Computed by
+Computed by
 
-    .. math::
+.. math::
 
-       J_\nu'(z) = \frac{J_{\nu - 1}(z) - J_{\nu + 1}(z)}{2}
+    J_\nu'(z) = \frac{J_{\nu - 1}(z) - J_{\nu + 1}(z)}{2}
 
-    Args:
-        v (float, array_like): Order
-        z (float or complex, array_like): Argument
+Args:
+    v (float, array_like): Order
+    z (float or complex, array_like): Argument
 
-    Returns:
-        float or complex
+Returns:
+    float or complex
 
-    References:
-        - `DLMF: 10.6 <https://dlmf.nist.gov/10.6>`_
-    """,  # docstring
+References:
+    - `DLMF: 10.6 <https://dlmf.nist.gov/10.6>`_
+""",  # docstring
     0,  # unused
 )
 
@@ -902,27 +905,27 @@ yv_d = np.PyUFunc_FromFuncAndData(
     2,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'yv_d',  # function name
+    "yv_d",  # function name
     r"""yv_d(v, z)
 
-    Derivative of the Bessel function of the second kind
+Derivative of the Bessel function of the second kind
 
-    Computed by
+Computed by
 
-    .. math::
+.. math::
 
-       Y_\nu'(z) = \frac{Y_{\nu - 1}(z) - Y_{\nu + 1}(z)}{2}
+    Y_\nu'(z) = \frac{Y_{\nu - 1}(z) - Y_{\nu + 1}(z)}{2}
 
-    Args:
-        v (float, array_like): Order
-        z (float or complex, array_like): Argument
+Args:
+    v (float, array_like): Order
+    z (float or complex, array_like): Argument
 
-    Returns:
-        float or complex
+Returns:
+    float or complex
 
-    References:
-        - `DLMF: 10.6 <https://dlmf.nist.gov/10.6>`_
-    """,  # docstring
+References:
+    - `DLMF: 10.6 <https://dlmf.nist.gov/10.6>`_
+""",  # docstring
     0,  # unused
 )
 
@@ -945,29 +948,29 @@ spherical_hankel1 = np.PyUFunc_FromFuncAndData(
     2,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'spherical_hankel1',  # function name
+    "spherical_hankel1",  # function name
     r"""spherical_hankel1(n, z)
 
-    Spherical Hankel function of the first kind
+Spherical Hankel function of the first kind
 
-    Defined by
+Defined by
 
-    .. math::
+.. math::
 
-       h_n^{(1)}(z) = \sqrt{\frac{\pi}{2z}} H_{n + \frac{1}{2}}^{(1)}(z)
+    h_n^{(1)}(z) = \sqrt{\frac{\pi}{2z}} H_{n + \frac{1}{2}}^{(1)}(z)
 
-    where :math:`H_{n + \frac{1}{2}}^{(1)}` is the Hankel function of the first kind.
+where :math:`H_{n + \frac{1}{2}}^{(1)}` is the Hankel function of the first kind.
 
-    Args:
-        n (integer, array_like): Order
-        z (complex, array_like): Argument
+Args:
+    n (integer, array_like): Order
+    z (complex, array_like): Argument
 
-    Returns:
-        complex
+Returns:
+    complex
 
-    References:
-        - `DLMF: 10.47 <https://dlmf.nist.gov/10.47>`_
-    """,  # docstring
+References:
+    - `DLMF: 10.47 <https://dlmf.nist.gov/10.47>`_
+""",  # docstring
     0,  # unused
 )
 
@@ -990,30 +993,29 @@ spherical_hankel2 = np.PyUFunc_FromFuncAndData(
     2,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'spherical_hankel2',  # function name
-
+    "spherical_hankel2",  # function name
     r"""spherical_hankel2(n, z)
 
-    Spherical Hankel function of the second kind
+Spherical Hankel function of the second kind
 
-    Defined by
+Defined by
 
-    .. math::
+.. math::
 
-       h_n^{(2)}(z) = \sqrt{\frac{\pi}{2z}} H_{n + \frac{1}{2}}^{(2)}(z)
+    h_n^{(2)}(z) = \sqrt{\frac{\pi}{2z}} H_{n + \frac{1}{2}}^{(2)}(z)
 
-    where :math:`H_{n + \frac{1}{2}}^{(2)}` is the Hankel function of the second kind.
+where :math:`H_{n + \frac{1}{2}}^{(2)}` is the Hankel function of the second kind.
 
-    Args:
-        n (integer, array_like): Order
-        z (complex, array_like): Argument
+Args:
+    n (integer, array_like): Order
+    z (complex, array_like): Argument
 
-    Returns:
-        complex
+Returns:
+    complex
 
-    References:
-        - `DLMF: 10.47 <https://dlmf.nist.gov/10.47>`_
-    """,  # docstring
+References:
+    - `DLMF: 10.47 <https://dlmf.nist.gov/10.47>`_
+""",  # docstring
     0,  # unused
 )
 
@@ -1036,27 +1038,28 @@ spherical_hankel1_d = np.PyUFunc_FromFuncAndData(
     2,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'spherical_hankel1_d',  # function name
+    "spherical_hankel1_d",  # function name
     r"""spherical_hankel1_d(n, z)
 
-    Derivative of the spherical Hankel function of the first kind.
+Derivative of the spherical Hankel function of the first kind.
 
-    Computed by
+Computed by
 
-    .. math::
+.. math::
 
-       h_n^{(1)}'(z) = \frac{n h_{n - 1}^{(1)}(z) - (n + 1) h_{n + 1}^{(1)}(z)}{2n + 1}
+    {h_n^{(1)}}'(z)
+    = \frac{n h_{n - 1}^{(1)}(z) - (n + 1) h_{n + 1}^{(1)}(z)}{2n + 1}
 
-    Args:
-        n (integer, array_like): Order
-        z (complex, array_like): Argument
+Args:
+    n (integer, array_like): Order
+    z (complex, array_like): Argument
 
-    Returns:
-        complex
+Returns:
+    complex
 
-    References:
-        - `DLMF: 10.51 <https://dlmf.nist.gov/10.51>`_
-    """,  # docstring
+References:
+    - `DLMF: 10.51 <https://dlmf.nist.gov/10.51>`_
+""",  # docstring
     0,  # unused
 )
 
@@ -1079,27 +1082,28 @@ spherical_hankel2_d = np.PyUFunc_FromFuncAndData(
     2,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'spherical_hankel2_d',  # function name
+    "spherical_hankel2_d",  # function name
     r"""spherical_hankel2_d(n, z)
 
-    Derivative of the spherical Hankel function of the second kind
+Derivative of the spherical Hankel function of the second kind
 
-    Computed by
+Computed by
 
-    .. math::
+.. math::
 
-       h_n^{(2)}'(z) = \frac{n h_{n - 1}^{(2)}(z) - (n + 1) h_{n + 1}^{(2)}(z)}{2n + 1}
+    {h_n^{(2)}}'(z)
+    = \frac{n h_{n - 1}^{(2)}(z) - (n + 1) h_{n + 1}^{(2)}(z)}{2n + 1}
 
-    Args:
-        n (integer, array_like): Order
-        z (complex, array_like): Argument
+Args:
+    n (integer, array_like): Order
+    z (complex, array_like): Argument
 
-    Returns:
-        complex
+Returns:
+    complex
 
-    References:
-        - `DLMF: 10.51 <https://dlmf.nist.gov/10.51>`_
-    """,  # docstring
+References:
+    - `DLMF: 10.51 <https://dlmf.nist.gov/10.51>`_
+""",  # docstring
     0,  # unused
 )
 
@@ -1122,7 +1126,7 @@ hankel1_d = np.PyUFunc_FromFuncAndData(
     2,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'hankel1_d',  # function name
+    "hankel1_d",  # function name
     r"""hankel1_d(v, z)
 
 Derivative of the Hankel function of the first kind.
@@ -1131,7 +1135,7 @@ Computed by
 
 .. math::
 
-    H_\nu^{(1)}(z) = \frac{H_{\nu - 1}^{(1)}(z) - H_{\nu + 1}^{(1)}(z)}{2}
+    {H_\nu^{(1)}}'(z) = \frac{H_{\nu - 1}^{(1)}(z) - H_{\nu + 1}^{(1)}(z)}{2}
 
 Args:
     v (float, array_like): Order
@@ -1165,7 +1169,7 @@ hankel2_d = np.PyUFunc_FromFuncAndData(
     2,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'hankel2_d',  # function name
+    "hankel2_d",  # function name
     r"""hankel2_d(v, z)
 
 Derivative of the Hankel function of the second kind
@@ -1174,7 +1178,7 @@ Computed by
 
 .. math::
 
-    H_\nu^{(2)}(z) = \frac{H_{\nu - 1}^{(1)}(z) - H_{\nu + 1}^{(2)}(z)}{2}
+    {H_\nu^{(2)}}'(z) = \frac{H_{\nu - 1}^{(1)}(z) - H_{\nu + 1}^{(2)}(z)}{2}
 
 Args:
     v (float, array_like): Order
@@ -1215,7 +1219,7 @@ pi_fun = np.PyUFunc_FromFuncAndData(
     3,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'pi_fun',  # function name
+    "pi_fun",  # function name
     r"""pi_fun(l, m, x)
 
 Angular function pi
@@ -1263,14 +1267,15 @@ tau_fun = np.PyUFunc_FromFuncAndData(
     3,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'tau_fun',  # function name
+    "tau_fun",  # function name
     r"""tau_fun(l, m, x)
 
 Angular function tau
 
 .. math::
 
-    \tau^l_m(x) = \left.\frac{\mathrm d}{\mathrm d \theta}P_l^m(\cos\theta)\right|_{x = \cos\theta}
+    \tau^l_m(x)
+    = \left.\frac{\mathrm d}{\mathrm d \theta}P_l^m(\cos\theta)\right|_{x = \cos\theta}
 
 where :math:`P^l_m` is the associated Legendre polynomial.
 
@@ -1319,7 +1324,7 @@ tl_vsw_rA = np.PyUFunc_FromFuncAndData(
     7,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'tl_vsw_rA',  # function name
+    "tl_vsw_rA",  # function name
     r"""tl_vsw_rA(lambda, mu, l, m, x, theta, phi)
 
 Translation coefficient for vector spherical waves with the same parity
@@ -1409,7 +1414,7 @@ tl_vsw_rB = np.PyUFunc_FromFuncAndData(
     7,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'tl_vsw_rB',  # function name
+    "tl_vsw_rB",  # function name
     r"""tl_vsw_rB(lambda, mu, l, m, x, theta, phi)
 
 Translation coefficient for vector spherical waves with opposite parity
@@ -1442,7 +1447,8 @@ with
 
 and the Wigner 3j-symbols (:func:`treams.special.wigner3j`) and the spherical Bessel
 functions. The summation runs over all
-:math:`p \in \{\lambda + l - 1, \lambda + l - 3, \dots, \max(|\lambda - l| + 1, |\mu - m|)\}`.
+:math:`p \in \{\lambda + l - 1, \lambda + l - 3, \dots,
+\max(|\lambda - l| + 1, |\mu - m|)\}`.
 
 These coefficients are used to translate from incident to incident modes and from
 scattered to scattered modes.
@@ -1499,7 +1505,7 @@ tl_vsw_A = np.PyUFunc_FromFuncAndData(
     7,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'tl_vsw_A',  # function name
+    "tl_vsw_A",  # function name
     r"""tl_vsw_A(lambda, mu, l, m, x, theta, phi)
 
 Translation coefficient for vector spherical waves with the same parity
@@ -1528,7 +1534,8 @@ with
 
 .. math::
 
-    \gamma_{lm} = \mathrm i \sqrt{\frac{2l + 1}{4\pi l (l + 1)}\frac{(l - m)!}{(l + m)!}}
+    \gamma_{lm}
+    = \mathrm i \sqrt{\frac{2l + 1}{4\pi l (l + 1)}\frac{(l - m)!}{(l + m)!}}
 
 and the Wigner 3j-symbols (:func:`treams.special.wigner3j`) and the spherical Hankel
 functions. The summation runs over all
@@ -1588,7 +1595,7 @@ tl_vsw_B = np.PyUFunc_FromFuncAndData(
     7,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'tl_vsw_B',  # function name
+    "tl_vsw_B",  # function name
     r"""tl_vsw_B(lambda, mu, l, m, x, theta, phi)
 
 Translation coefficient for vector spherical waves with opposite parity
@@ -1617,7 +1624,8 @@ with
 
 .. math::
 
-    \gamma_{lm} = \mathrm i \sqrt{\frac{2l + 1}{4\pi l (l + 1)}\frac{(l - m)!}{(l + m)!}}
+    \gamma_{lm}
+    = \mathrm i \sqrt{\frac{2l + 1}{4\pi l (l + 1)}\frac{(l - m)!}{(l + m)!}}
 
 and the Winger 3j-symbols (:func:`treams.special.wigner3j`) and the spherical Hankel
 functions. The summation runs over all
@@ -1667,7 +1675,7 @@ tl_vcw = np.PyUFunc_FromFuncAndData(
     7,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'tl_vcw',  # function name
+    "tl_vcw",  # function name
     r"""tl_vcw(kz1, mu, kz2, m, k, xrho, phi, z)
 
 Translation coefficient for vector cylindrical waves from scattered to incident modes
@@ -1677,7 +1685,8 @@ Definded by
 .. math::
 
     \begin{cases}
-        H_{m - \mu}^{(1)}(x_\rho) \mathrm e^{\mathrm i ((m - \mu) \varphi + k_{z,1}z)} & \text{if }k_{z,1} = k_{z,2} \\
+        H_{m - \mu}^{(1)}(x_\rho) \mathrm e^{\mathrm i ((m - \mu) \varphi + k_{z,1}z)}
+        & \text{if }k_{z,1} = k_{z,2} \\
         0 & \text{otherwise}
     \end{cases}
 
@@ -1735,7 +1744,7 @@ tl_vcw_r = np.PyUFunc_FromFuncAndData(
     7,  # number of input args
     1,  # number of output args
     0,  # identity element
-    'tl_vcw_r',  # function name
+    "tl_vcw_r",  # function name
     r"""tl_vcw_r(kz1, mu, kz2, m, k, xrho, phi, z)
 
 Translation coefficient for vector cylindrical waves of the same kind
@@ -1745,7 +1754,8 @@ Definded by
 .. math::
 
     \begin{cases}
-        J_{m - \mu}(x_\rho) \mathrm e^{\mathrm i ((m - \mu) \varphi + k_{z,1}z)} & \text{if }k_{z,1} = k_{z,2} \\
+        J_{m - \mu}(x_\rho) \mathrm e^{\mathrm i ((m - \mu) \varphi + k_{z,1}z)}
+        & \text{if }k_{z,1} = k_{z,2} \\
         0 & \text{otherwise}
     \end{cases}
 
@@ -1759,7 +1769,8 @@ Args:
     mu (integer, array_like): Order of the destination mode
     kz2 (float, array_like): Z component of the source mode's wave vector
     m (integer, array_like): Order of the source mode
-    xrho (complex, array_like): Translation in radial direction in units of the wave number
+    xrho (complex, array_like): Translation in radial direction in units of the wave
+        number
     phi (float, array_like): Azimuthal angel
     z (float, array_like): Translation in z direction
 
@@ -1792,7 +1803,7 @@ _tl_vsw_helper = np.PyUFunc_FromFuncAndData(
     6,  # number of input args
     1,  # number of output args
     0,  # identity element
-    '_tl_vsw_helper',  # function name
+    "_tl_vsw_helper",  # function name
     r"""_tl_vsw_helper(l, m, lambda_, mu, p, q)""",  # docstring
     0,  # unused
 )

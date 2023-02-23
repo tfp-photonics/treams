@@ -8,49 +8,49 @@ from treams.lattice cimport _esum
 from treams.lattice cimport _dsum
 
 __all__ = [
-    'area',
-    'dsumcw1d',
-    'dsumcw1d_shift',
-    'dsumcw2d',
-    'dsumsw1d',
-    'dsumsw1d_shift',
-    'dsumsw2d',
-    'dsumsw2d_shift',
-    'dsumsw3d',
-    'lsumcw1d',
-    'lsumcw1d_shift',
-    'lsumcw2d',
-    'lsumsw1d',
-    'lsumsw1d_shift',
-    'lsumsw2d',
-    'lsumsw2d_shift',
-    'lsumsw3d',
-    'realsumcw1d',
-    'realsumcw1d_shift',
-    'realsumcw2d',
-    'realsumsw1d',
-    'realsumsw1d_shift',
-    'realsumsw2d',
-    'realsumsw2d_shift',
-    'realsumsw3d',
-    'recsumcw1d',
-    'recsumcw1d_shift',
-    'recsumcw2d',
-    'recsumsw1d',
-    'recsumsw1d_shift',
-    'recsumsw2d',
-    'recsumsw2d_shift',
-    'recsumsw3d',
-    'reciprocal',
-    'volume',
-#    'zero2d',
-#    'zero3d',
+    "area",
+    "dsumcw1d",
+    "dsumcw1d_shift",
+    "dsumcw2d",
+    "dsumsw1d",
+    "dsumsw1d_shift",
+    "dsumsw2d",
+    "dsumsw2d_shift",
+    "dsumsw3d",
+    "lsumcw1d",
+    "lsumcw1d_shift",
+    "lsumcw2d",
+    "lsumsw1d",
+    "lsumsw1d_shift",
+    "lsumsw2d",
+    "lsumsw2d_shift",
+    "lsumsw3d",
+    "realsumcw1d",
+    "realsumcw1d_shift",
+    "realsumcw2d",
+    "realsumsw1d",
+    "realsumsw1d_shift",
+    "realsumsw2d",
+    "realsumsw2d_shift",
+    "realsumsw3d",
+    "recsumcw1d",
+    "recsumcw1d_shift",
+    "recsumcw2d",
+    "recsumsw1d",
+    "recsumsw1d_shift",
+    "recsumsw2d",
+    "recsumsw2d_shift",
+    "recsumsw3d",
+    "reciprocal",
+    "volume",
+#    "zero2d",
+#    "zero3d",
 ]
 
 cdef void loop_volume_l(char **args, np.npy_intp *dims, np.npy_intp *steps, void *data) nogil:
     cdef np.npy_intp i, j, k, n = dims[0]
     if dims[1] < 2 or dims[1] > 3:
-        raise ValueError('Dimension out of range')  # todo: force error by numpy
+        raise ValueError("Dimension out of range")  # todo: force error by numpy
     cdef long input[3][3]
     cdef void *area = (<void**>data)[0]
     cdef void *vol = (<void**>data)[1]
@@ -73,7 +73,7 @@ cdef void loop_volume_l(char **args, np.npy_intp *dims, np.npy_intp *steps, void
 cdef void loop_volume_d(char **args, np.npy_intp *dims, np.npy_intp *steps, void *data) nogil:
     cdef np.npy_intp i, j, k, n = dims[0]
     if dims[1] < 2 or dims[1] > 3:
-        raise ValueError('Dimension out of range')  # todo: force error by numpy
+        raise ValueError("Dimension out of range")  # todo: force error by numpy
     cdef double input[3][3]
     cdef void *area = (<void**>data)[0]
     cdef void *vol = (<void**>data)[1]
@@ -96,7 +96,7 @@ cdef void loop_volume_d(char **args, np.npy_intp *dims, np.npy_intp *steps, void
 cdef void loop_reciprocal_d(char **args, np.npy_intp *dims, np.npy_intp *steps, void *data) nogil:
     cdef np.npy_intp i, j, k, n = dims[0]
     if dims[1] < 2 or dims[1] > 3:
-        raise ValueError('Dimension out of range')  # todo: force error by numpy
+        raise ValueError("Dimension out of range")  # todo: force error by numpy
     cdef double input[3][3]
     cdef double output[3][3]
     cdef void *area = (<void**>data)[0]
@@ -975,7 +975,7 @@ reciprocal = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'reciprocal',  # function name
+    "reciprocal",  # function name
     """reciprocal(a)
 
 Reciprocal vectors in two- and three-dimensional space
@@ -989,7 +989,7 @@ Returns:
     float, (2,2)- or (3,3)-array
 """,  # docstring
     0,  # unused
-    '(i,i)->(i,i)',  # signature
+    "(i,i)->(i,i)",  # signature
 )
 
 
@@ -1019,7 +1019,7 @@ volume = np.PyUFunc_FromFuncAndDataAndSignature(
     1,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'volume',  # function name
+    "volume",  # function name
     """volume(a)
 
 Calculate the signed volume (area)
@@ -1035,7 +1035,7 @@ Returns:
     float
 """,  # docstring
     0,  # unused
-    '(i,i)->()',  # signature
+    "(i,i)->()",  # signature
 )
 
 area = volume
@@ -1078,7 +1078,7 @@ lsumcw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     6,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'lsumcw2d',  # function name
+    "lsumcw2d",  # function name
     r"""lsumcw2d(l, k, kpar, a, r, eta)
 
 Fast summation of cylindrical functions on a 2d lattice
@@ -1111,7 +1111,7 @@ Returns:
     complex
 """,  # docstring
     0,  # unused
-    '(),(),(2),(2,2),(2),()->()',  # signature
+    "(),(),(2),(2,2),(2),()->()",  # signature
 )
 realsumcw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumcw2d_loops,
@@ -1121,10 +1121,10 @@ realsumcw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     6,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'realsumcw2d',  # function name
+    "realsumcw2d",  # function name
     r"""realsumcw2d(l, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
-    '(),(),(2),(2,2),(2),()->()',  # signature
+    "(),(),(2),(2,2),(2),()->()",  # signature
 )
 recsumcw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumcw2d_loops,
@@ -1134,10 +1134,10 @@ recsumcw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     6,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'recsumcw2d',  # function name
+    "recsumcw2d",  # function name
     r"""recsumcw2d(l, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
-    '(),(),(2),(2,2),(2),()->()',  # signature
+    "(),(),(2),(2,2),(2),()->()",  # signature
 )
 
 cdef np.PyUFuncGenericFunction gufunc_lsumsw3d_loops[2]
@@ -1179,7 +1179,7 @@ lsumsw3d = np.PyUFunc_FromFuncAndDataAndSignature(
     7,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'lsumsw3d',  # function name
+    "lsumsw3d",  # function name
     r"""lsumsw3d(l, m, k, kpar, a, r, eta)
 
 Fast summation of spherical functions on a 3d lattice
@@ -1213,7 +1213,7 @@ Returns:
     complex
 """,  # docstring
     0,  # unused
-    '(),(),(),(3),(3,3),(3),()->()',  # signature
+    "(),(),(),(3),(3,3),(3),()->()",  # signature
 )
 realsumsw3d = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumsw3d_loops,
@@ -1223,10 +1223,10 @@ realsumsw3d = np.PyUFunc_FromFuncAndDataAndSignature(
     7,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'realsumsw3d',  # function name
+    "realsumsw3d",  # function name
     r"""realsumsw3d(l, m, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
-    '(),(),(),(3),(3,3),(3),()->()',  # signature
+    "(),(),(),(3),(3,3),(3),()->()",  # signature
 )
 recsumsw3d = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumsw3d_loops,
@@ -1236,10 +1236,10 @@ recsumsw3d = np.PyUFunc_FromFuncAndDataAndSignature(
     7,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'recsumsw3d',  # function name
+    "recsumsw3d",  # function name
     r"""recsumsw3d(l, m, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
-    '(),(),(),(3),(3,3),(3),()->()',  # signature
+    "(),(),(),(3),(3,3),(3),()->()",  # signature
 )
 
 
@@ -1282,7 +1282,7 @@ lsumsw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     7,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'lsumsw2d',  # function name
+    "lsumsw2d",  # function name
     r"""lsumsw2d(l, m, k, kpar, a, r, eta)
 
 Fast summation of spherical functions on a 2d lattice
@@ -1316,7 +1316,7 @@ Returns:
     complex
 """,  # docstring
     0,  # unused
-    '(),(),(),(2),(2,2),(2),()->()',  # signature
+    "(),(),(),(2),(2,2),(2),()->()",  # signature
 )
 realsumsw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumsw2d_loops,
@@ -1326,10 +1326,10 @@ realsumsw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     7,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'realsumsw2d',  # function name
+    "realsumsw2d",  # function name
     r"""realsumsw2d(l, m, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
-    '(),(),(),(2),(2,2),(2),()->()',  # signature
+    "(),(),(),(2),(2,2),(2),()->()",  # signature
 )
 recsumsw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumsw2d_loops,
@@ -1339,10 +1339,10 @@ recsumsw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     7,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'recsumsw2d',  # function name
+    "recsumsw2d",  # function name
     r"""recsumsw2d(l, m, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
-    '(),(),(),(2),(2,2),(2),()->()',  # signature
+    "(),(),(),(2),(2,2),(2),()->()",  # signature
 )
 
 
@@ -1385,7 +1385,7 @@ lsumsw2d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     7,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'lsumsw2d_shift',  # function name
+    "lsumsw2d_shift",  # function name
     r"""lsumsw2d_shift(l, m, k, kpar, a, r, eta)
 
 Fast summation of spherical functions on a 2d lattice with out of lattice shifts
@@ -1419,7 +1419,7 @@ Returns:
     complex
 """,  # docstring
     0,  # unused
-    '(),(),(),(2),(2,2),(3),()->()',  # signature
+    "(),(),(),(2),(2,2),(3),()->()",  # signature
 )
 realsumsw2d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumsw2d_shift_loops,
@@ -1429,10 +1429,10 @@ realsumsw2d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     7,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'realsumsw2d_shift',  # function name
+    "realsumsw2d_shift",  # function name
     r"""realsumsw2d_shift(l, m, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
-    '(),(),(),(2),(2,2),(3),()->()',  # signature
+    "(),(),(),(2),(2,2),(3),()->()",  # signature
 )
 recsumsw2d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumsw2d_shift_loops,
@@ -1442,10 +1442,10 @@ recsumsw2d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     7,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'recsumsw2d_shift',  # function name
+    "recsumsw2d_shift",  # function name
     r"""recsumsw2d_shift(l, m, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
-    '(),(),(),(2),(2,2),(3),()->()',  # signature
+    "(),(),(),(2),(2,2),(3),()->()",  # signature
 )
 
 
@@ -1488,7 +1488,7 @@ lsumsw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     7,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'lsumsw1d_shift',  # function name
+    "lsumsw1d_shift",  # function name
     r"""lsumsw1d_shift(l, m, k, kpar, a, r, eta)
 
 Fast summation of spherical functions on a 1d lattice with out of lattice shifts
@@ -1522,7 +1522,7 @@ Returns:
     complex
 """,  # docstring
     0,  # unused
-    '(),(),(),(),(),(3),()->()',  # signature
+    "(),(),(),(),(),(3),()->()",  # signature
 )
 realsumsw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumsw1d_shift_loops,
@@ -1532,10 +1532,10 @@ realsumsw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     7,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'realsumsw1d_shift',  # function name
+    "realsumsw1d_shift",  # function name
     r"""realsumsw1d_shift(l, m, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
-    '(),(),(),(),(),(3),()->()',  # signature
+    "(),(),(),(),(),(3),()->()",  # signature
 )
 recsumsw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumsw1d_shift_loops,
@@ -1545,10 +1545,10 @@ recsumsw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     7,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'recsumsw1d_shift',  # function name
+    "recsumsw1d_shift",  # function name
     r"""recsumsw1d_shift(l, m, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
-    '(),(),(),(),(),(3),()->()',  # signature
+    "(),(),(),(),(),(3),()->()",  # signature
 )
 
 
@@ -1589,7 +1589,7 @@ lsumcw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     6,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'lsumcw1d_shift',  # function name
+    "lsumcw1d_shift",  # function name
     r"""lsumcw1d_shift(l, k, kpar, a, r, eta)
 
 Fast summation of cylindrical functions on a 1d lattice with out of lattice shifts
@@ -1622,7 +1622,7 @@ Returns:
     complex
 """,  # docstring
     0,  # unused
-    '(),(),(),(),(2),()->()',  # signature
+    "(),(),(),(),(2),()->()",  # signature
 )
 realsumcw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumcw1d_shift_loops,
@@ -1632,10 +1632,10 @@ realsumcw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     6,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'realsumcw1d_shift',  # function name
+    "realsumcw1d_shift",  # function name
     r"""realsumcw1d_shift(l, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
-    '(),(),(),(),(2),()->()',  # signature
+    "(),(),(),(),(2),()->()",  # signature
 )
 recsumcw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     gufunc_lsumcw1d_shift_loops,
@@ -1645,10 +1645,10 @@ recsumcw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     6,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'recsumcw1d_shift',  # function name
+    "recsumcw1d_shift",  # function name
     r"""recsumcw1d_shift(l, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
-    '(),(),(),(),(2),()->()',  # signature
+    "(),(),(),(),(2),()->()",  # signature
 )
 
 
@@ -1689,7 +1689,7 @@ lsumcw1d = np.PyUFunc_FromFuncAndData(
     6,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'lsumcw1d',  # function name
+    "lsumcw1d",  # function name
     r"""lsumcw1d(l, k, kpar, a, r, eta)
 
 Fast summation of cylindrical functions on a 1d lattice
@@ -1731,7 +1731,7 @@ realsumcw1d = np.PyUFunc_FromFuncAndData(
     6,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'realsumcw1d',  # function name
+    "realsumcw1d",  # function name
     r"""realsumcw1d(l, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
 )
@@ -1743,7 +1743,7 @@ recsumcw1d = np.PyUFunc_FromFuncAndData(
     6,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'recsumcw1d',  # function name
+    "recsumcw1d",  # function name
     r"""recsumcw1d(l, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
 )
@@ -1786,7 +1786,7 @@ lsumsw1d = np.PyUFunc_FromFuncAndData(
     6,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'lsumsw1d',  # function name
+    "lsumsw1d",  # function name
     r"""lsumsw1d(l, k, kpar, a, r, eta)
 
 Fast summation of spherical functions on a 1d lattice
@@ -1828,7 +1828,7 @@ realsumsw1d = np.PyUFunc_FromFuncAndData(
     6,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'realsumsw1d',  # function name
+    "realsumsw1d",  # function name
     r"""realsumsw1d(l, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
 )
@@ -1840,7 +1840,7 @@ recsumsw1d = np.PyUFunc_FromFuncAndData(
     6,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'recsumsw1d',  # function name
+    "recsumsw1d",  # function name
     r"""recsumsw1d(l, k, kpar, a, r, eta)""",  # docstring
     0,  # unused
 )
@@ -1877,7 +1877,7 @@ dsumcw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     6,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'dsumcw2d',  # function name
+    "dsumcw2d",  # function name
     r"""dsumcw2d(l, k, kpar, a, r, i)
 
 Direct summation of cylindrical functions on a 2d lattice
@@ -1908,7 +1908,7 @@ Returns:
     complex
 """,  # docstring
     0,  # unused
-    '(),(),(2),(2,2),(2),()->()',  # signature
+    "(),(),(2),(2,2),(2),()->()",  # signature
 )
 
 
@@ -1945,7 +1945,7 @@ dsumsw3d = np.PyUFunc_FromFuncAndDataAndSignature(
     7,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'dsumsw3d',  # function name
+    "dsumsw3d",  # function name
     r"""dsumsw3d(l, m, k, kpar, a, r, i)
 
 Direct summation of spherical functions on a 3d lattice
@@ -1977,7 +1977,7 @@ Returns:
     complex
 """,  # docstring
     0,  # unused
-    '(),(),(),(3),(3,3),(3),()->()',  # signature
+    "(),(),(),(3),(3,3),(3),()->()",  # signature
 )
 
 
@@ -2014,7 +2014,7 @@ dsumsw2d = np.PyUFunc_FromFuncAndDataAndSignature(
     7,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'dsumsw2d',  # function name
+    "dsumsw2d",  # function name
     r"""dsumsw2d(l, m, k, kpar, a, r, i)
 
 Direct summation of spherical functions on a 2d lattice
@@ -2046,7 +2046,7 @@ Returns:
     complex
 """,  # docstring
     0,  # unused
-    '(),(),(),(2),(2,2),(2),()->()',  # signature
+    "(),(),(),(2),(2,2),(2),()->()",  # signature
 )
 
 
@@ -2083,7 +2083,7 @@ dsumsw2d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     7,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'dsumsw2d_shift',  # function name
+    "dsumsw2d_shift",  # function name
     r"""dsumsw2d_shift(l, m, k, kpar, a, r, i)
 
 Direct summation of spherical functions on a 2d lattice with out of lattice shifts
@@ -2115,7 +2115,7 @@ Returns:
     complex
 """,  # docstring
     0,  # unused
-    '(),(),(),(2),(2,2),(3),()->()',  # signature
+    "(),(),(),(2),(2,2),(3),()->()",  # signature
 )
 
 
@@ -2152,7 +2152,7 @@ dsumsw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     7,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'dsumsw1d_shift',  # function name
+    "dsumsw1d_shift",  # function name
     r"""dsumsw1d_shift(l, m, k, kpar, a, r, i)
 
 Fast summation of spherical functions on a 1d lattice with out of lattice shifts
@@ -2184,7 +2184,7 @@ Returns:
     complex
 """,  # docstring
     0,  # unused
-    '(),(),(),(),(),(3),()->()',  # signature
+    "(),(),(),(),(),(3),()->()",  # signature
 )
 
 
@@ -2219,7 +2219,7 @@ dsumcw1d_shift = np.PyUFunc_FromFuncAndDataAndSignature(
     6,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'dsumcw1d_shift',  # function name
+    "dsumcw1d_shift",  # function name
     r"""dsumcw1d_shift(l, k, kpar, a, r, i)
 
 Direct summation of cylindrical functions on a 1d lattice with out of lattice shifts
@@ -2250,7 +2250,7 @@ Returns:
     complex
 """,  # docstring
     0,  # unused
-    '(),(),(),(),(2),()->()',  # signature
+    "(),(),(),(),(2),()->()",  # signature
 )
 
 
@@ -2285,7 +2285,7 @@ dsumcw1d = np.PyUFunc_FromFuncAndData(
     6,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'dsumcw1d',  # function name
+    "dsumcw1d",  # function name
     r"""dsumcw1d(l, k, kpar, a, r, i)
 
 Direct summation of cylindrical functions on a 1d lattice
@@ -2350,7 +2350,7 @@ dsumsw1d = np.PyUFunc_FromFuncAndData(
     6,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'dsumsw1d',  # function name
+    "dsumsw1d",  # function name
     r"""dsumsw1d(l, k, kpar, a, r, i)
 
 Direct summation of spherical functions on a 1d lattice
@@ -2418,7 +2418,7 @@ zero3d = np.PyUFunc_FromFuncAndData(
     1,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'zero3d',  # function name
+    "zero3d",  # function name
     r"""zero3d(eta)""",  # docstring
     0,  # unused
 )
@@ -2430,7 +2430,7 @@ zero2d = np.PyUFunc_FromFuncAndData(
     1,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'zero2d',  # function name
+    "zero2d",  # function name
     r"""zero2d(eta)""",  # docstring
     0,  # unused
 )

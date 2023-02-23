@@ -1,6 +1,7 @@
 """Spherical wave module.
 
 .. autosummary::
+   :toctree:
 
    periodic_to_cw
    periodic_to_pw
@@ -206,8 +207,8 @@ _translate_sh = np.PyUFunc_FromFuncAndData(
     9,
     1,
     0,
-    '_translate_sh',
-    '',
+    "_translate_sh",
+    "",
     0,
 )
 _translate_rh = np.PyUFunc_FromFuncAndData(
@@ -218,8 +219,8 @@ _translate_rh = np.PyUFunc_FromFuncAndData(
     9,
     1,
     0,
-    '_translate_rh',
-    '',
+    "_translate_rh",
+    "",
     0,
 )
 _translate_sp = np.PyUFunc_FromFuncAndData(
@@ -230,8 +231,8 @@ _translate_sp = np.PyUFunc_FromFuncAndData(
     9,
     1,
     0,
-    '_translate_sp',
-    '',
+    "_translate_sp",
+    "",
     0,
 )
 _translate_rp = np.PyUFunc_FromFuncAndData(
@@ -242,8 +243,8 @@ _translate_rp = np.PyUFunc_FromFuncAndData(
     9,
     1,
     0,
-    '_translate_rp',
-    '',
+    "_translate_rp",
+    "",
     0,
 )
 
@@ -328,8 +329,8 @@ _rotate = np.PyUFunc_FromFuncAndData(
     9,
     1,
     0,
-    '_rotate',
-    '',
+    "_rotate",
+    "",
     0,
 )
 
@@ -538,10 +539,10 @@ _translate_periodic_h = np.PyUFunc_FromFuncAndDataAndSignature(
     8,
     1,
     0,
-    '_translate_periodic_h',
-    '',
+    "_translate_periodic_h",
+    "",
     0,
-    '(),(),(),(),(),(),(a),(a)->()',
+    "(),(),(),(),(),(),(a),(a)->()",
 )
 
 cdef np.PyUFuncGenericFunction gufunc_translate_periodic_p_loops[1]
@@ -567,10 +568,10 @@ _translate_periodic_p = np.PyUFunc_FromFuncAndDataAndSignature(
     7,
     1,
     0,
-    '_translate_periodic_p',
-    '',
+    "_translate_periodic_p",
+    "",
     0,
-    '(),(),(),(),(),(),(a)->()',
+    "(),(),(),(),(),(),(a)->()",
 )
 
 
@@ -809,8 +810,8 @@ _periodic_to_pw_h = np.PyUFunc_FromFuncAndData(
     8,
     1,
     0,
-    '_periodic_to_pw_h',
-    '',
+    "_periodic_to_pw_h",
+    "",
     0,
 )
 _periodic_to_pw_p = np.PyUFunc_FromFuncAndData(
@@ -821,8 +822,8 @@ _periodic_to_pw_p = np.PyUFunc_FromFuncAndData(
     8,
     1,
     0,
-    '_periodic_to_pw_p',
-    '',
+    "_periodic_to_pw_p",
+    "",
     0,
 )
 
@@ -955,8 +956,8 @@ _periodic_to_cw_h = np.PyUFunc_FromFuncAndData(
     8,
     1,
     0,
-    '_periodic_to_cw_h',
-    '',
+    "_periodic_to_cw_h",
+    "",
     0,
 )
 _periodic_to_cw_p = np.PyUFunc_FromFuncAndData(
@@ -967,8 +968,8 @@ _periodic_to_cw_p = np.PyUFunc_FromFuncAndData(
     8,
     1,
     0,
-    '_periodic_to_cw_p',
-    '',
+    "_periodic_to_cw_p",
+    "",
     0,
 )
 

@@ -10,6 +10,7 @@ interface (Fresnel coefficients).
    which is less commonly used than parity basis.
 
 .. autosummary::
+   :toctree:
 
    mie
    mie_cyl
@@ -261,7 +262,7 @@ mie = np.PyUFunc_FromFuncAndDataAndSignature(
     5,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'mie',  # function name
+    "mie",  # function name
     r"""mie(l, x, epsilon, mu, kappa)
 
 Mie coefficient of degree l in helicity basis.
@@ -289,7 +290,7 @@ Returns:
     complex (2, 2)-array
 """,  # docstring
     0,  # unused
-    '(),(a),(b),(b),(b)->(2,2)'  # signature
+    "(),(a),(b),(b),(b)->(2,2)"  # signature
 )
 
 cdef void _fresnel(number_t ks[2][2], number_t kzs[2][2], number_t zs[2], number_t res[2][2][2][2]) nogil:
@@ -422,7 +423,7 @@ fresnel = np.PyUFunc_FromFuncAndDataAndSignature(
     3,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'fresnel',  # function name
+    "fresnel",  # function name
     r"""fresnel(ks, kzs, zs)
 
 Fresnel coefficient for a planar interface.
@@ -444,7 +445,7 @@ Returns:
     complex (2, 2, 2, 2)-array
 """,  # docstring
     0,  # unused
-    '(2,2),(2,2),(2)->(2,2,2,2)',  # signature
+    "(2,2),(2,2),(2)->(2,2,2,2)",  # signature
 )
 
 cdef void _fill_cyl(long m, double complex kz, double complex ks[2], double rho, double complex z, double complex res[4][4]) nogil:
@@ -584,7 +585,7 @@ mie_cyl = np.PyUFunc_FromFuncAndDataAndSignature(
     7,  # number of input args
     1,  # number of output args
     0,  # `identity` element, never mind this
-    'mie_cyl',  # function name
+    "mie_cyl",  # function name
     r"""mie_cyl(kz, m, k0, radii, epsilon, mu, kappa)
 
 Coefficient for scattering at an infinite cylinder in helicity basis.
@@ -612,5 +613,5 @@ Returns:
     complex (2, 2)-array
 """,  # docstring
     0,  # unused
-    '(),(),(),(a),(b),(b),(b)->(2,2)',  # signature
+    "(),(),(),(a),(b),(b),(b)->(2,2)",  # signature
 )

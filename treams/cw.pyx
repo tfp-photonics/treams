@@ -1,6 +1,7 @@
 """Cylindrical wave module.
 
 .. autosummary::
+   :toctree:
 
    periodic_to_pw
    rotate
@@ -175,8 +176,8 @@ _translate_s = np.PyUFunc_FromFuncAndData(
     9,
     1,
     0,
-    '_translate_s',
-    '',
+    "_translate_s",
+    "",
     0,
 )
 _translate_r = np.PyUFunc_FromFuncAndData(
@@ -187,8 +188,8 @@ _translate_r = np.PyUFunc_FromFuncAndData(
     9,
     1,
     0,
-    '_translate_r',
-    '',
+    "_translate_r",
+    "",
     0,
 )
 
@@ -289,7 +290,7 @@ rotate = np.PyUFunc_FromFuncAndData(
     7,
     1,
     0,
-    'rotate',
+    "rotate",
     """rotate(kz, mu, pol, qz, m, qol, phi)
 
 Rotation coefficient for cylindrical modes.
@@ -435,7 +436,7 @@ periodic_to_pw = np.PyUFunc_FromFuncAndData(
     8,
     1,
     0,
-    'periodic_to_pw',
+    "periodic_to_pw",
     """periodic_to_pw(kx, ky, kz, pol, qz, m, qol, area)
 
 Convert periodic cylindrical wave to plane wave.
@@ -564,8 +565,8 @@ _to_sw_h = np.PyUFunc_FromFuncAndData(
     7,
     1,
     0,
-    '_to_sw_h',
-    '',
+    "_to_sw_h",
+    "",
     0,
 )
 _to_sw_p = np.PyUFunc_FromFuncAndData(
@@ -576,8 +577,8 @@ _to_sw_p = np.PyUFunc_FromFuncAndData(
     7,
     1,
     0,
-    '_to_sw_p',
-    '',
+    "_to_sw_p",
+    "",
     0,
 )
 
