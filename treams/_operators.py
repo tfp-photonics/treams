@@ -424,6 +424,7 @@ class ChangePoltype(Operator):
 
     _func = staticmethod(changepoltype)
 
+    @staticmethod
     def _parse_kwargs(kwargsa, kwargsb):
         """Merge special keyword arguments.
 
