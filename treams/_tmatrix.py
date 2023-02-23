@@ -395,8 +395,7 @@ class TMatrix(PhysicsArray):
     def translated(self, r, **kwargs):
         """Translated T-Matrix.
 
-        Translation is done in-place. If you need the original T-Matrix make a copy
-        first. Translations can only be applied to global T-Matrices.
+        Translation is done in-place.
 
         Args:
             r (float array): Translation vector
@@ -440,11 +439,27 @@ class TMatrix(PhysicsArray):
         return np.eye(self.shape[0]) - self @ self.expandlattice(lattice, kpar, eta=eta)
 
     def interacted_lattice(self, lattice, kpar, *, eta=0):
+        """T-matrix with lattice interaction included."""
         return TMatrix(
             np.linalg.solve(self.couple_lattice(lattice, kpar, eta=eta), self)
         )
 
     def valid_points(self, grid, radii):
+        """Points on the grid where the expansion is valid.
+
+        The expansion of the electromagnetic field is valid outside of the
+        circumscribing spheres of each object. From a given set of coordinates mark
+        those that are outside of the given radii.
+
+        Args:
+            grid (array-like): Points to assess. The last dimension needs length three
+                and corresponds to the Cartesian coordinates.
+            radii (Sequence[float]): Radii of the circumscribing spheres. Each radius
+                corresponds to a position of the basis.
+
+        Returns:
+            array
+        """
         grid = np.asarray(grid)
         if grid.shape[-1] != 3:
             raise ValueError("invalid grid")
@@ -513,8 +528,7 @@ class TMatrixC(PhysicsArray):
 
     @property
     def krhos(self):
-        r"""
-        Radial part of the wave
+        r"""Radial part of the wave.
 
         Calculate :math:`\sqrt{k^2 - k_z^2}`, where :math:`k` is the wave number in the
         medium for each illumination
@@ -574,19 +588,29 @@ class TMatrixC(PhysicsArray):
 
     @property
     def xw_ext_avg(self):
-        """
-        Rotational average of the extinction cross width
+        r"""Rotation and polarization averaged extinction cross width.
 
-        Only implemented for global T-matrices.
+        The average is calculated as
+
+        .. math::
+
+            \langle \lambda_\mathrm{ext} \rangle
+            = -\frac{2 \pi}{n_{k_z}} \sum_{sk_zm} \frac{\Re(T_{sk_zm,sk_zm})}{k_s}
+
+        where :math:`k_s` is the wave number in the embedding medium for the
+        polarization :math:`s` and :math:`n_{k_z}` is the number of wave components
+        :math:`k_z` included in the T-matrix. The average is taken over all given
+        z-components of the wave vector and rotations around the z-axis. It is only
+        implemented for global T-matrices.
 
         Returns:
             float or complex
         """
         if not self.isglobal or not self.material.isreal:
             raise NotImplementedError
-        nk = np.unique(self.kz).size
+        nk = np.unique(self.basis.kz).size
         if not self.material.ischiral:
-            res = -2 * np.real(np.trace(self.t)) / (self.ks[0] * nk)
+            res = -2 * np.real(np.trace(self)) / (self.ks[0] * nk)
         else:
             res = 0
             diag = np.diag(self)
@@ -599,10 +623,21 @@ class TMatrixC(PhysicsArray):
 
     @property
     def xw_sca_avg(self):
-        """
-        Rotational average of the scattering cross width
+        r"""Rotation and polarization averaged scattering cross width.
 
-        Only implemented for global T-matrices.
+        The average is calculated as
+
+        .. math::
+
+            \langle \lambda_\mathrm{sca} \rangle
+            = \frac{2 \pi}{n_{k_z}} \sum_{sk_zm} \sum_{s'{k_z}'m'}
+            \frac{|T_{sk_zm,s'{k_z}'m'}|^2}{k_s}
+
+        where :math:`k_s` is the wave number in the embedding medium for the
+        polarization :math:`s`. and :math:`n_{k_z}` is the number of wave components
+        :math:`k_z` included in the T-matrix. The average is taken over all given
+        z-components of the wave vector and rotations around the z-axis. It is only
+        implemented for global T-matrices.
 
         Returns:
             float or complex
@@ -614,15 +649,40 @@ class TMatrixC(PhysicsArray):
         else:
             ks = self.ks[self.basis.pol, None]
         re, im = self.real, self.imag
-        nk = np.unique(self.kz).size
+        nk = np.unique(self.basis.kz).size
         res = 2 * np.sum(re * re + im * im) / (ks * nk)
         return res.real
 
-    def xw(self, illu, flux=0.5):
-        r"""
-        Scattering and extinction cross width
+    @property
+    def isglobal(self):
+        """Test if a T-matrix is global.
 
-        Possible for all T-matrices (global and local) in non-absorbing embedding.
+        A T-matrix is considered global, when its basis refers to only a single point
+        and it is not placed periodically in a lattice.
+        """
+        return self.basis.isglobal and self.lattice is None and self.kpar is None
+
+    def xw(self, illu, flux=0.5):
+        r"""Scattering and extinction cross width.
+
+        Possible for all T-matrices (global and local) in non-absorbing embedding. The
+        values are calculated by
+
+        .. math::
+
+            \lambda_\mathrm{sca}
+            = \frac{1}{2 I}
+            a_{sk_zm}^\ast T_{s'{k_z}'m',sk_zm}^\ast k_{s'}^{-2}
+            C_{s'l'm',s''l''m''}^{(1)}
+            T_{s''l''m'',s'''l'''m'''} a_{s'''l'''m'''} \\
+            \sigma_\mathrm{ext}
+            = \frac{1}{2 I}
+            a_{slm}^\ast k_s^{-2} T_{slm,s'l'm'} a_{s'l'm'}
+
+        where :math:`a_{slm}` are the expansion coefficients of the illumination,
+        :math:`T` is the T-matrix, :math:`C^{(1)}` is the (regular) translation
+        matrix and :math:`k_s` are the wave numbers in the medium. All repeated indices
+        are summed over. The incoming flux is :math:`I`.
 
         Args:
             illu (complex, array): Illumination coefficients
@@ -633,21 +693,21 @@ class TMatrixC(PhysicsArray):
                 has the flux `0.5` in this normalization, which is used as default.
 
         Returns:
-            float, (2,)-tuple
+            tuple[float]
         """
         if not self.material.isreal:
             raise NotImplementedError
         illu = PhysicsArray(illu)
         p = self @ illu
-        m = self.expand(modetype="regular") / self.ks[self.basis.pol]
+        m = self.expand() / self.ks[self.basis.pol]
+        del illu.modetype
         return (
-            2 * np.sum(np.real(p.conjugate() * (m @ p)), axis=-2) / flux,
-            -2 * np.sum(np.real(illu.conjugate() * (m @ p)), axis=-2) / flux,
+            2 * np.real(p.conjugate().T @ (m @ p)) / flux,
+            -2 * np.real(illu.conjugate().T @ (p / self.ks[self.basis.pol])) / flux,
         )
 
     def rotated(self, phi, **kwargs):
-        """
-        Rotate the T-Matrix around the z-axis
+        """Rotated T-Matrix around the z-axis.
 
         Rotation is done in-place. If you need the original T-Matrix make a deepcopy
         first. Rotations can only be applied to global T-Matrices.
@@ -664,14 +724,13 @@ class TMatrixC(PhysicsArray):
         return TMatrixC(r @ self @ r.conjugate().T)
 
     def translated(self, r, **kwargs):
-        """
-        Translate the origin of the T-Matrix
+        """Translated T-Matrix.
 
         Translation is done in-place. If you need the original T-Matrix make a copy
         first. Translations can only be applied to global T-Matrices.
 
         Args:
-            rvec (float array): Translation vector
+            r (float array): Translation vector
             modes (array): While translating also take only specific output modes into
             account
 
@@ -681,17 +740,14 @@ class TMatrixC(PhysicsArray):
         return TMatrixC(self.expand(r, **kwargs) @ self @ self.inv.expand(r, **kwargs))
 
     def couple(self):
-        """
-        Calculate the coupling term of a blockdiagonal T-matrix
-        """
+        """Calculate the coupling term of a blockdiagonal T-matrix."""
         return np.eye(self.shape[0]) - self @ self.expand(modetype="regular")
 
     def interacted(self):
         return TMatrixC(np.linalg.solve(self.couple(), self))
 
     def globalmat(self, basis=None):
-        """
-        Global T-matrix
+        """Global T-matrix.
 
         Calculate the global T-matrix starting from a local one. This changes the
         T-matrix.
@@ -711,9 +767,7 @@ class TMatrixC(PhysicsArray):
         return TMatrix(self.expand(basis) @ self @ self.expand.inv(basis))
 
     def couple_lattice(self, lattice, kpar, *, eta=0):
-        """
-        Calculate the coupling term of a blockdiagonal T-matrix
-        """
+        """Calculate the coupling term of a blockdiagonal T-matrix."""
         return np.eye(self.shape[0]) - self @ self.expandlattice(lattice, kpar, eta=eta)
 
     def interacted_lattice(self, lattice, kpar, eta=0):
