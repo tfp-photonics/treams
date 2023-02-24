@@ -68,7 +68,7 @@ class TestLSumCW1d:
         kpar = 0
         assert isclose(
             la.lsumcw1d(l, k, kpar, a, r, 0),
-            np.sum(la.dsumcw1d(l, k, kpar, a, r, np.arange(250_000))),
+            np.sum(la.dsumcw1d(l, k, kpar, a, r, np.arange(1_500_000))),
             rel_tol=0.05,
             abs_tol=EPSSQ,
         )

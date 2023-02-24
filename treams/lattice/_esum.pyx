@@ -33,14 +33,14 @@ cdef number_t _check_eta(number_t eta, number_t k, double *a, long ds, long dl) 
         return eta
     if ds == 2:
         if dl == 1:
-            return (2 * pi) / (k * fabs(a[0]))
+            return sqrtd(2 * pi) / (k * fabs(a[0]))
         if dl == 2:
             return sqrtd(2 * pi / fabs(_misc.area(a, a + 2))) / k
     if ds == 3:
         if dl == 1:
             return sqrtd(2 * pi) / (k * fabs(a[0]))
         if dl == 2:
-            return sqrt(2 * pi / fabs(_misc.area(a, a + 2))) / k
+            return sqrtd(2 * pi / fabs(_misc.area(a, a + 2))) / k
         if dl == 3:
             return sqrtd(2 * pi) / (k * fabs(pow(_misc.volume(a, a + 3, a + 6), 1. / 3)))
     return NAN
@@ -1490,7 +1490,7 @@ cdef double complex recsumcw1d_shift(long l, number_t k, double kpar, double a, 
     cdef double vec, x = r[0], y = r[1], b = 2 * pi / a
     if l < 0:
         y = -y
-    l = labs(l)
+    cdef long absl = labs(l)
     cdef double complex recsum = 0, prev = INFINITY, pprev
     cdef number_t ky = k * y
     cdef long i
@@ -1501,7 +1501,7 @@ cdef double complex recsumcw1d_shift(long l, number_t k, double kpar, double a, 
         point[0] = -i
         while True:
             vec = kpar + b * point[0]
-            recsum += _n_sum_cw1d(l, vec / k, ky, eta) * cexp(-1j * vec * x)
+            recsum += _n_sum_cw1d(absl, vec / k, ky, eta) * cexp(-1j * vec * x)
             if not _misc.cubeedge_next(point, 1, i):
                 break
         if cabs(recsum - pprev) < 1e-10:

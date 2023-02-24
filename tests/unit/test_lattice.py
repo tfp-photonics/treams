@@ -351,7 +351,7 @@ class TestDSumSW1dShift:
 class TestLSumCW1dShift:
     def test(self):
         assert isclose(
-            la.lsumcw1d_shift(-7, 2, 0.1, 1, [0.2, 0.1], 0),
+            la.lsumcw1d_shift(-7, 2, 0.1, 1, [0.2, 0.1], 0.5),
             857009.7602939741 + 8224316.447124034j,
         )
 
@@ -364,7 +364,8 @@ class TestLSumCW1dShift:
     def test_singular(self):
         assert isclose(
             la.lsumcw1d_shift(6, 2 * np.pi, 0, 1, [0.2, 0.1], 0),
-            -15.070503729940406 + 466.30181356885901j,
+            -224.73515198832922 + 675.8601437840592j,
+            1e-5,
         )
 
     def test_xy_zero(self):
@@ -446,7 +447,15 @@ class TestDiffrOrdersCircle:
     def test_hex(self):
         assert np.array_equal(
             la.diffr_orders_circle([[1, 0], [0.5, np.sqrt(0.75)]], 1.1),
-            [[0, 0], [0, 1], [0, -1], [1, 0], [-1, 0], [1, -1], [-1, 1],],
+            [
+                [0, 0],
+                [0, 1],
+                [0, -1],
+                [1, 0],
+                [-1, 0],
+                [1, -1],
+                [-1, 1],
+            ],
         )
 
     def test_neg(self):
