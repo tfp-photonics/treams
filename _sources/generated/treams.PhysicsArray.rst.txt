@@ -91,33 +91,33 @@
          ~PhysicsArray.trace
          ~PhysicsArray.transpose
       
-         ~PhysicsArray.__ge__
-         ~PhysicsArray.__lshift__
-         ~PhysicsArray.__array_function__
-         ~PhysicsArray.__pos__
-         ~PhysicsArray.__le__
-         ~PhysicsArray.__floordiv__
-         ~PhysicsArray.__xor__
-         ~PhysicsArray.__sub__
-         ~PhysicsArray.__gt__
-         ~PhysicsArray.__truediv__
-         ~PhysicsArray.__array__
-         ~PhysicsArray.__abs__
-         ~PhysicsArray.__ne__
-         ~PhysicsArray.__mod__
-         ~PhysicsArray.__mul__
-         ~PhysicsArray.__neg__
-         ~PhysicsArray.__rshift__
-         ~PhysicsArray.__invert__
          ~PhysicsArray.__and__
          ~PhysicsArray.__eq__
-         ~PhysicsArray.__add__
-         ~PhysicsArray.__array_ufunc__
-         ~PhysicsArray.__getitem__
-         ~PhysicsArray.__pow__
-         ~PhysicsArray.__setitem__
          ~PhysicsArray.__divmod__
-         ~PhysicsArray.__or__
+         ~PhysicsArray.__floordiv__
          ~PhysicsArray.__lt__
+         ~PhysicsArray.__lshift__
+         ~PhysicsArray.__array_ufunc__
+         ~PhysicsArray.__xor__
+         ~PhysicsArray.__pow__
+         ~PhysicsArray.__add__
+         ~PhysicsArray.__array_function__
+         ~PhysicsArray.__sub__
+         ~PhysicsArray.__mul__
+         ~PhysicsArray.__array__
+         ~PhysicsArray.__setitem__
+         ~PhysicsArray.__pos__
+         ~PhysicsArray.__mod__
+         ~PhysicsArray.__neg__
+         ~PhysicsArray.__invert__
+         ~PhysicsArray.__rshift__
+         ~PhysicsArray.__truediv__
+         ~PhysicsArray.__or__
+         ~PhysicsArray.__abs__
+         ~PhysicsArray.__ne__
+         ~PhysicsArray.__ge__
+         ~PhysicsArray.__getitem__
+         ~PhysicsArray.__le__
+         ~PhysicsArray.__gt__
          ~PhysicsArray.__str__
   
