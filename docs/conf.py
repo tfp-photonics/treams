@@ -37,6 +37,7 @@ extensions = [
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.autosummary",
     "sphinx.ext.coverage",
+    "sphinx.ext.doctest",
     "sphinx.ext.intersphinx",
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
@@ -45,6 +46,10 @@ extensions = [
 ]
 
 autosectionlabel_prefix_document = True
+doctest_global_setup = """
+import numpy as np
+from treams import *
+"""
 intersphinx_mapping = {
     "scipy": ("https://docs.scipy.org/doc/scipy", None),
     "numpy": ("https://numpy.org/doc/stable", None),

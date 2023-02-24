@@ -247,7 +247,8 @@ class AnnotationSequence(collections.abc.Sequence):
                 except AnnotationWarning as err:
                     warnings.simplefilter("always", category=AnnotationWarning)
                     warnings.warn(
-                        f"at index {len(self) + i}: " + err.args[0], AnnotationWarning,
+                        f"at index {len(self) + i}: " + err.args[0],
+                        AnnotationWarning,
                     )
 
     def match(self, other):
@@ -523,13 +524,17 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
           AnnotatedArray
         * Annotations can also be exposed as properties
 
+    .. testsetup::
+
+        from treams.util import AnnotatedArray
+
     Example:
         >>> a = AnnotatedArray([[0, 1], [2, 3]], ({"a": 1}, {"b": 2}))
         >>> b = AnnotatedArray([1, 2], ({"b": 2},))
         >>> a @ b
         AnnotatedArray(
             [2, 8],
-            ann=AnnotationSequence(AnnotationDict({'a': 1}),)
+            AnnotationSequence(AnnotationDict({'a': 1}),)
         )
 
     The interoperability with numpy is implemented using :ref:`basics.dispatch`
@@ -540,7 +545,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
     _scales = set()
     _properties = {}
 
-    def __init__(self, array, ann=(), **kwargs):
+    def __init__(self, array, ann=(), /, **kwargs):
         """Initalization."""
         self._array = np.asarray(array)
         self.ann = getattr(array, "ann", ())
@@ -582,7 +587,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
     def __repr__(self):
         """String representation."""
         repr_arr = "    " + repr(self._array)[6:-1].replace("\n  ", "\n")
-        return f"{self.__class__.__name__}(\n{repr_arr},\n    ann={self.ann[:]}\n)"
+        return f"{self.__class__.__name__}(\n{repr_arr},\n    {self.ann[:]}\n)"
 
     def __array__(self, dtype=None):
         """Convert to an numpy array.

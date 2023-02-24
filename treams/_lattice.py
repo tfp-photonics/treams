@@ -23,7 +23,7 @@ class Lattice:
     Example:
         >>> Lattice([1, 2])
         Lattice([[1. 0.]
-                [0. 2.]], alignment='xy')
+                 [0. 2.]], alignment='xy')
         >>> Lattice(_, 'x')
         Lattice(1.0, alignment='x')
 
@@ -313,11 +313,11 @@ class Lattice:
         Examples:
             >>> Lattice.hexagonal(1, 2).permute()
             Lattice([[0.        1.        0.       ]
-                    [0.        0.5       0.8660254]
-                    [2.        0.        0.       ]], alignment='xyz')
+                     [0.        0.5       0.8660254]
+                     [2.        0.        0.       ]], alignment='xyz')
             >>> Lattice.hexagonal(1).permute()
             Lattice([[1.        0.       ]
-                    [0.5       0.8660254]], alignment='yz')
+                     [0.5       0.8660254]], alignment='yz')
 
         Args:
             n (int, optional): Number of repeated permutations. Defaults to `1`.
@@ -356,7 +356,7 @@ class Lattice:
         Example:
             >>> Lattice(1, 'x') | Lattice(2)
             Lattice([[2. 0.]
-                    [0. 1.]], alignment='zx')
+                     [0. 1.]], alignment='zx')
 
         Args:
             other (Lattice): Lattice to merge.
