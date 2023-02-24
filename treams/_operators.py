@@ -708,12 +708,13 @@ class Expand(Operator):
             kwargs["modetype"] = modetype
         return super().__call__(**kwargs)
 
-    def inv(self, basis, modetype=None, **kwargs):
+    def inv(self, basis=None, modetype=None, **kwargs):
         """Inverse expansion.
 
         The inverse transformation is not available for all transformations.
         """
-        kwargs["basis"] = basis
+        if basis is not None:
+            kwargs["basis"] = basis
         if modetype is not None:
             kwargs["modetype"] = modetype
         return super().inv(**kwargs)
