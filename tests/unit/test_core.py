@@ -139,7 +139,9 @@ class TestSWB:
         a = treams.SphericalWaveBasis.ebcm(2, mmax=1)
         b = treams.SphericalWaveBasis(
             zip(
-                3 * [1, 1, 2, 2], [-1, -1, -1, -1, 0, 0, 0, 0, 1, 1, 1, 1], 6 * [1, 0],
+                3 * [1, 1, 2, 2],
+                [-1, -1, -1, -1, 0, 0, 0, 0, 1, 1, 1, 1],
+                6 * [1, 0],
             ),
         )
         assert a == b
@@ -272,7 +274,9 @@ class TestCWB:
         assert a == b[:1]
 
     def test_default(self):
-        a = treams.CylindricalWaveBasis.default([0.3, -0.2], 2, 2, [[0, 0, 0], [1, 0, 0]])
+        a = treams.CylindricalWaveBasis.default(
+            [0.3, -0.2], 2, 2, [[0, 0, 0], [1, 0, 0]]
+        )
         b = treams.CylindricalWaveBasis(
             zip(
                 20 * [0] + 20 * [1],
@@ -317,8 +321,8 @@ class TestCWB:
         b = treams.CylindricalWaveBasis.default(0, 1)
         assert not b == []
 
-    def test_with_periodicity(self):
-        a = treams.CylindricalWaveBasis.with_periodicity(0.1, 1, 2 * np.pi, 1.5)
+    def test_diffr_orders(self):
+        a = treams.CylindricalWaveBasis.diffr_orders(0.1, 1, 2 * np.pi, 1.5)
         b = treams.CylindricalWaveBasis(
             zip(
                 *[

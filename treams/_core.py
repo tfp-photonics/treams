@@ -527,15 +527,15 @@ class CylindricalWaveBasis(BasisSet):
         """Create a basis set for a system periodic in the z-direction.
 
         Example:
-            >>> CylindricalWaveBasis.diffr_orders(0.1, 1, 2 * np.pi, 1)
-            CylindricalWaveBasis(
-                pidx=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0],
-                kz=[-0.9 -0.9 -0.9 -0.9 -0.9 -0.9  0.1  0.1  0.1  0.1  0.1  0.1  1.1
-            1.1 1.1  1.1  1.1  1.1],
-                m=[-1 -1  0  0  1  1 -1 -1  0  0  1  1 -1 -1  0  0  1  1],
-                pol=[1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0],
-                positions=[[0. 0. 0.]],
-            )
+           >>> CylindricalWaveBasis.diffr_orders(0.1, 1, 2 * np.pi, 1)
+           CylindricalWaveBasis(
+               pidx=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0],
+               kz=[-0.9 -0.9 -0.9 -0.9 -0.9 -0.9  0.1  0.1  0.1  0.1  0.1  0.1  1.1  1.1
+             1.1  1.1  1.1  1.1],
+               m=[-1 -1  0  0  1  1 -1 -1  0  0  1  1 -1 -1  0  0  1  1],
+               pol=[1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0],
+               positions=[[0. 0. 0.]],
+           )
 
         Args:
             kz (float): Wave vector z-component. Ideally it is in the first Brillouin
@@ -797,7 +797,7 @@ class PlaneWaveBasis(BasisSet):
         """
         # TODO: check kz depending on modetype (alignment?)
         ks = (k0 * Material(material).nmp)[self.pol]
-        if (np.abs(self.kx ** 2 + self.ky ** 2 + self.kz ** 2 - ks * ks) > 1e-14).any():
+        if (np.abs(self.kx**2 + self.ky**2 + self.kz**2 - ks * ks) > 1e-14).any():
             raise ValueError("incompatible k0 and/or material")
         return self
 
@@ -829,7 +829,6 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
 
     def __init__(self, modes, alignment="xy"):
         """Initialization."""
-        alignment = "xy"
         if isinstance(modes, np.ndarray):
             modes = modes.tolist()
         tmp = []
@@ -1105,7 +1104,7 @@ class PhysicsDict(util.AnnotationDict):
         Warns:
             AnnotationWarning
         """
-        _, testfunc, castfunc = self.properties.get(key, (lambda x: True, None))
+        _, testfunc, castfunc = self.properties.get(key, (None, lambda x: True, None))
         if not testfunc(val):
             val = castfunc(val)
         super().__setitem__(key, val)
@@ -1141,7 +1140,7 @@ class PhysicsArray(util.AnnotatedArray):
     translate = op.Translate()
     """Translation matrix, see also :class:`treams.operators.Translate`."""
 
-    def __init__(self, arr, ann=(), **kwargs):
+    def __init__(self, arr, ann=(), /, **kwargs):
         """Initialization."""
         super().__init__(arr, ann, **kwargs)
         self._check()
@@ -1230,8 +1229,8 @@ class PhysicsArray(util.AnnotatedArray):
             >>> res.ann
             AnnotationSequence(PhysicsDict({'k0': 1.5}),)
 
-            Note that the result contains `k0` but not `foo`, since the "transparency"
-            of the second array only applies to physical properties.
+        Note that the result contains `k0` but not `foo`, since the "transparency" of
+        the second array only applies to physical properties.
         """
         res = super().__matmul__(other, *args, **kwargs)
         other_ann = getattr(other, "ann", ({}, {}))
