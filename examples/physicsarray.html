@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Physics-aware arrays &#8212; treams 0.2.2.dev108+g5df8fac documentation</title>
+    <title>Physics-aware arrays &#8212; treams 0.2.2.dev109+g86c96c9 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
@@ -14,6 +14,7 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -42,7 +43,7 @@
         <li class="right" >
           <a href="../examples.html" title="Examples"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev108+g5df8fac documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev109+g86c96c9 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../examples.html" accesskey="U">Examples</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Physics-aware arrays</a></li> 
       </ul>
@@ -60,19 +61,23 @@ In most of their properties they behave similar to numpy arrays and one can easi
 change the type and mix them</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="n">treams</span><span class="o">.</span><span class="n">PhysicsArray</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 <span class="go">PhysicsArray(</span>
-<span class="go">    [2, 6]</span>
+<span class="go">    [2, 6],</span>
 <span class="go">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span> <span class="o">@</span> <span class="n">treams</span><span class="o">.</span><span class="n">PhysicsArray</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 <span class="go">8</span>
 </pre></div>
 </div>
-<p>but they have mainly two features add. First, they derive from
-<a class="reference internal" href="../generated/treams.util.AnnotatedArray.html#treams.util.AnnotatedArray" title="treams.util.AnnotatedArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">treams.util.AnnotatedArray</span></code></a> so they can carry annotations with them.</p>
+<p>but they have mainly two features added. First, they derive from
+<a class="reference internal" href="../generated/treams.util.AnnotatedArray.html#treams.util.AnnotatedArray" title="treams.util.AnnotatedArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">treams.util.AnnotatedArray</span></code></a> so they can carry annotations with them, but several
+keywords have a special meaning and are treated slightly differently. Second, they offer
+special methods to create matrices for common transformations like rotations.</p>
+<section id="special-properties">
+<h2>Special properties<a class="headerlink" href="#special-properties" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">PhysicsArray</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span> <span class="n">k0</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 <span class="go">PhysicsArray(</span>
 <span class="go">    [[0, 1],</span>
 <span class="go">     [2, 3]],</span>
-<span class="go">    k0=(1.0, 2.0)</span>
+<span class="go">    k0=(1.0, 2.0),</span>
 <span class="go">)</span>
 </pre></div>
 </div>
@@ -89,7 +94,7 @@ by setting the corresponding attribute</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span>
 <span class="go">PhysicsArray(</span>
 <span class="go">    [1, 2],</span>
-<span class="go">    material=Material(4, 1, 0)</span>
+<span class="go">    material=Material(4, 1, 0),</span>
 <span class="go">)</span>
 </pre></div>
 </div>
@@ -99,7 +104,7 @@ these properties are also compared and merged when using operations on these obj
 <span class="go">PhysicsArray(</span>
 <span class="go">    [2, 4],</span>
 <span class="go">    k0=1.0,</span>
-<span class="go">    material=Material(2, 1, 0)</span>
+<span class="go">    material=Material(2, 1, 0),</span>
 <span class="go">)</span>
 </pre></div>
 </div>
@@ -107,11 +112,171 @@ these properties are also compared and merged when using operations on these obj
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">PhysicsArray</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">k0</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">treams</span><span class="o">.</span><span class="n">PhysicsArray</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">k0</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="go">PhysicsArray(</span>
 <span class="go">    [2, 4],</span>
-<span class="go">    k0=1.0</span>
+<span class="go">    k0=1.0,</span>
 <span class="go">)</span>
 </pre></div>
 </div>
-<p>emits <code class="code docutils literal notranslate"><span class="pre">treams/util.py:249:</span> <span class="pre">AnnotationWarning:</span> <span class="pre">at</span> <span class="pre">index</span> <span class="pre">0:</span> <span class="pre">overwriting</span> <span class="pre">key</span> <span class="pre">'k0'</span></code>.</p>
+<p>emits <code class="code docutils literal notranslate"><span class="pre">treams/util.py:249:</span> <span class="pre">AnnotationWarning:</span> <span class="pre">at</span> <span class="pre">index</span> <span class="pre">0:</span> <span class="pre">overwriting</span> <span class="pre">key</span> <span class="pre">'k0'</span></code>.
+The special properties have also a unique behavior when appearing in matrix
+multiplications. If one of the two matrices has the special property not set, it becomes
+“transparent” to it. Check out the difference between</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">@</span> <span class="n">treams</span><span class="o">.</span><span class="n">PhysicsArray</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">k0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="go">PhysicsArray(</span>
+<span class="go">    [3., 3.],</span>
+<span class="go">    k0=1.0,</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<p>and</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">@</span> <span class="n">treams</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">AnnotatedArray</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">k0</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,))</span>
+<span class="go">AnnotatedArray(</span>
+<span class="go">    [3., 3.],</span>
+<span class="go">    AnnotationSequence(AnnotationDict({}),)</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<p>where besides the obvious difference in array types, the property <cite>k0</cite> is preserved.</p>
+<p>The full list of special properties is:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>basis</p></td>
+<td><p>Basis set: spherical, cylindrical, planar</p></td>
+</tr>
+<tr class="row-odd"><td><p>k0</p></td>
+<td><p>Vacuum wave number</p></td>
+</tr>
+<tr class="row-even"><td><p>kpar</p></td>
+<td><p>Phase relation in lattices</p></td>
+</tr>
+<tr class="row-odd"><td><p>lattice</p></td>
+<td><p>Definition of a lattice (<a class="reference internal" href="../generated/treams.Lattice.html#treams.Lattice" title="treams.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">treams.Lattice</span></code></a>)</p></td>
+</tr>
+<tr class="row-even"><td><p>modetype</p></td>
+<td><p>Modetype, depends on wave (<a class="reference internal" href="../polarizations.html#mode-types"><span class="std std-ref">Mode types</span></a>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>material</p></td>
+<td><p>Embedding material (<a class="reference internal" href="../generated/treams.Material.html#treams.Material" title="treams.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">treams.Material</span></code></a>)</p></td>
+</tr>
+<tr class="row-even"><td><p>poltype</p></td>
+<td><p>Polarization types (<a class="reference internal" href="../polarizations.html#polarizations"><span class="std std-ref">Polarizations</span></a>)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="transformations">
+<h2>Transformations<a class="headerlink" href="#transformations" title="Permalink to this heading">¶</a></h2>
+<p>The transformations of a the values in a array are usually represented by matrices. To
+simplify creating these transformations, several operators are defined. We take the
+example of a plane wave and want to expand it in the spherical basis. One way to create
+such a plane wave could be:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wave</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">PhysicsArray</span><span class="p">([</span><span class="mf">1.5</span><span class="p">],</span> <span class="n">basis</span><span class="o">=</span><span class="n">treams</span><span class="o">.</span><span class="n">PlaneWaveBasis</span><span class="p">([(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wave</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">treams</span><span class="o">.</span><span class="n">SphericalWaveBasis</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="go">PhysicsArray(</span>
+<span class="go">    [[ 0.00000000e+00+0.j        ],</span>
+<span class="go">     [-4.19262711e+00+3.14447033j],</span>
+<span class="go">     [ 0.00000000e+00+0.j        ],</span>
+<span class="go">     [-1.87982067e-16-3.06998012j],</span>
+<span class="go">     [ 0.00000000e+00+0.j        ],</span>
+<span class="go">     [ 7.19341088e-01+0.53950582j]],</span>
+<span class="go">    basis=(SphericalWaveBasis(</span>
+<span class="go">    pidx=[0 0 0 0 0 0],</span>
+<span class="go">    l=[1 1 1 1 1 1],</span>
+<span class="go">    m=[-1 -1  0  0  1  1],</span>
+<span class="go">    pol=[1 0 1 0 1 0],</span>
+<span class="go">    positions=[[0. 0. 0.]],</span>
+<span class="go">), PlaneWaveBasis(</span>
+<span class="go">    kx=[3],</span>
+<span class="go">    ky=[4],</span>
+<span class="go">    kz=[5],</span>
+<span class="go">    pol=[0],</span>
+<span class="go">)),</span>
+<span class="go">    material=Material(1, 1, 0),</span>
+<span class="go">    modetype=(&#39;regular&#39;, None),</span>
+<span class="go">    poltype=&#39;helicity&#39;,</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<p>In the first line we define a plane wave by specifying a basis that consists of only one
+entry namely that for a wave vector <span class="math notranslate nohighlight">\(\boldsymbol k = 3 \boldsymbol{\hat x} +
+4 \boldsymbol{\hat y} + 5 \boldsymbol{\hat z}\)</span> and the polarization 0
+(<span class="xref std std-ref">polarizations.Polarizations</span>). The amplitude of the wave is 1.5. Then, we want
+to expand the wave into the spherical basis up to dipolar order. The matrix that
+represents this transformation is then returned. It contains as the given bases.
+Additionally, a couple of other values are specified. This is, first, the material,
+which defaults to vacuum (or air in good approximation). Second the mode type, which
+depends on the basis sets used. Here, a plane wave is expanded into regular modes. The
+last parameter added automatically is the polarization type. The default can be changed
+by setting <code class="code docutils literal notranslate"><span class="pre">treams.config.POLTYPE</span> <span class="pre">=</span> <span class="pre">&quot;parity&quot;</span></code> for example.</p>
+<p>Another transformation are translations, where additionally the inverse transformation
+is implemented. We see that the result is roughly the unit matrix</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wave</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">PhysicsArray</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">6</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">basis</span><span class="o">=</span><span class="n">treams</span><span class="o">.</span><span class="n">SphericalWaveBasis</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+<span class="gp">... </span>   <span class="n">k0</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">100</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wave</span><span class="o">.</span><span class="n">translate</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">wave</span><span class="p">)</span> <span class="o">@</span> <span class="n">wave</span><span class="o">.</span><span class="n">translate</span><span class="o">.</span><span class="n">inv</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">PhysicsArray(</span>
+<span class="go">    [[ 9.99777524e-01+1.73472348e-18j,  0.00000000e+00+0.00000000e+00j,</span>
+<span class="go">      -1.06049048e-05-2.12098096e-05j,  0.00000000e+00+0.00000000e+00j,</span>
+<span class="go">      -7.49880009e-06+9.99840012e-06j,  0.00000000e+00+0.00000000e+00j],</span>
+<span class="go">     [ 0.00000000e+00+0.00000000e+00j,  9.99777524e-01-1.73472348e-18j,</span>
+<span class="go">       0.00000000e+00+0.00000000e+00j, -1.06049048e-05-2.12098096e-05j,</span>
+<span class="go">       0.00000000e+00+0.00000000e+00j, -7.49880009e-06+9.99840012e-06j],</span>
+<span class="go">     [-1.06049048e-05+2.12098096e-05j,  0.00000000e+00+0.00000000e+00j,</span>
+<span class="go">       9.99745030e-01-2.29625731e-20j,  0.00000000e+00+0.00000000e+00j,</span>
+<span class="go">       1.06049048e-05+2.12098096e-05j,  0.00000000e+00+0.00000000e+00j],</span>
+<span class="go">     [ 0.00000000e+00+0.00000000e+00j, -1.06049048e-05+2.12098096e-05j,</span>
+<span class="go">       0.00000000e+00+0.00000000e+00j,  9.99745030e-01-2.25394264e-20j,</span>
+<span class="go">       0.00000000e+00+0.00000000e+00j,  1.06049048e-05+2.12098096e-05j],</span>
+<span class="go">     [-7.49880009e-06-9.99840012e-06j,  0.00000000e+00+0.00000000e+00j,</span>
+<span class="go">       1.06049048e-05-2.12098096e-05j,  0.00000000e+00+0.00000000e+00j,</span>
+<span class="go">       9.99777524e-01-1.73472348e-18j,  0.00000000e+00+0.00000000e+00j],</span>
+<span class="go">     [ 0.00000000e+00+0.00000000e+00j, -7.49880009e-06-9.99840012e-06j,</span>
+<span class="go">       0.00000000e+00+0.00000000e+00j,  1.06049048e-05-2.12098096e-05j,</span>
+<span class="go">       0.00000000e+00+0.00000000e+00j,  9.99777524e-01+1.73472348e-18j]],</span>
+<span class="go">    basis=SphericalWaveBasis(</span>
+<span class="go">    pidx=[0 0 0 0 0 0],</span>
+<span class="go">    l=[1 1 1 1 1 1],</span>
+<span class="go">    m=[-1 -1  0  0  1  1],</span>
+<span class="go">    pol=[1 0 1 0 1 0],</span>
+<span class="go">    positions=[[0. 0. 0.]],</span>
+<span class="go">),</span>
+<span class="go">    k0=0.01,</span>
+<span class="go">    material=Material(1, 1, 0),</span>
+<span class="go">    poltype=&#39;helicity&#39;,</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<p>as expected. Other transformations are:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>rotate</p></td>
+<td><p>Rotation</p></td>
+</tr>
+<tr class="row-odd"><td><p>translate</p></td>
+<td><p>Translation</p></td>
+</tr>
+<tr class="row-even"><td><p>expand</p></td>
+<td><p>Expand in another basis</p></td>
+</tr>
+<tr class="row-odd"><td><p>changepoltype</p></td>
+<td><p>Switch between parity and helicity polarizations</p></td>
+</tr>
+<tr class="row-even"><td><p>expandlattice</p></td>
+<td><p>Expand in another basis assuming a periodic array</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 </section>
 
 
@@ -177,7 +342,7 @@ these properties are also compared and merged when using operations on these obj
         <li class="right" >
           <a href="../examples.html" title="Examples"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev108+g5df8fac documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev109+g86c96c9 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../examples.html" >Examples</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Physics-aware arrays</a></li> 
       </ul>
