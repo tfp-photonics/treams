@@ -1060,32 +1060,32 @@ class PhysicsDict(util.AnnotationDict):
     """
 
     properties = {
-        "k0": ("Wave number.", lambda x: isinstance(x, float), float),
         "basis": (
             ":class:`~treams.BasisSet`.",
             lambda x: isinstance(x, BasisSet),
             _raise_basis_error,
         ),
-        "poltype": (
-            ":ref:`polarizations:Polarizations`.",
-            lambda x: isinstance(x, str),
-            str,
-        ),
-        "modetype": ("Mode type.", lambda x: isinstance(x, str), str),
-        "material": (
-            ":class:`~treams.Material`.",
-            lambda x: isinstance(x, Material),
-            Material,
+        "k0": ("Wave number.", lambda x: isinstance(x, float), float),
+        "kpar": (
+            "Wave vector components tangential to the lattice.",
+            lambda x: isinstance(x, list),
+            list,
         ),
         "lattice": (
             ":class:`~treams.Lattice`.",
             lambda x: isinstance(x, Lattice),
             Lattice,
         ),
-        "kpar": (
-            "Wave vector components tangential to the lattice.",
-            lambda x: isinstance(x, list),
-            list,
+        "material": (
+            ":class:`~treams.Material`.",
+            lambda x: isinstance(x, Material),
+            Material,
+        ),
+        "modetype": ("Mode type.", lambda x: isinstance(x, str), str),
+        "poltype": (
+            ":ref:`polarizations:Polarizations`.",
+            lambda x: isinstance(x, str),
+            str,
         ),
     }
     """Special properties tracked by the PhysicsDict."""
@@ -1166,14 +1166,10 @@ class PhysicsArray(util.AnnotatedArray):
         For a more managable output only the special physics properties are shown
         alongside the array itself.
         """
-        repr_arr = "    " + repr(self._array)[6:-1].replace("\n  ", "\n")
-        repr_kwargs = ",\n    ".join(
-            f"{key}={repr(getattr(self, key))}"
-            for key in self._properties
-            if getattr(self, key) is not None
-        )
-        if repr_kwargs != "":
-            repr_arr += ",\n    " + repr_kwargs
+        repr_arr = "    " + repr(self._array)[6:-1].replace("\n  ", "\n") + ","
+        for key in self._properties:
+            if getattr(self, key) is not None:
+                repr_arr += f"\n    {key}={repr(getattr(self, key))},"
         return f"{self.__class__.__name__}(\n{repr_arr}\n)"
 
     def _check(self):
@@ -1217,50 +1213,28 @@ class PhysicsArray(util.AnnotatedArray):
             if poltype == "parity" and getattr(material, "ischiral", False):
                 raise ValueError("poltype 'parity' not permitted for chiral material")
 
-    def __matmul__(self, other, *args, **kwargs):
-        """Matrix multiplication.
+    def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+        """Implement ufunc API.
 
-        When one of the operands for the matrix multiplication does not contain a
-        physical property that is present in the other matrix, it becomes "transparent"
-        to it, meaning that it is just copied to the corresponding results direction.
-
-        Example:
-            >>> res = PhysicsArray([0, 1], k0=1.5, foo="bar") @ [[2, 3], [4, 5]]
-            >>> res.ann
-            AnnotationSequence(PhysicsDict({'k0': 1.5}),)
-
-        Note that the result contains `k0` but not `foo`, since the "transparency" of
-        the second array only applies to physical properties.
+        Additionally to keeping track of the annotations the special properties of a
+        PhysicsArray are also "transparent" in matrix multiplications.
         """
-        res = super().__matmul__(other, *args, **kwargs)
-        other_ann = getattr(other, "ann", ({}, {}))
-        other_ndim = np.ndim(other)
-        for name in self._properties:
-            if self.ndim > 1 and self.ann[-1].get(name) is None:
-                dim = -1 - (other_ndim != 1)
-                val = other_ann[dim].get(name)
-                if val is not None:
-                    res.ann[dim][name] = val
-            val = self.ann[-1].get(name)
-            if other_ndim > 1 and other_ann[-2].get(name) is None and val is not None:
-                res.ann[-1][name] = val
-        return res
-
-    def __rmatmul__(self, other, *args, **kwargs):
-        """Matrix multiplication with opposite operand order.
-
-        See also, :meth:`__matmul__`.
-        """
-        res = super().__rmatmul__(other, *args, **kwargs)
-        other_ann = getattr(other, "ann", ({},))
-        other_ndim = np.ndim(other)
-        for name in self._properties:
-            if other_ndim > 1 and other_ann[-1].get(name) is None:
-                dim = -1 - (self.ndim != 1)
-                val = self.ann[dim].get(name)
-                if val is not None:
-                    res.ann[dim][name] = val
-            val = other_ann[-1].get(name)
-            if self.ndim > 1 and self.ann[-2].get(name) is None and val is not None:
-                res.ann[-1][name] = val
+        res = super().__array_ufunc__(ufunc, method, *inputs, **kwargs)
+        if (
+            ufunc is np.matmul
+            and method == "__call__"
+            and not isinstance(res, np.generic)
+        ):
+            axes = kwargs.get(
+                "axes", [tuple(range(-min(np.ndim(i), 2), 0)) for i in inputs + (res,)]
+            )
+            anns = [
+                i.ann[ax] if hasattr(i, "ann") else [{}, {}]
+                for i, ax in zip(inputs, axes)
+            ]
+            for name in self._properties:
+                if name in anns[0][-1] and all(name not in a for a in anns[1]):
+                    res.ann[axes[-1][0]].setdefault(name, anns[0][-1][name])
+                if name in anns[1][0] and all(name not in a for a in anns[0]):
+                    res.ann[axes[-1][-1]].setdefault(name, anns[1][0][name])
         return res
