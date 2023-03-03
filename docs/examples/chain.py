@@ -3,7 +3,7 @@ import numpy as np
 
 import treams
 
-k0 = 2 * np.pi / 700  # Wave number in vacuum
+k0 = 2 * np.pi / 700
 materials = [treams.Material(-16.5 + 1j), treams.Material()]
 lmax = 2
 radii = [75, 75]
@@ -28,7 +28,7 @@ for i, ii in zip(*np.where(valid)):
         @ sca
     )
 
-cwb = treams.CylindricalWaveBasis.with_periodicity(
+cwb = treams.CylindricalWaveBasis.diffr_orders(
     0, 2, pitch, 13 / pitch, nmax=2, positions=positions
 )
 chain = treams.TMatrixC.from_array(chain_sph, cwb)

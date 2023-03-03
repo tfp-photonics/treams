@@ -109,7 +109,7 @@ T-matrix and mostly repeat the previous steps.
 Now we can plot the full field around our snowman. We only add the illuminating plane
 wave and arrive at:
 
-.. .. plot:: examples/cluster.py
+.. plot:: examples/cluster.py
 
 We remark, that the field outside the circumscribing sphere (red dashed line) does
 nicely fit with the field inside, indicating that the chosen expansion order for the
@@ -193,9 +193,13 @@ cylinder with infinite length in z-direction.
 
 Having the definition of the different areas out of the way, one can do the calculation
 now for the different points. First, we have to define the expansion modes around the
-point, where we probe the field at. 
+point, where we probe the field at.
 
-.. .. plot:: examples/chain.py
+.. literalinclude:: examples/chain.py
+   :language: python
+   :lines: 21-38
+
+.. plot:: examples/chain.py
 
 Q-matrix examples
 =================

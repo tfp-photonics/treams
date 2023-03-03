@@ -422,11 +422,9 @@ class TMatrix(PhysicsArray):
         T-matrix.
 
         Args:
-            origin (array, optional): The origin of the new T-matrix
-            modes (array, optional): The modes that are considered for the global
-                T-matrix
-            interacted (bool, optional): If set to `False` the interaction is calculated
-                first.
+            basis (SphericalWaveBasis, optional): The basis of the global T-matrix. By
+                default the default basis for the maximal multipolar order found is
+                used.
 
         Returns
             TMatrix

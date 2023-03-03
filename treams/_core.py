@@ -551,7 +551,7 @@ class CylindricalWaveBasis(BasisSet):
         lattice_z = Lattice(lattice, "z")
         nkz = np.floor(np.abs(bmax / lattice_z.reciprocal))
         kzs = kz + np.arange(-nkz, nkz + 1) * lattice_z.reciprocal
-        res = cls.default(kzs, mmax, nmax, positions=None)
+        res = cls.default(kzs, mmax, nmax, positions=positions)
         res.hints["lattice"] = lattice
         res.hints["kpar"] = [np.nan, np.nan, kz]
         return res
@@ -1234,7 +1234,7 @@ class PhysicsArray(util.AnnotatedArray):
             ]
             for name in self._properties:
                 if name in anns[0][-1] and all(name not in a for a in anns[1]):
-                    res.ann[axes[-1][0]].setdefault(name, anns[0][-1][name])
+                    res.ann[axes[-1][-1]].setdefault(name, anns[0][-1][name])
                 if name in anns[1][0] and all(name not in a for a in anns[0]):
-                    res.ann[axes[-1][-1]].setdefault(name, anns[1][0][name])
+                    res.ann[axes[-1][0]].setdefault(name, anns[1][0][name])
         return res
