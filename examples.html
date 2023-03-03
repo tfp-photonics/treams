@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Examples &#8212; treams 0.2.2.dev109+g86c96c9 documentation</title>
+    <title>Examples &#8212; treams 0.2.2.dev110+gef85443 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="gettingstarted.html" title="Getting started"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev109+g86c96c9 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev110+gef85443 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Examples</a></li> 
       </ul>
     </div>  
@@ -175,6 +175,10 @@ T-matrix and mostly repeat the previous steps.</p>
 </div>
 <p>Now we can plot the full field around our snowman. We only add the illuminating plane
 wave and arrive at:</p>
+<p>(<a class="reference download internal" download="" href="_downloads/acdce4ee8fd3701bf7ca9ae68d6672e1/cluster.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/dca557bd31444c0649bb5a84606587f3/cluster.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/faa62324fe25f02f4458a7bc5beed84d/cluster.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/e239df97c534754511b9d272d6837752/cluster.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/cluster.png" class="plot-directive" src="_images/cluster.png" />
+</figure>
 <p>We remark, that the field outside the circumscribing sphere (red dashed line) does
 nicely fit with the field inside, indicating that the chosen expansion order for the
 global T-matrix was sufficient.</p>
@@ -238,7 +242,7 @@ from a description of coupled spheres, described by T-matrices to a description 
 the cylindrical T-matrix.</p>
 <p>We start by defining two spheres, that are within one unit cell. This means we have a
 nontrivial unit cell for our system, resulting finally in a local cylindrical T-matrix.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">700</span>  <span class="c1"># Wave number in vacuum</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">700</span>
 <span class="n">materials</span> <span class="o">=</span> <span class="p">[</span><span class="n">treams</span><span class="o">.</span><span class="n">Material</span><span class="p">(</span><span class="o">-</span><span class="mf">16.5</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="p">),</span> <span class="n">treams</span><span class="o">.</span><span class="n">Material</span><span class="p">()]</span>
 <span class="n">lmax</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">radii</span> <span class="o">=</span> <span class="p">[</span><span class="mi">75</span><span class="p">,</span> <span class="mi">75</span><span class="p">]</span>
@@ -268,6 +272,30 @@ cylinder with infinite length in z-direction.</p>
 <p>Having the definition of the different areas out of the way, one can do the calculation
 now for the different points. First, we have to define the expansion modes around the
 point, where we probe the field at.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">valid</span> <span class="o">=</span> <span class="n">chain_sph</span><span class="o">.</span><span class="n">valid_points</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">radii</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">grid</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">sca</span> <span class="o">=</span> <span class="n">chain_sph</span> <span class="o">@</span> <span class="n">pw</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">chain_sph</span><span class="o">.</span><span class="n">basis</span><span class="p">)</span> <span class="o">@</span> <span class="n">pw</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">valid</span><span class="p">)):</span>
+    <span class="n">probe</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">SphericalWaveBasis</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">ii</span><span class="p">,</span> <span class="p">:])</span>
+    <span class="n">field</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">ii</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">treams</span><span class="o">.</span><span class="n">efield</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">ii</span><span class="p">,</span> <span class="p">:],</span> <span class="n">basis</span><span class="o">=</span><span class="n">probe</span><span class="p">,</span> <span class="n">k0</span><span class="o">=</span><span class="n">k0</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+        <span class="o">@</span> <span class="n">sca</span><span class="o">.</span><span class="n">expandlattice</span><span class="p">(</span><span class="n">basis</span><span class="o">=</span><span class="n">probe</span><span class="p">)</span>
+        <span class="o">@</span> <span class="n">sca</span>
+    <span class="p">)</span>
+
+<span class="n">cwb</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">CylindricalWaveBasis</span><span class="o">.</span><span class="n">diffr_orders</span><span class="p">(</span>
+    <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">pitch</span><span class="p">,</span> <span class="mi">13</span> <span class="o">/</span> <span class="n">pitch</span><span class="p">,</span> <span class="n">nmax</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="n">positions</span>
+<span class="p">)</span>
+<span class="n">chain</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">TMatrixC</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">chain_sph</span><span class="p">,</span> <span class="n">cwb</span><span class="p">)</span>
+<span class="n">valid</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">valid_points</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">radii</span><span class="p">)</span>
+<span class="n">field</span><span class="p">[</span><span class="n">valid</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+    <span class="n">chain</span><span class="o">.</span><span class="n">efield</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">valid</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">chain</span> <span class="o">@</span> <span class="n">pw</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">basis</span><span class="p">)</span> <span class="o">@</span> <span class="n">pw</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">2</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference download internal" download="" href="_downloads/a02ea8c2ba18258fe811e93c331ca534/chain.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/5b813460b33e927892bc7d32ed17ee66/chain.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/ad9570cf7c51e4c5e16a4a9670a5317e/chain.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/45203822187097b57b757ff521a4187e/chain.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/chain.png" class="plot-directive" src="_images/chain.png" />
+</figure>
 </section>
 </section>
 <section id="q-matrix-examples">
@@ -353,7 +381,7 @@ point, where we probe the field at.</p>
         <li class="right" >
           <a href="gettingstarted.html" title="Getting started"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev109+g86c96c9 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev110+gef85443 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Examples</a></li> 
       </ul>
     </div>

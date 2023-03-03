@@ -156,7 +156,7 @@ such a plane wave could be:
 In the first line we define a plane wave by specifying a basis that consists of only one
 entry namely that for a wave vector :math:`\boldsymbol k = 3 \boldsymbol{\hat x} +
 4 \boldsymbol{\hat y} + 5 \boldsymbol{\hat z}` and the polarization 0
-(:ref:`polarizations.Polarizations`). The amplitude of the wave is 1.5. Then, we want
+(:ref:`polarizations:Polarizations`). The amplitude of the wave is 1.5. Then, we want
 to expand the wave into the spherical basis up to dipolar order. The matrix that
 represents this transformation is then returned. It contains as the given bases.
 Additionally, a couple of other values are specified. This is, first, the material,
@@ -170,11 +170,11 @@ is implemented. We see that the result is roughly the unit matrix
 
 .. doctest::
 
-    >>> wave = treams.PhysicsArray([1] * 6,
+    >>> wave = treams.PhysicsArray(np.eye(6),
     ...    basis=treams.SphericalWaveBasis.default(1),
     ...    k0=1/100,
     ...    )
-    >>> wave.translate([1, 2, 3]) @ np.diag(wave) @ wave.translate.inv([1, 2, 3])
+    >>> wave.translate([1, 2, 3]) @ wave @ wave.translate.inv([1, 2, 3])
     PhysicsArray(
         [[ 9.99777524e-01+1.73472348e-18j,  0.00000000e+00+0.00000000e+00j,
           -1.06049048e-05-2.12098096e-05j,  0.00000000e+00+0.00000000e+00j,
