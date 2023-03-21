@@ -1,5 +1,6 @@
 import os
 import tempfile
+import uuid
 
 import gmsh
 import h5py
@@ -9,92 +10,88 @@ import treams
 from treams import io
 
 
-class TestMeshSpheres:
-    def test(self):
-        gmsh.initialize()
-        gmsh.model.add("spheres")
-        io.mesh_spheres([1, 2], [[0, 0, 2], [0, 0, -2]], gmsh.model)
-        with tempfile.TemporaryDirectory() as dir:
-            filename = os.path.join(dir, "spheres.msh")
-            gmsh.write(filename)
-            gmsh.finalize()
-            with open(filename, "r") as f:
-                value = "".join([line for line, _ in zip(f, range(5))][3:])
-        expect = "$Entities\n4 6 2 2\n"
-        assert value == expect
+def test_meshspheres():
+    gmsh.initialize()
+    gmsh.model.add("spheres")
+    io.mesh_spheres([1, 2], [[0, 0, 2], [0, 0, -2]], gmsh.model)
+    with tempfile.TemporaryDirectory() as directory:
+        filename = os.path.join(directory, "spheres.msh")
+        gmsh.write(filename)
+        gmsh.finalize()
+        with open(filename, "r") as f:
+            value = "".join([line for line, _ in zip(f, range(5))][3:])
+    expect = "$Entities\n4 6 2 2\n"
+    assert value == expect
 
 
-class TestSaveHdf5:
-    def test(self):
+class TestSaveHDF5:
+    def test_helicity(self):
         with h5py.File("test.h5", "x", driver="core", backing_store=False) as fp:
             m = np.arange(4 * 3 * 16 * 16).reshape((4, 3, 16, 16))
             tms = [
                 [
-                    treams.TMatrix(m[i, j], 7, epsilon=i + 1, mu=j + 1, kappa=0.5)
-                    for j in range(3)
+                    treams.TMatrix(
+                        m[i, ii], k0=7, material=treams.Material(i + 1, ii + 1, 0.5)
+                    )
+                    for ii in range(3)
                 ]
                 for i in range(4)
             ]
-            io.save_hdf5(fp, tms, "testname", "testdescr", -2, "µm")
-            assert (
-                np.all(fp["tmatrix"] == m)
-                and fp["k0"][...] == 7
-                and np.all(
-                    fp["materials/embedding/relative_permittivity"]
-                    == np.arange(1, 5)[:, None] * [1, 1, 1]
-                )
-                and np.all(
-                    fp["materials/embedding/relative_permeability"] == np.arange(1, 4)
-                )
-                and fp["materials/embedding/chirality"][...] == 0.5
-                and fp["embedding"] == fp["materials/embedding"]
-                and np.all(fp["modes/l"] == tms[0][0].l)
-                and np.all(fp["modes/m"] == tms[0][0].m)
-                and np.all(
-                    [i.decode() for i in fp["modes/polarization"][...]]
-                    == 8 * ["positive", "negative"]
-                )
-                and np.all(fp["modes/position_index"] == tms[0][0].pidx)
-                and np.all(fp["modes/positions"] == tms[0][0].positions)
-                and fp["tmatrix"].attrs["id"] == -2
-                and fp["tmatrix"].attrs["name"] == "testname"
-                and fp["tmatrix"].attrs["description"] == "testdescr"
-                and fp["k0"].attrs["unit"] == r"µm^{-1}"
-                and fp["modes/positions"].attrs["unit"] == "µm"
-                and fp["materials/embedding"].attrs["name"] == "Embedding"
+            io.save_hdf5(
+                fp,
+                tms,
+                "testname",
+                "testdescr",
+                lunit="µm",
+                uuid=b"12345678123456781234567812345678",
             )
+            assert np.all(fp["tmatrix"] == m)
+            assert fp["angular_vacuum_wavenumber"][...] == 7
+            assert np.all(
+                fp["materials/embedding/relative_permittivity"]
+                == np.arange(1, 5)[:, None] * [1, 1, 1]
+            )
+            assert np.all(
+                fp["materials/embedding/relative_permeability"] == np.arange(1, 4)
+            )
+            assert fp["materials/embedding/chirality"][...] == 0.5
+            assert fp["embedding"] == fp["materials/embedding"]
+            assert np.all(fp["modes/l"] == tms[0][0].basis.l)
+            assert np.all(fp["modes/m"] == tms[0][0].basis.m)
+            assert np.all(
+                [i.decode() for i in fp["modes/polarization"][...]]
+                == 8 * ["positive", "negative"]
+            )
+            assert fp["uuid"][()] == b"12345678123456781234567812345678"
+            assert fp.attrs["name"] == "testname"
+            assert fp.attrs["description"] == "testdescr"
+            assert fp["angular_vacuum_wavenumber"].attrs["unit"] == r"µm^{-1}"
 
-    def test2(self):
+    def test_parity(self):
         with h5py.File("test.h5", "x", driver="core", backing_store=False) as fp:
             m = np.arange(4 * 3 * 16 * 16).reshape((4, 3, 16, 16))
             tms = [
                 [
-                    treams.TMatrix(m[i, j], i + 1, epsilon=1, mu=1, helicity=False)
-                    for j in range(3)
+                    treams.TMatrix(
+                        m[i, ii], k0=i + 1, material=treams.Material(), poltype="parity"
+                    )
+                    for ii in range(3)
                 ]
                 for i in range(4)
             ]
-            io.save_hdf5(fp, tms, "testname", "testdescr", frequency_axis=0)
+            io.save_hdf5(fp, tms, "testname", "testdescr")
             assert (
                 np.all(fp["tmatrix"] == m)
-                and np.all(fp["k0"] == np.arange(1, 5))
+                and np.all(fp["angular_vacuum_wavenumber"] == np.arange(1, 5)[:, None])
                 and fp["materials/embedding/relative_permittivity"][...] == 1
                 and fp["materials/embedding/relative_permeability"][...] == 1
                 and fp["embedding"] == fp["materials/embedding"]
-                and np.all(fp["modes/l"] == tms[0][0].l)
-                and np.all(fp["modes/m"] == tms[0][0].m)
+                and np.all(fp["modes/l"] == tms[0][0].basis.l)
+                and np.all(fp["modes/m"] == tms[0][0].basis.m)
                 and np.all(
                     [i.decode() for i in fp["modes/polarization"][...]]
                     == 8 * ["electric", "magnetic"]
                 )
-                and np.all(fp["modes/position_index"] == tms[0][0].pidx)
-                and np.all(fp["modes/positions"] == tms[0][0].positions)
-                and fp["tmatrix"].attrs["id"] == -1
-                and fp["tmatrix"].attrs["name"] == "testname"
-                and fp["tmatrix"].attrs["description"] == "testdescr"
-                and fp["k0"].attrs["unit"] == r"nm^{-1}"
-                and fp["modes/positions"].attrs["unit"] == "nm"
-                and fp["materials/embedding"].attrs["name"] == "Embedding"
             )
 
 
@@ -104,8 +101,8 @@ class TestLoadHdf5:
             fp.create_dataset(
                 "tmatrix", data=np.arange(4 * 3 * 6 * 4).reshape((4, 3, 6, 4))
             )
-            fp.create_dataset("nu", data=np.arange(1, 5))
-            fp["nu"].attrs["unit"] = "THz"
+            fp.create_dataset("frequency", data=np.arange(1, 5)[:, None])
+            fp["frequency"].attrs["unit"] = "THz"
             fp.create_dataset("materials/foo/refractive_index", data=4)
             fp["embedding"] = h5py.SoftLink("/materials/foo")
             fp.create_dataset("modes/positions", data=[[0, 0, 0]])
@@ -122,27 +119,34 @@ class TestLoadHdf5:
 
             tms = io.load_hdf5(fp)
 
-        assert (
-            tms.shape == (4, 3)
-            and abs(tms[0, 0].k0 - 2 * np.pi / 299792.458) < 1e-16
-            and abs(tms[0, 1].k0 - 2 * np.pi / 299792.458) < 1e-16
-            and abs(tms[1, 0].k0 - 4 * np.pi / 299792.458) < 1e-16
-            and not tms[0, 0].helicity
-            and np.all(tms[0, 0].l == 6 * [1] + 2 * [2])
-            and np.all(tms[0, 0].m == [-1, -1, 0, 0, 1, 1, 0, 0])
-            and np.all(tms[0, 0].pol == 4 * [0, 1])
-            and np.all(tms[0, 0].positions == [[0, 0, 0]])
-            and np.all(
-                tms[3, 2].t
-                == [
-                    [0, 0, 269, 268, 0, 0, 271, 270],
-                    [0, 0, 265, 264, 0, 0, 267, 266],
-                    [0, 0, 277, 276, 0, 0, 279, 278],
-                    [0, 0, 273, 272, 0, 0, 275, 274],
-                    [0, 0, 285, 284, 0, 0, 287, 286],
-                    [0, 0, 281, 280, 0, 0, 283, 282],
-                    [0, 0, 0, 0, 0, 0, 0, 0],
-                    [0, 0, 0, 0, 0, 0, 0, 0],
-                ]
-            )
+        basis = treams.SphericalWaveBasis(
+            [
+                (1, 0, 0),
+                (1, 0, 1),
+                (2, 0, 0),
+                (2, 0, 1),
+                (1, -1, 0),
+                (1, -1, 1),
+                (1, 1, 0),
+                (1, 1, 1),
+            ]
+        )
+        assert tms.shape == (4, 3)
+        assert abs(tms[0, 0].k0 - 2 * np.pi / 299792.458) < 1e-16
+        assert abs(tms[0, 1].k0 - 2 * np.pi / 299792.458) < 1e-16
+        assert abs(tms[1, 0].k0 - 4 * np.pi / 299792.458) < 1e-16
+        assert tms[0, 0].poltype == "parity"
+        assert tms[0, 0].basis <= basis and basis <= tms[0, 0].basis
+        assert np.all(
+            tms[3, 2]
+            == [
+                [272, 273, 274, 275, 0, 0, 0, 0],
+                [276, 277, 278, 279, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0],
+                [264, 265, 266, 267, 0, 0, 0, 0],
+                [268, 269, 270, 271, 0, 0, 0, 0],
+                [280, 281, 282, 283, 0, 0, 0, 0],
+                [284, 285, 286, 287, 0, 0, 0, 0],
+            ]
         )

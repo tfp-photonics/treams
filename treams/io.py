@@ -10,7 +10,9 @@ Most functions rely on at least one of the external packages `h5py` or `gmsh`.
    load_hdf5
 """
 
-import importlib.metadata
+import sys
+from importlib.metadata import version
+import uuid as _uuid
 
 import numpy as np
 
@@ -121,10 +123,9 @@ FREQUENCIES = {
 
 
 def mesh_spheres(radii, positions, model, meshsize=None, meshsize_boundary=None):
-    """
-    Generate a mesh of multiple spheres
+    """Generate a mesh of multiple spheres.
 
-    This function facilitates generating a mesh for a cluster speres using gmsh. It
+    This function facilitates generating a mesh for a cluster spheres using gmsh. It
     requires the package `gmsh` to be installed.
 
     Examples:
@@ -132,7 +133,7 @@ def mesh_spheres(radii, positions, model, meshsize=None, meshsize_boundary=None)
         >>> gmsh.initialize()
         >>> gmsh.model.add("spheres")
         >>> mesh_spheres([1, 2], [[0, 0, 2], [0, 0, -2]], gmsh.model)
-        >>> gmsh.model.write("spheres.msh")
+        >>> gmsh.write("spheres.msh")
         >>> gmsh.finalize()
 
     Args:
@@ -146,9 +147,7 @@ def mesh_spheres(radii, positions, model, meshsize=None, meshsize_boundary=None)
 
     Returns:
         gmsh.model
-
     """
-
     if meshsize is None:
         meshsize = np.max(radii) * 0.2
     if meshsize_boundary is None:
@@ -159,9 +158,12 @@ def mesh_spheres(radii, positions, model, meshsize=None, meshsize_boundary=None)
         tag = i + 1
         model.occ.addSphere(*position, radius, tag)
         spheres.append((3, tag))
-        model.addPhysicalGroup(3, [i + 1], tag)
+
+    model.occ.synchronize()
+    for _, tag in spheres:
+        model.addPhysicalGroup(3, [tag], tag)
         # Add surfaces for other mesh formats like stl, ...
-        model.addPhysicalGroup(2, [i + 1], tag)
+        model.addPhysicalGroup(2, [tag], tag)
 
     model.mesh.setSize(model.getEntities(0), meshsize)
     model.mesh.setSize(
@@ -170,9 +172,8 @@ def mesh_spheres(radii, positions, model, meshsize=None, meshsize_boundary=None)
     return model
 
 
-def _translate_polarizations(pols, helicity=True):
-    """
-    Translate the polarization index into words
+def _translate_polarizations(pols, poltype=None):
+    """Translate the polarization index into words.
 
     The indices 0 and 1 are translated to "negative" and "positive", respectively, when
     helicity modes are chosen. For parity modes they are translated to "magnetic" and
@@ -185,16 +186,18 @@ def _translate_polarizations(pols, helicity=True):
     Returns
         string, array_like
     """
-    if helicity:
+    poltype = treams.config.POLTYPE if poltype is None else poltype
+    if poltype == "helicity":
         names = ["negative", "positive"]
-    else:
+    elif poltype == "parity":
         names = ["magnetic", "electric"]
+    else:
+        raise ValueError("unrecognized poltype")
     return [names[i] for i in pols]
 
 
 def _translate_polarizations_inv(pols):
-    """
-    Translate the polarization into indices
+    """Translate the polarization into indices.
 
     This function is the inverse of :func:`treams.io._translate_polarizations`. The
     words "negative" and "minus" are translated to 0 and the words "positive" and "plus"
@@ -209,35 +212,54 @@ def _translate_polarizations_inv(pols):
         int, array_like
     """
     helicity = {"plus": 1, "positive": 1, "minus": 0, "negative": 0}
-    parity = {"te": 0, "magnetic": 0, "tm": 1, "electric": 1}
+    parity = {"te": 0, "magnetic": 0, "tm": 1, "electric": 1, "M": 0, "N": 1}
     if pols[0].decode() in helicity:
         dct = helicity
+        poltype = "helicity"
     elif pols[0].decode() in parity:
         dct = parity
+        poltype = "parity"
     else:
         raise ValueError(f"unrecognized polarization '{pols[0].decode()}'")
-    return [dct[i.decode()] for i in pols], pols[0].decode() in helicity
+    return [dct[i.decode()] for i in pols], poltype
+
+
+def _remove_leading_ones(shape):
+    while len(shape) > 0 and shape[0] == 1:
+        shape = shape[1:]
+    return shape
+
+
+def _collapse_dims(arr):
+    for i in range(arr.ndim):
+        test = arr[(slice(None),) * i + (slice(1),)]
+        if np.all(arr == test):
+            arr = test
+    return arr.reshape(_remove_leading_ones(arr.shape))
 
 
 def save_hdf5(
-    datafile,
-    tmats,
-    name,
-    description,
-    id=-1,
-    unit_length="nm",
-    embedding_name="Embedding",
-    frequency_axis=None,
+    h5file,
+    tms,
+    name="",
+    description="",
+    keywords="",
+    embedding_group=None,
+    embedding_name="",
+    embedding_description="",
+    embedding_keywords="",
+    uuid=None,
+    uuid_version=4,
+    lunit="nm",
 ):
-    """
-    Save a set of T-matrices in a HDF5 file
+    """Save a set of T-matrices in a HDF5 file.
 
     With an open and writeable datafile, this function stores the main parts of as
     T-matrix in the file. It is left open for the user to add additional metadata.
 
     Args:
         datafile (h5py.File): a HDF5 file opened with h5py
-        tmats (TMatrix, array_like): Array of T-matrix instances
+        tms (TMatrix, array_like): Array of T-matrix instances
         name (string): Name to add to the T-matrix as attribute
         description (string): Description to add to the T-matrix as attribute
         id (int, optional): Id of the T-matrix, defaults to -1 (no id given)
@@ -253,231 +275,101 @@ def save_hdf5(
     Returns:
         h5py.File
     """
-    tmats = np.array(tmats)
-    shape = tmats.shape
-    tmat_first = tmats.ravel()[0]
-    helicity = tmat_first.helicity
-    with np.nditer(
-        [tmats] + [None] * 4,
-        ["refs_ok"],
-        [["readonly"]] + [["writeonly", "allocate"]] * 4,
-        [None, float, complex, complex, complex],
-    ) as it:
-        for tmat, k0, epsilon, mu, kappa in it:
-            tmat = tmat.item()
-            if (
-                np.any(tmat.l != tmat_first.l)
-                or np.any(tmat.m != tmat_first.m)
-                or np.any(tmat.pol != tmat_first.pol)
-                or np.any(tmat.pidx != tmat_first.pidx)
-            ):
-                raise ValueError("non-matching T-matrix modes")
-            if tmat.helicity != helicity:
-                raise ValueError("non-matching basis sets")
-            if np.any(tmat.positions.shape != tmat.positions.shape):
-                raise ValueError("non-matching positions")
-            k0[...] = tmat.k0
-            epsilon[...] = tmat.epsilon
-            mu[...] = tmat.mu
-            kappa[...] = tmat.kappa
-        k0s, epsilons, mus, kappas = it.operands[1:]
+    tms_arr = np.array(tms)
+    if tms_arr.dtype == object:
+        raise ValueError("can only save T-matrices of the same size")
+    tms_obj = np.empty(tms_arr.shape[:-2], object)
+    tms_obj[:] = tms
+    tm = tms_obj.flat[0]
+    basis = tm.basis
+    poltype = tm.poltype
 
-    tms = np.stack([tmat.t for tmat in tmats.flatten()]).reshape(
-        shape + tmat_first.t.shape
-    )
-    positions = np.stack([tmat.positions for tmat in tmats.flatten()]).reshape(
-        shape + tmat_first.positions.shape
-    )
+    k0s = np.zeros((tms_arr.shape)[:-2])
+    epsilon = np.zeros((tms_arr.shape)[:-2], complex)
+    mu = np.zeros((tms_arr.shape)[:-2], complex)
+    if poltype == "helicity":
+        kappa = np.zeros((tms_arr.shape)[:-2], complex)
 
-    if np.all(k0s == k0s.ravel()[0]):
-        k0s = k0s.ravel()[0]
-    if np.all(epsilons == epsilons.ravel()[0]):
-        epsilons = epsilons.ravel()[0]
-    if np.all(mus == mus.ravel()[0]):
-        mus = mus.ravel()[0]
-    if np.all(kappas == kappas.ravel()[0]):
-        kappas = kappas.ravel()[0]
-    if np.all(positions - tmat_first.positions == 0):
-        positions = tmat_first.positions
-
-    if frequency_axis is not None:
-        k0slice = (
-            (0,) * frequency_axis
-            + (slice(k0s.shape[frequency_axis]),)
-            + (0,) * (k0s.ndim - frequency_axis - 1)
-        )
-        k0s = k0s[k0slice]
-
-    return _write_hdf5(
-        datafile,
-        id,
-        name,
-        description,
-        tms,
-        k0s,
-        epsilons,
-        mus,
-        kappas,
-        tmat_first.l,
-        tmat_first.m,
-        tmat_first.pol,
-        tmat_first.pidx,
-        positions,
-        unit_length,
-        embedding_name,
-        tmat_first.helicity,
-        frequency_axis,
-    )
-
-
-def _write_hdf5(
-    datafile,
-    id,
-    name,
-    description,
-    tms,
-    k0s,
-    epsilons,
-    mus,
-    kappas,
-    ls,
-    ms,
-    pols,
-    pidxs,
-    positions,
-    unit_length="nm",
-    embedding_name="Embedding",
-    helicity=True,
-    frequency_axis=None,
-):
-    datafile.create_dataset("tmatrix", data=tms)
-    datafile["tmatrix"].attrs["id"] = id
-    datafile["tmatrix"].attrs["name"] = name
-    datafile["tmatrix"].attrs["description"] = description
-
-    datafile.create_dataset("k0", data=k0s)
-    datafile["k0"].attrs["unit"] = unit_length + r"^{-1}"
-
-    datafile.create_dataset("modes/l", data=ls)
-    datafile.create_dataset("modes/m", data=ms)
-    datafile.create_dataset(
-        "modes/polarization",
-        data=_translate_polarizations(pols, helicity=helicity),
-    )
-    datafile.create_dataset("modes/position_index", data=pidxs)
-    datafile["modes/position_index"].attrs[
-        "description"
-    ] = """
-        For local T-matrices each mode is associated with an origin. This index maps
-        the modes to an entry in positions.
-    """
-    datafile.create_dataset("modes/positions", data=positions)
-    datafile["modes/positions"].attrs[
-        "description"
-    ] = """
-        The postions of the origins for a local T-matrix.
-    """
-    datafile["modes/positions"].attrs["unit"] = unit_length
-
-    datafile["modes/l"].make_scale("l")
-    datafile["modes/m"].make_scale("m")
-    datafile["modes/polarization"].make_scale("polarization")
-    datafile["modes/position_index"].make_scale("position_index")
-
-    ndims = len(datafile["tmatrix"].dims)
-    datafile["tmatrix"].dims[ndims - 2].label = "Scattered modes"
-    datafile["tmatrix"].dims[ndims - 2].attach_scale(datafile["modes/l"])
-    datafile["tmatrix"].dims[ndims - 2].attach_scale(datafile["modes/m"])
-    datafile["tmatrix"].dims[ndims - 2].attach_scale(datafile["modes/polarization"])
-    datafile["tmatrix"].dims[ndims - 2].attach_scale(datafile["modes/position_index"])
-    datafile["tmatrix"].dims[ndims - 1].label = "Incident modes"
-    datafile["tmatrix"].dims[ndims - 1].attach_scale(datafile["modes/l"])
-    datafile["tmatrix"].dims[ndims - 1].attach_scale(datafile["modes/m"])
-    datafile["tmatrix"].dims[ndims - 1].attach_scale(datafile["modes/polarization"])
-    datafile["tmatrix"].dims[ndims - 1].attach_scale(datafile["modes/position_index"])
-
-    embedding_path = "materials/" + embedding_name.lower()
-    datafile.create_group(embedding_path)
-    datafile[embedding_path].attrs["name"] = embedding_name
-    datafile.create_dataset(embedding_path + "/relative_permittivity", data=epsilons)
-    datafile.create_dataset(embedding_path + "/relative_permeability", data=mus)
-    if np.any(kappas != 0):
-        datafile.create_dataset(embedding_path + "/chirality", data=kappas)
-
-    datafile["embedding"] = h5py.SoftLink("/" + embedding_path)
-
-    if frequency_axis is not None:
-        datafile["k0"].make_scale("k0")
-        datafile["tmatrix"].dims[frequency_axis].label = "Wave number"
-        datafile["tmatrix"].dims[frequency_axis].attach_scale(datafile["k0"])
-        if np.ndim(epsilons) != 0:
-            datafile[embedding_path + "/relative_permittivity"].dims[
-                frequency_axis
-            ].label = "Wave number"
-            datafile[embedding_path + "/relative_permittivity"].dims[
-                frequency_axis
-            ].attach_scale(datafile["k0"])
-        if np.ndim(mus) != 0:
-            datafile[embedding_path + "/relative_permeability"].dims[
-                frequency_axis
-            ].label = "Wave number"
-            datafile[embedding_path + "/relative_permeability"].dims[
-                frequency_axis
-            ].attach_scale(datafile["k0"])
-        if np.ndim(kappas) != 0 and np.any(kappas != 0):
-            datafile[embedding_path + "/chirality"].dims[
-                frequency_axis
-            ].label = "Wave number"
-            datafile[embedding_path + "/chirality"].dims[frequency_axis].attach_scale(
-                datafile["k0"]
+    for i, tm in enumerate(tms_obj.flat):
+        if poltype != tm.poltype or basis != tm.basis:
+            raise ValueError(
+                "incompatible T-matrices: mixed poltypes or different bases"
             )
-        if np.ndim(positions) > 2:
-            datafile["modes/positions"].dims[frequency_axis].label = "Wave number"
-            datafile["modes/positions"].dims[frequency_axis].attach_scale(f["k0"])
-        return datafile
+        k0s.flat[i] = tm.k0
+        epsilon.flat[i] = tm.material.epsilon
+        mu.flat[i] = tm.material.mu
+        if poltype == "helicity":
+            kappa.flat[i] = tm.material.kappa
+
+    h5file["tmatrix"] = tms_arr
+    if uuid is None:
+        h5file["uuid"] = np.void(_uuid.uuid4().bytes)
+        h5file["uuid"].attrs["version"] = 4
+    else:
+        h5file["uuid"] = uuid
+        h5file["uuid"].attrs["version"] = uuid_version
+
+    _name_descr_kw(h5file, name, description, keywords)
+    h5file["angular_vacuum_wavenumber"] = _collapse_dims(k0s)
+    h5file["angular_vacuum_wavenumber"].attrs["unit"] = lunit + r"^{-1}"
+    h5file["modes/l"] = basis.l
+    h5file["modes/m"] = basis.m
+    h5file["modes/polarization"] = _translate_polarizations(basis.pol, poltype)
+    if any(basis.pidx != 0):
+        h5file["modes/pidx"] = basis.pidx
+    if not np.array_equiv(basis.positions, [[0, 0, 0]]):
+        h5file["modes/positions"] = basis.positions
+        h5file["modes/positions"].attrs["unit"] = lunit
+    if embedding_group is None:
+        embedding_group = h5file.create_group("materials/embedding")
+    embedding_group["relative_permittivity"] = _collapse_dims(epsilon)
+    embedding_group["relative_permeability"] = _collapse_dims(mu)
+    if poltype == "helicity":
+        embedding_group["chirality"] = _collapse_dims(kappa)
+    _name_descr_kw(
+        embedding_group, embedding_name, embedding_description, embedding_keywords
+    )
+    h5file["embedding"] = h5py.SoftLink(embedding_group.name)
+
+    h5file.attrs["created_with"] = (
+        f"python={sys.version.split()[0]},"
+        f"h5py={version('h5py')},"
+        f"treams={version('treams')}"
+    )
+    h5file.attrs["storage_format_version"] = "0.0.1-4-g1266244"
+
+
+def _name_descr_kw(fobj, name, description="", keywords=""):
+    for key, val in [
+        ("name", name),
+        ("description", description),
+        ("keywords", keywords),
+    ]:
+        val = str(val)
+        if val != "":
+            fobj.attrs[key] = val
 
 
 def _convert_to_k0(x, xtype, xunit, k0unit=r"nm^{-1}"):
     c = 299792458.0
     k0unit = INVLENGTHS[k0unit]
-    if xtype in ("freq", "nu"):
+    if xtype == "frequency":
         xunit = FREQUENCIES[xunit]
         return 2 * np.pi * x / c * (xunit / k0unit)
-    elif xtype == "omega":
+    elif xtype == "angular_frequency":
         xunit = FREQUENCIES[xunit]
         return x / c * (xunit / k0unit)
-    elif xtype == "k0":
+    elif xtype == "angular_vacuum_wavelength":
         xunit = INVLENGTHS[xunit]
         return x * (xunit / k0unit)
-    elif xtype == "lambda0":
+    elif xtype == "angular_vacuum_wavenumber":
         xunit = LENGTHS[xunit]
         return 2 * np.pi / (x * xunit * k0unit)
     raise ValueError(f"unrecognized frequency/wavenumber/wavelength type: {xtype}")
 
 
-def _scale_position(scale, data, offset=0):
-    scale_axis = [i for i, x in enumerate(data.dims) if scale in x.values()]
-    ndim = data.ndim
-    if scale_axis:
-        if len(scale_axis) == 1:
-            return ndim - scale_axis[0] - 1 - offset
-        raise Exception("scale added to multiple axes")
-    return ndim - 1 - offset
-
-
-def _load_parameter(param, group, tmatrix, frequency, append_dim=0, default=None):
-    if param in group:
-        dim = _scale_position(group[param], tmatrix, offset=2)
-        if dim == 0:
-            dim = _scale_position(frequency, group[param]) + append_dim
-        res = group[param][...]
-        return res.reshape(res.shape + (1,) * dim)
-    return default
-
-
-def load_hdf5(filename, unit_length="nm"):
-    """
-    Load a T-matrix stored in a HDF4 file
+def load_hdf5(filename, lunit="nm"):
+    """Load a T-matrix stored in a HDF4 file.
 
     Args:
         filename (string): Name of the h5py file
@@ -487,179 +379,101 @@ def load_hdf5(filename, unit_length="nm"):
         TMatrix, array_like
     """
     if isinstance(filename, h5py.File):
-        return _load_hdf5(filename, unit_length)
+        return _load_hdf5(filename, lunit)
     with h5py.File(filename, "r") as f:
-        return _load_hdf5(f, unit_length)
+        return _load_hdf5(f, lunit)
 
 
-def _load_hdf5(f, unit_length):
-    ld_freq = None
-    for freq_type in ("freq", "nu", "omega", "k0", "lambda0"):
-        if freq_type in f:
-            ld_freq = f[freq_type][...]
+def _load_hdf5(h5file, lunit=None):
+    for freq_type in (
+        "frequency",
+        "angular_frequency",
+        "vacuum_wavelength",
+        "vacuum_wavenumber",
+        "angular_vacuum_wavenumber",
+    ):
+        if freq_type in h5file:
+            ld_freq = h5file[freq_type][()]
             break
-    if ld_freq is None:
-        raise ValueError("no definition of frequency found")
-    if "modes/positions" in f:
-        k0unit = f["modes/positions"].attrs.get("unit", unit_length) + r"^{-1}"
     else:
-        k0unit = unit_length + r"^{-1}"
-    k0s = _convert_to_k0(ld_freq, freq_type, f[freq_type].attrs["unit"], k0unit)
-    k0_dim = _scale_position(f[freq_type], f["tmatrix"], offset=2)
-    k0s = k0s.reshape(k0s.shape + (1,) * k0_dim)
+        raise ValueError("no definition of frequency found")
+    if "modes/positions" in h5file:
+        k0unit = h5file["modes/positions"].attrs.get("unit", lunit) + r"^{-1}"
+    else:
+        k0unit = lunit + r"^{-1}"
+    tms = h5file["tmatrix"][...]
+    k0s = _convert_to_k0(ld_freq, freq_type, h5file[freq_type].attrs["unit"], k0unit)
 
-    found_epsilon_mu = False
-    epsilon = _load_parameter(
-        "relative_permittivity",
-        f["embedding"],
-        f["tmatrix"],
-        f[freq_type],
-        k0_dim,
-        default=None,
-    )
-    mu = _load_parameter(
-        "relative_permeability",
-        f["embedding"],
-        f["tmatrix"],
-        f[freq_type],
-        k0_dim,
-        default=None,
-    )
-    if epsilon is None and mu is None:
-        n = _load_parameter(
-            "refractive_index",
-            f["embedding"],
-            f["tmatrix"],
-            f[freq_type],
-            k0_dim,
-            default=1,
-        )
-        z = _load_parameter(
-            "relative_impedance",
-            f["embedding"],
-            f["tmatrix"],
-            f[freq_type],
-            k0_dim,
-            default=1,
-        )
+    epsilon = h5file.get("embedding/relative_permittivity", np.array(None))[()]
+    mu = h5file.get("embedding/relative_permeability", np.array(None))[()]
+    if epsilon is None is mu:
+        n = h5file.get("embedding/refractive_index", np.array(1))[...]
+        z = h5file.get("embedding/relative_impedance", 1 / n)[...]
         epsilon = n / z
         mu = n * z
     epsilon = 1 if epsilon is None else epsilon
     mu = 1 if mu is None else mu
 
-    kappa = _load_parameter(
-        "chirality", f["embedding"], f["tmatrix"], f[freq_type], k0_dim, default=0
-    )
+    kappa = z = h5file.get("embedding/chirality_parameter", np.array(0))[...]
 
-    if "positions" in f["modes"]:
-        dim = _scale_position(f["modes/positions"], f["tmatrix"], offset=2)
-        if dim == 0:
-            dim = _scale_position(f[freq_type], f["modes/positions"]) + k0_dim
-        positions = f["modes/positions"][...]
-        positions = positions.reshape(
-            positions.shape[:-2] + (1,) * dim + positions.shape[-2:]
-        )
-    else:
-        positions = np.array([[0, 0, 0]])
+    positions = h5file.get("modes/positions", np.zeros((3, 1)))[...]
 
-    pol_inc = pol_sca = None
-    helicity_inc = helicity_sca = None
-    if "polarization_incident" in f["modes"]:
-        pol_inc, helicity_inc = _translate_polarizations_inv(
-            f["modes/polarization_incident"][...]
-        )
-    elif "polarization" in f["modes"]:
-        pol_inc, helicity_inc = _translate_polarizations_inv(
-            f["modes/polarization"][...]
-        )
-    if "polarization_scattered" in f["modes"]:
-        pol_sca, helicity_sca = _translate_polarizations_inv(
-            f["modes/polarization_scattered"][...]
-        )
-    elif "polarization" in f["modes"]:
-        pol_sca, helicity_sca = _translate_polarizations_inv(
-            f["modes/polarization"][...]
-        )
-    if pol_inc is None or pol_sca is None or helicity_inc != helicity_sca:
-        raise ValueError("polarization definition missing")
-    helicity = helicity_inc
-    l_inc = l_sca = None
-    if "l_incident" in f["modes"]:
-        l_inc = f["modes/l_incident"][...]
-    elif "l" in f["modes"]:
-        l_inc = f["modes/l"][...]
-    if "l_scattered" in f["modes"]:
-        l_sca = f["modes/l_scattered"][...]
-    elif "l" in f["modes"]:
-        l_sca = f["modes/l"][...]
-    if l_inc is None or l_sca is None:
-        raise ValueError("mode definition of 'l' missing")
-    m_inc = m_sca = None
-    if "m_incident" in f["modes"]:
-        m_inc = f["modes/m_incident"][...]
-    elif "m" in f["modes"]:
-        m_inc = f["modes/m"][...]
-    if "m_scattered" in f["modes"]:
-        m_sca = f["modes/m_scattered"][...]
-    elif "m" in f["modes"]:
-        m_sca = f["modes/m"][...]
-    if m_inc is None or m_sca is None:
-        raise ValueError("mode definition of 'm' missing")
+    l_inc = h5file.get("modes/l", np.array(None))[...]
+    l_inc = h5file.get("modes/l_incident", l_inc)[()]
+    m_inc = h5file.get("modes/m", np.array(None))[...]
+    m_inc = h5file.get("modes/m_incident", m_inc)[()]
+    pol_inc = h5file.get("modes/polarization", np.array(None))[...]
+    pol_inc = h5file.get("modes/polarization_incident", pol_inc)[()]
+    l_sca = h5file.get("modes/l", np.array(None))[...]
+    l_sca = h5file.get("modes/l_scattered", l_sca)[()]
+    m_sca = h5file.get("modes/m", np.array(None))[...]
+    m_sca = h5file.get("modes/m_scattered", m_sca)[()]
+    pol_sca = h5file.get("modes/polarization", np.array(None))[...]
+    pol_sca = h5file.get("modes/polarization_scattered", pol_sca)[()]
 
-    modes_inc = (l_inc, m_inc, pol_inc)
-    modes_sca = (l_sca, m_sca, pol_sca)
-    pidx_inc = pidx_sca = None
-    if "position_index_incident" in f["modes"]:
-        pidx_inc = f["modes/position_index_incident"][...]
-    elif "position_index" in f["modes"]:
-        pidx_inc = f["modes/position_index"][...]
-    if "position_index_scattered" in f["modes"]:
-        pidx_sca = f["modes/position_index_scattered"][...]
-    elif "position_index" in f["modes"]:
-        pidx_sca = f["modes/position_index"][...]
-    if (pidx_inc is None) ^ (pidx_sca is None):
-        raise ValueError("mode definition of 'm' missing")
-    if pidx_sca is not None:
-        modes_inc = (pidx_inc,) + modes_inc
-        modes_sca = (pidx_sca,) + modes_sca
+    if any(x is None for x in (l_inc, l_sca, m_inc, m_sca, pol_inc, pol_sca)):
+        raise ValueError("mode definition missing")
 
-    if all([np.array_equal(i, j) for i, j in zip(modes_inc, modes_sca)]):
-        modes = modes_inc
-        pick_sca = pick_inc = None
-    else:
-        modes = np.unique(
-            np.concatenate((np.array(modes_inc), np.array(modes_sca)), axis=-1),
-            axis=-1,
-        )
-        modes = (*modes,)
-        pick_sca = treams.misc.pickmodes(modes, modes_sca)
-        pick_inc = treams.misc.pickmodes(modes_inc, modes)
+    pol_inc, poltype = _translate_polarizations_inv(pol_inc)
+    pol_sca, poltype_sca = _translate_polarizations_inv(pol_sca)
 
-    shape = f["tmatrix"].shape[:-2]
-    positions_shape = positions.shape[-2:]
+    if poltype_sca != poltype:
+        raise ValueError("different modetypes")
+
+    pidx_inc = h5file.get("modes/position_index", np.zeros_like(l_inc))[()]
+    pidx_inc = h5file.get("modes/positions_index_scattered", pidx_inc)[()]
+    pidx_sca = h5file.get("modes/position_index", np.zeros_like(l_sca))[()]
+    pidx_sca = h5file.get("modes/positions_index_scattered", pidx_sca)[()]
+
+    shape = tms.shape[:-2]
     k0s = np.broadcast_to(k0s, shape)
     epsilon = np.broadcast_to(epsilon, shape)
     mu = np.broadcast_to(mu, shape)
     kappa = np.broadcast_to(kappa, shape)
-    positions = np.broadcast_to(positions, shape + positions_shape)
+
+    basis_inc = treams.SphericalWaveBasis(
+        zip(pidx_inc, l_inc, m_inc, pol_inc), positions
+    )
+    basis_sca = treams.SphericalWaveBasis(
+        zip(pidx_sca, l_sca, m_sca, pol_sca), positions
+    )
+    basis = basis_inc | basis_sca
+
+    ix_inc = [basis.index(b) for b in basis_inc]
+    ix_sca = [[basis.index(b)] for b in basis_sca]
+
+    tm = np.zeros((len(basis),) * 2, complex)
 
     res = np.empty(shape, object)
     for i in np.ndindex(*shape):
-        i_tmat = i + (slice(f["tmatrix"].shape[-2]), slice(f["tmatrix"].shape[-1]))
-        tmat = f["tmatrix"][i_tmat]
-        i_positions = i + (slice(positions_shape[0]), slice(positions_shape[1]))
-        if pick_sca is not None:
-            tmat = pick_sca @ f["tmatrix"][i_tmat] @ pick_inc
         res[i] = treams.TMatrix(
-            tmat,
-            k0s[i],
-            epsilon[i],
-            mu[i],
-            kappa[i],
-            positions[i_positions],
-            helicity,
-            modes,
+            tm,
+            k0=k0s[i],
+            basis=basis,
+            poltype=poltype,
+            material=treams.Material(epsilon[i], mu[i], kappa[i]),
         )
+        res[i][ix_sca, ix_inc] = tms[i]
     if res.shape == ():
         res = res.item()
     return res
