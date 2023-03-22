@@ -1,6 +1,5 @@
 import os
 import tempfile
-import uuid
 
 import gmsh
 import h5py

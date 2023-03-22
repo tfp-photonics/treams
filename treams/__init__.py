@@ -14,7 +14,7 @@ Basis sets
    :toctree: generated/
 
    CylindricalWaveBasis
-   PlaneWaveBasis
+   PlaneWaveBasisAngle
    PlaneWaveBasisPartial
    SphericalWaveBasis
 
@@ -60,7 +60,7 @@ Functions
 from treams._core import (  # noqa: F401
     CylindricalWaveBasis,
     PhysicsArray,
-    PlaneWaveBasis,
+    PlaneWaveBasisAngle,
     PlaneWaveBasisPartial,
     SphericalWaveBasis,
 )

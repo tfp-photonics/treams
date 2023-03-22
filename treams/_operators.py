@@ -17,7 +17,7 @@ class Operator:
     An operator is mainly intended to be used as a descriptor on a class. It will then
     automatically obtain attributes from the class that correspond to the variable names
     of the function that is linked to the operator in the class attribute `_func`. When
-    called, the remainding arguments have to be specified.
+    called, the remaining arguments have to be specified.
     """
 
     def __get__(self, obj, objtype=None):
@@ -94,16 +94,16 @@ def _cw_rotate(phi, basis, to_basis, where):
     return core.PhysicsArray(res, basis=(to_basis, basis))
 
 
-def _pw_rotate(phi, basis, where):
+def _pwa_rotate(phi, basis, where):
     """Rotate plane waves (actually rotates the basis)."""
     # TODO: rotate hints: lattice, kpar
     c1, s1 = np.cos(phi), np.sin(phi)
     r = np.array([[c1, -s1, 0], [s1, c1, 0], [0, 0, 1]])
-    kvecs = r @ np.array([basis.kx, basis.ky, basis.kz])
+    kvecs = r @ np.array([basis.qx, basis.qy, basis.qz])
     modes = zip(*kvecs, basis.pol)
     res = np.eye(len(basis))
     res[..., np.logical_not(where)] = 0
-    return core.PhysicsArray(res, basis=(core.PlaneWaveBasis(modes), basis))
+    return core.PhysicsArray(res, basis=(core.PlaneWaveBasisAngle(modes), basis))
 
 
 def _pwp_rotate(phi, basis, where):
@@ -152,7 +152,7 @@ def rotate(phi, theta=0, psi=0, *, basis, where=True):
     if isinstance(basis, core.PlaneWaveBasisPartial):
         return _pwp_rotate(phi, basis, where)
     if isinstance(basis, core.PlaneWaveBasis):
-        return _pw_rotate(phi, basis, where)
+        return _pwa_rotate(phi, basis, where)
     raise TypeError("invalid basis")
 
 
@@ -224,43 +224,41 @@ def _cw_translate(r, basis, k0, to_basis, material, where):
     )
 
 
-def _pw_translate(r, basis, to_basis, where):
+def _pw_translate(r, basis, k0, to_basis, material, modetype, where):
     """Translate plane waves."""
+    kvecs = basis.kvecs(k0, material, modetype)
     where = (
         where
-        & (to_basis.kx[:, None] == basis.kx)
-        & (to_basis.ky[:, None] == basis.ky)
-        & (to_basis.kz[:, None] == basis.kz)
+        & (
+            np.sum(
+                np.abs(to_basis.kvecs(k0, material, modetype)[:, None, :] - kvecs),
+                axis=-1,
+            )
+            < 1e-14
+        )
         & (to_basis.pol[:, None] == basis.pol)
     )
     res = pw.translate(
-        basis.kx,
-        basis.ky,
-        basis.kz,
+        kvecs[:, 0],
+        kvecs[:, 1],
+        kvecs[:, 2],
         r[..., None, None, 0],
         r[..., None, None, 1],
         r[..., None, None, 2],
         where=where,
     )
     res[..., np.logical_not(where)] = 0
-    return core.PhysicsArray(res, basis=(to_basis, basis))
-
-
-def _pwp_translate(r, basis, to_basis, k0, material, modetype, where):
-    """Translate partial plane waves."""
-    basis_c = basis.complete(k0, material, modetype)
-    to_basis_c = to_basis.complete(k0, material, modetype)
-    res = _pw_translate(r, basis_c, to_basis_c, where=where)
-    del res.basis
-    res.basis = (to_basis, basis)
-    res.k0 = (k0, k0)
-    res.material = (material, material)
-    res.modetype = (modetype, modetype)
-    return res
+    return core.PhysicsArray(
+        res,
+        k0=(k0,) * 2,
+        basis=(to_basis, basis),
+        material=(material,) * 2,
+        modetype=(modetype,) * 2,
+    )
 
 
 def translate(
-    r, *, basis, k0=None, material=Material(), modetype="up", poltype=None, where=True
+    r, *, basis, k0=None, material=Material(), modetype=None, poltype=None, where=True
 ):
     """Translation matrix.
 
@@ -291,10 +289,10 @@ def translate(
     if r.shape[-1] != 3:
         raise ValueError("invalid 'r'")
 
-    if isinstance(basis, core.PlaneWaveBasisPartial):
-        return _pwp_translate(r, basis, to_basis, k0, material, modetype, where)
     if isinstance(basis, core.PlaneWaveBasis):
-        return _pw_translate(r, basis, to_basis, where)
+        if isinstance(basis, core.PlaneWaveBasisPartial):
+            modetype = "up" if modetype is None else modetype
+        return _pw_translate(r, basis, k0, to_basis, material, modetype, where)
     if isinstance(basis, core.SphericalWaveBasis):
         return _sw_translate(r, basis, to_basis, k0, material, poltype, where)
     if isinstance(basis, core.CylindricalWaveBasis):
@@ -352,14 +350,15 @@ def _cw_changepoltype(basis, to_basis, poltype, where):
     return core.PhysicsArray(res, basis=(to_basis, basis), poltype=poltype)
 
 
-def _pw_changepoltype(basis, to_basis, poltype, where):
+def _pwa_changepoltype(basis, to_basis, poltype, where):
     """Change the polarization type of plane waves."""
     where = (
-        (to_basis.kx[:, None] == basis.kx)
-        & (to_basis.ky[:, None] == basis.ky)
-        & (to_basis.kz[:, None] == basis.kz)
+        (to_basis.qx[:, None] == basis.qx)
+        & (to_basis.qy[:, None] == basis.qy)
+        & (to_basis.qz[:, None] == basis.qz)
         & where
     )
+    print(where)
     res = np.zeros_like(where, float)
     res[where] = np.sqrt(0.5)
     res[where & (to_basis.pol[:, None] == basis.pol) & (basis.pol == 0)] = -np.sqrt(0.5)
@@ -410,8 +409,8 @@ def changepoltype(poltype=None, *, basis, where=True):
         return _cw_changepoltype(basis, to_basis, poltype, where)
     if isinstance(basis, core.PlaneWaveBasisPartial):
         return _pwp_changepoltype(basis, to_basis, poltype, where)
-    if isinstance(basis, core.PlaneWaveBasis):
-        return _pw_changepoltype(basis, to_basis, poltype, where)
+    if isinstance(basis, core.PlaneWaveBasisAngle):
+        return _pwa_changepoltype(basis, to_basis, poltype, where)
     raise TypeError("invalid basis")
 
 
@@ -501,20 +500,19 @@ def _sw_pw_expand(basis, to_basis, k0, material, modetype, poltype, where):
     """Expand plane waves in spherical waves."""
     if isinstance(basis, core.PlaneWaveBasisPartial):
         modetype = "up" if modetype is None else modetype
-        basis_c = basis.complete(k0, material, modetype)
-    elif k0 is not None:
-        basis_c = basis.complete(k0, material, modetype)
-    else:
-        basis_c = basis
+    kvecs = basis.kvecs(k0, material, modetype)
     res = pw.to_sw(
         *(m[:, None] for m in to_basis["lmp"]),
-        *basis_c[()],
+        kvecs[:, 0],
+        kvecs[:, 1],
+        kvecs[:, 2],
+        basis.pol,
         poltype=poltype,
         where=where,
     ) * pw.translate(
-        basis_c.kx,
-        basis_c.ky,
-        basis_c.kz,
+        kvecs[:, 0],
+        kvecs[:, 1],
+        kvecs[:, 2],
         to_basis.positions[to_basis.pidx, None, 0],
         to_basis.positions[to_basis.pidx, None, 1],
         to_basis.positions[to_basis.pidx, None, 2],
@@ -558,19 +556,18 @@ def _cw_pw_expand(basis, to_basis, k0, material, modetype, where):
     """Expand plane waves in cylindrical waves."""
     if isinstance(basis, core.PlaneWaveBasisPartial):
         modetype = "up" if modetype is None else modetype
-        basis_c = basis.complete(k0, material, modetype)
-    elif k0 is not None:
-        basis_c = basis.complete(k0, material, modetype)
-    else:
-        basis_c = basis
+    kvecs = basis.kvecs(k0, material, modetype)
     res = pw.to_cw(
         *(m[:, None] for m in to_basis["kzmp"]),
-        *basis_c[()],
+        kvecs[:, 0],
+        kvecs[:, 1],
+        kvecs[:, 2],
+        basis.pol,
         where=where,
     ) * pw.translate(
-        basis_c.kx,
-        basis_c.ky,
-        basis_c.kz,
+        kvecs[:, 0],
+        kvecs[:, 1],
+        kvecs[:, 2],
         to_basis.positions[to_basis.pidx, None, 0],
         to_basis.positions[to_basis.pidx, None, 1],
         to_basis.positions[to_basis.pidx, None, 2],
@@ -589,23 +586,16 @@ def _pw_pw_expand(basis, to_basis, k0, material, modetype, where):
     """Expand plane waves in plane waves."""
     if isinstance(basis, core.PlaneWaveBasisPartial):
         modetype = "up" if modetype is None else modetype
-        basis_c = basis.complete(k0, material, modetype)
-    elif k0 is not None:
-        basis_c = basis.complete(k0, material, modetype)
-    else:
-        basis_c = basis
+    kvecs = basis.kvecs(k0, material, modetype)
     if isinstance(to_basis, core.PlaneWaveBasisPartial):
-        to_basis_c = basis.complete(k0, material, modetype)
-    elif k0 is not None:
-        to_basis_c = basis.complete(k0, material, modetype)
-    else:
-        to_basis_c = basis
+        modetype = "up" if modetype is None else modetype
+    to_kvecs = basis.kvecs(k0, material, modetype)
     res = np.array(
         where
-        & (to_basis_c.kx[:, None] == basis_c.kx)
-        & (to_basis_c.ky[:, None] == basis_c.ky)
-        & (to_basis_c.kz[:, None] == basis_c.kz)
-        & (to_basis_c.pol[:, None] == basis_c.pol),
+        & (to_kvecs[:, 0, None] == kvecs[:, 0])
+        & (to_kvecs[:, 1, None] == kvecs[:, 1])
+        & (to_kvecs[:, 2, None] == kvecs[:, 2])
+        & (to_basis.pol[:, None] == basis.pol),
         int,
     )
     return core.PhysicsArray(
@@ -795,15 +785,17 @@ def _pw_sw_expand(
     basis, to_basis, k0, kpar, lattice, material, modetype, poltype, where
 ):
     """Expand spherical waves in a lattice in plane waves."""
-    if isinstance(to_basis, core.PlaneWaveBasis):
-        if modetype is None and isinstance(to_basis, core.PlaneWaveBasisPartial):
-            modetype = "up"
-        to_basis_c = to_basis.complete(k0, material, modetype)
+    if modetype is None and isinstance(to_basis, core.PlaneWaveBasisPartial):
+        modetype = "up"
+    kvecs = to_basis.kvecs(k0, material, modetype)
     if len(kpar) == 2:
         kpar = [kpar[0], kpar[1], np.nan]
     kpar[2] = np.nan
     res = sw.periodic_to_pw(
-        *(m[:, None] for m in to_basis_c["xyzp"]),
+        kvecs[:, :1],
+        kvecs[:, 1:2],
+        kvecs[:, 2:],
+        to_basis.pol[:, None],
         *basis["lmp"],
         Lattice(lattice, "xy").volume,
         poltype=poltype,
@@ -866,15 +858,17 @@ def _cwl_expand(basis, to_basis, eta, k0, kpar, lattice, material, poltype, wher
 
 def _pw_cw_expand(basis, to_basis, k0, lattice, kpar, material, modetype, where):
     """Expand cylindrical waves in a lattice in plane waves."""
-    if isinstance(to_basis, core.PlaneWaveBasis):
-        if modetype is None and isinstance(to_basis, core.PlaneWaveBasisPartial):
-            modetype = "up"
-        to_basis_c = to_basis.complete(k0, material, modetype)
+    if modetype is None and isinstance(to_basis, core.PlaneWaveBasisPartial):
+        modetype = "up"
+    kvecs = to_basis.kvecs(k0, material, modetype)
     if len(kpar) == 1:
         kpar = [kpar[0], np.nan, np.nan]
     kpar[0] = 0 if np.isnan(kpar[0]) else kpar[0]
     res = cw.periodic_to_pw(
-        *(m[:, None] for m in to_basis_c["xyzp"]),
+        kvecs[:, :1],
+        kvecs[:, 1:2],
+        kvecs[:, 2:],
+        to_basis.pol[:, None],
         *basis["kzmp"],
         lattice.volume,
         where=where,
@@ -1030,15 +1024,15 @@ def _pwp_permute(basis, n):
     return core.PhysicsArray(np.eye(len(basis)), basis=(obj, basis))
 
 
-def _pw_permute(basis, n):
+def _pwa_permute(basis, n):
     """Permute axes in a plane wave basis."""
-    kx, ky, kz = basis.kx, basis.ky, basis.kz
+    qx, qy, qz = basis.qx, basis.qy, basis.qz
     kpar = basis.hints.get("kpar")
     while n > 0:
-        kx, ky, kz = kz, kx, ky
+        qx, qy, qz = qz, qx, qy
         kpar = kpar[[2, 0, 1]] if kpar is not None else None
         n -= 1
-    obj = type(basis)(zip(kx, ky, kz, basis.pol))
+    obj = type(basis)(zip(qx, qy, qz, basis.pol))
     if "lattice" in basis.hints:
         obj.hints["lattice"] = basis.hints["lattice"].permute(n)
     if kpar is not None:
@@ -1062,8 +1056,8 @@ def permute(n=1, *, basis):
     n = n % 3
     if isinstance(basis, core.PlaneWaveBasisPartial):
         return _pwp_permute(basis, n)
-    if isinstance(basis, core.PlaneWaveBasis):
-        return _pw_permute(basis, n)
+    if isinstance(basis, core.PlaneWaveBasisAngle):
+        return _pwa_permute(basis, n)
     raise TypeError("invalid basis")
 
 
@@ -1221,14 +1215,15 @@ def _cw_efield(r, basis, k0, material, modetype, poltype):
     return res
 
 
-def _pw_efield(r, basis, poltype):
+def _pw_efield(r, basis, k0, material, modetype, poltype):
     """Electric field of plane waves."""
     res = None
+    kvecs = basis.kvecs(k0, material, modetype)
     if poltype == "helicity":
         res = sc.vpw_A(
-            basis.kx,
-            basis.ky,
-            basis.kz,
+            kvecs[:, 0],
+            kvecs[:, 1],
+            kvecs[:, 2],
             r[..., 0],
             r[..., 1],
             r[..., 2],
@@ -1236,16 +1231,16 @@ def _pw_efield(r, basis, poltype):
         )
     elif poltype == "parity":
         res = (1 - basis.pol[:, None]) * sc.vpw_M(
-            basis.kx,
-            basis.ky,
-            basis.kz,
+            kvecs[:, 0],
+            kvecs[:, 1],
+            kvecs[:, 2],
             r[..., 0],
             r[..., 1],
             r[..., 2],
         ) + basis.pol[:, None] * sc.vpw_N(
-            basis.kx,
-            basis.ky,
-            basis.kz,
+            kvecs[:, 0],
+            kvecs[:, 1],
+            kvecs[:, 2],
             r[..., 0],
             r[..., 1],
             r[..., 2],
@@ -1254,23 +1249,13 @@ def _pw_efield(r, basis, poltype):
         raise ValueError("invalid parameters")
     res = util.AnnotatedArray(res)
     res.ann[-2]["basis"] = basis
+    res.ann[-2]["k0"] = k0
+    res.ann[-2]["material"] = material
     res.ann[-2]["poltype"] = poltype
     return res
 
 
-def _pwp_efield(r, basis, k0, material, modetype, poltype):
-    """Electric field of partial plane waves."""
-    basis_c = basis.complete(k0, material, modetype)
-    res = _pw_efield(r, basis_c, poltype)
-    del res.ann[-2]["basis"]
-    res.ann[-2]["basis"] = basis
-    res.ann[-2]["k0"] = k0
-    res.ann[-2]["material"] = material
-    res.ann[-2]["modetype"] = modetype
-    return res
-
-
-def efield(r, *, basis, k0=None, material=Material(), modetype=None, poltype=None):
+def efield(r, *, basis, k0, material=Material(), modetype=None, poltype=None):
     """Electric field.
 
     The resulting matrix maps the electric field coefficients of the given basis to the
@@ -1279,7 +1264,7 @@ def efield(r, *, basis, k0=None, material=Material(), modetype=None, poltype=Non
     Args:
         r (array-like): Evaluation points
         basis (:class:`~treams.BasisSet`): Basis set.
-        k0 (float, optional): Wave number.
+        k0 (float): Wave number.
         material (:class:`~treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode.
         poltype (str, optional): Polarization, see also
@@ -1295,13 +1280,10 @@ def efield(r, *, basis, k0=None, material=Material(), modetype=None, poltype=Non
     if isinstance(basis, core.CylindricalWaveBasis):
         modetype = "regular" if modetype is None else modetype
         return _cw_efield(r, basis, k0, material, modetype, poltype)
-    if isinstance(basis, core.PlaneWaveBasisPartial):
-        modetype = "up" if modetype is None else modetype
-        return _pwp_efield(r, basis, k0, material, modetype, poltype)
     if isinstance(basis, core.PlaneWaveBasis):
-        if k0 is not None:
-            basis.complete(k0, material, modetype)
-        return _pw_efield(r, basis, poltype)
+        if isinstance(basis, core.PlaneWaveBasisPartial):
+            modetype = "up" if modetype is None else modetype
+        return _pw_efield(r, basis, k0, material, modetype, poltype)
     raise TypeError("invalid basis")
 
 
@@ -1460,14 +1442,15 @@ def _cw_hfield(r, basis, k0, material, modetype, poltype):
     return res
 
 
-def _pw_hfield(r, basis, material, poltype):
+def _pw_hfield(r, basis, k0, material, modetype, poltype):
     """Magnetic field of plane waves."""
     res = None
+    kvecs = basis.kvecs(k0, material, modetype)
     if poltype == "helicity":
         res = (2 * basis.pol[:, None] - 1) * sc.vpw_A(
-            basis.kx,
-            basis.ky,
-            basis.kz,
+            kvecs[:, 0],
+            kvecs[:, 1],
+            kvecs[:, 2],
             r[..., 0],
             r[..., 1],
             r[..., 2],
@@ -1475,16 +1458,16 @@ def _pw_hfield(r, basis, material, poltype):
         )
     elif poltype == "parity":
         res = basis.pol[:, None] * sc.vpw_M(
-            basis.kx,
-            basis.ky,
-            basis.kz,
+            kvecs[:, 0],
+            kvecs[:, 1],
+            kvecs[:, 2],
             r[..., 0],
             r[..., 1],
             r[..., 2],
         ) + (1 - basis.pol[:, None]) * sc.vpw_N(
-            basis.kx,
-            basis.ky,
-            basis.kz,
+            kvecs[:, 0],
+            kvecs[:, 1],
+            kvecs[:, 2],
             r[..., 0],
             r[..., 1],
             r[..., 2],
@@ -1499,19 +1482,7 @@ def _pw_hfield(r, basis, material, poltype):
     return res
 
 
-def _pwp_hfield(r, basis, k0, material, modetype, poltype):
-    """Magnetic field of partial plane waves."""
-    basis_c = basis.complete(k0, material, modetype)
-    res = _pw_efield(r, basis_c, poltype, material)
-    del res.ann[-2]["basis"]
-    res.ann[-2]["basis"] = basis
-    res.ann[-2]["k0"] = k0
-    res.ann[-2]["material"] = material
-    res.ann[-2]["modetype"] = modetype
-    return res
-
-
-def hfield(r, *, basis, k0=None, material=Material(), modetype=None, poltype=None):
+def hfield(r, *, basis, k0, material=Material(), modetype=None, poltype=None):
     r"""Magnetic field.
 
     The resulting matrix maps the electric field coefficients of the given basis to the
@@ -1522,7 +1493,7 @@ def hfield(r, *, basis, k0=None, material=Material(), modetype=None, poltype=Non
     Args:
         r (array-like): Evaluation points
         basis (:class:`~treams.BasisSet`): Basis set.
-        k0 (float, optional): Wave number.
+        k0 (float): Wave number.
         material (:class:`~treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode.
         poltype (str, optional): Polarization, see also
@@ -1538,13 +1509,10 @@ def hfield(r, *, basis, k0=None, material=Material(), modetype=None, poltype=Non
     if isinstance(basis, core.CylindricalWaveBasis):
         modetype = "regular" if modetype is None else modetype
         return _cw_hfield(r, basis, k0, material, modetype, poltype)
-    if isinstance(basis, core.PlaneWaveBasisPartial):
-        modetype = "up" if modetype is None else modetype
-        return _pwp_hfield(r, basis, k0, material, modetype, poltype)
     if isinstance(basis, core.PlaneWaveBasis):
-        if k0 is not None:
-            basis.complete(k0, material, modetype)
-        return _pw_hfield(r, basis, material, poltype)
+        if isinstance(basis, core.PlaneWaveBasisPartial):
+            modetype = "up" if modetype is None else modetype
+        return _pw_hfield(r, basis, k0, material, modetype, poltype)
     raise TypeError("invalid basis")
 
 
@@ -1555,7 +1523,7 @@ class HField(Operator):
     coefficients at specified points. See also :func:`hfield`.
     """
 
-    _func = staticmethod(efield)
+    _func = staticmethod(hfield)
 
     def inv(self, *args, **kwargs):
         """Inverse transformation of a magnetic field to modes.
@@ -1585,20 +1553,9 @@ def _cw_dfield(r, basis, k0, material, modetype, poltype):
     return res
 
 
-def _pw_dfield(r, basis, material, poltype):
-    """Displacement field of plane waves."""
-    res = _pw_efield(r, basis, poltype)
-    if poltype == "helicity":
-        res *= material.nmp[basis.pol][:, None] / material.impedance
-    else:
-        res *= material.epsilon
-    res.ann[-2]["material"] = material
-    return res
-
-
-def _pwp_dfield(r, basis, k0, material, modetype, poltype):
+def _pw_dfield(r, basis, k0, material, modetype, poltype):
     """Displacement field of partial plane waves."""
-    res = _pwp_efield(r, basis, k0, material, modetype, poltype)
+    res = _pw_efield(r, basis, k0, material, modetype, poltype)
     if poltype == "helicity":
         res *= material.nmp[basis.pol][:, None] / material.impedance
     else:
@@ -1606,7 +1563,7 @@ def _pwp_dfield(r, basis, k0, material, modetype, poltype):
     return res
 
 
-def dfield(r, *, basis, k0=None, material=Material(), modetype=None, poltype=None):
+def dfield(r, *, basis, k0, material=Material(), modetype=None, poltype=None):
     r"""Displacement field.
 
     The resulting matrix maps the electric field coefficients of the given basis to the
@@ -1617,7 +1574,7 @@ def dfield(r, *, basis, k0=None, material=Material(), modetype=None, poltype=Non
     Args:
         r (array-like): Evaluation points
         basis (:class:`~treams.BasisSet`): Basis set.
-        k0 (float, optional): Wave number.
+        k0 (float): Wave number.
         material (:class:`~treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode.
         poltype (str, optional): Polarization, see also
@@ -1633,13 +1590,10 @@ def dfield(r, *, basis, k0=None, material=Material(), modetype=None, poltype=Non
     if isinstance(basis, core.CylindricalWaveBasis):
         modetype = "regular" if modetype is None else modetype
         return _cw_dfield(r, basis, k0, material, modetype, poltype)
-    if isinstance(basis, core.PlaneWaveBasisPartial):
-        modetype = "up" if modetype is None else modetype
-        return _pwp_dfield(r, basis, k0, material, modetype, poltype)
     if isinstance(basis, core.PlaneWaveBasis):
-        if k0 is not None:
-            basis.complete(k0, material, modetype)
-        return _pw_dfield(r, basis, material, poltype)
+        if isinstance(basis, core.PlaneWaveBasisPartial):
+            modetype = "up" if modetype is None else modetype
+        return _pw_dfield(r, basis, k0, material, modetype, poltype)
     raise TypeError("invalid basis")
 
 
@@ -1650,7 +1604,7 @@ class DField(Operator):
     coefficients at specified points. See also :func:`dfield`.
     """
 
-    _func = staticmethod(efield)
+    _func = staticmethod(dfield)
 
     def inv(self, *args, **kwargs):
         """Inverse transformation of a displacement field to modes.
@@ -1680,19 +1634,9 @@ def _cw_bfield(r, basis, k0, material, modetype, poltype):
     return res
 
 
-def _pw_bfield(r, basis, poltype, material):
-    """Magnetic flux density of plane waves."""
-    res = _pw_hfield(r, basis, material, poltype)
-    if poltype == "helicity":
-        res *= material.nmp[basis.pol][:, None] * material.impedance
-    else:
-        res *= material.mu
-    return res
-
-
-def _pwp_bfield(r, basis, k0, material, modetype, poltype):
+def _pw_bfield(r, basis, k0, material, modetype, poltype):
     """Magnetic flux density of partial plane waves."""
-    res = _pwp_hfield(r, basis, k0, material, modetype, poltype)
+    res = _pw_hfield(r, basis, k0, material, modetype, poltype)
     if poltype == "helicity":
         res *= material.nmp[basis.pol][:, None] * material.impedance
     else:
@@ -1728,13 +1672,10 @@ def bfield(r, *, basis, k0=None, material=Material(), modetype=None, poltype=Non
     if isinstance(basis, core.CylindricalWaveBasis):
         modetype = "regular" if modetype is None else modetype
         return _cw_bfield(r, basis, k0, material, modetype, poltype)
-    if isinstance(basis, core.PlaneWaveBasisPartial):
-        modetype = "up" if modetype is None else modetype
-        return _pwp_bfield(r, basis, k0, material, modetype, poltype)
     if isinstance(basis, core.PlaneWaveBasis):
-        if k0 is not None:
-            basis.complete(k0, material, modetype)
-        return _pw_bfield(r, basis, poltype, material)
+        if isinstance(basis, core.PlaneWaveBasisPartial):
+            modetype = "up" if modetype is None else modetype
+        return _pw_bfield(r, basis, k0, material, modetype, poltype)
     raise TypeError("invalid basis")
 
 
@@ -1745,7 +1686,7 @@ class BField(Operator):
     coefficients at specified points. See also :func:`bfield`.
     """
 
-    _func = staticmethod(efield)
+    _func = staticmethod(bfield)
 
     def inv(self, *args, **kwargs):
         """Inverse transformation of a magnetic flux density to modes.
@@ -1892,14 +1833,15 @@ def _cw_gfield(pol, r, basis, k0, material, modetype, poltype):
     return res
 
 
-def _pw_gfield(pol, r, basis, poltype):
+def _pw_gfield(pol, r, basis, k0, material, modetype, poltype):
     """Riemann-Silberstein field G of plane waves."""
     res = None
+    kvecs = basis.kvecs(k0, material, modetype)
     if poltype == "helicity":
         res = (basis.pol[:, None] == pol) * sc.vpw_A(
-            basis.kx,
-            basis.ky,
-            basis.kz,
+            kvecs[:, 0],
+            kvecs[:, 1],
+            kvecs[:, 2],
             r[..., 0],
             r[..., 1],
             r[..., 2],
@@ -1907,16 +1849,16 @@ def _pw_gfield(pol, r, basis, poltype):
         )
     elif poltype == "parity":
         res = (1 + 2 * (pol - 1) * basis.pol[:, None]) * sc.vpw_M(
-            basis.kx,
-            basis.ky,
-            basis.kz,
+            kvecs[:, 0],
+            kvecs[:, 1],
+            kvecs[:, 2],
             r[..., 0],
             r[..., 1],
             r[..., 2],
         ) + (2 * pol - 1 - 2 * (pol - 1) * basis.pol[:, None]) * sc.vpw_N(
-            basis.kx,
-            basis.ky,
-            basis.kz,
+            kvecs[:, 0],
+            kvecs[:, 1],
+            kvecs[:, 2],
             r[..., 0],
             r[..., 1],
             r[..., 2],
@@ -1929,19 +1871,7 @@ def _pw_gfield(pol, r, basis, poltype):
     return res
 
 
-def _pwp_gfield(pol, r, basis, k0, material, modetype, poltype):
-    """Riemann-Silberstein field G of partial plane waves."""
-    basis_c = basis.complete(k0, material, modetype)
-    res = _pw_gfield(pol, r, basis_c, poltype)
-    del res.ann[-2]["basis"]
-    res.ann[-2]["basis"] = basis
-    res.ann[-2]["k0"] = k0
-    res.ann[-2]["material"] = material
-    res.ann[-2]["modetype"] = modetype
-    return res
-
-
-def gfield(pol, r, *, basis, k0=None, material=Material(), modetype=None, poltype=None):
+def gfield(pol, r, *, basis, k0, material=Material(), modetype=None, poltype=None):
     """Riemann-Silberstein field G.
 
     The resulting matrix maps the electric field coefficients of the given basis to the
@@ -1952,7 +1882,7 @@ def gfield(pol, r, *, basis, k0=None, material=Material(), modetype=None, poltyp
             to polarizations for helicity mode, 0 is also treated as -1.
         r (array-like): Evaluation points
         basis (:class:`~treams.BasisSet`): Basis set.
-        k0 (float, optional): Wave number.
+        k0 (float): Wave number.
         material (:class:`~treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode.
         poltype (str, optional): Polarization, see also
@@ -1968,17 +1898,14 @@ def gfield(pol, r, *, basis, k0=None, material=Material(), modetype=None, poltyp
     r = r[..., None, :]
     if isinstance(basis, core.SphericalWaveBasis):
         modetype = "regular" if modetype is None else modetype
-        return _sw_gfield(r, basis, k0, material, modetype, poltype)
+        return _sw_gfield(pol, r, basis, k0, material, modetype, poltype)
     if isinstance(basis, core.CylindricalWaveBasis):
         modetype = "regular" if modetype is None else modetype
-        return _cw_gfield(r, basis, k0, material, modetype, poltype)
-    if isinstance(basis, core.PlaneWaveBasisPartial):
-        modetype = "up" if modetype is None else modetype
-        return _pwp_gfield(r, basis, k0, material, modetype, poltype)
+        return _cw_gfield(pol, r, basis, k0, material, modetype, poltype)
     if isinstance(basis, core.PlaneWaveBasis):
-        if k0 is not None:
-            basis.complete(k0, material, modetype)
-        return _pw_gfield(pol, r, basis, poltype)
+        if isinstance(basis, core.PlaneWaveBasisPartial):
+            modetype = "up" if modetype is None else modetype
+        return _pw_gfield(pol, r, basis, k0, material, modetype, poltype)
     raise TypeError("invalid basis")
 
 
@@ -1989,7 +1916,7 @@ class GField(Operator):
     coefficients at specified points. See also :func:`gfield`.
     """
 
-    _func = staticmethod(efield)
+    _func = staticmethod(gfield)
 
     def inv(self, *args, **kwargs):
         """Inverse transformation of a Riemann-Silberstein field to modes.
@@ -2015,24 +1942,15 @@ def _cw_ffield(pol, r, basis, k0, material, modetype, poltype):
     return res
 
 
-def _pw_ffield(pol, r, basis, material, poltype):
-    """Riemann-Silberstein field F of plane waves."""
-    res = _pw_gfield(pol, r, basis, poltype)
-    if poltype == "helicity":
-        res *= material.nmp[basis.pol, None] / material.n
-        res.ann[-2]["material"] = material
-    return res
-
-
-def _pwp_ffield(pol, r, basis, k0, material, modetype, poltype):
+def _pw_ffield(pol, r, basis, k0, material, modetype, poltype):
     """Riemann-Silberstein field F of partial plane waves."""
-    res = _pwp_gfield(pol, r, basis, k0, material, modetype, poltype)
+    res = _pw_gfield(pol, r, basis, k0, material, modetype, poltype)
     if poltype == "helicity":
         res *= material.nmp[basis.pol, None] / material.n
     return res
 
 
-def ffield(pol, r, *, basis, k0=None, material=Material(), modetype=None, poltype=None):
+def ffield(pol, r, *, basis, k0, material=Material(), modetype=None, poltype=None):
     """Riemann-Silberstein field F.
 
     The resulting matrix maps the electric field coefficients of the given basis to the
@@ -2043,7 +1961,7 @@ def ffield(pol, r, *, basis, k0=None, material=Material(), modetype=None, poltyp
             to polarizations for helicity mode, 0 is also treated as -1.
         r (array-like): Evaluation points
         basis (:class:`~treams.BasisSet`): Basis set.
-        k0 (float, optional): Wave number.
+        k0 (float): Wave number.
         material (:class:`~treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode.
         poltype (str, optional): Polarization, see also
@@ -2059,17 +1977,14 @@ def ffield(pol, r, *, basis, k0=None, material=Material(), modetype=None, poltyp
     r = r[..., None, :]
     if isinstance(basis, core.SphericalWaveBasis):
         modetype = "regular" if modetype is None else modetype
-        return _sw_ffield(r, basis, k0, material, modetype, poltype)
+        return _sw_ffield(pol, r, basis, k0, material, modetype, poltype)
     if isinstance(basis, core.CylindricalWaveBasis):
         modetype = "regular" if modetype is None else modetype
-        return _cw_ffield(r, basis, k0, material, modetype, poltype)
-    if isinstance(basis, core.PlaneWaveBasisPartial):
-        modetype = "up" if modetype is None else modetype
-        return _pwp_ffield(r, basis, k0, material, modetype, poltype)
+        return _cw_ffield(pol, r, basis, k0, material, modetype, poltype)
     if isinstance(basis, core.PlaneWaveBasis):
-        if k0 is not None:
-            basis.complete(k0, material, modetype)
-        return _pw_ffield(pol, r, basis, material, poltype)
+        if isinstance(basis, core.PlaneWaveBasisPartial):
+            modetype = "up" if modetype is None else modetype
+        return _pw_ffield(pol, r, basis, k0, material, modetype, poltype)
     raise TypeError("invalid basis")
 
 
@@ -2080,7 +1995,7 @@ class FField(Operator):
     coefficients at specified points. See also :func:`ffield`.
     """
 
-    _func = staticmethod(efield)
+    _func = staticmethod(ffield)
 
     def inv(self, *args, **kwargs):
         """Inverse transformation of a Riemann-Silberstein field to modes.

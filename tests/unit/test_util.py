@@ -61,7 +61,7 @@ class TestAnnotationSequence:
         assert a == ({"a": 1}, {"a": 2})
 
     def test_repr(self):
-        a = util.AnnotationSequence({"a": 1}, {"a": 2}, container=dict)
+        a = util.AnnotationSequence({"a": 1}, {"a": 2}, mapping=dict)
         assert repr(a) == "AnnotationSequence({'a': 1}, {'a': 2})"
 
     def test_len(self):

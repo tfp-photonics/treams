@@ -614,29 +614,32 @@ class CylindricalWaveBasis(BasisSet):
 
 
 class PlaneWaveBasis(BasisSet):
+    isglobal = True
+
+
+class PlaneWaveBasisAngle(PlaneWaveBasis):
     """Plane wave basis.
 
     A plane wave basis is defined by a collection of wave vectors specified by the
-    Cartesian wave vector components ``kx``, ``ky``, and ``kz`` and the polarizations
-    ``pol``.
+    Cartesian wave vector components ``qx``, ``qy``, and ``qz`` normalized to
+    :math:`q_x^2 + q_y^2 + q_z^2 = 1` and the polarizations ``pol``.
 
     For plane waves there exist multiple :ref:`polarizations:Polarizations`, such that
     these modes can refer to either :func:`~treams.special.vpw_A` or
     :func:`~treams.special.vpw_M` and :func:`~treams.special.vpw_N`.
 
     Args:
-        modes (array-like): A tuple containing a list for each of ``kx``, ``ky``,
-            ``kz``, and ``pol``.
+        modes (array-like): A tuple containing a list for each of ``qx``, ``qy``,
+            ``qz``, and ``pol``.
 
     Attributes:
-        kx (array-like): X-component of the wave vector.
-        ky (array-like): Y-component of the wave vector.
-        kz (array-like): Z-component of the wave vector.
+        qx (array-like): X-component of the normalized wave vector.
+        qy (array-like): Y-component of the normalized wave vector.
+        qz (array-like): Z-component of the normalized wave vector.
         pol (array-like): Polarization, see also :ref:`polarizations:Polarizations`.
     """
 
-    _names = ("kx", "ky", "kz", "pol")
-    isglobal = True
+    _names = ("qx", "qy", "qz", "pol")
     """A plane wave basis is always global."""
 
     def __init__(self, modes):
@@ -649,21 +652,24 @@ class PlaneWaveBasis(BasisSet):
                 tmp.append(m)
         modes = tmp
         if len(modes) == 0:
-            kx = []
-            ky = []
-            kz = []
+            qx = []
+            qy = []
+            qz = []
             pol = []
         elif len(modes[0]) == 4:
-            kx, ky, kz, pol = (*zip(*modes),)
+            qx, qy, qz, pol = (*zip(*modes),)
         else:
             raise ValueError("invalid shape of modes")
 
-        kx, ky, kz, pol = [np.array(i) for i in (kx, ky, kz, pol)]
-        for i in (kx, ky, kz, pol):
+        qx, qy, qz, pol = (np.array(i) for i in (qx, qy, qz, pol))
+        norm = np.emath.sqrt(qx * qx + qy * qy + qz * qz)
+        norm[np.abs(norm - 1) < 1e-14] = 1
+        qx, qy, qz = (np.true_divide(i, norm) for i in (qx, qy, qz))
+        for i in (qx, qy, qz, pol):
             i.flags.writeable = False
             if i.ndim > 1:
                 raise ValueError("invalid shape of parameters")
-        self.kx, self.ky, self.kz = kx, ky, kz
+        self.qx, self.qy, self.qz = qx, qy, qz
         self.pol = np.array(pol.real, int)
         if np.any(self.pol != pol):
             raise ValueError("polarizations must be integer")
@@ -680,18 +686,18 @@ class PlaneWaveBasis(BasisSet):
         of the two exceptions a tuple is returned.
 
         Alternatively, the string "xyzp", "xyp", or "zp" can be used to access only a
-        subset of :attr:`kx`, :attr:`ky`, :attr:`kz`, and :attr:`pol`.
+        subset of :attr:`qx`, :attr:`qy`, :attr:`qz`, and :attr:`pol`.
         """
         if isinstance(idx, str):
             idx = idx.lower().strip()
             if idx == "xyzp":
-                return self.kx, self.ky, self.kz, self.pol
+                return self.qx, self.qy, self.qz, self.pol
             elif idx == "xyp":
-                return self.kx, self.ky, self.pol
+                return self.qx, self.qy, self.pol
             elif idx == "zp":
-                return self.kz, self.pol
+                return self.qz, self.pol
             raise IndexError(f"unrecognized key '{idx}'")
-        res = self.kx[idx], self.ky[idx], self.kz[idx], self.pol[idx]
+        res = self.qx[idx], self.qy[idx], self.qz[idx], self.pol[idx]
         if isinstance(idx, int) or idx == ():
             return res
         return type(self)(zip(*res))
@@ -705,9 +711,9 @@ class PlaneWaveBasis(BasisSet):
         Example:
             >>> PlaneWaveBasis.default([[0, 0, 5], [0, 3, 4]])
             PlaneWaveBasis(
-                kx=[0 0 0 0],
-                ky=[0 0 3 3],
-                kz=[5 5 4 4],
+                qx=[0 0 0 0],
+                qy=[0 0 3 3],
+                qz=[5 5 4 4],
                 pol=[1 0 1 0],
             )
 
@@ -739,15 +745,15 @@ class PlaneWaveBasis(BasisSet):
         """
         try:
             return self is other or (
-                np.array_equal(self.kx, other.kx)
-                and np.array_equal(self.ky, other.ky)
-                and np.array_equal(self.kz, other.kz)
+                np.array_equal(self.qx, other.qx)
+                and np.array_equal(self.qy, other.qy)
+                and np.array_equal(self.qz, other.qz)
                 and np.array_equal(self.pol, other.pol)
             )
         except AttributeError:
             return False
 
-    def partial(self, alignment="xy", k0=None, material=Material()):
+    def partial(self, k0, alignment="xy", material=Material()):
         """Create a :class:`PlaneWavePartial`.
 
         The plane wave basis is changed to a partial basis, where only two (real-valued)
@@ -764,23 +770,16 @@ class PlaneWaveBasis(BasisSet):
             material (:class:`~treams.Material` or tuple): Material definition. Defaults
                 to vacuum/air.
         """
-        if k0 is not None:
-            ks = material.ks(k0)[self.pol]
-            test = self.kx * self.kx + self.ky * self.ky + self.kz * self.kz - ks * ks
-            if np.any(
-                np.logical_or(np.abs(test.real) > 1e-10, np.abs(test.imag) > 1e-10)
-            ):
-                raise ValueError("dispersion relation violated")
-        alignment = "xy" if alignment is None else alignment
+        ks = material.ks(k0)[self.pol]
         if alignment in ("xy", "yz", "zx"):
-            kpar = [getattr(self, "k" + s) for s in alignment]
+            kpar = [ks * getattr(self, "q" + s) for s in alignment]
         else:
             raise ValueError(f"invalid alignment '{alignment}'")
         obj = PlaneWaveBasisPartial(zip(*kpar, self.pol), alignment)
         obj.hints = copy.deepcopy(self.hints)
         return obj
 
-    def complete(self, k0, material=Material(), modetype=None):
+    def kvecs(self, k0, material=Material(), modetype=None):
         """Create a complete basis.
 
         A plane wave basis is considered complete, when all three Cartesian components
@@ -796,10 +795,8 @@ class PlaneWaveBasis(BasisSet):
             modetype (optional): Currently unused for this class.
         """
         # TODO: check kz depending on modetype (alignment?)
-        ks = (k0 * Material(material).nmp)[self.pol]
-        if (np.abs(self.kx**2 + self.ky**2 + self.kz**2 - ks * ks) > 1e-14).any():
-            raise ValueError("incompatible k0 and/or material")
-        return self
+        qs = np.stack((self.qx, self.qy, self.qz), -1)
+        return Material(material).ks(k0)[self.pol, None] * qs
 
 
 class PlaneWaveBasisPartial(PlaneWaveBasis):
@@ -1004,7 +1001,7 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         except AttributeError:
             return False
 
-    def complete(self, k0, material=Material(), modetype="up"):
+    def angle(self, k0, material=Material(), modetype="up"):
         """Create a complete basis :class:`PlaneWaveBasis`.
 
         A plane wave basis is considered complete, when all three Cartesian components
@@ -1030,9 +1027,37 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
             kx, ky, kz = kz, kx, ky
         elif self.alignment == "zy":
             kx, ky, kz = ky, kz, kx
-        obj = PlaneWaveBasis(zip(kx, ky, kz, self.pol))
+        obj = PlaneWaveBasisAngle(zip(kx, ky, kz, self.pol))
         obj.hints = copy.deepcopy(self.hints)
         return obj
+
+    def kvecs(self, k0, material=Material(), modetype="up"):
+        """Create a complete basis :class:`PlaneWaveBasis`.
+
+        A plane wave basis is considered complete, when all three Cartesian components
+        and the polarization is defined for each mode. So, the specified wave number,
+        material, and modetype is taken to calculate the third Cartesian wave vector.
+        The modetype "up" ("down") is for waves propagating in the positive (negative)
+        direction with respect to the Cartesian axis that is orthogonal to the
+        alignment.
+
+        Args:
+            k0 (float): Wave number.
+            material (:class:`~treams.Material` or tuple, optional): Material
+                definition. Defaults to vacuum/air.
+            modetype (str, optional): Propagation direction. Defaults to "up".
+        """
+        if modetype not in ("up", "down"):
+            raise ValueError("modetype not recognized")
+        material = Material(material)
+        kx = self._kx
+        ky = self._ky
+        kz = material.kzs(k0, kx, ky, self.pol) * (2 * (modetype == "up") - 1)
+        if self.alignment == "yz":
+            kx, ky, kz = kz, kx, ky
+        elif self.alignment == "zy":
+            kx, ky, kz = ky, kz, kx
+        return np.stack((kx, ky, kz), -1)
 
 
 def _raise_basis_error(*args):

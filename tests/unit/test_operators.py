@@ -43,8 +43,8 @@ class TestRotate:
             treams.rotate(1, basis=(a, b))
 
     def test_pw(self):
-        b = treams.PlaneWaveBasis([[1, 0, 0, 0], [0, 1, 0, 0]])
-        a = treams.PlaneWaveBasis(
+        b = treams.PlaneWaveBasisAngle([[1, 0, 0, 0], [0, 1, 0, 0]])
+        a = treams.PlaneWaveBasisAngle(
             [[np.cos(2), np.sin(2), 0, 0], [-np.sin(2), np.cos(2), 0, 0]]
         )
         where = [True, False]
@@ -143,17 +143,21 @@ class TestTranslate:
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
     def test_pw(self):
-        a = treams.PlaneWaveBasis([[0.1, 0, 0, 0]])
-        b = treams.PlaneWaveBasis([[0.1, 0, 0, 0], [0.1, 1, 0, 0]])
+        a = treams.PlaneWaveBasisAngle([[1, 0, 0, 0]])
+        b = treams.PlaneWaveBasisAngle([[1, 0, 0, 0], [0.6, 0.8, 0, 0]])
         where = [True, False]
-        x = treams.translate([[0, 0, 0], [0, 1, 1]], basis=(a, b), where=where)
+        x = treams.translate([[0, 0, 0], [1, 1, 1]], k0=1, basis=(a, b), where=where)
         y = treams.PhysicsArray(
             [
-                [[treams.pw.translate(0.1, 0, 0, 0, 0, 0), 0]],
-                [[treams.pw.translate(0.1, 0, 0, 0, 1, 1), 0]],
+                [[treams.pw.translate(1, 0, 0, 0, 0, 0), 0]],
+                [[treams.pw.translate(1, 0, 0, 1, 1, 1), 0]],
             ],
             basis=(None, a, b),
+            k0=(1, 1),
+            material=((), ()),
         )
+        print(repr(y))
+        print(repr(x))
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
     def test_pwp(self):
@@ -231,18 +235,21 @@ class TestExpand:
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
     def test_pw_pw(self):
-        a = treams.PlaneWaveBasis([[3, 0, 4, 0], [0, 0, 5, 0]])
-        b = treams.PlaneWaveBasis([[3, 0, 4, 0], [0, 5, 0, 0]])
+        a = treams.PlaneWaveBasisAngle([[3, 0, 4, 0], [0, 0, 5, 0]])
+        b = treams.PlaneWaveBasisAngle([[3, 0, 4, 0], [0, 5, 0, 0]])
         where = [True, False]
         x = treams.expand((a, b), k0=2.5, material=(2, 2, 0), where=where)
         y = treams.PhysicsArray(
-            [[1, 0], [0, 0]], basis=(a, b), k0=2.5, material=treams.Material(2, 2, 0),
+            [[1, 0], [0, 0]],
+            basis=(a, b),
+            k0=2.5,
+            material=treams.Material(2, 2, 0),
         )
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
     def test_cw_pw(self):
         a = treams.CylindricalWaveBasis([[3, 1, 0]], [1, 2, 3])
-        b = treams.PlaneWaveBasis([[0, 4, 3, 0], [0, 4, 3, 1]])
+        b = treams.PlaneWaveBasisAngle([[0, 4, 3, 0], [0, 4, 3, 1]])
         where = [True, False]
         x = treams.expand((a, b), k0=5, where=where)
         y = treams.PhysicsArray(
@@ -262,7 +269,7 @@ class TestExpand:
 
     def test_sw_pw(self):
         a = treams.SphericalWaveBasis([[3, 1, 0]], [1, 2, 3])
-        b = treams.PlaneWaveBasis([[0, 4, 3, 0], [0, 4, 3, 1]])
+        b = treams.PlaneWaveBasisAngle([[0, 4, 3, 0], [0, 4, 3, 1]])
         where = [True, False]
         x = treams.expand((a, b), k0=5, where=where)
         y = treams.PhysicsArray(
@@ -381,7 +388,7 @@ class TestExpandLattice:
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
     def test_pw_sw(self):
-        a = treams.PlaneWaveBasis([[3, 0, 4, 0]])
+        a = treams.PlaneWaveBasisAngle([[3, 0, 4, 0]])
         b = treams.SphericalWaveBasis([[1, -1, 0], [1, 1, 0]])
         where = [True, False]
         lattice = treams.Lattice([[2, 0], [0, 2]])
@@ -454,7 +461,7 @@ class TestExpandLattice:
             treams.expandlattice(lattice=[[1, 0], [0, 1]], basis=b, kpar=0, k0=1)
 
     def test_pw_cw(self):
-        a = treams.PlaneWaveBasis([[3, 0, 4, 0]])
+        a = treams.PlaneWaveBasisAngle([[3, 0, 4, 0]])
         b = treams.CylindricalWaveBasis([[4, -1, 0], [4, 1, 0]])
         where = [True, False]
         lattice = treams.Lattice(2, "x")
@@ -479,7 +486,9 @@ class TestChangePoltype:
         where = [True, False]
         x = treams.changepoltype(basis=b, where=where)
         y = treams.PhysicsArray(
-            [[-np.sqrt(0.5), 0], [0, 0]], basis=(b, b), poltype=("helicity", "parity"),
+            [[-np.sqrt(0.5), 0], [0, 0]],
+            basis=(b, b),
+            poltype=("helicity", "parity"),
         )
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
@@ -489,16 +498,20 @@ class TestChangePoltype:
         where = [True, False]
         x = treams.changepoltype(basis=(a, b), where=where)
         y = treams.PhysicsArray(
-            [[-np.sqrt(0.5), 0], [0, 0]], basis=(a, b), poltype=("helicity", "parity"),
+            [[-np.sqrt(0.5), 0], [0, 0]],
+            basis=(a, b),
+            poltype=("helicity", "parity"),
         )
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
     def test_pw(self):
-        b = treams.PlaneWaveBasis([[2, 0, 0, 0], [1, 0, 0, 1]])
+        b = treams.PlaneWaveBasisAngle([[2, 0, 0, 0], [1, 1, 0, 1]])
         where = [True, False]
         x = treams.changepoltype(basis=b, where=where)
         y = treams.PhysicsArray(
-            [[-np.sqrt(0.5), 0], [0, 0]], basis=(b, b), poltype=("helicity", "parity"),
+            [[-np.sqrt(0.5), 0], [0, 0]],
+            basis=(b, b),
+            poltype=("helicity", "parity"),
         )
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
@@ -507,16 +520,17 @@ class TestChangePoltype:
         where = [True, False]
         x = treams.changepoltype(basis=b, where=where)
         y = treams.PhysicsArray(
-            [[-np.sqrt(0.5), 0], [0, 0]], basis=(b, b), poltype=("helicity", "parity"),
+            [[-np.sqrt(0.5), 0], [0, 0]],
+            basis=(b, b),
+            poltype=("helicity", "parity"),
         )
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
 
 class TestPermute:
     def test_pw(self):
-        a = treams.PlaneWaveBasis([[1, 2, 3, 1], [1, 2, 3, 0]])
-        b = treams.PlaneWaveBasis([[2, 3, 1, 1], [2, 3, 1, 0]])
-        print(repr(treams.permute(basis=b)))
+        a = treams.PlaneWaveBasisAngle([[1, 2, 3, 1], [1, 2, 3, 0]])
+        b = treams.PlaneWaveBasisAngle([[2, 3, 1, 1], [2, 3, 1, 0]])
         assert treams.permute(basis=b).basis[0] == a
 
     def test_pwp(self):
@@ -581,7 +595,11 @@ class TestEField:
         x = treams.efield(r, basis=b, k0=k0, poltype="parity", material=material)
         rsph = sc.car2sph(r[:, None] - positions)
         y = sc.vsw_rM(
-            [3, 1], [-2, 1], 2 * k0 * rsph[..., 0], rsph[..., 1], rsph[..., 2],
+            [3, 1],
+            [-2, 1],
+            2 * k0 * rsph[..., 0],
+            rsph[..., 1],
+            rsph[..., 2],
         )
         assert np.all(sc.vsph2car(y, rsph) == x)
 
@@ -593,11 +611,20 @@ class TestEField:
         k0 = 4
         material = (4, 1)
         x = treams.efield(
-            r, basis=b, k0=k0, poltype="parity", material=material, modetype="singular",
+            r,
+            basis=b,
+            k0=k0,
+            poltype="parity",
+            material=material,
+            modetype="singular",
         )
         rsph = sc.car2sph(r[None] - positions)
         y = sc.vsw_N(
-            [3, 1], [-2, 1], 2 * k0 * rsph[..., 0], rsph[..., 1], rsph[..., 2],
+            [3, 1],
+            [-2, 1],
+            2 * k0 * rsph[..., 0],
+            rsph[..., 1],
+            rsph[..., 2],
         )
         assert np.all(sc.vsph2car(y, rsph) == x)
 
@@ -613,13 +640,13 @@ class TestEField:
         y = sc.vcw_rA(
             [0.3, 0.1],
             [-2, 1],
-            rcyl[..., 0] * [np.sqrt(16 - 0.3 ** 2), np.sqrt(144 - 0.1 ** 2)],
+            rcyl[..., 0] * [np.sqrt(16 - 0.3**2), np.sqrt(144 - 0.1**2)],
             rcyl[..., 1],
             rcyl[..., 2],
             [k0, 3 * k0],
             [0, 1],
         )
-        assert np.all(sc.vcyl2car(y, rcyl) == x)
+        assert np.all(np.abs(sc.vcyl2car(y, rcyl) - x) < 1e-14)
 
     def test_cw_sh(self):
         modes = [[0, 0.3, -2, 0], [1, 0.1, 1, 1]]
@@ -640,7 +667,7 @@ class TestEField:
         y = sc.vcw_A(
             [0.3, 0.1],
             [-2, 1],
-            rcyl[..., 0] * [np.sqrt(16 - 0.3 ** 2), np.sqrt(144 - 0.1 ** 2)],
+            rcyl[..., 0] * [np.sqrt(16 - 0.3**2), np.sqrt(144 - 0.1**2)],
             rcyl[..., 1],
             rcyl[..., 2],
             [k0, 3 * k0],
@@ -660,11 +687,11 @@ class TestEField:
         y = sc.vcw_rM(
             [0.3, 0.1],
             [-2, 1],
-            rcyl[..., 0] * [np.sqrt(64 - 0.3 ** 2), np.sqrt(64 - 0.1 ** 2)],
+            rcyl[..., 0] * [np.sqrt(64 - 0.3**2), np.sqrt(64 - 0.1**2)],
             rcyl[..., 1],
             rcyl[..., 2],
         )
-        assert np.all(sc.vcyl2car(y, rcyl) == x)
+        assert np.all(np.abs(sc.vcyl2car(y, rcyl) - x) < 1e-14)
 
     def test_cw_sp(self):
         modes = [[0, 0.3, -2, 1], [1, 0.1, 1, 1]]
@@ -674,13 +701,18 @@ class TestEField:
         k0 = 4
         material = (4, 1)
         x = treams.efield(
-            r, basis=b, k0=k0, poltype="parity", material=material, modetype="singular",
+            r,
+            basis=b,
+            k0=k0,
+            poltype="parity",
+            material=material,
+            modetype="singular",
         )
         rcyl = sc.car2cyl(r[:, None] - positions)
         y = sc.vcw_N(
             [0.3, 0.1],
             [-2, 1],
-            rcyl[..., 0] * [np.sqrt(64 - 0.3 ** 2), np.sqrt(64 - 0.1 ** 2)],
+            rcyl[..., 0] * [np.sqrt(64 - 0.3**2), np.sqrt(64 - 0.1**2)],
             rcyl[..., 1],
             rcyl[..., 2],
             8,
@@ -689,9 +721,9 @@ class TestEField:
 
     def test_pw_h(self):
         modes = [[0, 3, 4, 0], [0, 4, 3, 1]]
-        b = treams.PlaneWaveBasis(modes)
+        b = treams.PlaneWaveBasisAngle(modes)
         r = np.array([[0, 1, 2], [3, 4, 5]])
-        x = treams.efield(r, basis=b, poltype="helicity")
+        x = treams.efield(r, basis=b, k0=5, poltype="helicity")
         y = sc.vpw_A(
             [0, 0],
             [3, 4],
@@ -705,9 +737,9 @@ class TestEField:
 
     def test_pw_p(self):
         modes = [[0, 3, 4, 1], [0, 4, 3, 1]]
-        b = treams.PlaneWaveBasis(modes)
+        b = treams.PlaneWaveBasisAngle(modes)
         r = np.array([[0, 1, 2], [3, 4, 5]])
-        x = treams.efield(r, basis=b, poltype="parity")
+        x = treams.efield(r, basis=b, k0=5, poltype="parity")
         y = sc.vpw_N(
             [0, 0], [3, 4], [4, 3], r[..., None, 0], r[..., None, 1], r[..., None, 2]
         )

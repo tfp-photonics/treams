@@ -339,97 +339,97 @@ class TestCWB:
         )
 
 
-class TestPWB:
+class TestPWBA:
     def test_init_empty(self):
-        b = treams.PlaneWaveBasis([])
-        assert b.kx.size == 0 and b.ky.size == 0 and b.kz.size == 0 and b.pol.size == 0
+        b = treams.PlaneWaveBasisAngle([])
+        assert b.qx.size == 0 and b.qy.size == 0 and b.qz.size == 0 and b.pol.size == 0
 
     def test_init_numpy(self):
-        b = treams.PlaneWaveBasis(np.array([[0.4, 0.2, 0.1, 0]]))
+        b = treams.PlaneWaveBasisAngle(np.array([[0.1, 0.2, 0.2, 0]]))
         assert (
-            np.all(b.kx == [0.4])
-            and np.all(b.ky == [0.2])
-            and np.all(b.kz == [0.1])
+            np.all(b.qx == [1 / 3])
+            and np.all(b.qy == [2 / 3])
+            and np.all(b.qz == [2 / 3])
             and np.all(b.pol == [0])
         )
 
     def test_init_duplicate(self):
-        b = treams.PlaneWaveBasis([[0.4, 0.2, 0.1, 0], [0.4, 0.2, 0.1, 0]])
+        b = treams.PlaneWaveBasisAngle([[0.1, 0.2, 0.2, 0], [0.1, 0.2, 0.2, 0]])
         assert (
-            np.all(b.kx == [0.4])
-            and np.all(b.ky == [0.2])
-            and np.all(b.kz == [0.1])
+            np.all(b.qx == [1 / 3])
+            and np.all(b.qy == [2 / 3])
+            and np.all(b.qz == [2 / 3])
             and np.all(b.pol == [0])
         )
 
     def test_init_invalid_shape(self):
         with pytest.raises(ValueError):
-            treams.PlaneWaveBasis([[0, 0], [0, 0]])
+            treams.PlaneWaveBasisAngle([[0, 0], [0, 0]])
 
     def test_init_invalid_pol(self):
         with pytest.raises(ValueError):
-            treams.PlaneWaveBasis([[1, 0, 0, 2]])
+            treams.PlaneWaveBasisAngle([[1, 0, 0, 2]])
 
     def test_repr(self):
-        b = treams.PlaneWaveBasis([[0.0, 1.0, 0.0, 0], [1, 1, 0, 0]])
+        b = treams.PlaneWaveBasisAngle([[0.0, 1.0, 0.0, 0], [1, 0, 0, 0]])
         assert (
             repr(b)
-            == """PlaneWaveBasis(
-    kx=[0. 1.],
-    ky=[1. 1.],
-    kz=[0. 0.],
+            == """PlaneWaveBasisAngle(
+    qx=[0. 1.],
+    qy=[1. 0.],
+    qz=[0. 0.],
     pol=[0 0],
 )"""
         )
 
     def test_getitem_xyzp(self):
-        b = treams.PlaneWaveBasis([[0, 2, -1, 1]])
-        assert b["xyzp"] == ([0], [2], [-1], [1])
+        b = treams.PlaneWaveBasisAngle([[0, 4, -3, 1]])
+        assert b["xyzp"] == ([0], [0.8], [-0.6], [1])
 
     def test_getitem_xyp(self):
-        b = treams.PlaneWaveBasis([[0, 2, -1, 1]])
-        assert b["xyp"] == ([0], [2], [1])
+        b = treams.PlaneWaveBasisAngle([[0, 4, -3, 1]])
+        assert b["xyp"] == ([0], [0.8], [1])
 
     def test_getitem_zp(self):
-        b = treams.PlaneWaveBasis([[0, 2, -1, 1]])
-        assert b["ZP"] == ([-1], [1])
+        b = treams.PlaneWaveBasisAngle([[0, 4, -3, 1]])
+        assert b["ZP"] == ([-0.6], [1])
 
     def test_getitem_invalid_index(self):
-        b = treams.PlaneWaveBasis([[1, 0, 0, 0]])
+        b = treams.PlaneWaveBasisAngle([[1, 0, 0, 0]])
         with pytest.raises(IndexError):
             b["l"]
 
     def test_getitem_int(self):
-        b = treams.PlaneWaveBasis([[1, 0, 0, 0], [1, 0, 0, 1]])
+        b = treams.PlaneWaveBasisAngle([[1, 0, 0, 0], [1, 0, 0, 1]])
         assert b[1] == (1, 0, 0, 1)
 
     def test_getitem_tuple(self):
-        b = treams.PlaneWaveBasis([[1, 0, 0, 0], [1, 0, 0, 1]])
+        b = treams.PlaneWaveBasisAngle([[1, 0, 0, 0], [1, 0, 0, 1]])
         assert (np.array(b[()]) == ([1, 1], [0, 0], [0, 0], [0, 1])).all()
 
     def test_getitem_slice(self):
-        a = treams.PlaneWaveBasis([[1, 0, 0, 0]])
-        b = treams.PlaneWaveBasis([[1, 0, 0, 0], [1, 0, 0, 1]])
+        a = treams.PlaneWaveBasisAngle([[1, 0, 0, 0]])
+        b = treams.PlaneWaveBasisAngle([[1, 0, 0, 0], [1, 0, 0, 1]])
         assert a == b[:1]
 
     def test_default(self):
-        a = treams.PlaneWaveBasis.default([0.3, -0.2, 0.1])
-        b = treams.PlaneWaveBasis([[0.3, -0.2, 0.1, 1], [0.3, -0.2, 0.1, 0]])
+        a = treams.PlaneWaveBasisAngle.default([0.3, -0.2, 0.1])
+        b = treams.PlaneWaveBasisAngle([[0.3, -0.2, 0.1, 1], [0.3, -0.2, 0.1, 0]])
         assert a == b
 
     def test_property_isglobal_true(self):
-        b = treams.PlaneWaveBasis([])
+        b = treams.PlaneWaveBasisAngle([])
         assert b.isglobal
 
     def test_from_iterable(self):
-        a = treams.PlaneWaveBasis.default([0, 0, 1])
-        b = treams.PlaneWaveBasis.default([[0, 0, 1], [0, 1, 0]])
+        a = treams.PlaneWaveBasisAngle.default([0, 0, 1])
+        b = treams.PlaneWaveBasisAngle.default([[0, 0, 1], [0, 1, 0]])
         assert a & b == a
 
     def test_partial(self):
         a = treams.PlaneWaveBasisPartial.default([0, 1], "yz")
-        b = treams.PlaneWaveBasis.default([0, 0, 1])
-        assert b.partial("yz", 1) == a
+        b = treams.PlaneWaveBasisAngle.default([0, 0, 1])
+        assert b.partial(1, "yz") == a
 
 
 class TestPWBP:
@@ -492,10 +492,10 @@ class TestPWBP:
         b = treams.PlaneWaveBasisPartial([[1, 0, 0], [1, 0, 0, 1]])
         assert a == b[:1]
 
-    def test_complete(self):
-        a = treams.PlaneWaveBasis.default([0, 0, 1])
+    def test_angle(self):
+        a = treams.PlaneWaveBasisAngle.default([0, 0, 1])
         b = treams.PlaneWaveBasisPartial.default([0, 1], "yz")
-        assert b.complete(1) == a
+        assert b.angle(1) == a
 
     def test_diffr_orders(self):
         lattice = treams.Lattice(2 * np.pi * np.eye(2))
@@ -600,14 +600,14 @@ class TestPhysicsArray:
             treams.PhysicsArray([0]).expandlattice.inv(lattice=1)
 
     def test_permute(self):
-        b = treams.PlaneWaveBasis([[1, 0, 0, 0], [1, 0, 0, 1]])
-        c = treams.PlaneWaveBasis([[0, 1, 0, 0], [0, 1, 0, 1]])
+        b = treams.PlaneWaveBasisAngle([[1, 0, 0, 0], [1, 0, 0, 1]])
+        c = treams.PlaneWaveBasisAngle([[0, 1, 0, 0], [0, 1, 0, 1]])
         p = treams.PhysicsArray([1, 0], basis=b)
         assert p.permute().basis == (c, b)
 
     def test_permute_inv(self):
-        b = treams.PlaneWaveBasis([[1, 0, 0, 0], [1, 0, 0, 1]])
-        c = treams.PlaneWaveBasis([[0, 1, 0, 0], [0, 1, 0, 1]])
+        b = treams.PlaneWaveBasisAngle([[1, 0, 0, 0], [1, 0, 0, 1]])
+        c = treams.PlaneWaveBasisAngle([[0, 1, 0, 0], [0, 1, 0, 1]])
         p = treams.PhysicsArray([1, 0], basis=b)
         assert p.permute.inv().basis == (b, c)
 
