@@ -1,18 +1,11 @@
 """Loading and storing data.
 
 Most functions rely on at least one of the external packages `h5py` or `gmsh`.
-
-.. autosummary::
-   :toctree:
-
-   mesh_spheres
-   save_hdf5
-   load_hdf5
 """
 
 import sys
-from importlib.metadata import version
 import uuid as _uuid
+from importlib.metadata import version
 
 import numpy as np
 
@@ -130,20 +123,22 @@ def mesh_spheres(radii, positions, model, meshsize=None, meshsize_boundary=None)
 
     Examples:
         >>> import gmsh
+        >>> import treams.io
         >>> gmsh.initialize()
         >>> gmsh.model.add("spheres")
-        >>> mesh_spheres([1, 2], [[0, 0, 2], [0, 0, -2]], gmsh.model)
+        >>> treams.io.mesh_spheres([1, 2], [[0, 0, 2], [0, 0, -2]], gmsh.model)
+        <class 'gmsh.model'>
         >>> gmsh.write("spheres.msh")
         >>> gmsh.finalize()
 
     Args:
-        radii (float, array_like): Radii of the spheres
-        positions (float, (N, 3)-array): Positions of the spheres
-        model (gmsh.model): Gmsh model to modify
+        radii (float, array_like): Radii of the spheres.
+        positions (float, (N, 3)-array): Positions of the spheres.
+        model (gmsh.model): Gmsh model to modify.
         meshsize (float, optional): Mesh size, if None a fifth of the largest radius is
-            used
+            used.
         meshsize (float, optional): Mesh size of the surfaces, if left empty it is set
-            equal to the general mesh size
+            equal to the general mesh size.
 
     Returns:
         gmsh.model
@@ -180,11 +175,11 @@ def _translate_polarizations(pols, poltype=None):
     "electric".
 
     Args:
-        pols (int, array_like): Array of indices 0 and 1
-        helicity (bool, optional): Usage of helicity or parity modes
+        pols (int, array_like): Array of indices 0 and 1.
+        poltype (str, optional): Polarization type (:ref:`polarizations.Polarizations`).
 
-    Returns
-        string, array_like
+    Returns:
+        list[str]
     """
     poltype = treams.config.POLTYPE if poltype is None else poltype
     if poltype == "helicity":
@@ -206,10 +201,9 @@ def _translate_polarizations_inv(pols):
 
     Args:
         pols (string, array_like): Array of strings
-        helicity (bool, optional): Usage of helicity or parity modes
 
-    Returns
-        int, array_like
+    Returns:
+        tuple[list[int], str]
     """
     helicity = {"plus": 1, "positive": 1, "minus": 0, "negative": 0}
     parity = {"te": 0, "magnetic": 0, "tm": 1, "electric": 1, "M": 0, "N": 1}
@@ -258,22 +252,20 @@ def save_hdf5(
     T-matrix in the file. It is left open for the user to add additional metadata.
 
     Args:
-        datafile (h5py.File): a HDF5 file opened with h5py
-        tms (TMatrix, array_like): Array of T-matrix instances
-        name (string): Name to add to the T-matrix as attribute
-        description (string): Description to add to the T-matrix as attribute
-        id (int, optional): Id of the T-matrix, defaults to -1 (no id given)
-        unit_length (string, optional): Length unit used for the positions and (as
-            inverse) for the wave number
-        embedding_name (string, optional): Name of the embedding material, defaults to
-            "Embedding"
-        embedding_description (string, optional): Description of the material, defaults
-            to an empty string
-        frequency_axis (int, optional): Assign one axis of the T-matrices array to
-            parametrize a frequency sweep
-
-    Returns:
-        h5py.File
+        h5file (h5py.Group): A HDF5 file opened with h5py.
+        tms (TMatrix, array_like): Array of T-matrix instances.
+        name (str): Name to add to the file as attribute.
+        description (str): Description to add to file as attribute.
+        keywords (str): Keywords to add to file as attribute.
+        embedding_group (h5py.Group, optional): Group object for the embedding material,
+            defaults to "/materials/embedding/".
+        embedding_name (string, optional): Name of the embedding material.
+        embedding_description (string, optional): Description of the embedding material.
+        embedding_keywords (string, optional): Keywords for the embedding material.
+        uuid (bytes, optional): UUID of the file, a new one is created if omitted.
+        uuid_version (int, optional): UUID version.
+        lunit (string, optional): Length unit used for the positions and (as
+            inverse) for the wave number.
     """
     tms_arr = np.array(tms)
     if tms_arr.dtype == object:
@@ -372,13 +364,13 @@ def load_hdf5(filename, lunit="nm"):
     """Load a T-matrix stored in a HDF4 file.
 
     Args:
-        filename (string): Name of the h5py file
-        unit_length (string, optional): Unit of length to be used in the T-matrices
+        filename (str or h5py.Group): Name of the h5py file or a handle to a h5py group.
+        lunit (str, optional): Unit of length to be used in the T-matrices.
 
     Returns:
-        TMatrix, array_like
+        np.ndarray[TMatrix]
     """
-    if isinstance(filename, h5py.File):
+    if isinstance(filename, h5py.Group):
         return _load_hdf5(filename, lunit)
     with h5py.File(filename, "r") as f:
         return _load_hdf5(f, lunit)
