@@ -44,11 +44,11 @@
          ~SMatrix.stack
          ~SMatrix.tr
       
+         ~SMatrix.__gt__
+         ~SMatrix.__lt__
+         ~SMatrix.__le__
+         ~SMatrix.__ne__
          ~SMatrix.__ge__
          ~SMatrix.__repr__
-         ~SMatrix.__lt__
-         ~SMatrix.__gt__
-         ~SMatrix.__ne__
-         ~SMatrix.__le__
          ~SMatrix.__str__
   
