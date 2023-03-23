@@ -2,10 +2,11 @@ import warnings
 
 import numpy as np
 
+import treams.special as sc
 from treams import config
 from treams._core import CylindricalWaveBasis as CWB
 from treams._core import PhysicsArray
-from treams._core import PlaneWaveBasis as PWB
+from treams._core import PlaneWaveBasisAngle as PWBA
 from treams._core import PlaneWaveBasisPartial as PWBP
 from treams._core import SphericalWaveBasis as SWB
 from treams._material import Material
@@ -574,6 +575,70 @@ class TMatrixC(PhysicsArray):
         return cls(tmat, k0=k0, basis=CWB.default(kzs, mmax), material=materials[-1])
 
     @classmethod
+    def cluster(cls, tmats, positions):
+        r"""Block-diagonal T-matrix of multiple objects.
+
+        Construct the initial block-diagonal T-matrix for a cluster of objects. The
+        T-matrices in the list are placed together into a block-diagonal matrix and the
+        complete (local) basis is defined based on the individual T-matrices and their
+        bases together with the defined positions. In mathematical terms the matrix
+
+        .. math::
+
+            \begin{pmatrix}
+                T_0 & 0 & \dots & 0 \\
+                0 & T_1 & \ddots & \vdots \\
+                \vdots & \ddots & \ddots & 0 \\
+                0 & \dots & 0 & T_{N-1} \\
+            \end{pmatrix}
+
+        is created from the list of T-matrices :math:`(T_0, \dots, T_{N-1})`. Only
+        T-matrices of the same wave number, embedding material, and polarization type
+        can be combined.
+
+        Args:
+            tmats (Sequence): List of T-matrices.
+            positions (array): The positions of all individual objects in the cluster.
+
+        Returns:
+            TMatrix
+        """
+        for tm in tmats:
+            if not tm.basis.isglobal:
+                raise ValueError("global basis required")
+        positions = np.array(positions)
+        if len(tmats) < positions.shape[0]:
+            warnings.warn("specified more positions than T-matrices")
+        elif len(tmats) > positions.shape[0]:
+            raise ValueError(
+                f"'{len(tmats)}' T-matrices "
+                f"but only '{positions.shape[0]}' positions given"
+            )
+        mat = tmats[0].material
+        k0 = tmats[0].k0
+        poltype = tmats[0].poltype
+        modes = [], [], []
+        pidx = []
+        dim = sum([tmat.shape[0] for tmat in tmats])
+        tres = np.zeros((dim, dim), complex)
+        i = 0
+        for j, tm in enumerate(tmats):
+            if tm.material != mat:
+                raise ValueError(f"incompatible materials: '{mat}' and '{tm.material}'")
+            if tm.k0 != k0:
+                raise ValueError(f"incompatible k0: '{k0}' and '{tm.k0}'")
+            if tm.poltype != poltype:
+                raise ValueError(f"incompatible modetypes: '{poltype}', '{tm.poltype}'")
+            dim = tm.shape[0]
+            for m, n in zip(modes, tm.basis["kzmp"]):
+                m.extend(list(n))
+            pidx += [j] * dim
+            tres[i : i + dim, i : i + dim] = tm
+            i += dim
+        basis = CWB(zip(pidx, *modes), positions)
+        return cls(tres, k0=k0, material=mat, basis=basis, poltype=poltype)
+
+    @classmethod
     def from_array(cls, tm, basis, eta=0):
         """1d array of spherical T-matrices."""
         if tm.lattice is None:
@@ -696,6 +761,10 @@ class TMatrixC(PhysicsArray):
         if not self.material.isreal:
             raise NotImplementedError
         illu = PhysicsArray(illu)
+        illu_basis = illu.basis
+        illu_basis = illu_basis[-2] if isinstance(illu_basis, tuple) else illu_basis
+        if not isinstance(illu_basis, CWB):
+            illu = illu.expand(self.basis) @ illu
         p = self @ illu
         m = self.expand() / self.ks[self.basis.pol]
         del illu.modetype
@@ -785,43 +854,146 @@ class TMatrixC(PhysicsArray):
         return res
 
 
-def plane_wave(
-    *args, amp=1, basis=None, k0=None, material=None, modetype=None, poltype=None
+def _plane_wave_partial(
+    kpar,
+    pol,
+    *,
+    k0=None,
+    basis=None,
+    material=None,
+    modetype=None,
+    poltype=None,
 ):
     if basis is None:
-        if len(args) == 4:
-            basis = PWB.default([args[:3]])
-        else:
-            basis = PWBP.default([args[:2]])
-    if isinstance(basis, PWBP):
+        basis = PWBP.default([kpar])
+    if len(pol) == 3:
         modetype = "up" if modetype is None else modetype
-        material = Material() if material is None else Material(material)
-        if len(args) == 4:
-            basis_c = basis.complete(k0, material, modetype)
+        if modetype not in ("up", "down"):
+            raise ValueError(f"invalid 'modetype': {modetype}")
+        kzs = Material(material).kzs(k0, *kpar, [0, 1])
+        poltype = config.POLTYPE if poltype is None else poltype
+        if poltype == "parity":
+            pol = [
+                -sc.vpw_M(*kpar, kzs[0], 0, 0, 0) @ pol,
+                sc.vpw_N(*kpar, kzs[1], 0, 0, 0) @ pol,
+            ]
+        elif poltype == "helicity":
+            pol = sc.vpw_A(*kpar, kzs[::-1], 0, 0, 0, [1, 0]) @ pol
         else:
-            basis_c = basis
-    elif k0 is not None:
-        material = Material() if material is None else Material(material)
-        basis_c = basis.complete(k0, material, modetype)
-    else:
-        basis_c = basis
-    args = np.array(args)
-    res = [(np.abs(args - x) < 1e-14).all() for x in basis_c]
-    if sum(res) != 1:
-        raise ValueError("cannot find matching mode in basis")
-    res = np.array(res, complex) * amp
+            raise ValueError(f"invalid 'poltype': {poltype}")
+    elif pol == 0 or pol == -1:
+        pol = [1, 0]
+    elif pol == 1:
+        pol = [0, 1]
+    res = [pol[x[2]] * (np.abs(np.array(kpar) - x[:2]) < 1e-14).all() for x in basis]
     return PhysicsArray(
-        res, basis=basis, k0=k0, material=material, modetype=modetype, poltype=poltype
+        res,
+        basis=basis,
+        k0=k0,
+        material=material,
+        modetype=modetype,
+        poltype=poltype,
     )
+
+
+def _plane_wave(
+    kvec,
+    pol,
+    *,
+    k0=None,
+    basis=None,
+    material=None,
+    modetype=None,
+    poltype=None,
+):
+    if basis is None:
+        basis = PWBA.default([kvec])
+    norm = np.sqrt(np.sum(np.power(kvec, 2)))
+    qvec = kvec / norm
+    if len(pol) == 3:
+        kvec = Material(material).ks(k0) * qvec[:, None]
+        poltype = config.POLTYPE if poltype is None else poltype
+        if poltype == "parity":
+            pol = [
+                -sc.vpw_M(*kvec[:, 0], 0, 0, 0) @ pol,
+                sc.vpw_N(*kvec[:, 1], 0, 0, 0) @ pol,
+            ]
+        elif poltype == "helicity":
+            pol = sc.vpw_A(*kvec, 0, 0, 0, [1, 0]) @ pol
+        else:
+            raise ValueError(f"invalid 'poltype': {poltype}")
+    elif pol == 0 or pol == -1:
+        pol = [1, 0]
+    elif pol == 1:
+        pol = [0, 1]
+    res = [pol[x[3]] * (np.abs(qvec - x[:3]) < 1e-14).all() for x in basis]
+    return PhysicsArray(
+        res,
+        basis=basis,
+        k0=k0,
+        material=material,
+        modetype=modetype,
+        poltype=poltype,
+    )
+
+
+def plane_wave(
+    kvec,
+    pol,
+    /,
+    k0=None,
+    basis=None,
+    material=None,
+    modetype=None,
+    poltype=None,
+):
+    """Array describing a plane wave.
+
+    Args:
+        kvec (Sequence): Wave vector.
+        pol (int or Sequence):
+        basis (optional):
+        k0 (optional):
+        material (optional):
+        modetype (optional):
+        poltype (optional):
+    """
+    if len(kvec) == 2:
+        return _plane_wave_partial(
+            kvec,
+            pol,
+            k0=k0,
+            basis=basis,
+            material=material,
+            modetype=modetype,
+            poltype=poltype,
+        )
+    elif len(kvec) == 3:
+        return _plane_wave(
+            kvec,
+            pol,
+            k0=k0,
+            basis=basis,
+            material=material,
+            modetype=modetype,
+            poltype=poltype,
+        )
+    raise ValueError(f"invalid length of 'kvec': {len(kvec)}")
+
+
+def plane_wave_angle(theta, phi, pol, **kwargs):
+    qx = np.sin(theta) * np.cos(phi)
+    qy = np.sin(theta) * np.sin(phi)
+    qz = np.cos(theta)
+    return plane_wave(qx, qy, qz, pol, **kwargs)
 
 
 def spherical_wave(
     l,  # noqa: E741
     m,
     pol,
-    amp,
     *,
-    k0,
+    k0=None,
     basis=None,
     material=None,
     modetype=None,
@@ -832,21 +1004,29 @@ def spherical_wave(
     if not basis.isglobal:
         raise ValueError("basis must be global")
     res = [0] * len(basis)
-    res[basis.index((0, l, m, pol))] = amp
+    res[basis.index((0, l, m, pol))] = 1
     return PhysicsArray(
         res, basis=basis, k0=k0, material=material, modetype=modetype, poltype=poltype
     )
 
 
 def cylindrical_wave(
-    kz, m, pol, amp, *, k0, basis=None, material=None, modetype=None, poltype=None
+    kz,
+    m,
+    pol,
+    *,
+    k0=None,
+    basis=None,
+    material=None,
+    modetype=None,
+    poltype=None,
 ):
     if basis is None:
         basis = CWB.default([kz], abs(m))
     if not basis.isglobal:
         raise ValueError("basis must be global")
     res = [0] * len(basis)
-    res[basis.index((0, kz, m, pol))] = amp
+    res[basis.index((0, kz, m, pol))] = 1
     return PhysicsArray(
         res, basis=basis, k0=k0, material=material, modetype=modetype, poltype=poltype
     )
