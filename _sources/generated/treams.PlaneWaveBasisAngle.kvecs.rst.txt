@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisAngle.kvecs
+================================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasisAngle.kvecs

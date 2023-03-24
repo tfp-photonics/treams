@@ -1,6 +1,0 @@
-treams.special.spherical\_jn
-============================
-
-.. currentmodule:: treams.special
-
-.. autofunction:: spherical_jn

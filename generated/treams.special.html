@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>treams.special &#8212; treams 0.2.2.dev112+gf5219781 documentation</title>
+    <title>treams.special &#8212; treams 0.2.2.dev115+g2a90fe85 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="treams.lattice.cython_lattice.zero3d.html" title="treams.lattice.cython_lattice.zero3d"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev112+gf5219781 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev115+g2a90fe85 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" accesskey="U">Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.special</a></li> 
       </ul>
@@ -59,7 +59,7 @@
 <p>Special mathematical functions used in <a class="reference internal" href="../treams.html#module-treams" title="treams"><code class="xref py py-mod docutils literal notranslate"><span class="pre">treams</span></code></a>. Some functions are reexported from
 <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/special.html#module-scipy.special" title="(in SciPy v1.10.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.special</span></code></a>. Most functions are available as Numpy universal functions
 (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="(in NumPy v1.24)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ufunc</span></code></a>) or as generalized universal functions
-(<span class="xref std std-doc">reference/c-api/generalized-ufuncs</span>).</p>
+(<a class="reference external" href="https://numpy.org/doc/stable/reference/c-api/generalized-ufuncs.html#c-api-generalized-ufuncs" title="(in NumPy v1.24)"><span>Generalized Universal Function API</span></a>).</p>
 <section id="available-functions">
 <h2>Available functions<a class="headerlink" href="#available-functions" title="Permalink to this heading">¶</a></h2>
 <section id="bessel-and-hankel-functions-with-their-spherical-counterparts-derivatives">
@@ -94,25 +94,45 @@
 </table>
 <p>Those functions are just reexported from Scipy. So, one only needs to import this
 subpackage within treams.</p>
-<table class="autosummary longtable docutils align-default">
+<table class="docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.hankel1.html#treams.special.hankel1" title="treams.special.hankel1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hankel1</span></code></a>(v, z[, out])</p></td>
-<td><p>Hankel function of the first kind</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.hankel1.html#scipy.special.hankel1" title="(in SciPy v1.10.1)"><code class="xref py py-data docutils literal notranslate"><span class="pre">hankel1</span></code></a>(v, z[, out])</p></td>
+<td><p>Hankel function of the
+first kind.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.special.hankel2.html#treams.special.hankel2" title="treams.special.hankel2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hankel2</span></code></a>(v, z[, out])</p></td>
-<td><p>Hankel function of the second kind</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.hankel2.html#scipy.special.hankel2" title="(in SciPy v1.10.1)"><code class="xref py py-data docutils literal notranslate"><span class="pre">hankel2</span></code></a>(v, z[, out])</p></td>
+<td><p>Hankel function of the
+second kind.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.jv.html#treams.special.jv" title="treams.special.jv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jv</span></code></a>(v, z[, out])</p></td>
-<td><p>Bessel function of the first kind of real order and complex argument.</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.jv.html#scipy.special.jv" title="(in SciPy v1.10.1)"><code class="xref py py-data docutils literal notranslate"><span class="pre">jv</span></code></a>(v, z[, out])</p></td>
+<td><p>Bessel function of the
+first kind of real
+order and complex
+argument.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.special.yv.html#treams.special.yv" title="treams.special.yv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">yv</span></code></a>(v, z[, out])</p></td>
-<td><p>Bessel function of the second kind of real order and complex argument.</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.yv.html#scipy.special.yv" title="(in SciPy v1.10.1)"><code class="xref py py-data docutils literal notranslate"><span class="pre">yv</span></code></a>(v, z[, out])</p></td>
+<td><p>Bessel function of the
+second kind of real
+order and complex
+argument.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.special.spherical_jn.html#treams.special.spherical_jn" title="treams.special.spherical_jn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spherical_jn</span></code></a>(n, z[, derivative])</p></td>
-<td><p>Spherical Bessel function of the first kind or its derivative.</p></td>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line"><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.spherical_jn.html#scipy.special.spherical_jn" title="(in SciPy v1.10.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">spherical_jn</span></code></a>(n,
+z[, derivative])</div>
+</div>
+</td>
+<td><p>Spherical Bessel
+function of the first
+kind or its derivative.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.special.spherical_yn.html#treams.special.spherical_yn" title="treams.special.spherical_yn"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spherical_yn</span></code></a>(n, z[, derivative])</p></td>
-<td><p>Spherical Bessel function of the second kind or its derivative.</p></td>
+<tr class="row-even"><td><div class="line-block">
+<div class="line"><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.spherical_yn.html#scipy.special.spherical_yn" title="(in SciPy v1.10.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">spherical_yn</span></code></a>(n,
+z[, derivative])</div>
+</div>
+</td>
+<td><p>Spherical Bessel
+function of the second
+kind or its derivative.</p></td>
 </tr>
 </tbody>
 </table>
@@ -409,7 +429,7 @@ analogously access them like their non-spherical counterparts:</p>
         <li class="right" >
           <a href="treams.lattice.cython_lattice.zero3d.html" title="treams.lattice.cython_lattice.zero3d"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev112+gf5219781 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev115+g2a90fe85 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.special</a></li> 
       </ul>

@@ -32,9 +32,9 @@ treams.util.AnnotationSequence
          ~AnnotationSequence.update
       
          ~AnnotationSequence.__lt__
+         ~AnnotationSequence.__ne__
          ~AnnotationSequence.__gt__
          ~AnnotationSequence.__le__
-         ~AnnotationSequence.__ne__
-         ~AnnotationSequence.__ge__
          ~AnnotationSequence.__str__
+         ~AnnotationSequence.__ge__
   

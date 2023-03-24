@@ -1,6 +1,0 @@
-treams.special.yv
-=================
-
-.. currentmodule:: treams.special
-
-.. autodata:: yv

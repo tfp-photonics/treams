@@ -1,0 +1,305 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>treams.PlaneWaveBasisAngle &#8212; treams 0.2.2.dev115+g2a90fe85 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="treams.PlaneWaveBasisAngle.isglobal" href="treams.PlaneWaveBasisAngle.isglobal.html" />
+    <link rel="prev" title="treams.CylindricalWaveBasis.isdisjoint" href="treams.CylindricalWaveBasis.isdisjoint.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="treams.PlaneWaveBasisAngle.isglobal.html" title="treams.PlaneWaveBasisAngle.isglobal"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="treams.CylindricalWaveBasis.isdisjoint.html" title="treams.CylindricalWaveBasis.isdisjoint"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev115+g2a90fe85 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../treams.html" accesskey="U">Reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">treams.PlaneWaveBasisAngle</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="treams-planewavebasisangle">
+<h1>treams.PlaneWaveBasisAngle<a class="headerlink" href="#treams-planewavebasisangle" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="treams.PlaneWaveBasisAngle">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">treams.</span></span><span class="sig-name descname"><span class="pre">PlaneWaveBasisAngle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#treams.PlaneWaveBasisAngle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plane wave basis.</p>
+<p>A plane wave basis is defined by a collection of wave vectors specified by the
+Cartesian wave vector components <code class="docutils literal notranslate"><span class="pre">qx</span></code>, <code class="docutils literal notranslate"><span class="pre">qy</span></code>, and <code class="docutils literal notranslate"><span class="pre">qz</span></code> normalized to
+<span class="math notranslate nohighlight">\(q_x^2 + q_y^2 + q_z^2 = 1\)</span> and the polarizations <code class="docutils literal notranslate"><span class="pre">pol</span></code>.</p>
+<p>For plane waves there exist multiple <a class="reference internal" href="../polarizations.html#polarizations"><span class="std std-ref">Polarizations</span></a>, such that
+these modes can refer to either <a class="reference internal" href="treams.special.vpw_A.html#treams.special.vpw_A" title="treams.special.vpw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">vpw_A()</span></code></a> or
+<a class="reference internal" href="treams.special.vpw_M.html#treams.special.vpw_M" title="treams.special.vpw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">vpw_M()</span></code></a> and <a class="reference internal" href="treams.special.vpw_N.html#treams.special.vpw_N" title="treams.special.vpw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">vpw_N()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>modes</strong> (<em>array-like</em>) – A tuple containing a list for each of <code class="docutils literal notranslate"><span class="pre">qx</span></code>, <code class="docutils literal notranslate"><span class="pre">qy</span></code>,
+<code class="docutils literal notranslate"><span class="pre">qz</span></code>, and <code class="docutils literal notranslate"><span class="pre">pol</span></code>.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="treams.PlaneWaveBasisAngle.qx">
+<span class="sig-name descname"><span class="pre">qx</span></span><a class="headerlink" href="#treams.PlaneWaveBasisAngle.qx" title="Permalink to this definition">¶</a></dt>
+<dd><p>X-component of the normalized wave vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array-like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="treams.PlaneWaveBasisAngle.qy">
+<span class="sig-name descname"><span class="pre">qy</span></span><a class="headerlink" href="#treams.PlaneWaveBasisAngle.qy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Y-component of the normalized wave vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array-like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="treams.PlaneWaveBasisAngle.qz">
+<span class="sig-name descname"><span class="pre">qz</span></span><a class="headerlink" href="#treams.PlaneWaveBasisAngle.qz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Z-component of the normalized wave vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array-like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="treams.PlaneWaveBasisAngle.pol">
+<span class="sig-name descname"><span class="pre">pol</span></span><a class="headerlink" href="#treams.PlaneWaveBasisAngle.pol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Polarization, see also <a class="reference internal" href="../polarizations.html#polarizations"><span class="std std-ref">Polarizations</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array-like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.isglobal.html#treams.PlaneWaveBasisAngle.isglobal" title="treams.PlaneWaveBasisAngle.isglobal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isglobal</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__and__.html#treams.PlaneWaveBasisAngle.__and__" title="treams.PlaneWaveBasisAngle.__and__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__and__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__eq__.html#treams.PlaneWaveBasisAngle.__eq__" title="treams.PlaneWaveBasisAngle.__eq__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__eq__</span></code></a>(other)</p></td>
+<td><p>Compare basis sets.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__ge__.html#treams.PlaneWaveBasisAngle.__ge__" title="treams.PlaneWaveBasisAngle.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__getitem__.html#treams.PlaneWaveBasisAngle.__getitem__" title="treams.PlaneWaveBasisAngle.__getitem__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__getitem__</span></code></a>(idx)</p></td>
+<td><p>Get a subset of the basis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__gt__.html#treams.PlaneWaveBasisAngle.__gt__" title="treams.PlaneWaveBasisAngle.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__le__.html#treams.PlaneWaveBasisAngle.__le__" title="treams.PlaneWaveBasisAngle.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(other)</p></td>
+<td><p>Return self&lt;=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__len__.html#treams.PlaneWaveBasisAngle.__len__" title="treams.PlaneWaveBasisAngle.__len__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__len__</span></code></a>()</p></td>
+<td><p>Number of modes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__lt__.html#treams.PlaneWaveBasisAngle.__lt__" title="treams.PlaneWaveBasisAngle.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(other)</p></td>
+<td><p>Return self&lt;value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__ne__.html#treams.PlaneWaveBasisAngle.__ne__" title="treams.PlaneWaveBasisAngle.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(value, /)</p></td>
+<td><p>Return self!=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__or__.html#treams.PlaneWaveBasisAngle.__or__" title="treams.PlaneWaveBasisAngle.__or__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__or__</span></code></a>(other)</p></td>
+<td><p>Return self|value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__repr__.html#treams.PlaneWaveBasisAngle.__repr__" title="treams.PlaneWaveBasisAngle.__repr__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__repr__</span></code></a>()</p></td>
+<td><p>String representation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__str__.html#treams.PlaneWaveBasisAngle.__str__" title="treams.PlaneWaveBasisAngle.__str__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__str__</span></code></a>()</p></td>
+<td><p>Return str(self).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__sub__.html#treams.PlaneWaveBasisAngle.__sub__" title="treams.PlaneWaveBasisAngle.__sub__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__sub__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__xor__.html#treams.PlaneWaveBasisAngle.__xor__" title="treams.PlaneWaveBasisAngle.__xor__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__xor__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.count.html#treams.PlaneWaveBasisAngle.count" title="treams.PlaneWaveBasisAngle.count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code></a>(value)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.default.html#treams.PlaneWaveBasisAngle.default" title="treams.PlaneWaveBasisAngle.default"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default</span></code></a>(kvecs)</p></td>
+<td><p>Default basis from the given wave vectors.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.index.html#treams.PlaneWaveBasisAngle.index" title="treams.PlaneWaveBasisAngle.index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code></a>(value, [start, [stop]])</p></td>
+<td><p>Raises ValueError if the value is not present.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.isdisjoint.html#treams.PlaneWaveBasisAngle.isdisjoint" title="treams.PlaneWaveBasisAngle.isdisjoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isdisjoint</span></code></a>(other)</p></td>
+<td><p>Return True if two sets have a null intersection.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.kvecs.html#treams.PlaneWaveBasisAngle.kvecs" title="treams.PlaneWaveBasisAngle.kvecs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kvecs</span></code></a>(k0[, material, modetype])</p></td>
+<td><p>Create a complete basis.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.partial.html#treams.PlaneWaveBasisAngle.partial" title="treams.PlaneWaveBasisAngle.partial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partial</span></code></a>(k0[, alignment, material])</p></td>
+<td><p>Create a <code class="xref py py-class docutils literal notranslate"><span class="pre">PlaneWavePartial</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__lt__.html#treams.PlaneWaveBasisAngle.__lt__" title="treams.PlaneWaveBasisAngle.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(other)</p></td>
+<td><p>Return self&lt;value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__repr__.html#treams.PlaneWaveBasisAngle.__repr__" title="treams.PlaneWaveBasisAngle.__repr__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__repr__</span></code></a>()</p></td>
+<td><p>String representation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__ne__.html#treams.PlaneWaveBasisAngle.__ne__" title="treams.PlaneWaveBasisAngle.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(value, /)</p></td>
+<td><p>Return self!=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__gt__.html#treams.PlaneWaveBasisAngle.__gt__" title="treams.PlaneWaveBasisAngle.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__or__.html#treams.PlaneWaveBasisAngle.__or__" title="treams.PlaneWaveBasisAngle.__or__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__or__</span></code></a>(other)</p></td>
+<td><p>Return self|value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__and__.html#treams.PlaneWaveBasisAngle.__and__" title="treams.PlaneWaveBasisAngle.__and__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__and__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__le__.html#treams.PlaneWaveBasisAngle.__le__" title="treams.PlaneWaveBasisAngle.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(other)</p></td>
+<td><p>Return self&lt;=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__xor__.html#treams.PlaneWaveBasisAngle.__xor__" title="treams.PlaneWaveBasisAngle.__xor__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__xor__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__len__.html#treams.PlaneWaveBasisAngle.__len__" title="treams.PlaneWaveBasisAngle.__len__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__len__</span></code></a>()</p></td>
+<td><p>Number of modes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__str__.html#treams.PlaneWaveBasisAngle.__str__" title="treams.PlaneWaveBasisAngle.__str__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__str__</span></code></a>()</p></td>
+<td><p>Return str(self).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__sub__.html#treams.PlaneWaveBasisAngle.__sub__" title="treams.PlaneWaveBasisAngle.__sub__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__sub__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisAngle.__ge__.html#treams.PlaneWaveBasisAngle.__ge__" title="treams.PlaneWaveBasisAngle.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;=value.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../treams.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+</ul>
+
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="treams.CylindricalWaveBasis.isdisjoint.html"
+                          title="previous chapter">treams.CylindricalWaveBasis.isdisjoint</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="treams.PlaneWaveBasisAngle.isglobal.html"
+                          title="next chapter">treams.PlaneWaveBasisAngle.isglobal</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/generated/treams.PlaneWaveBasisAngle.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="treams.PlaneWaveBasisAngle.isglobal.html" title="treams.PlaneWaveBasisAngle.isglobal"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="treams.CylindricalWaveBasis.isdisjoint.html" title="treams.CylindricalWaveBasis.isdisjoint"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev115+g2a90fe85 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">treams.PlaneWaveBasisAngle</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Dominik Beutel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

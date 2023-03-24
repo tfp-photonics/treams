@@ -1,6 +1,0 @@
-treams.PlaneWaveBasis.\_\_repr\_\_
-==================================
-
-.. currentmodule:: treams
-
-.. automethod:: PlaneWaveBasis.__repr__

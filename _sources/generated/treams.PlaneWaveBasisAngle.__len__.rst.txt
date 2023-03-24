@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisAngle.\_\_len\_\_
+======================================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasisAngle.__len__

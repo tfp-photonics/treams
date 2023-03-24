@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>treams.SphericalWaveBasis &#8212; treams 0.2.2.dev112+gf5219781 documentation</title>
+    <title>treams.SphericalWaveBasis &#8212; treams 0.2.2.dev115+g2a90fe85 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
@@ -19,7 +19,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="treams.SphericalWaveBasis.isglobal" href="treams.SphericalWaveBasis.isglobal.html" />
-    <link rel="prev" title="treams.PlaneWaveBasisPartial.partial" href="treams.PlaneWaveBasisPartial.partial.html" />
+    <link rel="prev" title="treams.PlaneWaveBasisPartial.kvecs" href="treams.PlaneWaveBasisPartial.kvecs.html" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <!--[if lte IE 6]>
@@ -41,9 +41,9 @@
           <a href="treams.SphericalWaveBasis.isglobal.html" title="treams.SphericalWaveBasis.isglobal"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="treams.PlaneWaveBasisPartial.partial.html" title="treams.PlaneWaveBasisPartial.partial"
+          <a href="treams.PlaneWaveBasisPartial.kvecs.html" title="treams.PlaneWaveBasisPartial.kvecs"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev112+gf5219781 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev115+g2a90fe85 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" accesskey="U">Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.SphericalWaveBasis</a></li> 
       </ul>
@@ -204,29 +204,23 @@ with <span class="math notranslate nohighlight">\(m \leq |l|\)</span></p>
 <tr class="row-odd"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.isdisjoint.html#treams.SphericalWaveBasis.isdisjoint" title="treams.SphericalWaveBasis.isdisjoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isdisjoint</span></code></a>(other)</p></td>
 <td><p>Return True if two sets have a null intersection.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__sub__.html#treams.SphericalWaveBasis.__sub__" title="treams.SphericalWaveBasis.__sub__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__sub__</span></code></a>(other)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__and__.html#treams.SphericalWaveBasis.__and__" title="treams.SphericalWaveBasis.__and__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__and__</span></code></a>(other)</p></td>
-<td><p></p></td>
-</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__lt__.html#treams.SphericalWaveBasis.__lt__" title="treams.SphericalWaveBasis.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(other)</p></td>
 <td><p>Return self&lt;value.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__gt__.html#treams.SphericalWaveBasis.__gt__" title="treams.SphericalWaveBasis.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(other)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__ne__.html#treams.SphericalWaveBasis.__ne__" title="treams.SphericalWaveBasis.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(value, /)</p></td>
+<td><p>Return self!=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__gt__.html#treams.SphericalWaveBasis.__gt__" title="treams.SphericalWaveBasis.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(other)</p></td>
 <td><p>Return self&gt;value.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__or__.html#treams.SphericalWaveBasis.__or__" title="treams.SphericalWaveBasis.__or__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__or__</span></code></a>(other)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__or__.html#treams.SphericalWaveBasis.__or__" title="treams.SphericalWaveBasis.__or__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__or__</span></code></a>(other)</p></td>
 <td><p>Return self|value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__and__.html#treams.SphericalWaveBasis.__and__" title="treams.SphericalWaveBasis.__and__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__and__</span></code></a>(other)</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__le__.html#treams.SphericalWaveBasis.__le__" title="treams.SphericalWaveBasis.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(other)</p></td>
 <td><p>Return self&lt;=value.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__ne__.html#treams.SphericalWaveBasis.__ne__" title="treams.SphericalWaveBasis.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(value, /)</p></td>
-<td><p>Return self!=value.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__ge__.html#treams.SphericalWaveBasis.__ge__" title="treams.SphericalWaveBasis.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(other)</p></td>
-<td><p>Return self&gt;=value.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__xor__.html#treams.SphericalWaveBasis.__xor__" title="treams.SphericalWaveBasis.__xor__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__xor__</span></code></a>(other)</p></td>
 <td><p></p></td>
@@ -236,6 +230,12 @@ with <span class="math notranslate nohighlight">\(m \leq |l|\)</span></p>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__str__.html#treams.SphericalWaveBasis.__str__" title="treams.SphericalWaveBasis.__str__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__str__</span></code></a>()</p></td>
 <td><p>Return str(self).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__sub__.html#treams.SphericalWaveBasis.__sub__" title="treams.SphericalWaveBasis.__sub__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__sub__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__ge__.html#treams.SphericalWaveBasis.__ge__" title="treams.SphericalWaveBasis.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;=value.</p></td>
 </tr>
 </tbody>
 </table>
@@ -262,8 +262,8 @@ with <span class="math notranslate nohighlight">\(m \leq |l|\)</span></p>
 
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="treams.PlaneWaveBasisPartial.partial.html"
-                          title="previous chapter">treams.PlaneWaveBasisPartial.partial</a></p>
+    <p class="topless"><a href="treams.PlaneWaveBasisPartial.kvecs.html"
+                          title="previous chapter">treams.PlaneWaveBasisPartial.kvecs</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -304,9 +304,9 @@ with <span class="math notranslate nohighlight">\(m \leq |l|\)</span></p>
           <a href="treams.SphericalWaveBasis.isglobal.html" title="treams.SphericalWaveBasis.isglobal"
              >next</a> |</li>
         <li class="right" >
-          <a href="treams.PlaneWaveBasisPartial.partial.html" title="treams.PlaneWaveBasisPartial.partial"
+          <a href="treams.PlaneWaveBasisPartial.kvecs.html" title="treams.PlaneWaveBasisPartial.kvecs"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev112+gf5219781 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev115+g2a90fe85 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.SphericalWaveBasis</a></li> 
       </ul>

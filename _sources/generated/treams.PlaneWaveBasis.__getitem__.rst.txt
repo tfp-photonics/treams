@@ -1,6 +1,0 @@
-treams.PlaneWaveBasis.\_\_getitem\_\_
-=====================================
-
-.. currentmodule:: treams
-
-.. automethod:: PlaneWaveBasis.__getitem__

@@ -14,7 +14,7 @@ pitch = 300
 kz = 0
 chain_sph = chain_sph.interacted_lattice(pitch, kz)
 
-pw = treams.plane_wave(k0, 0, 0, 0)
+pw = treams.plane_wave([k0, 0, 0], [0, 1, 0], k0=k0, material=())
 grid = np.mgrid[-150:150:51j, 0:1, -150:150:51j].squeeze().transpose((1, 2, 0))
 field = np.zeros_like(grid, complex)
 

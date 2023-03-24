@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisAngle.index
+================================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasisAngle.index

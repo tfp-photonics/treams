@@ -1,0 +1,59 @@
+﻿treams.PlaneWaveBasisAngle
+==========================
+
+.. currentmodule:: treams
+
+.. autoclass:: PlaneWaveBasisAngle
+
+  
+  
+      .. rubric:: Attributes
+
+      .. autosummary::
+         :toctree:
+      
+         ~PlaneWaveBasisAngle.isglobal
+  
+  
+
+  
+      .. rubric:: Methods
+
+      .. autosummary::
+         :toctree:
+
+      
+         ~PlaneWaveBasisAngle.__and__
+         ~PlaneWaveBasisAngle.__eq__
+         ~PlaneWaveBasisAngle.__ge__
+         ~PlaneWaveBasisAngle.__getitem__
+         ~PlaneWaveBasisAngle.__gt__
+         ~PlaneWaveBasisAngle.__le__
+         ~PlaneWaveBasisAngle.__len__
+         ~PlaneWaveBasisAngle.__lt__
+         ~PlaneWaveBasisAngle.__ne__
+         ~PlaneWaveBasisAngle.__or__
+         ~PlaneWaveBasisAngle.__repr__
+         ~PlaneWaveBasisAngle.__str__
+         ~PlaneWaveBasisAngle.__sub__
+         ~PlaneWaveBasisAngle.__xor__
+         ~PlaneWaveBasisAngle.count
+         ~PlaneWaveBasisAngle.default
+         ~PlaneWaveBasisAngle.index
+         ~PlaneWaveBasisAngle.isdisjoint
+         ~PlaneWaveBasisAngle.kvecs
+         ~PlaneWaveBasisAngle.partial
+      
+         ~PlaneWaveBasisAngle.__lt__
+         ~PlaneWaveBasisAngle.__repr__
+         ~PlaneWaveBasisAngle.__ne__
+         ~PlaneWaveBasisAngle.__gt__
+         ~PlaneWaveBasisAngle.__or__
+         ~PlaneWaveBasisAngle.__and__
+         ~PlaneWaveBasisAngle.__le__
+         ~PlaneWaveBasisAngle.__xor__
+         ~PlaneWaveBasisAngle.__len__
+         ~PlaneWaveBasisAngle.__str__
+         ~PlaneWaveBasisAngle.__sub__
+         ~PlaneWaveBasisAngle.__ge__
+  

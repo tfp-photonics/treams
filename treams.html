@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Reference &#8212; treams 0.2.2.dev112+gf5219781 documentation</title>
+    <title>Reference &#8212; treams 0.2.2.dev115+g2a90fe85 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="polarizations.html" title="Polarizations and mode types"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev112+gf5219781 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev115+g2a90fe85 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Reference</a></li> 
       </ul>
     </div>  
@@ -65,7 +65,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.CylindricalWaveBasis.html#treams.CylindricalWaveBasis" title="treams.CylindricalWaveBasis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CylindricalWaveBasis</span></code></a>(modes[, positions])</p></td>
 <td><p>Basis of cylindrical waves.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/treams.PlaneWaveBasis.html#treams.PlaneWaveBasis" title="treams.PlaneWaveBasis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlaneWaveBasis</span></code></a>(modes)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/treams.PlaneWaveBasisAngle.html#treams.PlaneWaveBasisAngle" title="treams.PlaneWaveBasisAngle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlaneWaveBasisAngle</span></code></a>(modes)</p></td>
 <td><p>Plane wave basis.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.PlaneWaveBasisPartial.html#treams.PlaneWaveBasisPartial" title="treams.PlaneWaveBasisPartial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PlaneWaveBasisPartial</span></code></a>(modes[, alignment])</p></td>
@@ -120,10 +120,10 @@
 <tr class="row-even"><td><p><a class="reference internal" href="generated/treams.changepoltype.html#treams.changepoltype" title="treams.changepoltype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">changepoltype</span></code></a>([poltype, where])</p></td>
 <td><p>Matrix to change polarization types.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.dfield.html#treams.dfield" title="treams.dfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dfield</span></code></a>(r, *, basis[, k0, material, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.dfield.html#treams.dfield" title="treams.dfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dfield</span></code></a>(r, *, basis, k0[, material, ...])</p></td>
 <td><p>Displacement field.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/treams.efield.html#treams.efield" title="treams.efield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">efield</span></code></a>(r, *, basis[, k0, material, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/treams.efield.html#treams.efield" title="treams.efield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">efield</span></code></a>(r, *, basis, k0[, material, ...])</p></td>
 <td><p>Electric field.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.expand.html#treams.expand" title="treams.expand"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expand</span></code></a>(basis[, modetype, k0, material, ...])</p></td>
@@ -132,7 +132,7 @@
 <tr class="row-even"><td><p><a class="reference internal" href="generated/treams.expandlattice.html#treams.expandlattice" title="treams.expandlattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expandlattice</span></code></a>([lattice, kpar, eta, k0, ...])</p></td>
 <td><p>Expansion matrix in lattices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.hfield.html#treams.hfield" title="treams.hfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hfield</span></code></a>(r, *, basis[, k0, material, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.hfield.html#treams.hfield" title="treams.hfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hfield</span></code></a>(r, *, basis, k0[, material, ...])</p></td>
 <td><p>Magnetic field.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/treams.permute.html#treams.permute" title="treams.permute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">permute</span></code></a>([n])</p></td>
@@ -285,7 +285,7 @@ mathematical functions</p>
         <li class="right" >
           <a href="polarizations.html" title="Polarizations and mode types"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev112+gf5219781 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev115+g2a90fe85 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Reference</a></li> 
       </ul>
     </div>

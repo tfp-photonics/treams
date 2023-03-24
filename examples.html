@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Examples &#8212; treams 0.2.2.dev112+gf5219781 documentation</title>
+    <title>Examples &#8212; treams 0.2.2.dev115+g2a90fe85 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="gettingstarted.html" title="Getting started"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev112+gf5219781 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev115+g2a90fe85 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Examples</a></li> 
       </ul>
     </div>  
@@ -140,7 +140,7 @@ This has the benefit, that one can usually obtain correct fields closer to the g
 object.</p>
 <p>Now, we can calculate the scattering and extinction cross section of our little snowman
 under a plane wave illumination along the x-axis:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pw</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">plane_wave</span><span class="p">(</span><span class="n">k0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pw</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">plane_wave</span><span class="p">([</span><span class="n">k0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">k0</span><span class="o">=</span><span class="n">k0</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="n">air</span><span class="p">)</span>
 <span class="n">xs</span> <span class="o">=</span> <span class="n">snowman</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="n">pw</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;scattering cross section: </span><span class="si">{</span><span class="n">xs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, extinction cross section: </span><span class="si">{</span><span class="n">xs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
@@ -196,16 +196,16 @@ analogously. For this example we take infinitely extended cylinders, for which t
 T-matrix entries can be computed analytically.</p>
 <p>We begin with defining the cylinder parameters. For the embedding medium we choose a
 non-zero value of the chirality parameter.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">kz</span> <span class="o">=</span> <span class="mi">0</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">1000</span>  <span class="c1"># Wave number in vacuum</span>
+<span class="n">kz</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">mmax</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="n">radii</span> <span class="o">=</span> <span class="p">[</span><span class="mi">150</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span>
+<span class="n">emb</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">Material</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
 <span class="n">cylinders</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">treams</span><span class="o">.</span><span class="n">TMatrixC</span><span class="o">.</span><span class="n">cylinder</span><span class="p">(</span><span class="n">kz</span><span class="p">,</span> <span class="n">mmax</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">16</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="p">],</span> <span class="n">kappa</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">radii</span>
+    <span class="n">treams</span><span class="o">.</span><span class="n">TMatrixC</span><span class="o">.</span><span class="n">cylinder</span><span class="p">(</span><span class="n">kz</span><span class="p">,</span> <span class="n">mmax</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="p">[(</span><span class="mi">16</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">emb</span><span class="p">])</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">radii</span>
 <span class="p">]</span>
 <span class="n">positions</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">75</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">110</span><span class="p">,</span> <span class="o">-</span><span class="mi">110</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
-<span class="n">cluster</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">TMatrixC</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">cylinders</span><span class="p">,</span> <span class="n">positions</span><span class="p">)</span>
-<span class="n">cluster</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
-
+<span class="n">cluster</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">TMatrixC</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">cylinders</span><span class="p">,</span> <span class="n">positions</span><span class="p">)</span><span class="o">.</span><span class="n">interacted</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>In contrast to the case of spheres and spherical T-matrices, we now need to define the
@@ -217,22 +217,28 @@ azimuthal order is chosen to be 4. So, <cite>m</cite> runs from -4 to +4 in the 
 <p>The next step is similar to the cluster example. The most important difference is, that
 we use for the illumination a property of the cluster <cite>ks</cite> which holds the wave numbers
 in the chiral medium. This is done just out of convenience.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pw</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">plane_wave</span><span class="p">([</span><span class="n">emb</span><span class="o">.</span><span class="n">ks</span><span class="p">(</span><span class="n">k0</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="n">emb</span><span class="p">,</span> <span class="n">k0</span><span class="o">=</span><span class="n">k0</span><span class="p">)</span>
+<span class="n">xw</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">xw</span><span class="p">(</span><span class="n">pw</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;scattering cross width: </span><span class="si">{</span><span class="n">xw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, extinction cross width: </span><span class="si">{</span><span class="n">xw</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Finally, we just set up a suitable grid and plot the results. This time we calculate
 the whole field in the local system, but we could have also chosen to change to the
 global T-matrix for the computation of the field outside of the T-matrix.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">field</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="nb">complex</span><span class="p">)</span>
-<span class="n">valid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">grid</span> <span class="o">-</span> <span class="n">positions</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">radii</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">radii</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">grid</span> <span class="o">-</span> <span class="n">positions</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">2</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">radii</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">radii</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-<span class="p">)</span>
-<span class="n">scattered_field_coeff</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">valid</span><span class="p">,</span> <span class="p">:])</span>
-<span class="n">field</span><span class="p">[</span><span class="n">valid</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">scattered_field_coeff</span> <span class="o">*</span> <span class="p">(</span><span class="n">cluster</span><span class="o">.</span><span class="n">t</span> <span class="o">@</span> <span class="n">illu</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">field</span><span class="p">[</span><span class="n">valid</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+=</span> <span class="n">treams</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">vpw_A</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="mi">300</span><span class="p">:</span><span class="mi">300</span><span class="p">:</span><span class="mi">101</span><span class="n">j</span><span class="p">,</span> <span class="o">-</span><span class="mi">300</span><span class="p">:</span><span class="mi">300</span><span class="p">:</span><span class="mi">101</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">field</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="nb">complex</span><span class="p">)</span>
+
+<span class="n">valid</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">valid_points</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">radii</span><span class="p">)</span>
+<span class="n">sca</span> <span class="o">=</span> <span class="n">cluster</span> <span class="o">@</span> <span class="n">pw</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">cluster</span><span class="o">.</span><span class="n">basis</span><span class="p">)</span> <span class="o">@</span> <span class="n">pw</span>
+<span class="n">field</span><span class="p">[</span><span class="n">valid</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">(</span><span class="n">sca</span><span class="o">.</span><span class="n">efield</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">valid</span><span class="p">,</span> <span class="p">:])</span> <span class="o">*</span> <span class="n">sca</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
+
 </pre></div>
 </div>
+<p>(<a class="reference download internal" download="" href="_downloads/7ca758564fb7ccbe3d01c1c8e2ba2182/cylindercluster.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/54bf44ae89b0b981351a991f19b998d0/cylindercluster.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/aeec5d6296735af3f0044c07413972c4/cylindercluster.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/512c94f8ee2190dd95d69b8c05a79d4a/cylindercluster.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/cylindercluster.png" class="plot-directive" src="_images/cylindercluster.png" />
+</figure>
 </section>
 <section id="id1">
 <h3><a class="toc-backref" href="#id7" role="doc-backlink">1D-arrays of particles</a><a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h3>
@@ -264,7 +270,7 @@ points in the unit cell, it is possible to calculate the all positions outside o
 spheres. However, this is comparably slow in comparison to the calculation using the
 cylindrical wave expansion. This expansion is only valid outside of the circumscribing
 cylinder with infinite length in z-direction.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pw</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">plane_wave</span><span class="p">(</span><span class="n">k0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pw</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">plane_wave</span><span class="p">([</span><span class="n">k0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">k0</span><span class="o">=</span><span class="n">k0</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="p">())</span>
 <span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="mi">150</span><span class="p">:</span><span class="mi">150</span><span class="p">:</span><span class="mi">51</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">150</span><span class="p">:</span><span class="mi">150</span><span class="p">:</span><span class="mi">51</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 <span class="n">field</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="nb">complex</span><span class="p">)</span>
 </pre></div>
@@ -381,7 +387,7 @@ point, where we probe the field at.</p>
         <li class="right" >
           <a href="gettingstarted.html" title="Getting started"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev112+gf5219781 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev115+g2a90fe85 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Examples</a></li> 
       </ul>
     </div>

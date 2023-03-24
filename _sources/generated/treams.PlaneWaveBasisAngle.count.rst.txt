@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisAngle.count
+================================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasisAngle.count

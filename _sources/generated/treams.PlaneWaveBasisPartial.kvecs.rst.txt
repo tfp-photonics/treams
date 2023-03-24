@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisPartial.kvecs
+==================================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasisPartial.kvecs

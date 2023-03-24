@@ -1,6 +1,0 @@
-treams.PlaneWaveBasisPartial.complete
-=====================================
-
-.. currentmodule:: treams
-
-.. automethod:: PlaneWaveBasisPartial.complete

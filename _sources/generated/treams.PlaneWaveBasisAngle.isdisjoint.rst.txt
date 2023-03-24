@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisAngle.isdisjoint
+=====================================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasisAngle.isdisjoint

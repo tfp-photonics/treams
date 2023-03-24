@@ -1,6 +1,0 @@
-treams.special.hankel1
-======================
-
-.. currentmodule:: treams.special
-
-.. autodata:: hankel1
