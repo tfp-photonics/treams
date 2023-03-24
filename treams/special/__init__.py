@@ -1,11 +1,11 @@
-"""Special (mathematical) functions.
+r"""Special (mathematical) functions.
 
 .. currentmodule:: treams.special
 
 Special mathematical functions used in :mod:`treams`. Some functions are reexported from
 :py:mod:`scipy.special`. Most functions are available as Numpy universal functions
 (:py:class:`numpy.ufunc`) or as generalized universal functions
-(:std:doc:`reference/c-api/generalized-ufuncs`).
+(:ref:`c-api.generalized-ufuncs`).
 
 Available functions
 ===================
@@ -29,16 +29,31 @@ Bessel and Hankel functions, with their spherical counterparts, derivatives
 Those functions are just reexported from Scipy. So, one only needs to import this
 subpackage within treams.
 
-.. autosummary::
-   :toctree:
-
-   hankel1
-   hankel2
-   jv
-   yv
-   spherical_jn
-   spherical_yn
-
++------------------------------------------------------------+-------------------------+
+| :py:data:`~scipy.special.hankel1`\(v, z[, out])            | Hankel function of the  |
+|                                                            | first kind.             |
++------------------------------------------------------------+-------------------------+
+| :py:data:`~scipy.special.hankel2`\(v, z[, out])            | Hankel function of the  |
+|                                                            | second kind.            |
++------------------------------------------------------------+-------------------------+
+| :py:data:`~scipy.special.jv`\(v, z[, out])                 | Bessel function of the  |
+|                                                            | first kind of real      |
+|                                                            | order and complex       |
+|                                                            | argument.               |
++------------------------------------------------------------+-------------------------+
+| :py:data:`~scipy.special.yv`\(v, z[, out])                 | Bessel function of the  |
+|                                                            | second kind of real     |
+|                                                            | order and complex       |
+|                                                            | argument.               |
++------------------------------------------------------------+-------------------------+
+| | :py:func:`spherical_jn <scipy.special.spherical_jn>`\(n, | Spherical Bessel        |
+|   z[, derivative])                                         | function of the first   |
+|                                                            | kind or its derivative. |
++------------------------------------------------------------+-------------------------+
+| | :py:func:`spherical_yn <scipy.special.spherical_yn>`\(n, | Spherical Bessel        |
+|   z[, derivative])                                         | function of the second  |
+|                                                            | kind or its derivative. |
++------------------------------------------------------------+-------------------------+
 
 Those functions just wrap Scipy functions with special optional arguments to be able to
 analogously access them like their non-spherical counterparts:

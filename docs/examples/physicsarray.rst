@@ -127,7 +127,7 @@ such a plane wave could be:
 
 .. doctest::
 
-    >>> wave = treams.PhysicsArray([1.5], basis=treams.PlaneWaveBasis([(3, 4, 5, 0)]))
+    >>> wave = treams.PhysicsArray([1.5], basis=treams.PlaneWaveBasisPartial([(3, 4, 0)]))
     >>> wave.expand(treams.SphericalWaveBasis.default(1))
     PhysicsArray(
         [[ 0.00000000e+00+0.j        ],
@@ -142,10 +142,9 @@ such a plane wave could be:
         m=[-1 -1  0  0  1  1],
         pol=[1 0 1 0 1 0],
         positions=[[0. 0. 0.]],
-    ), PlaneWaveBasis(
+    ), PlaneWaveBasisPartial(
         kx=[3],
         ky=[4],
-        kz=[5],
         pol=[0],
     )),
         material=Material(1, 1, 0),

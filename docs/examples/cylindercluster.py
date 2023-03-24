@@ -7,26 +7,23 @@ k0 = 2 * np.pi / 1000  # Wave number in vacuum
 kz = 0
 mmax = 4
 radii = [150, 100]
+emb = treams.Material(4, 1, 0.5)
 cylinders = [
-    treams.TMatrixC.cylinder(kz, mmax, k0, r, [4, 16 + 1j], kappa=[0.5, 0]) for r in radii
+    treams.TMatrixC.cylinder(kz, mmax, k0, r, [(16 + 1j, 1, 0), emb]) for r in radii
 ]
 positions = [[75, 75, 0], [-110, -110, 0]]
-cluster = treams.TMatrixC.cluster(cylinders, positions)
-cluster.interact()
+cluster = treams.TMatrixC.cluster(cylinders, positions).interacted()
 
-illu = cluster.illuminate_pw(np.real(cluster.ks[0]), 0, 0, 0)
+pw = treams.plane_wave([emb.ks(k0)[0], 0, 0], 0, material=emb, k0=k0)
+xw = cluster.xw(pw)
+print(f"scattering cross width: {xw[0]}, extinction cross width: {xw[1]}")
 
 grid = np.mgrid[-300:300:101j, -300:300:101j, 0:1].squeeze().transpose((1, 2, 0))
 field = np.zeros_like(grid, complex)
-valid = np.logical_and(
-    np.sum(np.power(grid - positions[0], 2), axis=-1) > radii[0] * radii[0],
-    np.sum(np.power(grid - positions[1], 2), axis=-1) > radii[1] * radii[1],
-)
-scattered_field_coeff = cluster.field(grid[valid, :])
-field[valid, :] = np.sum(scattered_field_coeff * (cluster.t @ illu), axis=-2)
-field[valid, :] += treams.special.vpw_A(
-    cluster.ks[0].real, 0, 0, grid[valid, 0], grid[valid, 1], grid[valid, 2], 0
-)
+
+valid = cluster.valid_points(grid, radii)
+sca = cluster @ pw.expand(cluster.basis) @ pw
+field[valid, :] = (sca.efield(grid[valid, :]) * sca[:, None]).sum(axis=-2)
 
 fig, ax = plt.subplots()
 pcm = ax.pcolormesh(

@@ -14,7 +14,7 @@ snowballs = [treams.TMatrix.sphere(lmax, k0, r, [snow, air]) for r in radii]
 positions = [[0, 0, -100], [0, 0, 150], [-85, 145, -5], [-80, -135, -7.5]]
 snowman = treams.TMatrix.cluster(snowballs, positions).interacted()
 
-pw = treams.plane_wave(k0, 0, 0, 0)
+pw = treams.plane_wave([k0, 0, 0], 0, k0=k0, material=air)
 xs = snowman.xs(pw)
 print(f"scattering cross section: {xs[0]}, extinction cross section: {xs[1]}")
 

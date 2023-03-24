@@ -133,7 +133,7 @@ non-zero value of the chirality parameter.
 
 .. literalinclude:: examples/cylindercluster.py
    :language: python
-   :lines: 7-16
+   :lines: 6-15
 
 In contrast to the case of spheres and spherical T-matrices, we now need to define the
 value of the z-component of the wave vector. Multiple values have to be given. Later, we
@@ -148,7 +148,7 @@ in the chiral medium. This is done just out of convenience.
 
 .. literalinclude:: examples/cylindercluster.py
    :language: python
-   :lines: 18
+   :lines: 17-19
 
 Finally, we just set up a suitable grid and plot the results. This time we calculate
 the whole field in the local system, but we could have also chosen to change to the
@@ -158,7 +158,7 @@ global T-matrix for the computation of the field outside of the T-matrix.
    :language: python
    :lines: 20-27
 
-.. .. plot:: examples/cylindercluster.py
+.. plot:: examples/cylindercluster.py
 
 1D-arrays of particles
 ----------------------

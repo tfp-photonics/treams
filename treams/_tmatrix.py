@@ -866,7 +866,11 @@ def _plane_wave_partial(
 ):
     if basis is None:
         basis = PWBP.default([kpar])
-    if len(pol) == 3:
+    if pol == 0 or pol == -1:
+        pol = [1, 0]
+    elif pol == 1:
+        pol = [0, 1]
+    elif len(pol) == 3:
         modetype = "up" if modetype is None else modetype
         if modetype not in ("up", "down"):
             raise ValueError(f"invalid 'modetype': {modetype}")
@@ -881,10 +885,6 @@ def _plane_wave_partial(
             pol = sc.vpw_A(*kpar, kzs[::-1], 0, 0, 0, [1, 0]) @ pol
         else:
             raise ValueError(f"invalid 'poltype': {poltype}")
-    elif pol == 0 or pol == -1:
-        pol = [1, 0]
-    elif pol == 1:
-        pol = [0, 1]
     res = [pol[x[2]] * (np.abs(np.array(kpar) - x[:2]) < 1e-14).all() for x in basis]
     return PhysicsArray(
         res,
@@ -910,8 +910,15 @@ def _plane_wave(
         basis = PWBA.default([kvec])
     norm = np.sqrt(np.sum(np.power(kvec, 2)))
     qvec = kvec / norm
-    if len(pol) == 3:
-        kvec = Material(material).ks(k0) * qvec[:, None]
+    if pol == 0 or pol == -1:
+        pol = [1, 0]
+    elif pol == 1:
+        pol = [0, 1]
+    elif len(pol) == 3:
+        if None not in (k0, material):
+            kvec = Material(material).ks(k0) * qvec[:, None]
+        else:
+            kvec = qvec
         poltype = config.POLTYPE if poltype is None else poltype
         if poltype == "parity":
             pol = [
@@ -922,10 +929,6 @@ def _plane_wave(
             pol = sc.vpw_A(*kvec, 0, 0, 0, [1, 0]) @ pol
         else:
             raise ValueError(f"invalid 'poltype': {poltype}")
-    elif pol == 0 or pol == -1:
-        pol = [1, 0]
-    elif pol == 1:
-        pol = [0, 1]
     res = [pol[x[3]] * (np.abs(qvec - x[:3]) < 1e-14).all() for x in basis]
     return PhysicsArray(
         res,
@@ -951,12 +954,18 @@ def plane_wave(
 
     Args:
         kvec (Sequence): Wave vector.
-        pol (int or Sequence):
-        basis (optional):
-        k0 (optional):
-        material (optional):
-        modetype (optional):
-        poltype (optional):
+        pol (int or Sequence): Polarization index (see
+            :ref:`polarizations:Polarizations`) to have a unit amplitude wave of the
+            corresponding wave, two values to specify the amplitude for each
+            polarization, or three values in a sequence to specify the Cartesian
+            electric field components. In the latter case, if the electric field has
+            longitudinal components they are neglected.
+        basis (PlaneWaveBasis, optional): Basis definition.
+        k0 (float, optional): Wave number in vacuum.
+        material (Material, optional): Material definition.
+        modetype (str, optional): Mode type (see :ref:`polarizations:Mode types`).
+        poltype (str, optional): Polarization type (see
+            :ref:`polarization:Polarizations`).
     """
     if len(kvec) == 2:
         return _plane_wave_partial(
@@ -982,10 +991,8 @@ def plane_wave(
 
 
 def plane_wave_angle(theta, phi, pol, **kwargs):
-    qx = np.sin(theta) * np.cos(phi)
-    qy = np.sin(theta) * np.sin(phi)
-    qz = np.cos(theta)
-    return plane_wave(qx, qy, qz, pol, **kwargs)
+    qvec = [np.sin(theta) * np.cos(phi), np.sin(theta) * np.sin(phi), np.cos(theta)]
+    return plane_wave(qvec, pol, **kwargs)
 
 
 def spherical_wave(
