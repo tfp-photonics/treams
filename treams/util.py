@@ -209,7 +209,7 @@ class AnnotationSequence(collections.abc.Sequence):
             return copy.copy(self._ann)
         if isinstance(key, slice):
             return type(self)(*self._ann[key])
-        if isinstance(key, int):
+        if isinstance(key, (int, np.integer)):
             return self._ann[key]
         res = []
         for k in key:

@@ -39,6 +39,7 @@ class TestInit:
 class TestSphere:
     def test(self):
         tm = TMatrix.sphere(2, 3, 4, [(2, 1, 1), (9, 1, 2)])
+        del tm.modetype
         m = treams.coeffs.mie([1, 2], [12], [2, 9], [1, 1], [1, 2])
         assert (
             np.all(np.diag(tm)[:6:2] == m[0, 1, 1])
@@ -104,12 +105,12 @@ class TestProperties:
 class TestXs:
     def test(self):
         tm = TMatrix.sphere(2, 3, [4], [(2 + 1j, 1, 1), (9, 1, 2)])
-        illu = treams.PhysicsArray(
-            [[0.5]], basis=treams.PlaneWaveBasis([[0, 0, tm.ks[0], 0]])
-        )
-        illu = illu.expand(tm.basis, k0=tm.k0, material=tm.material) @ illu
+        illu = treams.plane_wave([0, 0, 1], [0.5, 0], k0=tm.k0, material=tm.material)
         xs = tm.xs(illu, 0.125)
-        assert isclose(xs[0][0], 3.194830855171616,) and isclose(xs[1][0], 5.63547158)
+        assert isclose(
+            xs[0],
+            3.194830855171616,
+        ) and isclose(xs[1], 5.63547158)
 
 
 class TestTranslate:
@@ -117,18 +118,18 @@ class TestTranslate:
         tm = TMatrix.sphere(3, 0.1, [0.2], [(2 + 1j, 1.1, 1), (9, 1, 2)])
         m = copy.deepcopy(tm)
         rs = np.array([[0.1, 0.2, 0.3], [-0.4, -0.5, -0.4]])
-        tm = tm.translate(rs[0])
-        tm = tm.translate(rs[1])
-        tm = tm.translate(-rs[0] - rs[1])
+        tm = tm.translated(rs[0])
+        tm = tm.translated(rs[1])
+        tm = tm.translated(-rs[0] - rs[1])
         assert np.all(np.abs(tm - m) < 1e-8)
 
     def test_kappa_zero(self):
         tm = TMatrix.sphere(3, 0.1, [0.2], [(2 + 1j, 1.1), (9, 1)])
         m = copy.deepcopy(tm)
         rs = np.array([[0.1, 0.2, 0.3], [-0.4, -0.5, -0.4]])
-        tm.translate(rs[0])
-        tm.translate(rs[1])
-        tm.translate(-rs[0] - rs[1])
+        tm.translated(rs[0])
+        tm.translated(rs[1])
+        tm.translated(-rs[0] - rs[1])
         assert np.all(np.abs(tm - m) < 1e-8)
 
 
@@ -137,12 +138,12 @@ class TestClusterRotate:
         tms = [TMatrix.sphere(3, 0.1, [0.1], [i * i, 1]) for i in range(1, 5)]
         rs1 = np.array([[0, 0, 0], [0.2, 0, 0], [0, 0.2, 0], [0, 0, 0.2]])
         tm1 = TMatrix.cluster(tms, rs1)
-        tm1 = tm1.interact().globalmat()
+        tm1 = tm1.interacted().globalmat()
         tm1 = tm1.rotate(1, 2, 3) @ tm1 @ tm1.rotate.inv(1, 2, 3)
         a = np.array([[np.cos(1), -np.sin(1), 0], [np.sin(1), np.cos(1), 0], [0, 0, 1]])
         b = np.array([[np.cos(2), 0, np.sin(2)], [0, 1, 0], [-np.sin(2), 0, np.cos(2)]])
         c = np.array([[np.cos(3), -np.sin(3), 0], [np.sin(3), np.cos(3), 0], [0, 0, 1]])
         rs2 = (a @ b @ c @ rs1.T).T
         tm2 = TMatrix.cluster(tms, rs2)
-        tm2 = tm2.interact().globalmat()
+        tm2 = tm2.interacted().globalmat()
         assert np.all(np.abs(tm1 - tm2) < 1e-16)

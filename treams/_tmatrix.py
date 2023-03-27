@@ -40,6 +40,9 @@ class TMatrix(PhysicsArray):
     def _check(self):
         """Fill in default values or raise errors for missing attributes."""
         super()._check()
+        shape = np.shape(self)
+        if len(shape) != 2 or shape[0] != shape[1]:
+            raise AnnotationError(f"invalid shape: '{shape}'")
         if not isinstance(self.k0, (int, float, np.floating, np.integer)):
             raise AnnotationError("invalid k0")
         if self.poltype is None:
@@ -53,9 +56,6 @@ class TMatrix(PhysicsArray):
             self.modetype = ("singular", "regular")
         else:
             raise AnnotationError("invalid modetype")
-        shape = np.shape(self)
-        if len(shape) != 2 or shape[0] != shape[1]:
-            raise AnnotationError(f"invalid shape: '{shape}'")
         if self.basis is None:
             self.basis = SWB.default(SWB.defaultlmax(shape[0]))
         if self.material is None:
@@ -212,7 +212,10 @@ class TMatrix(PhysicsArray):
             res = -2 * np.pi * self.trace().real / (k * k)
         else:
             res = 0
+            modetype = self.modetype
+            del self.modetype
             diag = np.diag(self)
+            self.modetype = modetype
             for pol in [0, 1]:
                 choice = self.basis.pol == pol
                 k = self.ks[pol]
@@ -274,12 +277,12 @@ class TMatrix(PhysicsArray):
             raise NotImplementedError
         sel = np.array(self.basis.pol, bool)
         re, im = self.real, self.imag
-        plus = -np.sum(re[sel, sel]) / (self.ks[1] * self.ks[1])
+        plus = -np.sum(re[sel[:, None] & sel]) / (self.ks[1] * self.ks[1])
         re_part = re[:, sel] / self.ks[self.basis.pol, None]
         im_part = im[:, sel] / self.ks[self.basis.pol, None]
         plus -= np.sum(re_part * re_part + im_part * im_part)
         sel = ~sel
-        minus = -np.sum(re[sel, sel]) / (self.ks[0] * self.ks[0])
+        minus = -np.sum(re[sel[:, None] & sel]) / (self.ks[0] * self.ks[0])
         re_part = re[:, sel] / self.ks[self.basis.pol, None]
         im_part = im[:, sel] / self.ks[self.basis.pol, None]
         minus -= np.sum(re_part * re_part + im_part * im_part)
@@ -406,7 +409,9 @@ class TMatrix(PhysicsArray):
         Returns:
             TMatrix
         """
-        return TMatrix(self.expand(r, **kwargs) @ self @ self.inv.expand(r, **kwargs))
+        return TMatrix(
+            self.translate(r, **kwargs) @ self @ self.translate.inv(r, **kwargs)
+        )
 
     def couple(self):
         """Calculate the coupling term of a block-diagonal T-matrix."""
@@ -496,6 +501,9 @@ class TMatrixC(PhysicsArray):
     def _check(self):
         """Fill in default values or raise errors for missing attributes."""
         super()._check()
+        shape = np.shape(self)
+        if len(shape) != 2 or shape[0] != shape[1]:
+            raise AnnotationError(f"invalid shape: '{shape}'")
         if not isinstance(self.k0, (int, float, np.floating, np.integer)):
             raise AnnotationError("invalid k0")
         if self.poltype is None:
@@ -509,9 +517,6 @@ class TMatrixC(PhysicsArray):
             self.modetype = ("singular", "regular")
         else:
             raise AnnotationError("invalid modetype")
-        shape = np.shape(self)
-        if len(shape) != 2 or shape[0] != shape[1]:
-            raise AnnotationError(f"invalid shape: '{shape}'")
         if self.basis is None:
             self.basis = CWB.default([0], CWB.defaultmmax(shape[0]))
         if self.material is None:
@@ -676,9 +681,12 @@ class TMatrixC(PhysicsArray):
             res = -2 * np.real(np.trace(self)) / (self.ks[0] * nk)
         else:
             res = 0
+            modetype = self.modetype
+            del self.modetype
             diag = np.diag(self)
+            self.modetype = modetype
             for pol in [0, 1]:
-                choice = self.pol == pol
+                choice = self.basis.pol == pol
                 res += -2 * np.real(diag[choice].sum()) / (self.ks[pol] * nk)
         if res.imag == 0:
             return res.real
@@ -804,7 +812,9 @@ class TMatrixC(PhysicsArray):
         Returns:
             TMatrixC
         """
-        return TMatrixC(self.expand(r, **kwargs) @ self @ self.inv.expand(r, **kwargs))
+        return TMatrixC(
+            self.translate(r, **kwargs) @ self @ self.inv.translate(r, **kwargs)
+        )
 
     def couple(self):
         """Calculate the coupling term of a blockdiagonal T-matrix."""
