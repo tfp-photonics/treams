@@ -44,16 +44,16 @@
          ~PlaneWaveBasisAngle.kvecs
          ~PlaneWaveBasisAngle.partial
       
-         ~PlaneWaveBasisAngle.__lt__
-         ~PlaneWaveBasisAngle.__repr__
-         ~PlaneWaveBasisAngle.__ne__
-         ~PlaneWaveBasisAngle.__gt__
+         ~PlaneWaveBasisAngle.__le__
+         ~PlaneWaveBasisAngle.__ge__
+         ~PlaneWaveBasisAngle.__len__
+         ~PlaneWaveBasisAngle.__sub__
+         ~PlaneWaveBasisAngle.__str__
          ~PlaneWaveBasisAngle.__or__
          ~PlaneWaveBasisAngle.__and__
-         ~PlaneWaveBasisAngle.__le__
+         ~PlaneWaveBasisAngle.__gt__
+         ~PlaneWaveBasisAngle.__ne__
+         ~PlaneWaveBasisAngle.__lt__
+         ~PlaneWaveBasisAngle.__repr__
          ~PlaneWaveBasisAngle.__xor__
-         ~PlaneWaveBasisAngle.__len__
-         ~PlaneWaveBasisAngle.__str__
-         ~PlaneWaveBasisAngle.__sub__
-         ~PlaneWaveBasisAngle.__ge__
   
