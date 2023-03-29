@@ -3,8 +3,7 @@ import itertools
 
 import numpy as np
 
-import treams.special as sc
-from treams import config, misc, util
+from treams import config, util
 from treams._core import PhysicsArray
 from treams._core import PlaneWaveBasisPartial as PWBP
 from treams._material import Material
@@ -15,15 +14,15 @@ from treams.coeffs import fresnel
 class _SMatrix(PhysicsArray):
     def _check(self):
         super()._check()
+        shape = np.shape(self)
+        if len(shape) != 2 or shape[0] != shape[1]:
+            raise util.AnnotationError(f"invalid shape: '{shape}'")
         if not isinstance(self.k0, (int, float, np.floating, np.integer)):
             raise util.AnnotationError("invalid k0")
         if self.poltype is None:
             self.poltype = config.POLTYPE
         if self.poltype not in ("parity", "helicity"):
             raise util.AnnotationError("invalid poltype")
-        shape = np.shape(self)
-        if len(shape) != 2 or shape[0] != shape[1]:
-            raise util.AnnotationError(f"invalid shape: '{shape}'")
         if self.basis is None:
             raise util.AnnotationError("basis not set")
         elif not isinstance(self.basis, PWBP):
@@ -34,8 +33,7 @@ class _SMatrix(PhysicsArray):
 
 
 class SMatrix:
-    r"""
-    S-matrix (plane wave basis)
+    r"""S-matrix (plane wave basis).
 
     The S-matrix describes the scattering of incoming into outgoing modes using a plane
     wave basis, with functions :func:`treams.special.vsw_A`,
@@ -64,7 +62,7 @@ class SMatrix:
     parameter. The two sides of the S-matrix can have different materials.
 
     Args:
-        qmats (float or complex, array): S-matrices
+        smats (float or complex, array): S-matrices
         k0 (float): Wave number in vacuum
         modes (iterable, optional): The modes corresponding to the S-matrices rows and
             columns. It must contain three arrays of equal length for the wave vectors'
@@ -153,8 +151,7 @@ class SMatrix:
 
     @classmethod
     def interface(cls, k0, basis, materials):
-        """
-        Planar interface between two media
+        """Planar interface between two media.
 
         Args:
             k0 (float): Wave number in vacuum
@@ -171,23 +168,36 @@ class SMatrix:
         """
         materials = tuple(map(Material, materials))
         ks = k0 * np.array((materials[0].nmp, materials[1].nmp))
-        sel = basis.pol == 0
-        kzs = np.zeros((len(sel) // 2, 2, 2), complex)
-        for i in range(2):
-            _kzs = basis.complete(k0, materials[i], "up").kz
-            kzs[:, i, 0] = _kzs[sel]
-            kzs[:, i, 1] = _kzs[np.logical_not(sel)]
+        choice = basis.pol == 0
+        kxs = basis.kx[choice], basis.kx[~choice]
+        kys = basis.ky[choice], basis.ky[~choice]
         qs = np.zeros((2, 2, len(basis), len(basis)), complex)
-        vals = fresnel(ks, kzs, [materials[0].impedance, materials[1].impedance])
-        for i in range(len(sel) // 2):
-            qs[:, :, 2 * i : 2 * i + 2, 2 * i : 2 * i + 2] = vals[i, :, :, ::-1, ::-1]
-
+        if all(kxs[0] == kxs[1]) and all(kys[0] == kys[1]):
+            kzs = np.stack(
+                [
+                    m.kzs(k0, kxs[0][:, None], kys[0][:, None], [[0, 1]])
+                    for m in materials
+                ],
+                -2,
+            )
+            vals = fresnel(ks, kzs, [m.impedance for m in materials])
+            qs[:, :, choice, choice] = np.moveaxis(vals[:, :, :, 0, 0], 0, -1)
+            qs[:, :, choice, ~choice] = np.moveaxis(vals[:, :, :, 0, 1], 0, -1)
+            qs[:, :, ~choice, choice] = np.moveaxis(vals[:, :, :, 1, 0], 0, -1)
+            qs[:, :, ~choice, ~choice] = np.moveaxis(vals[:, :, :, 1, 1], 0, -1)
+        else:
+            for i, (kx, ky, pol) in enumerate(basis):
+                for ii, (kx2, ky2, pol2) in enumerate(basis):
+                    if kx != kx2 or ky != ky2:
+                        continue
+                    kzs = np.array([m.kzs(k0, kx, ky) for m in materials])
+                    vals = fresnel(ks, kzs, [m.impedance for m in materials])
+                    qs[:, :, ii, i] = vals[:, :, pol2, pol]
         return cls(qs, k0=k0, basis=basis, material=materials[::-1], poltype="helicity")
 
     @classmethod
     def slab(cls, k0, basis, thickness, materials):
-        """
-        Slab of material
+        """Slab of material.
 
         A slab of material, defined by a thickness and three materials. Consecutive
         slabs of material can be defined by `n` thicknesses and and `n + 2` material
@@ -220,8 +230,7 @@ class SMatrix:
 
     @classmethod
     def stack(cls, items):
-        """
-        Stack of S-matrices
+        """Stack of S-matrices.
 
         Electromagnetically couple multiple S-matrices in the order given. Before
         coupling it can be checked for matching materials and modes.
@@ -242,8 +251,7 @@ class SMatrix:
 
     @classmethod
     def propagation(cls, r, k0, basis, material):
-        """
-        S-matrix for the propagation along a distance
+        """S-matrix for the propagation along a distance.
 
         This S-matrix translates the reference origin along `r`.
 
@@ -266,8 +274,7 @@ class SMatrix:
 
     @classmethod
     def from_array(cls, tm, basis, *, eta=0):
-        """
-        S-matrix from an array of (cylindrical) T-matrices
+        """S-matrix from an array of (cylindrical) T-matrices.
 
         Create a S-matrix for a two-dimensional array of objects described by the
         T-Matrix or an one-dimensional array of objects described by a cylindrical
@@ -294,8 +301,7 @@ class SMatrix:
         )
 
     def add(self, sm):
-        """
-        Couple another S-matrix on top of the current one
+        """Couple another S-matrix on top of the current one.
 
         See also :func:`treams.SMatrix.stack` for a function that does not change the
         current S-matrix but creates a new one.
@@ -320,8 +326,7 @@ class SMatrix:
         return SMatrix(snew)
 
     def double(self, n=1):
-        """
-        Double the S-matrix
+        """Double the S-matrix.
 
         By default this function doubles the S-matrix but it can also create a
         :math:`2^n`-fold repetition of itself:
@@ -337,44 +342,8 @@ class SMatrix:
             res = res.add(self)
         return res
 
-    def changebasis(self, **kwargs):
-        """
-        Swap between helicity and parity basis
-
-        Args:
-            modes (array, optional): Change the number of modes while changing the basis
-
-        Returns:
-            SMatrix
-        """
-        sm = [[s.changepoltype() for s in row] for row in self]
-        return SMatrix(sm)
-
-    def pick(self, modes):
-        """
-        Pick modes from the S-matrix
-
-        Args:
-            modes (array): Modes of the new S-matrix
-
-        Returns:
-            SMatrix
-        """
-        modes = self._check_modes(modes)
-        mat = misc.pickmodes(self.modes, modes)
-        q = np.zeros((2, 2, mat.shape[-1], mat.shape[-1]), self.q.dtype)
-        q[0, 0, :, :] = mat.T @ self.q[0, 0, :, :] @ mat
-        q[0, 1, :, :] = mat.T @ self.q[0, 1, :, :] @ mat
-        q[1, 0, :, :] = mat.T @ self.q[1, 0, :, :] @ mat
-        q[1, 1, :, :] = mat.T @ self.q[1, 1, :, :] @ mat
-        self.q = q
-        self.kx, self.ky, self.pol = modes
-        self.kz = misc.wave_vec_z(self.kx, self.ky, self.ks[:, self.pol])
-        return self
-
-    def field_outside(self, illu):
-        """
-        Field coefficients above and below the S-matrix
+    def illuminate(self, illu, illu2=None, /, *, smat=None):
+        """Field coefficients above and below the S-matrix.
 
         Given an illumination defined by the coefficients of each incoming mode
         calculate the coefficients for the outgoing field above and below the S-matrix.
@@ -386,90 +355,27 @@ class SMatrix:
         Returns:
             tuple
         """
-        illu = [np.zeros_like(self.kx) if i is None else i for i in illu]
-        field_above = self.q[0, 0, :, :] @ illu[0] + self.q[0, 1] @ illu[1]
-        field_below = self.q[1, 0, :, :] @ illu[0] + self.q[1, 1] @ illu[1]
-        return field_above, field_below
-
-    def field_inside(self, illu, q_above):
-        """
-        Field coefficients between two S-matrices
-
-        Given an illumination defined by the coefficients of each incoming mode
-        calculate the coefficients for the field between the two S-matrices. The
-        coefficients are separated into upwards and downwards propagating modes.
-
-        Args:
-            illu (tuple): A 2-tuple of arrays, with the entries corresponding to
-                upwards and downwards incoming modes.
-            q_above (SMatrix): S-matrix above the current one
-
-        Returns:
-            tuple
-        """
-        illu = [np.zeros_like(self.kx) if i is None else i for i in illu]
-        qtmp_up = np.eye(self.q.shape[2]) - self.q[0, 1, :, :] @ q_above.q[1, 0, :, :]
-        qtmp_down = np.eye(self.q.shape[2]) - q_above.q[1, 0, :, :] @ self.q[0, 1, :, :]
-        field_up = np.linalg.solve(qtmp_up, self.q[0, 0, :, :] @ illu[0]) + self.q[
-            0, 1
-        ] @ np.linalg.solve(qtmp_down, q_above.q[1, 1, :, :] @ illu[1])
-        field_down = np.linalg.solve(
-            qtmp_down, q_above.q[1, 1, :, :] @ illu[1]
-        ) + q_above.q[1, 0] @ np.linalg.solve(qtmp_up, self.q[0, 0, :, :] @ illu[0])
-        return field_up, field_down
-
-    def field(self, r, direction=1, above=True):
-        """
-        Calculate the field at specified points
-
-        The mode expansion of the S-matrix is used. The field direction and the side of
-        the S-matrix can be specified
-
-        Args:
-            r (float, array_like): Array of the positions to probe
-            direction (int, optional): The direction of the field, options are `-1` and
-                `1`
-            above (bool, optional): Take the field above or below the S-matrix
-
-        Returns
-            complex
-        """
-        if direction not in (-1, 1):
-            raise ValueError(f"direction must be '-1' or '1', but is '{direction}''")
-        choice = int(bool(above))
-        r = np.array(r)
-        if r.ndim == 1:
-            r = np.reshape(r, (1, -1))
-        if self.helicity:
-            return sc.vpw_A(
-                self.kx,
-                self.ky,
-                direction * self.kz[choice, :],
-                r[..., None, 0],
-                r[..., None, 1],
-                r[..., None, 2],
-                self.pol,
-            )
-        else:
-            return (1 - self.pol[:, None]) * sc.vpw_M(
-                self.kx,
-                self.ky,
-                direction * self.kz[choice, :],
-                r[..., None, 0],
-                r[..., None, 1],
-                r[..., None, 2],
-            ) + self.pol[:, None] * sc.vpw_N(
-                self.kx,
-                self.ky,
-                direction * self.kz[choice, :],
-                r[..., None, 0],
-                r[..., None, 1],
-                r[..., None, 2],
-            )
+        modetype = getattr(illu, "modetype", "up")
+        if isinstance(modetype, tuple):
+            modetype = modetype[max(-2, -len(tuple))]
+        illu2 = np.zeros_like(self.kx) if illu2 is None else illu2
+        if modetype == "down":
+            illu, illu2 = illu2, illu
+        if smat is None:
+            field_up = self[0, 0] @ illu + self[0, 1] @ illu2
+            field_down = self[1, 0] @ illu + self[1, 1] @ illu2
+            return field_up, field_down
+        stmp = np.eye(len(self.basis)) - self[0, 1] @ smat[1, 0]
+        field_in_up = np.linalg.solve(
+            stmp, self[0, 0] @ illu + self[0, 1] @ smat[1, 1] @ illu2
+        )
+        field_in_down = smat[1, 0] @ field_in_up + smat[1, 1] @ illu2
+        field_up = smat[0, 1] @ illu2 + smat[0, 0] @ field_in_up
+        field_down = self[1, 0] @ illu + self[1, 1] @ field_in_down
+        return field_up, field_down, field_in_up, field_in_down
 
     def poynting_avg(self, coeffs, above=True):
-        r"""
-        Time-averaged z-component of the Poynting vector
+        r"""Time-averaged z-component of the Poynting vector.
 
         Calculate the time-averaged Poynting vector's z-component
 
@@ -532,8 +438,7 @@ class SMatrix:
         )
 
     def chirality_density(self, coeffs, z=None, above=True):
-        r"""
-        Volume-averaged chirality density
+        r"""Volume-averaged chirality density.
 
         Calculate the volume-averaged chirality density
 
@@ -587,8 +492,7 @@ class SMatrix:
         return 0.5 * np.real(res)
 
     def tr(self, illu, direction=1):
-        """
-        Transmittance and reflectance
+        """Transmittance and reflectance.
 
         Calculate the transmittance and reflectance for one S-matrix with the given
         illumination and direction.
@@ -615,8 +519,7 @@ class SMatrix:
         return s_t / (s_ir - s_r), s_r / (s_r - s_ir)
 
     def cd(self, illu, direction=1):
-        """
-        Transmission and absorption circular dichroism
+        """Transmission and absorption circular dichroism.
 
         Calculate the transmission and absoption CD for one S-matrix with the given
         illumination and direction.
@@ -643,8 +546,7 @@ class SMatrix:
         return (tp - tm) / (tp + tm), (tp + rp - tm - rm) / (tp + rp + tm + rm)
 
     def periodic(self):
-        r"""
-        Periodic repetition of the S-matrix
+        r"""Periodic repetition of the S-matrix.
 
         Transform the S-matrix to an infinite periodic arrangement of itself defined
         by
@@ -676,8 +578,7 @@ class SMatrix:
         return res
 
     def bands_kz(self, az):
-        r"""
-        Band structure calculation
+        r"""Band structure calculation.
 
         Calculate the band structure for the given S-matrix, assuming it is periodically
         repeated along the z-axis. The function returns the z-components of the wave
