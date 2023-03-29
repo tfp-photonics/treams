@@ -1,6 +1,0 @@
-treams.SMatrix.changebasis
-==========================
-
-.. currentmodule:: treams
-
-.. automethod:: SMatrix.changebasis

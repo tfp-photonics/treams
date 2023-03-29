@@ -1,6 +1,0 @@
-treams.SMatrix.field\_outside
-=============================
-
-.. currentmodule:: treams
-
-.. automethod:: SMatrix.field_outside

@@ -1,0 +1,6 @@
+treams.SMatrix.illuminate
+=========================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.illuminate

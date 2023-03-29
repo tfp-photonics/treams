@@ -28,16 +28,12 @@
          ~SMatrix.add
          ~SMatrix.bands_kz
          ~SMatrix.cd
-         ~SMatrix.changebasis
          ~SMatrix.chirality_density
          ~SMatrix.double
-         ~SMatrix.field
-         ~SMatrix.field_inside
-         ~SMatrix.field_outside
          ~SMatrix.from_array
+         ~SMatrix.illuminate
          ~SMatrix.interface
          ~SMatrix.periodic
-         ~SMatrix.pick
          ~SMatrix.poynting_avg
          ~SMatrix.propagation
          ~SMatrix.slab
@@ -45,10 +41,10 @@
          ~SMatrix.tr
       
          ~SMatrix.__repr__
-         ~SMatrix.__ne__
-         ~SMatrix.__str__
          ~SMatrix.__gt__
-         ~SMatrix.__ge__
          ~SMatrix.__le__
+         ~SMatrix.__ne__
+         ~SMatrix.__ge__
+         ~SMatrix.__str__
          ~SMatrix.__lt__
   

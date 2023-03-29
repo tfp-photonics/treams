@@ -45,15 +45,15 @@
          ~PlaneWaveBasisAngle.partial
       
          ~PlaneWaveBasisAngle.__repr__
-         ~PlaneWaveBasisAngle.__ne__
-         ~PlaneWaveBasisAngle.__str__
-         ~PlaneWaveBasisAngle.__sub__
-         ~PlaneWaveBasisAngle.__gt__
-         ~PlaneWaveBasisAngle.__xor__
-         ~PlaneWaveBasisAngle.__and__
-         ~PlaneWaveBasisAngle.__ge__
-         ~PlaneWaveBasisAngle.__or__
-         ~PlaneWaveBasisAngle.__le__
          ~PlaneWaveBasisAngle.__len__
+         ~PlaneWaveBasisAngle.__and__
+         ~PlaneWaveBasisAngle.__gt__
+         ~PlaneWaveBasisAngle.__le__
+         ~PlaneWaveBasisAngle.__ne__
+         ~PlaneWaveBasisAngle.__sub__
+         ~PlaneWaveBasisAngle.__or__
+         ~PlaneWaveBasisAngle.__ge__
+         ~PlaneWaveBasisAngle.__xor__
+         ~PlaneWaveBasisAngle.__str__
          ~PlaneWaveBasisAngle.__lt__
   
