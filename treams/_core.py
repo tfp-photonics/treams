@@ -175,7 +175,9 @@ class SphericalWaveBasis(BasisSet):
                 return self.l, self.m
             raise IndexError(f"unrecognized key '{idx}'")
         res = self.pidx[idx], self.l[idx], self.m[idx], self.pol[idx]
-        if isinstance(idx, int) or (isinstance(idx, tuple) and len(idx) == 0):
+        if isinstance(idx, (int, np.integer)) or (
+            isinstance(idx, tuple) and len(idx) == 0
+        ):
             return res
         return type(self)(zip(*res), self.positions)
 
@@ -455,7 +457,7 @@ class CylindricalWaveBasis(BasisSet):
                 return self.kz, self.m
             raise IndexError(f"unrecognized key '{idx}'")
         res = self.pidx[idx], self.kz[idx], self.m[idx], self.pol[idx]
-        if isinstance(idx, int) or idx == ():
+        if isinstance(idx, (int, np.integer)) or (isinstance(idx, tuple) and idx == ()):
             return res
         return type(self)(zip(*res), self.positions)
 
@@ -698,7 +700,7 @@ class PlaneWaveBasisAngle(PlaneWaveBasis):
                 return self.qz, self.pol
             raise IndexError(f"unrecognized key '{idx}'")
         res = self.qx[idx], self.qy[idx], self.qz[idx], self.pol[idx]
-        if isinstance(idx, int) or idx == ():
+        if isinstance(idx, (int, np.integer)) or (isinstance(idx, tuple) and idx == ()):
             return res
         return type(self)(zip(*res))
 
@@ -795,8 +797,8 @@ class PlaneWaveBasisAngle(PlaneWaveBasis):
             modetype (optional): Currently unused for this class.
         """
         # TODO: check kz depending on modetype (alignment?)
-        qs = np.stack((self.qx, self.qy, self.qz), -1)
-        return Material(material).ks(k0)[self.pol, None] * qs
+        ks = Material(material).ks(k0)[self.pol]
+        return ks * self.qx, ks * self.qy, ks * self.qz
 
 
 class PlaneWaveBasisPartial(PlaneWaveBasis):
@@ -906,7 +908,7 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         of the two exceptions a tuple is returned.
         """
         res = self._kx[idx], self._ky[idx], self.pol[idx]
-        if isinstance(idx, int) or idx == ():
+        if isinstance(idx, (int, np.integer)) or (isinstance(idx, tuple) and idx == ()):
             return res
         return type(self)(zip(*res))
 
@@ -1054,10 +1056,10 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         ky = self._ky
         kz = material.kzs(k0, kx, ky, self.pol) * (2 * (modetype == "up") - 1)
         if self.alignment == "yz":
-            kx, ky, kz = kz, kx, ky
+            return kz, kx, ky
         elif self.alignment == "zy":
-            kx, ky, kz = ky, kz, kx
-        return np.stack((kx, ky, kz), -1)
+            return ky, kz, kx
+        return kx, ky, kz
 
 
 def _raise_basis_error(*args):

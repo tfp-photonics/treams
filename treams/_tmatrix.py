@@ -721,7 +721,7 @@ class TMatrixC(PhysicsArray):
             ks = self.ks[self.basis.pol, None]
         re, im = self.real, self.imag
         nk = np.unique(self.basis.kz).size
-        res = 2 * np.sum(re * re + im * im) / (ks * nk)
+        res = 2 * np.sum((re * re + im * im) / (ks * nk))
         return res.real
 
     @property

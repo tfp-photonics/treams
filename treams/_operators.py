@@ -227,21 +227,16 @@ def _cw_translate(r, basis, k0, to_basis, material, where):
 def _pw_translate(r, basis, k0, to_basis, material, modetype, where):
     """Translate plane waves."""
     kvecs = basis.kvecs(k0, material, modetype)
+    kx, ky, kz = to_basis.kvecs(k0, material, modetype)
     where = (
         where
-        & (
-            np.sum(
-                np.abs(to_basis.kvecs(k0, material, modetype)[:, None, :] - kvecs),
-                axis=-1,
-            )
-            < 1e-14
-        )
+        & (np.abs(kx[:, None] - kvecs[0]) < 1e-14)
+        & (np.abs(ky[:, None] - kvecs[1]) < 1e-14)
+        & (np.abs(kz[:, None] - kvecs[2]) < 1e-14)
         & (to_basis.pol[:, None] == basis.pol)
     )
     res = pw.translate(
-        kvecs[:, 0],
-        kvecs[:, 1],
-        kvecs[:, 2],
+        *kvecs,
         r[..., None, None, 0],
         r[..., None, None, 1],
         r[..., None, None, 2],
@@ -358,7 +353,6 @@ def _pwa_changepoltype(basis, to_basis, poltype, where):
         & (to_basis.qz[:, None] == basis.qz)
         & where
     )
-    print(where)
     res = np.zeros_like(where, float)
     res[where] = np.sqrt(0.5)
     res[where & (to_basis.pol[:, None] == basis.pol) & (basis.pol == 0)] = -np.sqrt(0.5)
@@ -503,16 +497,12 @@ def _sw_pw_expand(basis, to_basis, k0, material, modetype, poltype, where):
     kvecs = basis.kvecs(k0, material, modetype)
     res = pw.to_sw(
         *(m[:, None] for m in to_basis["lmp"]),
-        kvecs[:, 0],
-        kvecs[:, 1],
-        kvecs[:, 2],
+        *kvecs,
         basis.pol,
         poltype=poltype,
         where=where,
     ) * pw.translate(
-        kvecs[:, 0],
-        kvecs[:, 1],
-        kvecs[:, 2],
+        *kvecs,
         to_basis.positions[to_basis.pidx, None, 0],
         to_basis.positions[to_basis.pidx, None, 1],
         to_basis.positions[to_basis.pidx, None, 2],
@@ -559,15 +549,11 @@ def _cw_pw_expand(basis, to_basis, k0, material, modetype, where):
     kvecs = basis.kvecs(k0, material, modetype)
     res = pw.to_cw(
         *(m[:, None] for m in to_basis["kzmp"]),
-        kvecs[:, 0],
-        kvecs[:, 1],
-        kvecs[:, 2],
+        *kvecs,
         basis.pol,
         where=where,
     ) * pw.translate(
-        kvecs[:, 0],
-        kvecs[:, 1],
-        kvecs[:, 2],
+        *kvecs,
         to_basis.positions[to_basis.pidx, None, 0],
         to_basis.positions[to_basis.pidx, None, 1],
         to_basis.positions[to_basis.pidx, None, 2],
@@ -589,13 +575,12 @@ def _pw_pw_expand(basis, to_basis, k0, material, modetype, where):
     kvecs = basis.kvecs(k0, material, modetype)
     if isinstance(to_basis, core.PlaneWaveBasisPartial):
         modetype = "up" if modetype is None else modetype
-    to_kvecs = basis.kvecs(k0, material, modetype)
+    kx, ky, kz = to_basis.kvecs(k0, material, modetype)
     res = np.array(
         where
-        & (to_kvecs[:, 0, None] == kvecs[:, 0])
-        & (to_kvecs[:, 1, None] == kvecs[:, 1])
-        & (to_kvecs[:, 2, None] == kvecs[:, 2])
-        & (to_basis.pol[:, None] == basis.pol),
+        & (kx[:, None] == kvecs[0])
+        & (ky[:, None] == kvecs[1])
+        & (kz[:, None] == kvecs[2]),
         int,
     )
     return core.PhysicsArray(
@@ -787,14 +772,11 @@ def _pw_sw_expand(
     """Expand spherical waves in a lattice in plane waves."""
     if modetype is None and isinstance(to_basis, core.PlaneWaveBasisPartial):
         modetype = "up"
-    kvecs = to_basis.kvecs(k0, material, modetype)
     if len(kpar) == 2:
         kpar = [kpar[0], kpar[1], np.nan]
     kpar[2] = np.nan
     res = sw.periodic_to_pw(
-        kvecs[:, :1],
-        kvecs[:, 1:2],
-        kvecs[:, 2:],
+        *(b[:, None] for b in to_basis.kvecs(k0, material, modetype)),
         to_basis.pol[:, None],
         *basis["lmp"],
         Lattice(lattice, "xy").volume,
@@ -860,14 +842,11 @@ def _pw_cw_expand(basis, to_basis, k0, lattice, kpar, material, modetype, where)
     """Expand cylindrical waves in a lattice in plane waves."""
     if modetype is None and isinstance(to_basis, core.PlaneWaveBasisPartial):
         modetype = "up"
-    kvecs = to_basis.kvecs(k0, material, modetype)
     if len(kpar) == 1:
         kpar = [kpar[0], np.nan, np.nan]
     kpar[0] = 0 if np.isnan(kpar[0]) else kpar[0]
     res = cw.periodic_to_pw(
-        kvecs[:, :1],
-        kvecs[:, 1:2],
-        kvecs[:, 2:],
+        *(b[:, None] for b in to_basis.kvecs(k0, material, modetype)),
         to_basis.pol[:, None],
         *basis["kzmp"],
         lattice.volume,
@@ -1221,9 +1200,7 @@ def _pw_efield(r, basis, k0, material, modetype, poltype):
     kvecs = basis.kvecs(k0, material, modetype)
     if poltype == "helicity":
         res = sc.vpw_A(
-            kvecs[:, 0],
-            kvecs[:, 1],
-            kvecs[:, 2],
+            *kvecs,
             r[..., 0],
             r[..., 1],
             r[..., 2],
@@ -1231,16 +1208,12 @@ def _pw_efield(r, basis, k0, material, modetype, poltype):
         )
     elif poltype == "parity":
         res = (1 - basis.pol[:, None]) * sc.vpw_M(
-            kvecs[:, 0],
-            kvecs[:, 1],
-            kvecs[:, 2],
+            *kvecs,
             r[..., 0],
             r[..., 1],
             r[..., 2],
         ) + basis.pol[:, None] * sc.vpw_N(
-            kvecs[:, 0],
-            kvecs[:, 1],
-            kvecs[:, 2],
+            *kvecs,
             r[..., 0],
             r[..., 1],
             r[..., 2],
@@ -1448,9 +1421,7 @@ def _pw_hfield(r, basis, k0, material, modetype, poltype):
     kvecs = basis.kvecs(k0, material, modetype)
     if poltype == "helicity":
         res = (2 * basis.pol[:, None] - 1) * sc.vpw_A(
-            kvecs[:, 0],
-            kvecs[:, 1],
-            kvecs[:, 2],
+            *kvecs,
             r[..., 0],
             r[..., 1],
             r[..., 2],
@@ -1458,16 +1429,12 @@ def _pw_hfield(r, basis, k0, material, modetype, poltype):
         )
     elif poltype == "parity":
         res = basis.pol[:, None] * sc.vpw_M(
-            kvecs[:, 0],
-            kvecs[:, 1],
-            kvecs[:, 2],
+            *kvecs,
             r[..., 0],
             r[..., 1],
             r[..., 2],
         ) + (1 - basis.pol[:, None]) * sc.vpw_N(
-            kvecs[:, 0],
-            kvecs[:, 1],
-            kvecs[:, 2],
+            *kvecs,
             r[..., 0],
             r[..., 1],
             r[..., 2],
@@ -1839,9 +1806,7 @@ def _pw_gfield(pol, r, basis, k0, material, modetype, poltype):
     kvecs = basis.kvecs(k0, material, modetype)
     if poltype == "helicity":
         res = (basis.pol[:, None] == pol) * sc.vpw_A(
-            kvecs[:, 0],
-            kvecs[:, 1],
-            kvecs[:, 2],
+            *kvecs,
             r[..., 0],
             r[..., 1],
             r[..., 2],
@@ -1849,16 +1814,12 @@ def _pw_gfield(pol, r, basis, k0, material, modetype, poltype):
         )
     elif poltype == "parity":
         res = (1 + 2 * (pol - 1) * basis.pol[:, None]) * sc.vpw_M(
-            kvecs[:, 0],
-            kvecs[:, 1],
-            kvecs[:, 2],
+            *kvecs,
             r[..., 0],
             r[..., 1],
             r[..., 2],
         ) + (2 * pol - 1 - 2 * (pol - 1) * basis.pol[:, None]) * sc.vpw_N(
-            kvecs[:, 0],
-            kvecs[:, 1],
-            kvecs[:, 2],
+            *kvecs,
             r[..., 0],
             r[..., 1],
             r[..., 2],
