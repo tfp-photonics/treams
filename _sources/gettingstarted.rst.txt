@@ -18,7 +18,7 @@ Installation using pip
 
 To install the package with pip, use ::
 
-   pip install git+https://git.scc.kit.edu/photonics/treams.git
+   pip install git+https://github.com/tfp-photonics/treams.git
 
 
 How to use treams

@@ -48,16 +48,16 @@
          ~PlaneWaveBasisPartial.isdisjoint
          ~PlaneWaveBasisPartial.kvecs
       
+         ~PlaneWaveBasisPartial.__sub__
+         ~PlaneWaveBasisPartial.__str__
          ~PlaneWaveBasisPartial.__repr__
          ~PlaneWaveBasisPartial.__len__
-         ~PlaneWaveBasisPartial.__and__
-         ~PlaneWaveBasisPartial.__gt__
-         ~PlaneWaveBasisPartial.__le__
          ~PlaneWaveBasisPartial.__ne__
-         ~PlaneWaveBasisPartial.__sub__
-         ~PlaneWaveBasisPartial.__or__
-         ~PlaneWaveBasisPartial.__ge__
+         ~PlaneWaveBasisPartial.__gt__
          ~PlaneWaveBasisPartial.__xor__
-         ~PlaneWaveBasisPartial.__str__
+         ~PlaneWaveBasisPartial.__ge__
          ~PlaneWaveBasisPartial.__lt__
+         ~PlaneWaveBasisPartial.__or__
+         ~PlaneWaveBasisPartial.__le__
+         ~PlaneWaveBasisPartial.__and__
   
