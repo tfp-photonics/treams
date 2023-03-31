@@ -324,6 +324,7 @@ class SphericalWaveBasis(BasisSet):
             raise ValueError("maximal order must be positive")
         return 2 * lmax * (lmax + 2) * nmax
 
+    @classmethod
     def _from_iterable(cls, it, positions=None):
         if isinstance(cls, SphericalWaveBasis):
             positions = cls.positions if positions is None else positions
@@ -558,6 +559,7 @@ class CylindricalWaveBasis(BasisSet):
         res.hints["kpar"] = [np.nan, np.nan, kz]
         return res
 
+    @classmethod
     def _from_iterable(cls, it, positions=None):
         hints = {}
         if isinstance(cls, CylindricalWaveBasis):
@@ -616,6 +618,8 @@ class CylindricalWaveBasis(BasisSet):
 
 
 class PlaneWaveBasis(BasisSet):
+    """Plane wave basis parent class."""
+
     isglobal = True
 
 
@@ -730,6 +734,7 @@ class PlaneWaveBasisAngle(PlaneWaveBasis):
         modes[1::2, 3] = 0
         return cls(modes)
 
+    @classmethod
     def _from_iterable(cls, it):
         hints = {}
         if isinstance(cls, PlaneWaveBasis):
@@ -978,6 +983,7 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         obj.hints["kpar"] = kpar
         return obj
 
+    @classmethod
     def _from_iterable(cls, it, alignment="xy"):
         if isinstance(cls, PlaneWaveBasisPartial):
             alignment = cls.alignment if alignment is None else alignment
@@ -1057,7 +1063,7 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         kz = material.kzs(k0, kx, ky, self.pol) * (2 * (modetype == "up") - 1)
         if self.alignment == "yz":
             return kz, kx, ky
-        elif self.alignment == "zy":
+        elif self.alignment == "zx":
             return ky, kz, kx
         return kx, ky, kz
 

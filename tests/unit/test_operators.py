@@ -156,8 +156,6 @@ class TestTranslate:
             k0=(1, 1),
             material=((), ()),
         )
-        print(repr(y))
-        print(repr(x))
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
     def test_pwp(self):

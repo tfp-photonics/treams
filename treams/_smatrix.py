@@ -12,6 +12,8 @@ from treams.coeffs import fresnel
 
 
 class _SMatrix(PhysicsArray):
+    """S-matrix for a plane wave."""
+
     def _check(self):
         super()._check()
         shape = np.shape(self)
@@ -23,17 +25,17 @@ class _SMatrix(PhysicsArray):
             self.poltype = config.POLTYPE
         if self.poltype not in ("parity", "helicity"):
             raise util.AnnotationError("invalid poltype")
-        if self.basis is None:
-            raise util.AnnotationError("basis not set")
-        elif not isinstance(self.basis, PWBP):
-            self.basis = self.basis.partial()
         material = (None, None) if self.material is None else self.material
         if isinstance(material, tuple):
             self.material = tuple(Material() if m is None else m for m in material)
+        if self.basis is None:
+            raise util.AnnotationError("basis not set")
+        elif not isinstance(self.basis, PWBP):
+            self.basis = self.basis.partial(self.k0, self.material)
 
 
 class SMatrix:
-    r"""S-matrix (plane wave basis).
+    r"""Collection of four S-matrices with a plane wave basis.
 
     The S-matrix describes the scattering of incoming into outgoing modes using a plane
     wave basis, with functions :func:`treams.special.vsw_A`,
@@ -52,77 +54,57 @@ class SMatrix:
         \end{pmatrix}\,.
 
     These matrices describe the transmission of plane waves propagating into positive
-    z-direction, reflection of plane waves into the positive z-direction, reflection
-    of plane waves into negative z-direction, and the transmission of plane waves
+    z-direction, reflection of plane waves into the positive z-direction, reflection of
+    plane waves into negative z-direction, and the transmission of plane waves
     propagating in negative z-direction, respectively. Each of those for matrices
     contain different diffraction orders and different polarizations. The polarizations
     can be in either helicity of parity basis.
 
-    The embedding medium is described by permittivity, permeability, and the chirality
-    parameter. The two sides of the S-matrix can have different materials.
+    The wave number :attr:`k0` and, if not vacuum, the material :attr:`material` are
+    also required.
 
     Args:
-        smats (float or complex, array): S-matrices
-        k0 (float): Wave number in vacuum
-        modes (iterable, optional): The modes corresponding to the S-matrices rows and
-            columns. It must contain three arrays of equal length for the wave vectors'
-            x- and y-component, and the polarization.
-        epsilon (float or complex, optional): Relative permittivity of the medium
-        mu (float or complex, optional): Relative permeability of the medium
-        kappa (float or complex, optional): Chirality parameter of the medium
-        helicity (bool, optional): Helicity or parity modes
-        kz (float or complex, (N, 2)-array, optional): The z-component of the wave
-            vector on both sides of the S-matrix
-
-    Attributes:
-        q (complex, (2, 2, N, N)-array): S-matrices for the layer. The first dimension
-            corresponds to the output side, the second to the input side, the third one
-            to the outgoing modes and the last one to the incoming modes.
-        k0 (float): Wave number in vacuum
-        epsilon (float or complex, optional): Relative permittivity of the embedding
-            medium
-        mu (complex): Relative permeability of the embedding medium
-        kappa (complex): Chirality parameter of the embedding medium
-        helicity (bool): Helicity or parity modes
-        kx (float, (N,)-array): X-component of the wave vector for each column/row of
-            the S-matrix
-        ky (float, (N,)-array): Y-component of the wave vector for each column/row of
-            the S-matrix
-        kz (float, (2, N)-array): Z-component of the wave vector for each column/row of
-            the S-matrix and for both sides
-        pol (int, (N,)-array): Polarization of the mode for each column/row of the
-            S-matrix
-        ks (float or complex (2, 2)-array): Wave numbers in the medium for both sides
-            and both polarizations
+        smats (_SMatrix): S-matrices.
+        k0 (float): Wave number in vacuum.
+        basis (PlaneWaveBasisPartial): The basis for the S-matrices.
+        material (tuple, Material, optional): Material definition, if a tuple of length
+            two is specified, this refers to the materials above and below the S-matrix.
+        poltype (str, optional): Polarization type (:ref:`polarizations:Polarizations`).
     """
 
     def __init__(self, smats, **kwargs):
+        """Initialization."""
+        if len(smats) != 2 or len(smats[0]) != 2 or len(smats[1]) != 2:
+            raise ValueError("invalid shape of S-matrices")
         if "material" in kwargs:
             material = kwargs["material"]
-            if isinstance(material, Material):
-                ma, mb = (material, material)
-            else:
-                ma, mb = material
             del kwargs["material"]
-            materials = [[(ma, mb), (ma, ma)], [(mb, mb), (mb, ma)]]
+        elif getattr(smats[0][0], "material", None) is not None:
+            material = smats[0][0].material
+        elif getattr(smats[1][1], "material", None) is not None:
+            material = smats[1][1].material
+            if isinstance(material, tuple):
+                material = material[::-1]
+        elif getattr(smats[0][1], "material", None) is not None:
+            material = smats[0][1].material
+        elif getattr(smats[1][0], "material", None) is not None:
+            material = smats[1][0].material
         else:
-            materials = [[None, None], [None, None]]
-        if len(smats) != 2 or len(smats[0]) != 2 or len(smats[1]) != 2:
-            raise ValueError("invalid S-matrices")
+            material = Material()
+        if isinstance(material, tuple):
+            ma, mb = material
+        else:
+            ma = mb = Material(material)
+        material = [[(ma, mb), (ma, ma)], [(mb, mb), (mb, ma)]]
+        modetype = [[("up", "up"), ("up", "down")], [("down", "up"), ("down", "down")]]
         self._sms = [
-            [_SMatrix(s, material=m, **kwargs) for s, m in zip(row, mrow)]
-            for row, mrow in zip(smats, materials)
+            [
+                _SMatrix(s, material=m, modetype=t, **kwargs)
+                for s, m, t in zip(ar, mr, tr)
+            ]
+            for ar, mr, tr in zip(smats, material, modetype)
         ]
         self.material = self[0, 0].material
-        if isinstance(self.material, Material):
-            self.material = (self.material, self.material)
-        self[0, 0].modetype = "up"
-        self[0, 1].modetype = ("up", "down")
-        self[0, 1].material = self.material[0]
-        self[1, 0].modetype = ("down", "up")
-        self[1, 0].material = self.material[1]
-        self[1, 1].modetype = "down"
-        self[1, 1].material = (self.material[1], self.material[0])
         self.basis = self[0, 0].basis
         self.k0 = self[0, 0].k0
         self.poltype = self[0, 0].poltype
@@ -155,13 +137,8 @@ class SMatrix:
 
         Args:
             k0 (float): Wave number in vacuum
-            kpars (float, (N, 2)-array): Tangential components of the wave vector
-            epsilon (float or complex): Relative permittivity on both sides of the
-                interface
-            mu (float or complex, optional): Relative permittivity on both sides of the
-                interface
-            kappa (float or complex, optional): Relative permittivity on both sides of
-                the interface
+            basis (PlaneWaveBasisPartial): Basis definitions.
+            materials (Sequence[Material]): Material definitions.
 
         Returns:
             SMatrix
@@ -204,14 +181,12 @@ class SMatrix:
         parameters.
 
         Args:
-            k0 (float): Wave number in vacuum
-            kpars (float, (N, 2)-array): Tangential components of the wave vector
-            epsilon (float or complex): Relative permittivity on both sides of the
-                interface
-            mu (float or complex, optional): Relative permittivity on both sides of the
-                interface
-            kappa (float or complex, optional): Relative permittivity on both sides of
-                the interface
+            k0 (float): Wave number in vacuum.
+            basis (PlaneWaveBasisPartial): Basis definition.
+            tickness (Sequence[Float]): Thickness of the slab or the thicknesses of all
+                slabs in order from negative to positive z.
+            materials (Sequenze[Material]): Material definitions from negative to
+                positive z.
 
         Returns:
             SMatrix
@@ -224,7 +199,8 @@ class SMatrix:
         for d, ma, mb in zip(thickness, materials[1:-1], materials[2:]):
             if np.ndim(d) == 0:
                 d = [0, 0, d]
-            res = res.add(cls.propagation(d, k0, basis, ma))
+            x = cls.propagation(d, k0, basis, ma)
+            res = res.add(x)
             res = res.add(cls.interface(k0, basis, (ma, mb)))
         return res
 
@@ -236,10 +212,8 @@ class SMatrix:
         coupling it can be checked for matching materials and modes.
 
         Args:
-            items (SMatrix, array-like): An array of S-matrices in their intended order
-            check_materials (bool, optional): Check for matching material parameters
-                at each S-matrix
-            check_materials (bool, optional): Check for matching modes at each S-matrix
+            items (Sequence[SMatrix]): An array of S-matrices in their intended order
+                from negative to positive z.
 
         Returns:
             SMatrix
@@ -250,18 +224,16 @@ class SMatrix:
         return acc
 
     @classmethod
-    def propagation(cls, r, k0, basis, material):
+    def propagation(cls, r, k0, basis, material=Material()):
         """S-matrix for the propagation along a distance.
 
         This S-matrix translates the reference origin along `r`.
 
         Args:
-            r (float, (3,)-array): Translation vector
-            k0 (float): Wave number in vacuum
-            kpars (float, (N, 2)-array): Tangential components of the wave vector
-            epsilon (float or complex, optional): Relative permittivity of the medium
-            mu (float or complex, optional): Relative permeability of the medium
-            kappa (float or complex, optional): Chirality parameter of the medium
+            r (float, (3,)-array): Translation vector.
+            k0 (float): Wave number in vacuum.
+            basis (PlaneWaveBasis): Basis definition.
+            material (Material, optional): Material definition.
 
         Returns:
             SMatrix
@@ -281,10 +253,9 @@ class SMatrix:
         T-matrix.
 
         Args:
-            tmat (TMatrix or TMatrixC): (Cylindrical) T-matrix to put in the arry
-            kpars (float, (N, 2)-array): Tangential components of the wave vector
-            a (array): Definition of the lattice
-            eta (float or complex, optional): Splitting parameter in the lattice sum
+            tm (TMatrix or TMatrixC): (Cylindrical) T-matrix to place in the array.
+            basis (PlaneWaveBasisPartial): Basis definition.
+            eta (float or complex, optional): Splitting parameter in the lattice sum.
 
         Returns:
             SMatrix
@@ -307,10 +278,7 @@ class SMatrix:
         current S-matrix but creates a new one.
 
         Args:
-            items (SMatrix): S-matrices in their intended order
-            check_materials (bool, optional): Check for matching material parameters
-                at each S-matrix
-            check_materials (bool, optional): Check for matching modes at each S-matrix
+            sm (SMatrix): S-matrix to add.
 
         Returns:
             SMatrix
@@ -347,10 +315,17 @@ class SMatrix:
 
         Given an illumination defined by the coefficients of each incoming mode
         calculate the coefficients for the outgoing field above and below the S-matrix.
+        If a second SMatrix is given, the field expansions in between are also
+        calculated.
 
         Args:
-            illu (tuple): A 2-tuple of arrays, with the entries corresponding to
-                upwards and downwards incoming modes.
+            illu (array-like): Illumination, if `modetype` is specified, the direction
+                will be chosen accordingly.
+            illu2 (array-like, optional): Second illumination. If used, the first
+                argument is taken to be coming from below and this one to be coming from
+                above.
+            smat (SMatrix, optional): Second S-matrix for the calculation of the
+                field expansion between two S-matrices.
 
         Returns:
             tuple
@@ -565,15 +540,13 @@ class SMatrix:
             complex, array_like
 
         """
-        dim = self.q.shape[2]
+        dim = self[0, 0].shape[0]
         res = np.empty((2 * dim, 2 * dim), dtype=complex)
-        res[0:dim, 0:dim] = self.q[0, 0, :, :]
-        res[0:dim, dim : 2 * dim] = self.q[0, 1, :, :]
-        res[dim : 2 * dim, 0:dim] = -np.linalg.solve(
-            self.q[1, 1, :, :], self.q[1, 0, :, :] @ self.q[0, 0, :, :]
-        )
-        res[dim : 2 * dim, dim : 2 * dim] = np.linalg.solve(
-            self.q[1, 1, :, :], np.eye(dim) - self.q[1, 0, :, :] @ self.q[0, 1, :, :]
+        res[0:dim, 0:dim] = self[0, 0]
+        res[0:dim, dim:] = self[0, 1]
+        res[dim:, 0:dim] = -np.linalg.solve(self[1, 1], self[1, 0] @ self[0, 0])
+        res[dim:, dim:] = np.linalg.solve(
+            self[1, 1], np.eye(dim) - self[1, 0] @ self[0, 1]
         )
         return res
 

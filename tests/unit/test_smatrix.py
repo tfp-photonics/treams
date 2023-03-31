@@ -540,13 +540,14 @@ class TestArray:
             for j in range(2)
         )
 
-    # def test_cyl(self):
-    #     tm = treams.TMatrix.sphere(4, 3, [0.2], [4, 1])
-    #     # A larger range for kz (which later is kx) is needed for convergence
-    #     cwb = treams.CylindricalWaveBasis.with_periodicity(.5, 4, 1, 10)
-    #     tmc = treams.TMatrixC.from_array(tm, cwb)
-    #     qm = SMatrix.array(tmc, basis.permute())
-    #     assert np.all(np.abs(qm.q - self.expect) < 1e-8)
+    def test_cyl(self):
+        tm = treams.TMatrix.sphere(4, 3, [0.2], [4, 1])
+        # A larger range for kz (which later is kx) is needed for convergence
+        cwb = treams.CylindricalWaveBasis.diffr_orders(0.5, 4, 1, 10)
+        tmc = treams.TMatrixC.from_array(tm, cwb)
+        basis = treams.PlaneWaveBasisPartial._from_iterable(self.basis, "zx")
+        qm = SMatrix.from_array(tmc, basis)
+        assert np.all(np.abs(qm.q - self.expect) < 1e-8)
 
 
 # class TestDouble:
