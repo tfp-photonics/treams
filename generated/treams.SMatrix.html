@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>treams.SMatrix &#8212; treams 0.2.2.dev119+g55448173 documentation</title>
+    <title>treams.SMatrix &#8212; treams 0.2.2.dev120+ga9d361b6 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="treams.PhysicsArray.transpose.html" title="treams.PhysicsArray.transpose"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev119+g55448173 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev120+ga9d361b6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" accesskey="U">Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.SMatrix</a></li> 
       </ul>
@@ -59,7 +59,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="treams.SMatrix">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">treams.</span></span><span class="sig-name descname"><span class="pre">SMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smats</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#treams.SMatrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>S-matrix (plane wave basis).</p>
+<dd><p>Collection of four S-matrices with a plane wave basis.</p>
 <p>The S-matrix describes the scattering of incoming into outgoing modes using a plane
 wave basis, with functions <a class="reference internal" href="treams.special.vsw_A.html#treams.special.vsw_A" title="treams.special.vsw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_A()</span></code></a>,
 <a class="reference internal" href="treams.special.vsw_M.html#treams.special.vsw_M" title="treams.special.vsw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_M()</span></code></a>, and <a class="reference internal" href="treams.special.vsw_N.html#treams.special.vsw_N" title="treams.special.vsw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_N()</span></code></a>. The primary
@@ -74,159 +74,25 @@ divided into four submatrices <span class="math notranslate nohighlight">\(S_{\u
     S_{\downarrow \uparrow} &amp; S_{\downarrow \downarrow}
 \end{pmatrix}\,.\end{split}\]</div>
 <p>These matrices describe the transmission of plane waves propagating into positive
-z-direction, reflection of plane waves into the positive z-direction, reflection
-of plane waves into negative z-direction, and the transmission of plane waves
+z-direction, reflection of plane waves into the positive z-direction, reflection of
+plane waves into negative z-direction, and the transmission of plane waves
 propagating in negative z-direction, respectively. Each of those for matrices
 contain different diffraction orders and different polarizations. The polarizations
 can be in either helicity of parity basis.</p>
-<p>The embedding medium is described by permittivity, permeability, and the chirality
-parameter. The two sides of the S-matrix can have different materials.</p>
+<p>The wave number <code class="xref py py-attr docutils literal notranslate"><span class="pre">k0</span></code> and, if not vacuum, the material <code class="xref py py-attr docutils literal notranslate"><span class="pre">material</span></code> are
+also required.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>smats</strong> (<em>float</em><em> or </em><em>complex</em><em>, </em><em>array</em>) – S-matrices</p></li>
-<li><p><strong>k0</strong> (<em>float</em>) – Wave number in vacuum</p></li>
-<li><p><strong>modes</strong> (<em>iterable</em><em>, </em><em>optional</em>) – The modes corresponding to the S-matrices rows and
-columns. It must contain three arrays of equal length for the wave vectors’
-x- and y-component, and the polarization.</p></li>
-<li><p><strong>epsilon</strong> (<em>float</em><em> or </em><em>complex</em><em>, </em><em>optional</em>) – Relative permittivity of the medium</p></li>
-<li><p><strong>mu</strong> (<em>float</em><em> or </em><em>complex</em><em>, </em><em>optional</em>) – Relative permeability of the medium</p></li>
-<li><p><strong>kappa</strong> (<em>float</em><em> or </em><em>complex</em><em>, </em><em>optional</em>) – Chirality parameter of the medium</p></li>
-<li><p><strong>helicity</strong> (<em>bool</em><em>, </em><em>optional</em>) – Helicity or parity modes</p></li>
-<li><p><strong>kz</strong> (<em>float</em><em> or </em><em>complex</em><em>, </em><em>(</em><em>N</em><em>, </em><em>2</em><em>)</em><em>-array</em><em>, </em><em>optional</em>) – The z-component of the wave
-vector on both sides of the S-matrix</p></li>
+<li><p><strong>smats</strong> (<em>_SMatrix</em>) – S-matrices.</p></li>
+<li><p><strong>k0</strong> (<em>float</em>) – Wave number in vacuum.</p></li>
+<li><p><strong>basis</strong> (<a class="reference internal" href="treams.PlaneWaveBasisPartial.html#treams.PlaneWaveBasisPartial" title="treams.PlaneWaveBasisPartial"><em>PlaneWaveBasisPartial</em></a>) – The basis for the S-matrices.</p></li>
+<li><p><strong>material</strong> (<em>tuple</em><em>, </em><a class="reference internal" href="treams.Material.html#treams.Material" title="treams.Material"><em>Material</em></a><em>, </em><em>optional</em>) – Material definition, if a tuple of length
+two is specified, this refers to the materials above and below the S-matrix.</p></li>
+<li><p><strong>poltype</strong> (<em>str</em><em>, </em><em>optional</em>) – Polarization type (<a class="reference internal" href="../polarizations.html#polarizations"><span class="std std-ref">Polarizations</span></a>).</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="treams.SMatrix.q">
-<span class="sig-name descname"><span class="pre">q</span></span><a class="headerlink" href="#treams.SMatrix.q" title="Permalink to this definition">¶</a></dt>
-<dd><p>S-matrices for the layer. The first dimension
-corresponds to the output side, the second to the input side, the third one
-to the outgoing modes and the last one to the incoming modes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>complex, (2, 2, N, N)-array</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="treams.SMatrix.k0">
-<span class="sig-name descname"><span class="pre">k0</span></span><a class="headerlink" href="#treams.SMatrix.k0" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wave number in vacuum</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="treams.SMatrix.epsilon">
-<span class="sig-name descname"><span class="pre">epsilon</span></span><a class="headerlink" href="#treams.SMatrix.epsilon" title="Permalink to this definition">¶</a></dt>
-<dd><p>Relative permittivity of the embedding
-medium</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float or complex, optional</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="treams.SMatrix.mu">
-<span class="sig-name descname"><span class="pre">mu</span></span><a class="headerlink" href="#treams.SMatrix.mu" title="Permalink to this definition">¶</a></dt>
-<dd><p>Relative permeability of the embedding medium</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>complex</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="treams.SMatrix.kappa">
-<span class="sig-name descname"><span class="pre">kappa</span></span><a class="headerlink" href="#treams.SMatrix.kappa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Chirality parameter of the embedding medium</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>complex</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="treams.SMatrix.helicity">
-<span class="sig-name descname"><span class="pre">helicity</span></span><a class="headerlink" href="#treams.SMatrix.helicity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Helicity or parity modes</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="treams.SMatrix.kx">
-<span class="sig-name descname"><span class="pre">kx</span></span><a class="headerlink" href="#treams.SMatrix.kx" title="Permalink to this definition">¶</a></dt>
-<dd><p>X-component of the wave vector for each column/row of
-the S-matrix</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float, (N,)-array</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="treams.SMatrix.ky">
-<span class="sig-name descname"><span class="pre">ky</span></span><a class="headerlink" href="#treams.SMatrix.ky" title="Permalink to this definition">¶</a></dt>
-<dd><p>Y-component of the wave vector for each column/row of
-the S-matrix</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float, (N,)-array</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="treams.SMatrix.kz">
-<span class="sig-name descname"><span class="pre">kz</span></span><a class="headerlink" href="#treams.SMatrix.kz" title="Permalink to this definition">¶</a></dt>
-<dd><p>Z-component of the wave vector for each column/row of
-the S-matrix and for both sides</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float, (2, N)-array</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="treams.SMatrix.pol">
-<span class="sig-name descname"><span class="pre">pol</span></span><a class="headerlink" href="#treams.SMatrix.pol" title="Permalink to this definition">¶</a></dt>
-<dd><p>Polarization of the mode for each column/row of the
-S-matrix</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int, (N,)-array</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="treams.SMatrix.ks">
-<span class="sig-name descname"><span class="pre">ks</span></span><a class="headerlink" href="#treams.SMatrix.ks" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wave numbers in the medium for both sides
-and both polarizations</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float or complex (2, 2)-array</p>
-</dd>
-</dl>
-</dd></dl>
-
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -287,7 +153,7 @@ and both polarizations</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="treams.SMatrix.poynting_avg.html#treams.SMatrix.poynting_avg" title="treams.SMatrix.poynting_avg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">poynting_avg</span></code></a>(coeffs[, above])</p></td>
 <td><p>Time-averaged z-component of the Poynting vector.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.SMatrix.propagation.html#treams.SMatrix.propagation" title="treams.SMatrix.propagation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">propagation</span></code></a>(r, k0, basis, material)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.SMatrix.propagation.html#treams.SMatrix.propagation" title="treams.SMatrix.propagation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">propagation</span></code></a>(r, k0, basis[, material])</p></td>
 <td><p>S-matrix for the propagation along a distance.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="treams.SMatrix.slab.html#treams.SMatrix.slab" title="treams.SMatrix.slab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slab</span></code></a>(k0, basis, thickness, materials)</p></td>
@@ -299,26 +165,26 @@ and both polarizations</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="treams.SMatrix.tr.html#treams.SMatrix.tr" title="treams.SMatrix.tr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tr</span></code></a>(illu[, direction])</p></td>
 <td><p>Transmittance and reflectance.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.SMatrix.__ge__.html#treams.SMatrix.__ge__" title="treams.SMatrix.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(value, /)</p></td>
+<td><p>Return self&gt;=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.SMatrix.__le__.html#treams.SMatrix.__le__" title="treams.SMatrix.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(value, /)</p></td>
+<td><p>Return self&lt;=value.</p></td>
+</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="treams.SMatrix.__str__.html#treams.SMatrix.__str__" title="treams.SMatrix.__str__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__str__</span></code></a>()</p></td>
 <td><p>Return str(self).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.SMatrix.__repr__.html#treams.SMatrix.__repr__" title="treams.SMatrix.__repr__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__repr__</span></code></a>()</p></td>
-<td><p>Return repr(self).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.SMatrix.__ne__.html#treams.SMatrix.__ne__" title="treams.SMatrix.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(value, /)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.SMatrix.__ne__.html#treams.SMatrix.__ne__" title="treams.SMatrix.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(value, /)</p></td>
 <td><p>Return self!=value.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.SMatrix.__gt__.html#treams.SMatrix.__gt__" title="treams.SMatrix.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(value, /)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.SMatrix.__gt__.html#treams.SMatrix.__gt__" title="treams.SMatrix.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(value, /)</p></td>
 <td><p>Return self&gt;value.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.SMatrix.__ge__.html#treams.SMatrix.__ge__" title="treams.SMatrix.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(value, /)</p></td>
-<td><p>Return self&gt;=value.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="treams.SMatrix.__lt__.html#treams.SMatrix.__lt__" title="treams.SMatrix.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(value, /)</p></td>
 <td><p>Return self&lt;value.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.SMatrix.__le__.html#treams.SMatrix.__le__" title="treams.SMatrix.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(value, /)</p></td>
-<td><p>Return self&lt;=value.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.SMatrix.__repr__.html#treams.SMatrix.__repr__" title="treams.SMatrix.__repr__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__repr__</span></code></a>()</p></td>
+<td><p>Return repr(self).</p></td>
 </tr>
 </tbody>
 </table>
@@ -389,7 +255,7 @@ and both polarizations</p>
         <li class="right" >
           <a href="treams.PhysicsArray.transpose.html" title="treams.PhysicsArray.transpose"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev119+g55448173 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev120+ga9d361b6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.SMatrix</a></li> 
       </ul>

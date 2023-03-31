@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>treams.SMatrix.illuminate &#8212; treams 0.2.2.dev119+g55448173 documentation</title>
+    <title>treams.SMatrix.illuminate &#8212; treams 0.2.2.dev120+ga9d361b6 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="treams.SMatrix.from_array.html" title="treams.SMatrix.from_array"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev119+g55448173 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev120+ga9d361b6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.SMatrix.html" accesskey="U">treams.SMatrix</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.SMatrix.illuminate</a></li> 
@@ -61,11 +61,20 @@
 <span class="sig-prename descclassname"><span class="pre">SMatrix.</span></span><span class="sig-name descname"><span class="pre">illuminate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">illu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">illu2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#treams.SMatrix.illuminate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Field coefficients above and below the S-matrix.</p>
 <p>Given an illumination defined by the coefficients of each incoming mode
-calculate the coefficients for the outgoing field above and below the S-matrix.</p>
+calculate the coefficients for the outgoing field above and below the S-matrix.
+If a second SMatrix is given, the field expansions in between are also
+calculated.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>illu</strong> (<em>tuple</em>) – A 2-tuple of arrays, with the entries corresponding to
-upwards and downwards incoming modes.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>illu</strong> (<em>array-like</em>) – Illumination, if <cite>modetype</cite> is specified, the direction
+will be chosen accordingly.</p></li>
+<li><p><strong>illu2</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Second illumination. If used, the first
+argument is taken to be coming from below and this one to be coming from
+above.</p></li>
+<li><p><strong>smat</strong> (<a class="reference internal" href="treams.SMatrix.html#treams.SMatrix" title="treams.SMatrix"><em>SMatrix</em></a><em>, </em><em>optional</em>) – Second S-matrix for the calculation of the
+field expansion between two S-matrices.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>tuple</p>
@@ -138,7 +147,7 @@ upwards and downwards incoming modes.</p>
         <li class="right" >
           <a href="treams.SMatrix.from_array.html" title="treams.SMatrix.from_array"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev119+g55448173 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.2.2.dev120+ga9d361b6 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.SMatrix.html" >treams.SMatrix</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.SMatrix.illuminate</a></li> 
