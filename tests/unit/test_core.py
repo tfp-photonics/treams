@@ -334,8 +334,8 @@ class TestCWB:
         )
         assert (
             a == b
-            and a.hints["lattice"] == treams.Lattice(2 * np.pi)
-            and a.hints["kpar"] == [np.nan, np.nan, 0.1]
+            and a.lattice == treams.Lattice(2 * np.pi)
+            and a.kpar == [np.nan, np.nan, 0.1]
         )
 
 
@@ -503,12 +503,7 @@ class TestPWBP:
         a = treams.PlaneWaveBasisPartial.default(
             [[0, 0], [0, 1], [1, 0], [-1, 0], [0, -1]]
         )
-        assert (
-            a <= b
-            and b <= a
-            and b.hints["lattice"] == lattice
-            and b.hints["kpar"] == [0, 0, np.nan]
-        )
+        assert a <= b and b <= a and b.lattice == lattice and b.kpar == [0, 0, np.nan]
 
 
 class TestPhysicsArray:
@@ -592,7 +587,7 @@ class TestPhysicsArray:
     def test_expandlattice(self):
         b = treams.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
         p = treams.PhysicsArray([1, 0], basis=b, k0=1, poltype="helicity")
-        x = p.expandlattice(lattice=[[1, 0], [0, 1]])
+        x = p.expandlattice(lattice=[[1, 0], [0, 1]], kpar=[0, 0])
         assert x.modetype == ("regular", "singular")
 
     def test_expandlattice_inv(self):

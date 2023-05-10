@@ -21,7 +21,6 @@ __all__ = [
     "AnnotationWarning",
     "implements",
     "OrderedSet",
-    "register_properties",
 ]
 
 
@@ -163,6 +162,49 @@ class AnnotationDict(collections.abc.MutableMapping):
                 warnings.warn(f"incompatible key '{key}'", AnnotationWarning)
 
 
+class SequenceAsDict(collections.abc.MutableMapping):
+    def __get__(self, obj, objtype=None):
+        self._obj = obj
+        return self
+
+    def __set__(self, obj, dct):
+        self._obj = obj
+        for key, val in dct.items():
+            self[key] = val
+
+    def __getitem__(self, key):
+        res = tuple(i.get(key) for i in self._obj)
+        if all(i is None for i in res):
+            raise KeyError(key)
+        return res
+
+    def __setitem__(self, key, val):
+        val = (None,) * (len(self._obj) - len(val)) + val
+        for dct, val in zip(reversed(self._obj), reversed(val)):
+            if val is None:
+                dct.pop(key, None)
+            else:
+                dct[key] = val
+
+    def __delitem__(self, key):
+        found = False
+        for dct in self._obj:
+            if key in dct:
+                del dct[key]
+                found = True
+        if not found:
+            raise KeyError(key)
+
+    def __iter__(self):
+        return iter({key for dct in self._obj for key in dct})
+
+    def __len__(self):
+        return len({key for dct in self._obj for key in dct})
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}({dict(i for i in self.items())})"
+
+
 class AnnotationSequence(collections.abc.Sequence):
     """A Sequence of dictionaries.
 
@@ -179,6 +221,8 @@ class AnnotationSequence(collections.abc.Sequence):
     Warns:
         AnnotationWarning
     """
+
+    as_dict = SequenceAsDict()
 
     def __init__(self, *args, mapping=AnnotationDict):
         """Initialization."""
@@ -239,15 +283,15 @@ class AnnotationSequence(collections.abc.Sequence):
                 f"ignore leading {len(other) - len(self)} entries",
                 AnnotationWarning,
             )
-        for i in range(-1, -1 - min(len(self), len(other)), -1):
+        for i, (dest, src) in enumerate(zip(reversed(self), reversed(other))):
             with warnings.catch_warnings():
                 warnings.simplefilter("error", category=AnnotationWarning)
                 try:
-                    self[i].update(other[i])
+                    dest.update(src)
                 except AnnotationWarning as err:
                     warnings.simplefilter("always", category=AnnotationWarning)
                     warnings.warn(
-                        f"at index {len(self) + i}: " + err.args[0],
+                        f"at index {len(self) - i - 1}: " + err.args[0],
                         AnnotationWarning,
                     )
 
@@ -264,11 +308,11 @@ class AnnotationSequence(collections.abc.Sequence):
         Warns:
             AnnotationWarning
         """
-        for i in range(-1, -1 - min(len(self), len(other)), -1):
+        for i, (dest, src) in enumerate(zip(reversed(self), reversed(other))):
             with warnings.catch_warnings():
                 warnings.simplefilter("error", category=AnnotationWarning)
                 try:
-                    self[i].match(other[i])
+                    dest.match(src)
                 except AnnotationWarning as err:
                     warnings.simplefilter("always", category=AnnotationWarning)
                     warnings.warn(
@@ -309,7 +353,15 @@ class AnnotationSequence(collections.abc.Sequence):
         Returns:
             str
         """
+        if len(self) == 1:
+            return f"{type(self).__name__}({repr(self._ann[0])})"
         return f"{type(self).__name__}{repr(self._ann)}"
+
+    def __add__(self, other):
+        return AnnotationSequence(*self, *other)
+
+    def __radd__(self, other):
+        return AnnotationSequence(*other, *self)
 
 
 def _cast_nparray(arr):
@@ -433,80 +485,6 @@ def implements(np_func):
     return decorator
 
 
-def _pget(key, arr):
-    """Property getter.
-
-    Get the key from all mappings in the annotations of an array and return it as a
-    tuple. If it is the same for all items of the sequence it is directly returned. If
-    the key is not present in a mapping ``None`` is taken.
-
-    Args:
-        key (str): Property name
-        arr (AnnotatedArray): Array from which to get the property.
-    """
-    if arr.ndim == 0:
-        return None
-    val = [a.get(key) for a in arr.ann]
-    if all(v == val[0] for v in val[1:]):
-        return val[0]
-    return tuple(val)
-
-
-def _pset(key, arr, val):
-    """Property setter.
-
-    Set the key for mappings in the annotations of an array. If the given value is not a
-    tuple it is added to all dimensions of the array. Otherwise, it is aligned at the
-    last dimension, see also :class:`AnnotationSequence`. `None` values are ignored.
-
-    Args:
-        key (str): Property name
-        arr (AnnotatedArray): Array from which to get the property.
-        val: Value
-    """
-    if not isinstance(val, tuple):
-        val = (val,) * arr.ndim
-    arr.ann.update(tuple({} if v is None else {key: v} for v in val))
-
-
-def _pdel(key, arr):
-    """Property deleter.
-
-    The key is removed from all mappings, where it is present.
-
-    Args:
-        key (str): Property name
-        arr (AnnotatedArray): Array from which to get the property.
-    """
-    for a in arr.ann:
-        a.pop(key, None)
-
-
-def register_properties(obj):
-    """Class decorator to add default properties to an AnnotatedArray.
-
-    The properties are assumed to be stored in the instance attribute `_properties`.
-
-    Args:
-        obj (type): Class to add the properties.
-
-    Returns:
-        type
-    """
-    for prop, (doc, *_) in obj._properties.items():
-        setattr(
-            obj,
-            prop,
-            property(
-                functools.partial(_pget, prop),
-                functools.partial(_pset, prop),
-                functools.partial(_pdel, prop),
-                doc,
-            ),
-        )
-    return obj
-
-
 class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
     """Array that keeps track of annotations for each dimension.
 
@@ -543,7 +521,6 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
     """
 
     _scales = set()
-    _properties = {}
 
     def __init__(self, array, ann=(), /, **kwargs):
         """Initalization."""
@@ -551,9 +528,8 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         self.ann = getattr(array, "ann", ())
         self.ann.update(ann)
         for key, val in kwargs.items():
-            if not isinstance(val, tuple):
-                val = (val,) * self.ndim
-            self.ann.update(tuple({} if v is None else {key: v} for v in val))
+            val = (val,) * self.ndim if not isinstance(val, tuple) else val
+            self.ann.as_dict[key] = val
 
     @classmethod
     def relax(cls, *args, mro=None, **kwargs):
@@ -587,7 +563,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
     def __repr__(self):
         """String representation."""
         repr_arr = "    " + repr(self._array)[6:-1].replace("\n  ", "\n")
-        return f"{self.__class__.__name__}(\n{repr_arr},\n    {self.ann[:]}\n)"
+        return f"{self.__class__.__name__}(\n{repr_arr},\n    {self.ann},\n)"
 
     def __array__(self, dtype=None):
         """Convert to an numpy array.
@@ -614,6 +590,36 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         self._ann = AnnotationSequence(*(({},) * self.ndim))
         self._ann.update(ann)
 
+    def __getattr__(self, key):
+        if key in self.ann.as_dict:
+            res = self.ann.as_dict[key]
+            if all(res[0] == i for i in res[1:]):
+                return res[0]
+            return res
+        raise AttributeError(
+            f"'{self.__class__.__name__}' object has no attribute '{key}'"
+        )
+
+    def __setattr__(self, key, val):
+        if key not in ("_array", "ann", "_ann") and key in self.ann.as_dict:
+            val = (val,) * self.ndim if not isinstance(val, tuple) else val
+            self.ann.as_dict[key] = val
+        else:
+            super().__setattr__(key, val)
+
+    def __delattr__(self, key):
+        try:
+            super().__delattr__(key)
+        except AttributeError:
+            del self.ann.as_dict[key]
+
+    def __copy__(self):
+        return type(self)(copy.copy(self._array), copy.copy(self._ann))
+
+    def __deepcopy__(self, memo):
+        cls = type(self)
+        return cls(copy.deepcopy(self._array, memo), copy.deepcopy(self._ann, memo))
+
     def __bool__(self):
         """Boolean value of the array."""
         return bool(self._array)
@@ -632,8 +638,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
 
         res = getattr(ufunc, method)(*inputs_noaa, **kwargs)
         istuple, res = (True, res) if isinstance(res, tuple) else (False, (res,))
-        if len(out) == 1 and out[0] is None:
-            res = tuple(map(_cast_annarray, res))
+        res = tuple(_cast_annarray(r) if o is None else o for r, o in zip(res, out))
         for a, r in zip(ann_out, res):
             if a is not None:
                 r.ann.update(a)
@@ -856,7 +861,11 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
                     if kk in self._scales:
                         val = val[k]
                     if val != value.ann[dest][kk]:
-                        warnings.warn("incompatible annotations", AnnotationWarning)
+                        warnings.warn(
+                            f"incompatible annotations with key '{kk}' "
+                            f"comparing dimensions '{source}' and '{dest}'",
+                            AnnotationWarning,
+                        )
                 dest += 1
                 source += 1
             elif k is Ellipsis:
@@ -872,14 +881,18 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
                     ann = (
                         self.ann[source + pos] if k.dtype == bool else self.ann[source]
                     )
-                    pos += int(prepend_fancy) * dest + fancy_ndim - k.ndim
+                    pos += int(not prepend_fancy) * dest + fancy_ndim - k.ndim
                     for kk, val in ann.items():
                         if kk not in value.ann[pos]:
                             continue
                         if kk in self._scales:
                             val = val[k]
                         if val != value.ann[pos][kk]:
-                            warnings.warn("incompatible annotations", AnnotationWarning)
+                            warnings.warn(
+                                f"incompatible annotations with key '{kk}' "
+                                f"comparing dimensions '{source}' and '{pos}'",
+                                AnnotationWarning,
+                            )
                 source += k.ndim if k.dtype == bool else 1
                 if not prepend_fancy:
                     dest += fancy_ndim
@@ -983,7 +996,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
 
         See also :py:meth:`numpy.ndarray.trac`.
         """
-        ann = tuple(a for i, a in enumerate(self.ann[:]) if i not in (axis1, axis2))
+        ann = tuple(a for i, a in enumerate(self.ann) if i not in (axis1, axis2))
         return self.relax(self._array.trace(offset, axis1, axis2, dtype, out), ann)
 
     def astype(self, *args, **kwargs):
@@ -1051,7 +1064,9 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
 
         See also :py:meth:`numpy.ndarray.diagonal`.
         """
-        ann = tuple(a for i, a in enumerate(self.ann[:]) if i not in (axis1, axis2))
+        ann = tuple(a for i, a in enumerate(self.ann) if i not in (axis1, axis2)) + (
+            {},
+        )
         return self.relax(self._array.diagonal(offset, axis1, axis2), ann)
 
     @implements(np.transpose)
@@ -1128,7 +1143,7 @@ def svd(a, full_matrices=True, compute_uv=True, hermitian=False):
     ann = getattr(a, "ann", ({},))
     if compute_uv:
         res[0] = a.relax(res[0], ann[:-1] + ({},))
-        res[1] = a.realx(res[1], ann[:-2] + ({},))
+        res[1] = a.relax(res[1], ann[:-2] + ({},))
         res[2] = a.relax(res[2], ann[:-2] + ({}, ann[-1]))
         return res
     return a.relax(res, tuple(ann[:-2]) + ({},))

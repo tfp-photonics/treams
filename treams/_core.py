@@ -1,14 +1,14 @@
 """Basis sets and core array functionalities."""
 
 import abc
-import copy
+from collections import namedtuple
 
 import numpy as np
 
 import treams._operators as op
 import treams.lattice as la
 from treams import util
-from treams._lattice import Lattice
+from treams._lattice import Lattice, PhaseVector
 from treams._material import Material
 
 
@@ -129,7 +129,7 @@ class SphericalWaveBasis(BasisSet):
 
         self._positions = positions
         self._positions.flags.writeable = False
-        self.hints = {}
+        self.lattice = self.kpar = None
 
     @property
     def positions(self):
@@ -410,9 +410,9 @@ class CylindricalWaveBasis(BasisSet):
         self._positions = positions
         self._positions.flags.writeable = False
 
-        self.hints = {}
+        self.lattice = self.kpar = None
         if len(self.kz) > 0 and np.all(self.kz == self.kz[0]):
-            self.hints["kpar"] = [np.nan, np.nan, self.kz[0]]
+            self.kpar = PhaseVector(self.kz[0])
 
     @property
     def positions(self):
@@ -555,19 +555,22 @@ class CylindricalWaveBasis(BasisSet):
         nkz = np.floor(np.abs(bmax / lattice_z.reciprocal))
         kzs = kz + np.arange(-nkz, nkz + 1) * lattice_z.reciprocal
         res = cls.default(kzs, mmax, nmax, positions=positions)
-        res.hints["lattice"] = lattice
-        res.hints["kpar"] = [np.nan, np.nan, kz]
+        res.lattice = lattice
+        res.kpar = PhaseVector(kz)
         return res
 
     @classmethod
     def _from_iterable(cls, it, positions=None):
-        hints = {}
         if isinstance(cls, CylindricalWaveBasis):
             positions = cls.positions if positions is None else positions
-            hints = copy.deepcopy(cls.hints)
+            lattice = cls.lattice
+            kpar = cls.kpar
             cls = type(cls)
+        else:
+            lattice = kpar = None
         obj = cls(it, positions=positions)
-        obj.hints = hints
+        obj.lattice = lattice
+        obj.kpar = kpar
         return obj
 
     @staticmethod
@@ -681,7 +684,7 @@ class PlaneWaveBasisAngle(PlaneWaveBasis):
             raise ValueError("polarizations must be integer")
         if np.any(self.pol > 1) or np.any(self.pol < 0):
             raise ValueError("polarization must be '0' or '1'")
-        self.hints = {}
+        self.lattice = self.kpar = None
 
     def __getitem__(self, idx):
         """Get a subset of the basis.
@@ -736,12 +739,15 @@ class PlaneWaveBasisAngle(PlaneWaveBasis):
 
     @classmethod
     def _from_iterable(cls, it):
-        hints = {}
-        if isinstance(cls, PlaneWaveBasis):
-            hints = copy.deepcopy(cls.hints)
+        if isinstance(cls, PlaneWaveBasisAngle):
+            lattice = cls.lattice
+            kpar = cls.kpar
             cls = type(cls)
+        else:
+            lattice = kpar = None
         obj = cls(it)
-        obj.hints = hints
+        obj.lattice = lattice
+        obj.kpar = kpar
         return obj
 
     def __eq__(self, other):
@@ -779,11 +785,12 @@ class PlaneWaveBasisAngle(PlaneWaveBasis):
         """
         ks = material.ks(k0)[self.pol]
         if alignment in ("xy", "yz", "zx"):
-            kpar = [ks * getattr(self, "q" + s) for s in alignment]
+            kpars = [ks * getattr(self, "q" + s) for s in alignment]
         else:
             raise ValueError(f"invalid alignment '{alignment}'")
-        obj = PlaneWaveBasisPartial(zip(*kpar, self.pol), alignment)
-        obj.hints = copy.deepcopy(self.hints)
+        obj = PlaneWaveBasisPartial(zip(*kpars, self.pol), alignment)
+        obj.lattice = self.lattice
+        obj.kpar = self.kpar
         return obj
 
     def kvecs(self, k0, material=Material(), modetype=None):
@@ -866,7 +873,20 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
             raise ValueError(f"invalid alignment '{alignment}'")
 
         self.alignment = alignment
-        self.hints = {}
+        self.lattice = self.kpar = None
+
+    def permute(self, n=1):
+        n = n % 3
+        lattice = None if self.lattice is None else self.lattice.permute(n)
+        kpar = None if self.kpar is None else self.kpar.permute(n)
+        alignments = {"xy": "yz", "yz": "zx", "zx": "xy"}
+        alignment = self.alignment
+        for _ in range(n):
+            alignment = alignments[alignment]
+        obj = self._from_iterable(self, alignment=alignment)
+        obj.lattice = lattice
+        obj.kpar = kpar
+        return obj
 
     @property
     def kx(self):
@@ -973,22 +993,22 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         latrec = lattice.reciprocal
         kpars = kpar + la.diffr_orders_circle(latrec, bmax) @ latrec
         obj = cls.default(kpars, alignment=lattice.alignment)
-        obj.hints["lattice"] = lattice
-        if lattice.alignment == "xy":
-            kpar = list(kpar) + [np.nan]
-        elif lattice.alignment == "yz":
-            kpar = [np.nan] + list(kpar)
-        else:
-            kpar = [kpar[1], np.nan, kpar[0]]
-        obj.hints["kpar"] = kpar
+        obj.lattice = lattice
+        obj.kpar = PhaseVector(kpar)
         return obj
 
     @classmethod
     def _from_iterable(cls, it, alignment="xy"):
         if isinstance(cls, PlaneWaveBasisPartial):
             alignment = cls.alignment if alignment is None else alignment
-        obj = super()._from_iterable(it)
-        obj.alignment = obj.alignment if alignment is None else alignment
+            lattice = cls.lattice
+            kpar = cls.kpar
+            cls = type(cls)
+        else:
+            lattice = kpar = None
+        obj = cls(it, alignment)
+        obj.lattice = lattice
+        obj.kpar = kpar
         return obj
 
     def __eq__(self, other):
@@ -1036,7 +1056,8 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         elif self.alignment == "zy":
             kx, ky, kz = ky, kz, kx
         obj = PlaneWaveBasisAngle(zip(kx, ky, kz, self.pol))
-        obj.hints = copy.deepcopy(self.hints)
+        obj.lattice = self.lattice
+        obj.kpar = self.kpar
         return obj
 
     def kvecs(self, k0, material=Material(), modetype="up"):
@@ -1101,8 +1122,8 @@ class PhysicsDict(util.AnnotationDict):
         "k0": ("Wave number.", lambda x: isinstance(x, float), float),
         "kpar": (
             "Wave vector components tangential to the lattice.",
-            lambda x: isinstance(x, list),
-            list,
+            lambda x: isinstance(x, PhaseVector),
+            PhaseVector,
         ),
         "lattice": (
             ":class:`~treams.Lattice`.",
@@ -1143,7 +1164,6 @@ class PhysicsDict(util.AnnotationDict):
         super().__setitem__(key, val)
 
 
-@util.register_properties
 class PhysicsArray(util.AnnotatedArray):
     """Physics-aware array.
 
@@ -1156,7 +1176,6 @@ class PhysicsArray(util.AnnotatedArray):
     """
 
     _scales = {"basis"}
-    _properties = PhysicsDict.properties
 
     changepoltype = op.ChangePoltype()
     """Polarization change matrix, see also :class:`treams.operators.ChangePoltype`."""
@@ -1184,6 +1203,14 @@ class PhysicsArray(util.AnnotatedArray):
         # necessary to define the setter below
         return super().ann
 
+    def __getattr__(self, key):
+        try:
+            return super().__getattr__(key)
+        except AttributeError as err:
+            if key in PhysicsDict.properties:
+                return
+            raise err from None
+
     @ann.setter
     def ann(self, ann):
         """Set array annotations.
@@ -1200,7 +1227,7 @@ class PhysicsArray(util.AnnotatedArray):
         alongside the array itself.
         """
         repr_arr = "    " + repr(self._array)[6:-1].replace("\n  ", "\n") + ","
-        for key in self._properties:
+        for key in PhysicsDict.properties:
             if getattr(self, key) is not None:
                 repr_arr += f"\n    {key}={repr(getattr(self, key))},"
         return f"{self.__class__.__name__}(\n{repr_arr}\n)"
@@ -1217,30 +1244,20 @@ class PhysicsArray(util.AnnotatedArray):
             * All tangential wave vector compontents must be compatible.
         """
         total_lat = None
-        total_kpar = [np.nan] * 3
+        total_kpar = PhaseVector()
         for a in self.ann[-2:]:
             k0 = a.get("k0")
             material = a.get("material")
             modetype = a.get("modetype")
             poltype = a.get("poltype")
-            basis = a.get("basis")
+            basis = a.get("basis", namedtuple("_basis", "lattice kpar")(None, None))
             lattice = a.get("lattice")
-            for lat in (
-                lattice,
-                getattr(a.get("basis"), "hints", {}).get("lattice"),
-            ):
+            for lat in (lattice, basis.lattice):
                 if lat is not None:
                     total_lat = lat | total_lat
-            for kpar in (
-                a.get("kpar"),
-                getattr(a.get("basis"), "hints", {}).get("kpar"),
-            ):
+            for kpar in (a.get("kpar"), basis.kpar):
                 if kpar is not None:
-                    for i, (x, y) in enumerate(zip(total_kpar, kpar)):
-                        if np.isnan(x):
-                            total_kpar[i] = y
-                        elif not np.isnan(y) and x != y:
-                            raise ValueError("incompatible kpar")
+                    total_kpar = total_kpar & kpar
             if type(basis) == PlaneWaveBasis and None not in (k0, material):
                 basis.complete(k0, material, modetype)
             if poltype == "parity" and getattr(material, "ischiral", False):
@@ -1265,7 +1282,7 @@ class PhysicsArray(util.AnnotatedArray):
                 i.ann[ax] if hasattr(i, "ann") else [{}, {}]
                 for i, ax in zip(inputs, axes)
             ]
-            for name in self._properties:
+            for name in PhysicsDict.properties:
                 if name in anns[0][-1] and all(name not in a for a in anns[1]):
                     res.ann[axes[-1][-1]].setdefault(name, anns[0][-1][name])
                 if name in anns[1][0] and all(name not in a for a in anns[0]):
