@@ -408,7 +408,7 @@ def _load_hdf5(h5file, lunit=None):
 
     kappa = z = h5file.get("embedding/chirality_parameter", np.array(0))[...]
 
-    positions = h5file.get("modes/positions", np.zeros((3, 1)))[...]
+    positions = h5file.get("modes/positions", np.zeros((1, 3)))[...]
 
     l_inc = h5file.get("modes/l", np.array(None))[...]
     l_inc = h5file.get("modes/l_incident", l_inc)[()]
@@ -454,12 +454,10 @@ def _load_hdf5(h5file, lunit=None):
     ix_inc = [basis.index(b) for b in basis_inc]
     ix_sca = [[basis.index(b)] for b in basis_sca]
 
-    tm = np.zeros((len(basis),) * 2, complex)
-
     res = np.empty(shape, object)
     for i in np.ndindex(*shape):
         res[i] = treams.TMatrix(
-            tm,
+            np.zeros((len(basis),) * 2, complex),
             k0=k0s[i],
             basis=basis,
             poltype=poltype,
