@@ -1,3 +1,5 @@
+import collections
+
 import numpy as np
 
 import treams.lattice as la
@@ -404,29 +406,18 @@ class Lattice:
                     arr[i] = la0[...] if la0 is not None else la1[...]
                 return Lattice(arr)
             arr = np.zeros((3, 3))
-            if self.alignment == "x":
-                arr[0, 0] = self[...]
-                arr[1:, 1:] = other[...]
+            la0, la1 = (self, other) if self.dim == 1 else (other, self)
+            if la0.alignment == "x":
+                arr[0, 0] = la0[...]
+                arr[1:, 1:] = la1[...]
                 return Lattice(arr)
-            if self.alignment == "y":
-                arr[1, 1] = self[...]
-                arr[[[2], [0]], [2, 0]] = other[...]
+            if la0.alignment == "y":
+                arr[1, 1] = la0[...]
+                arr[[[2], [0]], [2, 0]] = la1[...]
                 return Lattice(arr)
-            if self.alignment == "z":
-                arr[2, 2] = self[...]
-                arr[:2, :2] = other[...]
-                return Lattice(arr)
-            if other.alignment == "x":
-                arr[0, 0] = other[...]
-                arr[1:, 1:] = self[...]
-                return Lattice(arr)
-            if other.alignment == "y":
-                arr[1, 1] = other[...]
-                arr[[[2], [0]], [2, 0]] = self[...]
-                return Lattice(arr)
-            if other.alignment == "z":
-                arr[2, 2] = other[...]
-                arr[:2, :2] = self[...]
+            if la0.alignment == "z":
+                arr[2, 2] = la0[...]
+                arr[:2, :2] = la1[...]
                 return Lattice(arr)
         raise ValueError("cannot combine lattices")
 
@@ -498,5 +489,97 @@ class Lattice:
         """
         for c in other.alignment:
             if c in self.alignment:
+                return False
+        return True
+
+
+class PhaseVector(collections.abc.Sequence):
+    def __init__(self, seq=(), alignment=None):
+        try:
+            length = len(seq)
+        except TypeError:
+            length = 1
+            seq = [seq]
+        if length == 3:
+            self._vec = tuple(seq)
+        elif length == 2:
+            if alignment in ("xy", None):
+                self._vec = (seq[0], seq[1], np.nan)
+            elif alignment == "yz":
+                self._vec = (np.nan, seq[0], seq[1])
+            elif alignment == "zx":
+                self._vec = (seq[1], np.nan, seq[0])
+            else:
+                raise ValueError(f"invalid alignment: {alignment}")
+        elif length == 1:
+            if alignment in ("z", None):
+                self._vec = (np.nan, np.nan, seq[0])
+            elif alignment == "y":
+                self._vec = (np.nan, seq[0], np.nan)
+            elif alignment == "x":
+                self._vec = (seq[0], np.nan, np.nan)
+            else:
+                raise ValueError(f"invalid alignment: {alignment}")
+        elif length == 0:
+            self._vec = (np.nan,) * 3
+        else:
+            raise ValueError("invalid sequence")
+
+    def __str__(self):
+        return str(self._vec)
+
+    def __repr__(self):
+        return self.__class__.__name__ + str(self._vec)
+
+    def __eq__(self, other):
+        other = PhaseVector(other)
+        for a, b in zip(self, other):
+            if a != b and not (np.isnan(a) and np.isnan(b)):
+                return False
+        return True
+
+    def __len__(self):
+        return 3
+
+    def __getitem__(self, key):
+        return self._vec[key]
+
+    def __or__(self, other):
+        other = PhaseVector(other)
+        seq = ()
+        for a, b in zip(self, other):
+            isnan = np.isnan(a) or np.isnan(b)
+            if a != b and not isnan:
+                raise ValueError("non-matching PhaseVector")
+            seq += (np.nan,) if isnan else (a,)
+        return PhaseVector(seq)
+
+    def __and__(self, other):
+        other = PhaseVector(other)
+        seq = ()
+        for a, b in zip(self, other):
+            if a != b and not (np.isnan(a) or np.isnan(b)):
+                raise ValueError("non-matching PhaseVector")
+            seq += (b,) if np.isnan(a) else (a,)
+        return PhaseVector(seq)
+
+    def permute(self, n=1):
+        x, y, z = self
+        n = n % 3
+        for i in range(n):
+            x, y, z = z, x, y
+        return PhaseVector((x, y, z))
+
+    def __le__(self, other):
+        other = PhaseVector(other)
+        for a, b in zip(self, other):
+            if a != b and not np.isnan(b):
+                return False
+        return True
+
+    def isdisjoint(self, other):
+        other = PhaseVector(other)
+        for a, b in zip(self, other):
+            if not (np.isnan(a) or np.isnan(b)):
                 return False
         return True
