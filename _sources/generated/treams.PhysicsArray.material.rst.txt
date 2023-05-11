@@ -1,6 +1,0 @@
-treams.PhysicsArray.material
-============================
-
-.. currentmodule:: treams
-
-.. autoproperty:: PhysicsArray.material

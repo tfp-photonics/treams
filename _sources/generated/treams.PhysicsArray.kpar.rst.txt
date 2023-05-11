@@ -1,6 +1,0 @@
-treams.PhysicsArray.kpar
-========================
-
-.. currentmodule:: treams
-
-.. autoproperty:: PhysicsArray.kpar

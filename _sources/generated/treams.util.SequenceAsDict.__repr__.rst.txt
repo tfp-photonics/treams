@@ -1,0 +1,6 @@
+treams.util.SequenceAsDict.\_\_repr\_\_
+=======================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: SequenceAsDict.__repr__

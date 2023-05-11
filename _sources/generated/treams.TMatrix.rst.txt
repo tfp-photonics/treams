@@ -14,7 +14,6 @@
       
          ~TMatrix.T
          ~TMatrix.ann
-         ~TMatrix.basis
          ~TMatrix.cd
          ~TMatrix.changepoltype
          ~TMatrix.chi
@@ -24,15 +23,9 @@
          ~TMatrix.expandlattice
          ~TMatrix.imag
          ~TMatrix.isglobal
-         ~TMatrix.k0
-         ~TMatrix.kpar
          ~TMatrix.ks
-         ~TMatrix.lattice
-         ~TMatrix.material
-         ~TMatrix.modetype
          ~TMatrix.ndim
          ~TMatrix.permute
-         ~TMatrix.poltype
          ~TMatrix.real
          ~TMatrix.rotate
          ~TMatrix.shape
@@ -109,35 +102,35 @@
          ~TMatrix.valid_points
          ~TMatrix.xs
       
-         ~TMatrix.__mul__
-         ~TMatrix.__xor__
-         ~TMatrix.__gt__
-         ~TMatrix.__mod__
-         ~TMatrix.__neg__
-         ~TMatrix.__divmod__
-         ~TMatrix.__pow__
-         ~TMatrix.__abs__
-         ~TMatrix.__invert__
-         ~TMatrix.__ge__
-         ~TMatrix.__array_ufunc__
          ~TMatrix.__add__
-         ~TMatrix.__ne__
-         ~TMatrix.__floordiv__
-         ~TMatrix.__lshift__
-         ~TMatrix.__array__
          ~TMatrix.__le__
-         ~TMatrix.__eq__
-         ~TMatrix.__array_function__
-         ~TMatrix.__and__
-         ~TMatrix.__pos__
-         ~TMatrix.__repr__
-         ~TMatrix.__rshift__
-         ~TMatrix.__str__
-         ~TMatrix.__matmul__
+         ~TMatrix.__neg__
          ~TMatrix.__setitem__
          ~TMatrix.__truediv__
+         ~TMatrix.__and__
+         ~TMatrix.__xor__
+         ~TMatrix.__ne__
+         ~TMatrix.__array__
+         ~TMatrix.__divmod__
+         ~TMatrix.__pos__
+         ~TMatrix.__gt__
+         ~TMatrix.__array_function__
+         ~TMatrix.__eq__
          ~TMatrix.__lt__
-         ~TMatrix.__or__
-         ~TMatrix.__sub__
          ~TMatrix.__getitem__
+         ~TMatrix.__repr__
+         ~TMatrix.__mul__
+         ~TMatrix.__invert__
+         ~TMatrix.__matmul__
+         ~TMatrix.__pow__
+         ~TMatrix.__str__
+         ~TMatrix.__ge__
+         ~TMatrix.__abs__
+         ~TMatrix.__lshift__
+         ~TMatrix.__floordiv__
+         ~TMatrix.__array_ufunc__
+         ~TMatrix.__or__
+         ~TMatrix.__mod__
+         ~TMatrix.__rshift__
+         ~TMatrix.__sub__
   

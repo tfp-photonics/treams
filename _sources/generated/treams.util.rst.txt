@@ -25,7 +25,6 @@
       implements
       lstsq
       ones_like
-      register_properties
       solve
       svd
       tril
@@ -45,6 +44,7 @@
       AnnotationDict
       AnnotationSequence
       OrderedSet
+      SequenceAsDict
    
    
 

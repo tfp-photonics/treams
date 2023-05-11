@@ -1,0 +1,6 @@
+treams.util.SequenceAsDict.values
+=================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: SequenceAsDict.values

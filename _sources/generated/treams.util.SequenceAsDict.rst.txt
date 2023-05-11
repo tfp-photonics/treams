@@ -1,0 +1,47 @@
+treams.util.SequenceAsDict
+==========================
+
+.. currentmodule:: treams.util
+
+.. autoclass:: SequenceAsDict
+
+  
+  
+  
+
+  
+      .. rubric:: Methods
+
+      .. autosummary::
+         :toctree:
+
+      
+         ~SequenceAsDict.__eq__
+         ~SequenceAsDict.__ge__
+         ~SequenceAsDict.__getitem__
+         ~SequenceAsDict.__gt__
+         ~SequenceAsDict.__le__
+         ~SequenceAsDict.__len__
+         ~SequenceAsDict.__lt__
+         ~SequenceAsDict.__ne__
+         ~SequenceAsDict.__repr__
+         ~SequenceAsDict.__setitem__
+         ~SequenceAsDict.__str__
+         ~SequenceAsDict.clear
+         ~SequenceAsDict.get
+         ~SequenceAsDict.items
+         ~SequenceAsDict.keys
+         ~SequenceAsDict.pop
+         ~SequenceAsDict.popitem
+         ~SequenceAsDict.setdefault
+         ~SequenceAsDict.update
+         ~SequenceAsDict.values
+      
+         ~SequenceAsDict.__str__
+         ~SequenceAsDict.__ge__
+         ~SequenceAsDict.__gt__
+         ~SequenceAsDict.__le__
+         ~SequenceAsDict.__ne__
+         ~SequenceAsDict.__eq__
+         ~SequenceAsDict.__lt__
+  

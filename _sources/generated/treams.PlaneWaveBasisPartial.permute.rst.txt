@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisPartial.permute
+====================================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasisPartial.permute

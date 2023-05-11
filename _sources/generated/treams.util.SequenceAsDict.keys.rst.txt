@@ -1,0 +1,6 @@
+treams.util.SequenceAsDict.keys
+===============================
+
+.. currentmodule:: treams.util
+
+.. automethod:: SequenceAsDict.keys

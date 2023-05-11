@@ -1,6 +1,0 @@
-treams.TMatrixC.lattice
-=======================
-
-.. currentmodule:: treams
-
-.. autoproperty:: TMatrixC.lattice

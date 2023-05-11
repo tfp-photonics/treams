@@ -1,6 +1,0 @@
-treams.PhysicsArray.k0
-======================
-
-.. currentmodule:: treams
-
-.. autoproperty:: PhysicsArray.k0

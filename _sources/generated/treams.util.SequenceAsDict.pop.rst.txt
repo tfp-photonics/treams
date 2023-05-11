@@ -1,0 +1,6 @@
+treams.util.SequenceAsDict.pop
+==============================
+
+.. currentmodule:: treams.util
+
+.. automethod:: SequenceAsDict.pop

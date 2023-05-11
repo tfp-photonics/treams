@@ -77,28 +77,28 @@ treams.util.AnnotatedArray
          ~AnnotatedArray.trace
          ~AnnotatedArray.transpose
       
-         ~AnnotatedArray.__invert__
          ~AnnotatedArray.__ge__
-         ~AnnotatedArray.__xor__
-         ~AnnotatedArray.__mul__
-         ~AnnotatedArray.__le__
          ~AnnotatedArray.__add__
-         ~AnnotatedArray.__rshift__
-         ~AnnotatedArray.__ne__
-         ~AnnotatedArray.__gt__
-         ~AnnotatedArray.__floordiv__
-         ~AnnotatedArray.__matmul__
-         ~AnnotatedArray.__mod__
-         ~AnnotatedArray.__eq__
-         ~AnnotatedArray.__lshift__
-         ~AnnotatedArray.__truediv__
-         ~AnnotatedArray.__neg__
-         ~AnnotatedArray.__divmod__
-         ~AnnotatedArray.__lt__
-         ~AnnotatedArray.__or__
-         ~AnnotatedArray.__and__
-         ~AnnotatedArray.__sub__
-         ~AnnotatedArray.__pow__
-         ~AnnotatedArray.__abs__
          ~AnnotatedArray.__pos__
+         ~AnnotatedArray.__le__
+         ~AnnotatedArray.__gt__
+         ~AnnotatedArray.__abs__
+         ~AnnotatedArray.__lshift__
+         ~AnnotatedArray.__neg__
+         ~AnnotatedArray.__truediv__
+         ~AnnotatedArray.__floordiv__
+         ~AnnotatedArray.__and__
+         ~AnnotatedArray.__mul__
+         ~AnnotatedArray.__xor__
+         ~AnnotatedArray.__invert__
+         ~AnnotatedArray.__matmul__
+         ~AnnotatedArray.__ne__
+         ~AnnotatedArray.__eq__
+         ~AnnotatedArray.__pow__
+         ~AnnotatedArray.__or__
+         ~AnnotatedArray.__mod__
+         ~AnnotatedArray.__rshift__
+         ~AnnotatedArray.__sub__
+         ~AnnotatedArray.__lt__
+         ~AnnotatedArray.__divmod__
   

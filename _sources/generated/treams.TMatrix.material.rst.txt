@@ -1,6 +1,0 @@
-treams.TMatrix.material
-=======================
-
-.. currentmodule:: treams
-
-.. autoproperty:: TMatrix.material

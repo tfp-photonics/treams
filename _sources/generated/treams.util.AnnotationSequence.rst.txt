@@ -7,6 +7,13 @@ treams.util.AnnotationSequence
 
   
   
+      .. rubric:: Attributes
+
+      .. autosummary::
+         :toctree:
+      
+         ~AnnotationSequence.as_dict
+  
   
 
   
@@ -16,6 +23,7 @@ treams.util.AnnotationSequence
          :toctree:
 
       
+         ~AnnotationSequence.__add__
          ~AnnotationSequence.__eq__
          ~AnnotationSequence.__ge__
          ~AnnotationSequence.__getitem__
@@ -31,10 +39,10 @@ treams.util.AnnotationSequence
          ~AnnotationSequence.match
          ~AnnotationSequence.update
       
-         ~AnnotationSequence.__ge__
-         ~AnnotationSequence.__le__
          ~AnnotationSequence.__str__
-         ~AnnotationSequence.__ne__
+         ~AnnotationSequence.__ge__
          ~AnnotationSequence.__gt__
+         ~AnnotationSequence.__le__
+         ~AnnotationSequence.__ne__
          ~AnnotationSequence.__lt__
   

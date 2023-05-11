@@ -1,0 +1,6 @@
+treams.util.SequenceAsDict.\_\_eq\_\_
+=====================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: SequenceAsDict.__eq__

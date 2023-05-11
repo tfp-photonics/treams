@@ -1,0 +1,6 @@
+treams.util.SequenceAsDict.\_\_setitem\_\_
+==========================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: SequenceAsDict.__setitem__

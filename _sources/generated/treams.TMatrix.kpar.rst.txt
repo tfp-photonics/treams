@@ -1,6 +1,0 @@
-treams.TMatrix.kpar
-===================
-
-.. currentmodule:: treams
-
-.. autoproperty:: TMatrix.kpar

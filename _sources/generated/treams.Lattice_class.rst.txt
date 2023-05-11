@@ -1,0 +1,52 @@
+﻿treams.Lattice
+==============
+
+.. currentmodule:: treams
+
+.. autoclass:: Lattice
+
+  
+  
+      .. rubric:: Attributes
+
+      .. autosummary::
+         :toctree:
+      
+         ~Lattice.alignment
+         ~Lattice.dim
+         ~Lattice.reciprocal
+         ~Lattice.volume
+  
+  
+
+  
+      .. rubric:: Methods
+
+      .. autosummary::
+         :toctree:
+
+      
+         ~Lattice.__and__
+         ~Lattice.__eq__
+         ~Lattice.__ge__
+         ~Lattice.__getitem__
+         ~Lattice.__gt__
+         ~Lattice.__le__
+         ~Lattice.__lt__
+         ~Lattice.__ne__
+         ~Lattice.__or__
+         ~Lattice.__repr__
+         ~Lattice.__str__
+         ~Lattice.cubic
+         ~Lattice.hexagonal
+         ~Lattice.isdisjoint
+         ~Lattice.orthorhombic
+         ~Lattice.permute
+         ~Lattice.rectangular
+         ~Lattice.square
+      
+         ~Lattice.__gt__
+         ~Lattice.__ge__
+         ~Lattice.__ne__
+         ~Lattice.__lt__
+  

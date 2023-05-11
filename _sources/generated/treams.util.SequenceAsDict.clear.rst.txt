@@ -1,0 +1,6 @@
+treams.util.SequenceAsDict.clear
+================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: SequenceAsDict.clear
