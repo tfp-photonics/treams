@@ -46,6 +46,11 @@ extensions = [
 ]
 
 autosectionlabel_prefix_document = True
+autosummary_filename_map = {
+    "treams.Lattice": "treams.Lattice_class",
+    "treams.Lattice.reciprocal": "treams.Lattice_class.reciprocal",
+    "treams.Lattice.volume": "treams.Lattice_class.volume",
+}
 doctest_global_setup = """
 import numpy as np
 from treams import *
