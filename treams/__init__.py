@@ -14,8 +14,8 @@ Basis sets
    :toctree: generated/
 
    CylindricalWaveBasis
-   PlaneWaveBasisAngle
-   PlaneWaveBasisPartial
+   PlaneWaveBasisByUnitVector
+   PlaneWaveBasisByComp
    SphericalWaveBasis
 
 Matrices and Arrays
@@ -60,22 +60,36 @@ Functions
 from treams._core import (  # noqa: F401
     CylindricalWaveBasis,
     PhysicsArray,
-    PlaneWaveBasisAngle,
-    PlaneWaveBasisPartial,
+    PlaneWaveBasisByUnitVector,
+    PlaneWaveBasisByComp,
     SphericalWaveBasis,
 )
-from treams._lattice import Lattice  # noqa: F401
+from treams._lattice import Lattice, PhaseVector  # noqa: F401
 from treams._material import Material  # noqa: F401
 from treams._operators import (  # noqa: F401
+    BField,
     bfield,
+    ChangePoltype,
     changepoltype,
+    DField,
     dfield,
+    EField,
     efield,
+    Expand,
     expand,
+    ExpandLattice,
     expandlattice,
+    FField,
+    ffield,
+    GField,
+    gfield,
+    HField,
     hfield,
+    Permute,
     permute,
+    Rotate,
     rotate,
+    Translate,
     translate,
 )
 from treams._smatrix import SMatrix  # noqa: F401

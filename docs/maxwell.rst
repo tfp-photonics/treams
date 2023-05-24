@@ -369,10 +369,9 @@ Parity modes
 
 When considering only achiral media, it is quite common to not use modes of well-defined
 helicity but modes with well-defined parity, which are exactly the modes
-:math:`\boldsymbol M_\nu` and :math:`\boldsymbol N_\nu` defined above, with the former
-having negative and the latter having positive parity. For achiral materials, we have
-:math:`k_\pm = k` and by substituting :math:`\sqrt{2} a_{\pm,\nu} = a_{N,\nu} \pm
-a_{M,\nu}` for the expansion coefficients we find the solutions
+:math:`\boldsymbol M_\nu` and :math:`\boldsymbol N_\nu` defined above. For achiral
+materials, we have :math:`k_\pm = k` and by substituting :math:`\sqrt{2} a_{\pm,\nu} =
+a_{N,\nu} \pm a_{M,\nu}` for the expansion coefficients we find the solutions
 
 .. math::
 

@@ -94,7 +94,7 @@ class TestProperties:
 
     def test_modes(self):
         tm = TMatrix.sphere(2, 3, [4], [(2 + 1j, 1, 1), (9, 1, 2)])
-        l, m, pol = tm.basis["lmp"]
+        l, m, pol = tm.basis.lmp
         assert (
             np.all(l == 6 * [1] + 10 * [2])
             and np.all(m == [-1, -1, 0, 0, 1, 1, -2, -2, -1, -1, 0, 0, 1, 1, 2, 2])

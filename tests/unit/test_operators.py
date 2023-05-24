@@ -13,7 +13,7 @@ class TestRotate:
     def test_sw_invalid(self):
         a = treams.SphericalWaveBasis([[1, 0, 0]])
         b = treams.CylindricalWaveBasis([[1, -1, 0], [1, 1, 0]])
-        with pytest.raises(IndexError):
+        with pytest.raises(AttributeError):
             treams.rotate(1, basis=(b, a))
 
     def test_sw(self):
@@ -39,12 +39,12 @@ class TestRotate:
     def test_cw_invalid(self):
         a = treams.SphericalWaveBasis([[1, 0, 0]])
         b = treams.CylindricalWaveBasis([[1, -1, 0], [1, 1, 0]])
-        with pytest.raises(IndexError):
+        with pytest.raises(AttributeError):
             treams.rotate(1, basis=(a, b))
 
     def test_pw(self):
-        b = treams.PlaneWaveBasisAngle([[1, 0, 0, 0], [0, 1, 0, 0]])
-        a = treams.PlaneWaveBasisAngle(
+        b = treams.PlaneWaveBasisByUnitVector([[1, 0, 0, 0], [0, 1, 0, 0]])
+        a = treams.PlaneWaveBasisByUnitVector(
             [[np.cos(2), np.sin(2), 0, 0], [-np.sin(2), np.cos(2), 0, 0]]
         )
         where = [True, False]
@@ -53,14 +53,28 @@ class TestRotate:
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
     def test_pwp(self):
-        b = treams.PlaneWaveBasisPartial([[1, 0, 0], [0, 1, 0]])
-        a = treams.PlaneWaveBasisPartial(
+        b = treams.PlaneWaveBasisByComp([[1, 0, 0], [0, 1, 0]])
+        a = treams.PlaneWaveBasisByComp(
             [[np.cos(2), np.sin(2), 0], [-np.sin(2), np.cos(2), 0]]
         )
         where = [True, False]
         x = treams.rotate(2, basis=b, where=where)
         y = treams.PhysicsArray([[1, 0], [0, 0]], basis=(a, b))
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
+
+    def test_matmul(self):
+        assert (
+            treams.Rotate(1, 2, 3)
+            @ treams.PhysicsArray(np.eye(6), basis=treams.SphericalWaveBasis.default(1))
+            == treams.rotate(1, 2, 3, basis=treams.SphericalWaveBasis.default(1))
+        ).all()
+
+    def test_rmatmul(self):
+        assert (
+            treams.PhysicsArray(np.eye(6), basis=treams.SphericalWaveBasis.default(1))
+            @ treams.Rotate(1, 2, 3)
+            == treams.rotate(1, 2, 3, basis=treams.SphericalWaveBasis.default(1))
+        ).all()
 
 
 class TestTranslate:
@@ -93,7 +107,7 @@ class TestTranslate:
     def test_sw_invalid(self):
         a = treams.SphericalWaveBasis([[1, 0, 0]])
         b = treams.CylindricalWaveBasis([[1, -1, 0], [1, 1, 0]])
-        with pytest.raises(IndexError):
+        with pytest.raises(AttributeError):
             treams.translate([1, 0, 0], k0=1, basis=(b, a))
 
     def test_invalid_r(self):
@@ -143,8 +157,8 @@ class TestTranslate:
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
     def test_pw(self):
-        a = treams.PlaneWaveBasisAngle([[1, 0, 0, 0]])
-        b = treams.PlaneWaveBasisAngle([[1, 0, 0, 0], [0.6, 0.8, 0, 0]])
+        a = treams.PlaneWaveBasisByUnitVector([[1, 0, 0, 0]])
+        b = treams.PlaneWaveBasisByUnitVector([[1, 0, 0, 0], [0.6, 0.8, 0, 0]])
         where = [True, False]
         x = treams.translate([[0, 0, 0], [1, 1, 1]], k0=1, basis=(a, b), where=where)
         y = treams.PhysicsArray(
@@ -159,8 +173,8 @@ class TestTranslate:
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
     def test_pwp(self):
-        a = treams.PlaneWaveBasisPartial([[4, 0, 0]])
-        b = treams.PlaneWaveBasisPartial([[4, 0, 0], [4, 1, 0]])
+        a = treams.PlaneWaveBasisByComp([[4, 0, 0]])
+        b = treams.PlaneWaveBasisByComp([[4, 0, 0], [4, 1, 0]])
         where = [True, False]
         x = treams.translate([[0, 0, 0], [0, 1, 1]], k0=5, basis=(a, b), where=where)
         y = treams.PhysicsArray(
@@ -233,8 +247,8 @@ class TestExpand:
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
     def test_pw_pw(self):
-        a = treams.PlaneWaveBasisAngle([[3, 0, 4, 0], [0, 0, 5, 0]])
-        b = treams.PlaneWaveBasisAngle([[3, 0, 4, 0], [0, 5, 0, 0]])
+        a = treams.PlaneWaveBasisByUnitVector([[3, 0, 4, 0], [0, 0, 5, 0]])
+        b = treams.PlaneWaveBasisByUnitVector([[3, 0, 4, 0], [0, 5, 0, 0]])
         where = [True, False]
         x = treams.expand((a, b), k0=2.5, material=(2, 2, 0), where=where)
         y = treams.PhysicsArray(
@@ -247,7 +261,7 @@ class TestExpand:
 
     def test_cw_pw(self):
         a = treams.CylindricalWaveBasis([[3, 1, 0]], [1, 2, 3])
-        b = treams.PlaneWaveBasisAngle([[0, 4, 3, 0], [0, 4, 3, 1]])
+        b = treams.PlaneWaveBasisByUnitVector([[0, 4, 3, 0], [0, 4, 3, 1]])
         where = [True, False]
         x = treams.expand((a, b), k0=5, where=where)
         y = treams.PhysicsArray(
@@ -267,7 +281,7 @@ class TestExpand:
 
     def test_sw_pw(self):
         a = treams.SphericalWaveBasis([[3, 1, 0]], [1, 2, 3])
-        b = treams.PlaneWaveBasisAngle([[0, 4, 3, 0], [0, 4, 3, 1]])
+        b = treams.PlaneWaveBasisByUnitVector([[0, 4, 3, 0], [0, 4, 3, 1]])
         where = [True, False]
         x = treams.expand((a, b), k0=5, where=where)
         y = treams.PhysicsArray(
@@ -292,7 +306,7 @@ class TestExpandLattice:
         b = treams.SphericalWaveBasis([[1, -1, 0], [1, 1, 0]])
         where = [[True, False], [False, False]]
         lattice = treams.Lattice(1)
-        x = treams.expandlattice(lattice, basis=b, k0=3, where=where)
+        x = treams.expandlattice(lattice, 0, basis=b, k0=3, where=where)
         y = treams.PhysicsArray(
             [
                 [
@@ -317,7 +331,7 @@ class TestExpandLattice:
         b = treams.SphericalWaveBasis([[1, -1, 0], [1, 1, 0]])
         where = [[True, False], [False, False]]
         lattice = treams.Lattice([[1, 0], [0, 1]])
-        x = treams.expandlattice(lattice, basis=b, k0=3, where=where)
+        x = treams.expandlattice(lattice, [0, 0], basis=b, k0=3, where=where)
         y = treams.PhysicsArray(
             [
                 [
@@ -342,7 +356,7 @@ class TestExpandLattice:
         b = treams.SphericalWaveBasis([[1, -1, 0], [1, 1, 0]])
         where = [[True, False], [False, False]]
         lattice = treams.Lattice(np.eye(3))
-        x = treams.expandlattice(lattice, basis=b, k0=3, where=where)
+        x = treams.expandlattice(lattice, [0, 0, 0], basis=b, k0=3, where=where)
         y = treams.PhysicsArray(
             [
                 [
@@ -363,11 +377,6 @@ class TestExpandLattice:
         )
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
-    def test_sw_kpar(self):
-        b = treams.SphericalWaveBasis([[1, -1, 0], [1, 1, 0]])
-        with pytest.raises(ValueError):
-            treams.expandlattice([[1, 0], [0, 1]], 0, basis=b, k0=1)
-
     def test_cw_sw(self):
         a = treams.CylindricalWaveBasis([[0.3, 2, 0]])
         b = treams.SphericalWaveBasis([[1, -1, 0], [1, 1, 0]])
@@ -386,7 +395,7 @@ class TestExpandLattice:
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
     def test_pw_sw(self):
-        a = treams.PlaneWaveBasisAngle([[3, 0, 4, 0]])
+        a = treams.PlaneWaveBasisByUnitVector([[3, 0, 4, 0]])
         b = treams.SphericalWaveBasis([[1, -1, 0], [1, 1, 0]])
         where = [True, False]
         lattice = treams.Lattice([[2, 0], [0, 2]])
@@ -409,7 +418,7 @@ class TestExpandLattice:
         b = treams.CylindricalWaveBasis([[0.1, -1, 0], [0.1, 1, 0]])
         where = [[True, False], [False, False]]
         lattice = treams.Lattice(1, "x")
-        x = treams.expandlattice(lattice, basis=b, k0=3, where=where)
+        x = treams.expandlattice(lattice, 0, basis=b, k0=3, where=where)
         y = treams.PhysicsArray(
             [
                 [
@@ -433,7 +442,7 @@ class TestExpandLattice:
         b = treams.CylindricalWaveBasis([[0.1, -1, 0], [0.1, 1, 0]])
         where = [[True, False], [False, False]]
         lattice = treams.Lattice([[1, 0], [0, 1]])
-        x = treams.expandlattice(lattice, basis=b, k0=3, where=where)
+        x = treams.expandlattice(lattice, [0, 0], basis=b, k0=3, where=where)
         y = treams.PhysicsArray(
             [
                 [
@@ -453,13 +462,8 @@ class TestExpandLattice:
         )
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
-    def test_cw_kpar(self):
-        b = treams.CylindricalWaveBasis([[1, -1, 0], [1, 1, 0]])
-        with pytest.raises(ValueError):
-            treams.expandlattice(lattice=[[1, 0], [0, 1]], basis=b, kpar=0, k0=1)
-
     def test_pw_cw(self):
-        a = treams.PlaneWaveBasisAngle([[3, 0, 4, 0]])
+        a = treams.PlaneWaveBasisByUnitVector([[3, 0, 4, 0]])
         b = treams.CylindricalWaveBasis([[4, -1, 0], [4, 1, 0]])
         where = [True, False]
         lattice = treams.Lattice(2, "x")
@@ -503,7 +507,7 @@ class TestChangePoltype:
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
     def test_pw(self):
-        b = treams.PlaneWaveBasisAngle([[2, 0, 0, 0], [1, 1, 0, 1]])
+        b = treams.PlaneWaveBasisByUnitVector([[2, 0, 0, 0], [1, 1, 0, 1]])
         where = [True, False]
         x = treams.changepoltype(basis=b, where=where)
         y = treams.PhysicsArray(
@@ -514,7 +518,7 @@ class TestChangePoltype:
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
     def test_pwp(self):
-        b = treams.PlaneWaveBasisPartial([[2, 0, 0], [1, 0, 1]])
+        b = treams.PlaneWaveBasisByComp([[2, 0, 0], [1, 0, 1]])
         where = [True, False]
         x = treams.changepoltype(basis=b, where=where)
         y = treams.PhysicsArray(
@@ -527,13 +531,13 @@ class TestChangePoltype:
 
 class TestPermute:
     def test_pw(self):
-        a = treams.PlaneWaveBasisAngle([[1, 2, 3, 1], [1, 2, 3, 0]])
-        b = treams.PlaneWaveBasisAngle([[2, 3, 1, 1], [2, 3, 1, 0]])
+        a = treams.PlaneWaveBasisByUnitVector([[1, 2, 3, 1], [1, 2, 3, 0]])
+        b = treams.PlaneWaveBasisByUnitVector([[2, 3, 1, 1], [2, 3, 1, 0]])
         assert treams.permute(basis=b).basis[0] == a
 
     def test_pwp(self):
-        a = treams.PlaneWaveBasisPartial([[1, 2, 1], [1, 2, 0]], "yz")
-        b = treams.PlaneWaveBasisPartial([[1, 2, 1], [1, 2, 0]])
+        a = treams.PlaneWaveBasisByComp([[1, 2, 1], [1, 2, 0]], "yz")
+        b = treams.PlaneWaveBasisByComp([[1, 2, 1], [1, 2, 0]])
         assert treams.permute(basis=b).basis[0] == a
 
 
@@ -555,7 +559,7 @@ class TestEField:
             rsph[..., 2],
             [0, 1],
         )
-        assert np.all(sc.vsph2car(y, rsph) == x)
+        assert np.all(sc.vsph2car(y, rsph).swapaxes(-1, -2) == x)
 
     def test_sw_sh(self):
         modes = [[0, 3, -2, 0], [1, 1, 1, 1]]
@@ -581,7 +585,7 @@ class TestEField:
             rsph[..., 2],
             [0, 1],
         )
-        assert np.all(sc.vsph2car(y, rsph) == x)
+        assert np.all(sc.vsph2car(y, rsph).swapaxes(-1, -2) == x)
 
     def test_sw_rp(self):
         modes = [[0, 3, -2, 0], [1, 1, 1, 0]]
@@ -599,7 +603,7 @@ class TestEField:
             rsph[..., 1],
             rsph[..., 2],
         )
-        assert np.all(sc.vsph2car(y, rsph) == x)
+        assert np.all(sc.vsph2car(y, rsph).swapaxes(-1, -2) == x)
 
     def test_sw_sp(self):
         modes = [[0, 3, -2, 1], [1, 1, 1, 1]]
@@ -624,7 +628,7 @@ class TestEField:
             rsph[..., 1],
             rsph[..., 2],
         )
-        assert np.all(sc.vsph2car(y, rsph) == x)
+        assert np.all(sc.vsph2car(y, rsph).swapaxes(-1, -2) == x)
 
     def test_cw_rh(self):
         modes = [[0, 0.3, -2, 0], [1, 0.1, 1, 1]]
@@ -644,7 +648,7 @@ class TestEField:
             [k0, 3 * k0],
             [0, 1],
         )
-        assert np.all(np.abs(sc.vcyl2car(y, rcyl) - x) < 1e-14)
+        assert np.all(np.abs(sc.vcyl2car(y, rcyl).swapaxes(-1, -2) - x) < 1e-14)
 
     def test_cw_sh(self):
         modes = [[0, 0.3, -2, 0], [1, 0.1, 1, 1]]
@@ -671,7 +675,7 @@ class TestEField:
             [k0, 3 * k0],
             [0, 1],
         )
-        assert np.all(sc.vcyl2car(y, rcyl) == x)
+        assert np.all(sc.vcyl2car(y, rcyl).swapaxes(-1, -2) == x)
 
     def test_cw_rp(self):
         modes = [[0, 0.3, -2, 0], [1, 0.1, 1, 0]]
@@ -689,7 +693,7 @@ class TestEField:
             rcyl[..., 1],
             rcyl[..., 2],
         )
-        assert np.all(np.abs(sc.vcyl2car(y, rcyl) - x) < 1e-14)
+        assert np.all(np.abs(sc.vcyl2car(y, rcyl).swapaxes(-1, -2) - x) < 1e-14)
 
     def test_cw_sp(self):
         modes = [[0, 0.3, -2, 1], [1, 0.1, 1, 1]]
@@ -715,11 +719,11 @@ class TestEField:
             rcyl[..., 2],
             8,
         )
-        assert np.all(sc.vcyl2car(y, rcyl) == x)
+        assert np.all(sc.vcyl2car(y, rcyl).swapaxes(-1, -2) == x)
 
     def test_pw_h(self):
         modes = [[0, 3, 4, 0], [0, 4, 3, 1]]
-        b = treams.PlaneWaveBasisAngle(modes)
+        b = treams.PlaneWaveBasisByUnitVector(modes)
         r = np.array([[0, 1, 2], [3, 4, 5]])
         x = treams.efield(r, basis=b, k0=5, poltype="helicity")
         y = sc.vpw_A(
@@ -730,22 +734,22 @@ class TestEField:
             r[..., None, 1],
             r[..., None, 2],
             [0, 1],
-        )
+        ).swapaxes(-1, -2)
         assert np.all(y == x)
 
     def test_pw_p(self):
         modes = [[0, 3, 4, 1], [0, 4, 3, 1]]
-        b = treams.PlaneWaveBasisAngle(modes)
+        b = treams.PlaneWaveBasisByUnitVector(modes)
         r = np.array([[0, 1, 2], [3, 4, 5]])
         x = treams.efield(r, basis=b, k0=5, poltype="parity")
         y = sc.vpw_N(
             [0, 0], [3, 4], [4, 3], r[..., None, 0], r[..., None, 1], r[..., None, 2]
-        )
+        ).swapaxes(-1, -2)
         assert np.all(y == x)
 
     def test_pwp_h(self):
         modes = [[0, 3, 0], [0, 4, 1]]
-        b = treams.PlaneWaveBasisPartial(modes)
+        b = treams.PlaneWaveBasisByComp(modes)
         r = np.array([[0, 1, 2], [3, 4, 5]])
         x = treams.efield(r, basis=b, k0=5, poltype="helicity")
         y = sc.vpw_A(
@@ -756,17 +760,17 @@ class TestEField:
             r[..., None, 1],
             r[..., None, 2],
             [0, 1],
-        )
+        ).swapaxes(-1, -2)
         assert np.all(y == x)
 
     def test_pwp_p(self):
         modes = [[0, 3, 1], [0, 4, 1]]
-        b = treams.PlaneWaveBasisPartial(modes)
+        b = treams.PlaneWaveBasisByComp(modes)
         r = np.array([[0, 1, 2], [3, 4, 5]])
         x = treams.efield(
             r, basis=b, k0=1, poltype="parity", material=(5, 5), modetype="down"
         )
         y = sc.vpw_N(
             [0, 0], [3, 4], [-4, -3], r[..., None, 0], r[..., None, 1], r[..., None, 2]
-        )
+        ).swapaxes(-1, -2)
         assert np.all(y == x)

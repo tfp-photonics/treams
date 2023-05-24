@@ -58,7 +58,7 @@ class SphericalWaveBasis(BasisSet):
     additional position index ``pidx`` is used to link the modes to one of the
     specified ``positions``.
 
-    For spherical waves there exist multiple :ref:`polarizations:Polarizations` and they
+    For spherical waves there exist multiple :ref:`params:Polarizations` and they
     can be separated into incident and scattered fields. Depending on these combinations
     the basis modes refer to one of the functions :func:`~treams.special.vsw_A`,
     :func:`~treams.special.vsw_rA`, :func:`~treams.special.vsw_M`,
@@ -76,7 +76,7 @@ class SphericalWaveBasis(BasisSet):
         l (array-like): Angular momentum as an integer :math:`l > 0`
         m (array-like): Angular momentum projection onto the z-axis, it is an integer
             with :math:`m \leq |l|`
-        pol (array-like): Polarization, see also :ref:`polarizations:Polarizations`.
+        pol (array-like): Polarization, see also :ref:`params:Polarizations`.
     """
 
     _names = ("pidx", "l", "m", "pol")
@@ -154,6 +154,15 @@ class SphericalWaveBasis(BasisSet):
         """
         return len(self) == 0 or np.all(self.pidx == self.pidx[0])
 
+    def __getattr__(self, key):
+        dct = {"l": "l", "m": "m", "p": "pidx", "s": "pol"}
+        try:
+            return tuple(getattr(self, dct[k]) for k in key)
+        except KeyError:
+            raise AttributeError(
+                f"'{type(self).__name__}' object has no attribute '{key}'"
+            ) from None
+
     def __getitem__(self, idx):
         """Get a subset of the basis.
 
@@ -165,15 +174,6 @@ class SphericalWaveBasis(BasisSet):
         Alternatively, the string "plmp", "lmp", or "lm" can be used to access only a
         subset of :attr:`pidx`, :attr:`l`, :attr:`m`, and :attr:`pol`.
         """
-        if isinstance(idx, str):
-            idx = idx.lower().strip()
-            if idx == "plmp":
-                return self.pidx, self.l, self.m, self.pol
-            elif idx == "lmp":
-                return self.l, self.m, self.pol
-            elif idx == "lm":
-                return self.l, self.m
-            raise IndexError(f"unrecognized key '{idx}'")
         res = self.pidx[idx], self.l[idx], self.m[idx], self.pol[idx]
         if isinstance(idx, (int, np.integer)) or (
             isinstance(idx, tuple) and len(idx) == 0
@@ -343,7 +343,7 @@ class CylindricalWaveBasis(BasisSet):
     basis an additional position index ``pidx`` is used to link the modes to one of the
     specified ``positions``.
 
-    For cylindrical waves there exist multiple :ref:`polarizations:Polarizations` and
+    For cylindrical waves there exist multiple :ref:`params:Polarizations` and
     they can be separated into incident and scattered fields. Depending on these
     combinations the basis modes refer to one of the functions
     :func:`~treams.special.vcw_A`, :func:`~treams.special.vcw_rA`,
@@ -360,7 +360,7 @@ class CylindricalWaveBasis(BasisSet):
         pidx (array-like): Integer referring to a row in :attr:`positions`.
         kz (array-like): Real valued z-component of the wave vector.
         m (array-like): Integer angular momentum projection onto the z-axis.
-        pol (array-like): Polarization, see also :ref:`polarizations:Polarizations`.
+        pol (array-like): Polarization, see also :ref:`params:Polarizations`.
     """
 
     _names = ("pidx", "kz", "m", "pol")
@@ -437,6 +437,15 @@ class CylindricalWaveBasis(BasisSet):
         """
         return len(self) == 0 or np.all(self.pidx == self.pidx[0])
 
+    def __getattr__(self, key):
+        dct = {"z": "kz", "m": "m", "p": "pidx", "s": "pol"}
+        try:
+            return tuple(getattr(self, dct[k]) for k in key)
+        except KeyError:
+            raise AttributeError(
+                f"'{type(self).__name__}' object has no attribute '{key}'"
+            ) from None
+
     def __getitem__(self, idx):
         """Get a subset of the basis.
 
@@ -448,15 +457,6 @@ class CylindricalWaveBasis(BasisSet):
         Alternatively, the string "pkzmp", "kzmp", or "kzm" can be used to access only a
         subset of :attr:`pidx`, :attr:`kz`, :attr:`m`, and :attr:`pol`.
         """
-        if isinstance(idx, str):
-            idx = idx.lower().strip()
-            if idx == "pkzmp":
-                return self.pidx, self.kz, self.m, self.pol
-            elif idx == "kzmp":
-                return self.kz, self.m, self.pol
-            elif idx == "kzm":
-                return self.kz, self.m
-            raise IndexError(f"unrecognized key '{idx}'")
         res = self.pidx[idx], self.kz[idx], self.m[idx], self.pol[idx]
         if isinstance(idx, (int, np.integer)) or (isinstance(idx, tuple) and idx == ()):
             return res
@@ -626,14 +626,14 @@ class PlaneWaveBasis(BasisSet):
     isglobal = True
 
 
-class PlaneWaveBasisAngle(PlaneWaveBasis):
+class PlaneWaveBasisByUnitVector(PlaneWaveBasis):
     """Plane wave basis.
 
     A plane wave basis is defined by a collection of wave vectors specified by the
     Cartesian wave vector components ``qx``, ``qy``, and ``qz`` normalized to
     :math:`q_x^2 + q_y^2 + q_z^2 = 1` and the polarizations ``pol``.
 
-    For plane waves there exist multiple :ref:`polarizations:Polarizations`, such that
+    For plane waves there exist multiple :ref:`params:Polarizations`, such that
     these modes can refer to either :func:`~treams.special.vpw_A` or
     :func:`~treams.special.vpw_M` and :func:`~treams.special.vpw_N`.
 
@@ -645,7 +645,7 @@ class PlaneWaveBasisAngle(PlaneWaveBasis):
         qx (array-like): X-component of the normalized wave vector.
         qy (array-like): Y-component of the normalized wave vector.
         qz (array-like): Z-component of the normalized wave vector.
-        pol (array-like): Polarization, see also :ref:`polarizations:Polarizations`.
+        pol (array-like): Polarization, see also :ref:`params:Polarizations`.
     """
 
     _names = ("qx", "qy", "qz", "pol")
@@ -686,6 +686,15 @@ class PlaneWaveBasisAngle(PlaneWaveBasis):
             raise ValueError("polarization must be '0' or '1'")
         self.lattice = self.kpar = None
 
+    def __getattr__(self, key):
+        dct = {"x": "qx", "y": "qy", "z": "qz", "s": "pol"}
+        try:
+            return tuple(getattr(self, dct[k]) for k in key)
+        except KeyError:
+            raise AttributeError(
+                f"'{type(self).__name__}' object has no attribute '{key}'"
+            ) from None
+
     def __getitem__(self, idx):
         """Get a subset of the basis.
 
@@ -697,15 +706,6 @@ class PlaneWaveBasisAngle(PlaneWaveBasis):
         Alternatively, the string "xyzp", "xyp", or "zp" can be used to access only a
         subset of :attr:`qx`, :attr:`qy`, :attr:`qz`, and :attr:`pol`.
         """
-        if isinstance(idx, str):
-            idx = idx.lower().strip()
-            if idx == "xyzp":
-                return self.qx, self.qy, self.qz, self.pol
-            elif idx == "xyp":
-                return self.qx, self.qy, self.pol
-            elif idx == "zp":
-                return self.qz, self.pol
-            raise IndexError(f"unrecognized key '{idx}'")
         res = self.qx[idx], self.qy[idx], self.qz[idx], self.pol[idx]
         if isinstance(idx, (int, np.integer)) or (isinstance(idx, tuple) and idx == ()):
             return res
@@ -718,8 +718,8 @@ class PlaneWaveBasisAngle(PlaneWaveBasis):
         For each wave vector the two polarizations 1 and 0 are taken.
 
         Example:
-            >>> PlaneWaveBasis.default([[0, 0, 5], [0, 3, 4]])
-            PlaneWaveBasis(
+            >>> PlaneWaveBasisByUnitVector.default([[0, 0, 5], [0, 3, 4]])
+            PlaneWaveBasisByUnitVector(
                 qx=[0 0 0 0],
                 qy=[0 0 3 3],
                 qz=[5 5 4 4],
@@ -739,7 +739,7 @@ class PlaneWaveBasisAngle(PlaneWaveBasis):
 
     @classmethod
     def _from_iterable(cls, it):
-        if isinstance(cls, PlaneWaveBasisAngle):
+        if isinstance(cls, PlaneWaveBasisByUnitVector):
             lattice = cls.lattice
             kpar = cls.kpar
             cls = type(cls)
@@ -766,8 +766,8 @@ class PlaneWaveBasisAngle(PlaneWaveBasis):
         except AttributeError:
             return False
 
-    def partial(self, k0, alignment="xy", material=Material()):
-        """Create a :class:`PlaneWavePartial`.
+    def bycomp(self, k0, alignment="xy", material=Material()):
+        """Create a :class:`PlaneWaveBasisByComp`.
 
         The plane wave basis is changed to a partial basis, where only two (real-valued)
         wave vector components are defined the third component is then inferred from the
@@ -788,19 +788,14 @@ class PlaneWaveBasisAngle(PlaneWaveBasis):
             kpars = [ks * getattr(self, "q" + s) for s in alignment]
         else:
             raise ValueError(f"invalid alignment '{alignment}'")
-        obj = PlaneWaveBasisPartial(zip(*kpars, self.pol), alignment)
+        obj = PlaneWaveBasisByComp(zip(*kpars, self.pol), alignment)
         obj.lattice = self.lattice
         obj.kpar = self.kpar
         return obj
 
     def kvecs(self, k0, material=Material(), modetype=None):
-        """Create a complete basis.
+        """Wave vectors
 
-        A plane wave basis is considered complete, when all three Cartesian components
-        and the polarization is defined for each mode. The plane wave basis of this
-        class is already complete, so it. Child classes might override this function to
-        create a complete :class:`PlaneWaveBasis`. Here, it only performs checks on the
-        dispersion relation.
 
         Args:
             k0 (float): Wave number.
@@ -813,7 +808,7 @@ class PlaneWaveBasisAngle(PlaneWaveBasis):
         return ks * self.qx, ks * self.qy, ks * self.qz
 
 
-class PlaneWaveBasisPartial(PlaneWaveBasis):
+class PlaneWaveBasisByComp(PlaneWaveBasis):
     """Partial plane wave basis.
 
     A partial plane wave basis is defined by two wave vector components out of all three
@@ -823,7 +818,7 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
     alignment directions, such that the given wave vector components correspond to the
     diffraction orders.
 
-    For plane waves there exist multiple :ref:`polarizations:Polarizations`, such that
+    For plane waves there exist multiple :ref:`params:Polarizations`, such that
     these modes can refer to either :func:`~treams.special.vpw_A` or
     :func:`~treams.special.vpw_M` and :func:`~treams.special.vpw_N`.
 
@@ -835,7 +830,7 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
 
     Attributes:
         alignment (str): Alignment of the partial basis.
-        pol (array-like): Polarization, see also :ref:`polarizations:Polarizations`.
+        pol (array-like): Polarization, see also :ref:`params:Polarizations`.
     """
 
     def __init__(self, modes, alignment="xy"):
@@ -924,6 +919,15 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
             return self._kx
         return None
 
+    def __getattr__(self, key):
+        dct = {"x": "kx", "y": "ky", "z": "kz", "s": "pol"}
+        try:
+            return tuple(getattr(self, dct[k]) for k in key)
+        except KeyError:
+            raise AttributeError(
+                f"'{type(self).__name__}' object has no attribute '{key}'"
+            ) from None
+
     def __getitem__(self, idx):
         """Get a subset of the basis.
 
@@ -944,8 +948,8 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         For each wave vector the two polarizations 1 and 0 are taken.
 
         Example:
-            >>> PlaneWaveBasisPartial.default([[0, 0], [0, 3]])
-            PlaneWaveBasisPartial(
+            >>> PlaneWaveBasisByComp.default([[0, 0], [0, 3]])
+            PlaneWaveBasisByComp(
                 kx=[0. 0. 0. 0.],
                 ky=[0. 0. 3. 3.],
                 pol=[1 0 1 0],
@@ -973,8 +977,8 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         orders that lie within the defined maximal radius (in reciprocal space).
 
         Example:
-            >>> PlaneWaveBasisPartial.diffr_orders([0, 0], Lattice.square(2 * np.pi), 1)
-            PlaneWaveBasisPartial(
+            >>> PlaneWaveBasisByComp.diffr_orders([0, 0], Lattice.square(2 * np.pi), 1)
+            PlaneWaveBasisByComp(
                 kx=[ 0.  0.  0.  0.  0.  0.  1.  1. -1. -1.],
                 ky=[ 0.  0.  1.  1. -1. -1.  0.  0.  0.  0.],
                 pol=[1 0 1 0 1 0 1 0 1 0],
@@ -999,7 +1003,7 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
 
     @classmethod
     def _from_iterable(cls, it, alignment="xy"):
-        if isinstance(cls, PlaneWaveBasisPartial):
+        if isinstance(cls, PlaneWaveBasisByComp):
             alignment = cls.alignment if alignment is None else alignment
             lattice = cls.lattice
             kpar = cls.kpar
@@ -1029,7 +1033,7 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
         except AttributeError:
             return False
 
-    def angle(self, k0, material=Material(), modetype="up"):
+    def byunitvector(self, k0, material=Material(), modetype="up"):
         """Create a complete basis :class:`PlaneWaveBasis`.
 
         A plane wave basis is considered complete, when all three Cartesian components
@@ -1055,20 +1059,13 @@ class PlaneWaveBasisPartial(PlaneWaveBasis):
             kx, ky, kz = kz, kx, ky
         elif self.alignment == "zy":
             kx, ky, kz = ky, kz, kx
-        obj = PlaneWaveBasisAngle(zip(kx, ky, kz, self.pol))
+        obj = PlaneWaveBasisByUnitVector(zip(kx, ky, kz, self.pol))
         obj.lattice = self.lattice
         obj.kpar = self.kpar
         return obj
 
     def kvecs(self, k0, material=Material(), modetype="up"):
-        """Create a complete basis :class:`PlaneWaveBasis`.
-
-        A plane wave basis is considered complete, when all three Cartesian components
-        and the polarization is defined for each mode. So, the specified wave number,
-        material, and modetype is taken to calculate the third Cartesian wave vector.
-        The modetype "up" ("down") is for waves propagating in the positive (negative)
-        direction with respect to the Cartesian axis that is orthogonal to the
-        alignment.
+        """Wave vectors.
 
         Args:
             k0 (float): Wave number.
@@ -1110,7 +1107,7 @@ class PhysicsDict(util.AnnotationDict):
         modetype (str): Mode type, for spherical and cylindrical waves this can be
             "incident" and "scattered", for partial plane waves it can be "up" or
             "down".
-        poltype (str): Polarization, see also :ref:`polarizations:Polarizations`.
+        poltype (str): Polarization, see also :ref:`params:Polarizations`.
     """
 
     properties = {
@@ -1137,7 +1134,7 @@ class PhysicsDict(util.AnnotationDict):
         ),
         "modetype": ("Mode type.", lambda x: isinstance(x, str), str),
         "poltype": (
-            ":ref:`polarizations:Polarizations`.",
+            ":ref:`params:Polarizations`.",
             lambda x: isinstance(x, str),
             str,
         ),
@@ -1158,7 +1155,9 @@ class PhysicsDict(util.AnnotationDict):
         Warns:
             AnnotationWarning
         """
-        _, testfunc, castfunc = self.properties.get(key, (None, lambda x: True, None))
+        if key not in self.properties:
+            raise AttributeError("invalid key '{key}'")
+        _, testfunc, castfunc = self.properties[key]
         if not testfunc(val):
             val = castfunc(val)
         super().__setitem__(key, val)
@@ -1177,19 +1176,24 @@ class PhysicsArray(util.AnnotatedArray):
 
     _scales = {"basis"}
 
-    changepoltype = op.ChangePoltype()
+    changepoltype = op.OperatorAttribute(op.ChangePoltype)
     """Polarization change matrix, see also :class:`treams.operators.ChangePoltype`."""
-    efield = op.EField()
+    efield = op.OperatorAttribute(op.EField)
+    hfield = op.OperatorAttribute(op.HField)
+    dfield = op.OperatorAttribute(op.DField)
+    bfield = op.OperatorAttribute(op.BField)
+    gfield = op.OperatorAttribute(op.GField)
+    ffield = op.OperatorAttribute(op.FField)
     """Field evaluation matrix, see also :class:`treams.operators.EField`."""
-    expand = op.Expand()
+    expand = op.OperatorAttribute(op.Expand)
     """Expansion matrix, see also :class:`treams.operators.Expand`."""
-    expandlattice = op.ExpandLattice()
+    expandlattice = op.OperatorAttribute(op.ExpandLattice)
     """Lattice expansion matrix, see also :class:`treams.operators.ExpandLattice`."""
-    permute = op.Permute()
+    permute = op.OperatorAttribute(op.Permute)
     """Permutation matrix, see also :class:`treams.operators.Permute`."""
-    rotate = op.Rotate()
+    rotate = op.OperatorAttribute(op.Rotate)
     """Rotation matrix, see also :class:`treams.operators.Rotate`."""
-    translate = op.Translate()
+    translate = op.OperatorAttribute(op.Translate)
     """Translation matrix, see also :class:`treams.operators.Translate`."""
 
     def __init__(self, arr, ann=(), /, **kwargs):
@@ -1210,6 +1214,13 @@ class PhysicsArray(util.AnnotatedArray):
             if key in PhysicsDict.properties:
                 return
             raise err from None
+
+    def __setattr__(self, key, val):
+        if key in PhysicsDict.properties:
+            val = (val,) * self.ndim if not isinstance(val, tuple) else val
+            self.ann.as_dict[key] = val
+        else:
+            super().__setattr__(key, val)
 
     @ann.setter
     def ann(self, ann):

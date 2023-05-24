@@ -7,6 +7,7 @@ Welcome to treams' documentation!
 
    gettingstarted
    examples
+   intro
    theory
    treams
    dev

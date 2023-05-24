@@ -112,9 +112,9 @@ basis    Basis set: spherical, cylindrical, planar
 k0       Vacuum wave number
 kpar     Phase relation in lattices
 lattice  Definition of a lattice (:class:`treams.Lattice`)
-modetype Modetype, depends on wave (:ref:`polarizations:Mode types`)
+modetype Modetype, depends on wave (:ref:`params:Mode types`)
 material Embedding material (:class:`treams.Material`)
-poltype  Polarization types (:ref:`polarizations:Polarizations`)
+poltype  Polarization types (:ref:`params:Polarizations`)
 ======== ===========================================================
 
 Transformations
@@ -127,7 +127,7 @@ such a plane wave could be:
 
 .. doctest::
 
-    >>> wave = treams.PhysicsArray([1.5], basis=treams.PlaneWaveBasisPartial([(3, 4, 0)]))
+    >>> wave = treams.PhysicsArray([1.5], basis=treams.PlaneWaveBasisByComp([(3, 4, 0)]))
     >>> wave.expand(treams.SphericalWaveBasis.default(1))
     PhysicsArray(
         [[ 0.00000000e+00+0.j        ],
@@ -142,7 +142,7 @@ such a plane wave could be:
         m=[-1 -1  0  0  1  1],
         pol=[1 0 1 0 1 0],
         positions=[[0. 0. 0.]],
-    ), PlaneWaveBasisPartial(
+    ), PlaneWaveBasisByComp(
         kx=[3],
         ky=[4],
         pol=[0],
@@ -155,7 +155,7 @@ such a plane wave could be:
 In the first line we define a plane wave by specifying a basis that consists of only one
 entry namely that for a wave vector :math:`\boldsymbol k = 3 \boldsymbol{\hat x} +
 4 \boldsymbol{\hat y} + 5 \boldsymbol{\hat z}` and the polarization 0
-(:ref:`polarizations:Polarizations`). The amplitude of the wave is 1.5. Then, we want
+(:ref:`params:Polarizations`). The amplitude of the wave is 1.5. Then, we want
 to expand the wave into the spherical basis up to dipolar order. The matrix that
 represents this transformation is then returned. It contains as the given bases.
 Additionally, a couple of other values are specified. This is, first, the material,

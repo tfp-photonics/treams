@@ -13,6 +13,8 @@ import warnings
 
 import numpy as np
 
+import treams._operators as _op
+
 __all__ = [
     "AnnotatedArray",
     "AnnotationDict",
@@ -338,11 +340,7 @@ class AnnotationSequence(collections.abc.Sequence):
             return False
         if len(self) != lenother:
             return False
-        try:
-            zipped = zip(self, other)
-        except TypeError:
-            return False
-        for a, b in zipped:
+        for a, b in zip(self, other):
             if a != b:
                 return False
         return True
@@ -1079,6 +1077,19 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         return self.relax(self._array.transpose(axes), self.ann[axes])
 
     conj = conjugate
+
+    @implements(np.swapaxes)
+    def swapaxes(self, axis1, axis2):
+        axis1 = axis1 % self.ndim
+        axis2 = axis2 % self.ndim
+        opp = {axis1: axis2, axis2: axis1}
+        axes = [opp.get(i, i) for i in range(self.ndim)]
+        return self.relax(self._array.swapaxes(axis1, axis2), self.ann[axes])
+
+    def __matmul__(self, other):
+        if isinstance(other, _op.Operator):
+            return NotImplemented
+        return super().__matmul__(other)
 
 
 @implements(np.linalg.solve)

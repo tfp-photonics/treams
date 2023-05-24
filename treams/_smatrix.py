@@ -5,9 +5,10 @@ import numpy as np
 
 from treams import config, util
 from treams._core import PhysicsArray
-from treams._core import PlaneWaveBasisPartial as PWBP
+from treams._core import PlaneWaveBasisByComp as PWBC
 from treams._material import Material
 from treams._operators import translate
+from treams._tmatrix import TMatrix, TMatrixC
 from treams.coeffs import fresnel
 
 
@@ -30,7 +31,7 @@ class _SMatrix(PhysicsArray):
             self.material = tuple(Material() if m is None else m for m in material)
         if self.basis is None:
             raise util.AnnotationError("basis not set")
-        elif not isinstance(self.basis, PWBP):
+        elif not isinstance(self.basis, PWBC):
             self.basis = self.basis.partial(self.k0, self.material)
 
 
@@ -66,10 +67,10 @@ class SMatrix:
     Args:
         smats (_SMatrix): S-matrices.
         k0 (float): Wave number in vacuum.
-        basis (PlaneWaveBasisPartial): The basis for the S-matrices.
+        basis (PlaneWaveBasisByComp): The basis for the S-matrices.
         material (tuple, Material, optional): Material definition, if a tuple of length
             two is specified, this refers to the materials above and below the S-matrix.
-        poltype (str, optional): Polarization type (:ref:`polarizations:Polarizations`).
+        poltype (str, optional): Polarization type (:ref:`params:Polarizations`).
     """
 
     def __init__(self, smats, **kwargs):
@@ -137,7 +138,7 @@ class SMatrix:
 
         Args:
             k0 (float): Wave number in vacuum
-            basis (PlaneWaveBasisPartial): Basis definitions.
+            basis (PlaneWaveBasisByComp): Basis definitions.
             materials (Sequence[Material]): Material definitions.
 
         Returns:
@@ -182,7 +183,7 @@ class SMatrix:
 
         Args:
             k0 (float): Wave number in vacuum.
-            basis (PlaneWaveBasisPartial): Basis definition.
+            basis (PlaneWaveBasisByComp): Basis definition.
             tickness (Sequence[Float]): Thickness of the slab or the thicknesses of all
                 slabs in order from negative to positive z.
             materials (Sequenze[Material]): Material definitions from negative to
@@ -254,18 +255,21 @@ class SMatrix:
 
         Args:
             tm (TMatrix or TMatrixC): (Cylindrical) T-matrix to place in the array.
-            basis (PlaneWaveBasisPartial): Basis definition.
+            basis (PlaneWaveBasisByComp): Basis definition.
             eta (float or complex, optional): Splitting parameter in the lattice sum.
 
         Returns:
             SMatrix
         """
-        if tm.lattice is None:
-            lattice = basis.hints["lattice"]
-            kpar = basis.hints["kpar"]
-            tm = tm.interacted_lattice(lattice, kpar, eta=eta)
+        if isinstance(tm, TMatrix):
+            if tm.lattice is None:
+                tm = tm.interacted_lattice(basis.lattice, basis.kpar, eta=eta)
+        elif isinstance(tm, TMatrixC):
+            if tm.lattice is None or "x" not in tm.lattice.alignment:
+                tm = tm.interacted_lattice(basis.lattice, basis.kpar, eta=eta)
         pu, pd = [tm.expandlattice(basis=basis, modetype=i) for i in ("up", "down")]
         au, ad = [tm.expand.inv(basis=basis, modetype=i) for i in ("up", "down")]
+
         eye = np.eye(len(basis))
         return cls(
             [[eye + pu @ tm @ au, pu @ tm @ ad], [pd @ tm @ au, eye + pd @ tm @ ad]]

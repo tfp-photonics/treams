@@ -6,12 +6,46 @@ import treams.special as sc
 from treams import config
 from treams._core import CylindricalWaveBasis as CWB
 from treams._core import PhysicsArray
-from treams._core import PlaneWaveBasisAngle as PWBA
-from treams._core import PlaneWaveBasisPartial as PWBP
+from treams._core import PlaneWaveBasisByUnitVector as PWBUV
+from treams._core import PlaneWaveBasisByComp as PWBC
 from treams._core import SphericalWaveBasis as SWB
+import treams._operators as op
 from treams._material import Material
 from treams.coeffs import mie, mie_cyl
 from treams.util import AnnotationError
+
+
+class _Interact:
+    def __init__(self):
+        self._obj = self._objtype = None
+
+    def __get__(self, obj, objtype=None):
+        self._obj = obj
+        self._objtype = objtype
+
+    def __call__(self):
+        basis = self._obj.basis
+        return np.eye(self._obj.shape[-1]) - self._obj @ op.Expand(basis, "singular")
+
+    def solve(self):
+        return np.linalg.solve(self(), self._obj)
+
+
+class _InteractLattice:
+    def __init__(self):
+        self._obj = self._objtype = None
+
+    def __get__(self, obj, objtype=None):
+        self._obj = obj
+        self._objtype = objtype
+
+    def __call__(self, lattice, kpar):
+        return np.eye(self._obj.shape[-1]) - self._obj @ op.ExpandLattice(
+            lattice=lattice, kpar=kpar
+        )
+
+    def solve(self, lattice, kpar):
+        return np.linalg.solve(self(), self._obj)
 
 
 class TMatrix(PhysicsArray):
@@ -31,11 +65,14 @@ class TMatrix(PhysicsArray):
         k0 (float): Wave number in vacuum.
         basis (SphericalWaveBasis, optional): Basis definition.
         material (Material, optional): Embedding material, defaults to vacuum.
-        poltype (str, optional): Polarization type (:ref:`polarizations:Polarizations`).
+        poltype (str, optional): Polarization type (:ref:`params:Polarizations`).
         lattice (Lattice, optional): Lattice definition. If specified the T-Matrix is
             assumed to be periodically repeated in the defined lattice.
         kpar (list, optional): Phase factor for the periodic T-Matrix.
     """
+
+    interact = _Interact()
+    interactlattice = _InteractLattice()
 
     def _check(self):
         """Fill in default values or raise errors for missing attributes."""
@@ -160,7 +197,7 @@ class TMatrix(PhysicsArray):
             if tm.poltype != poltype:
                 raise ValueError(f"incompatible modetypes: '{poltype}', '{tm.poltype}'")
             dim = tm.shape[0]
-            for m, n in zip(modes, tm.basis["lmp"]):
+            for m, n in zip(modes, tm.basis.lmp):
                 m.extend(list(n))
             pidx += [j] * dim
             tres[i : i + dim, i : i + dim] = tm
@@ -377,49 +414,49 @@ class TMatrix(PhysicsArray):
             -0.5 * np.real(illu.conjugate().T @ (p * invksq)) / flux,
         )
 
-    def rotated(self, phi, theta=0, psi=0, **kwargs):
-        """Rotated T-Matrix.
+    # def rotated(self, phi, theta=0, psi=0, **kwargs):
+    #     """Rotated T-Matrix.
 
-        Rotation is done in-place. If you need the original T-Matrix make a deepcopy
-        first. Rotations can only be applied to global T-Matrices. The angles are given
-        in the zyz-convention. In the intrinsic (object fixed coordinate system)
-        convention the rotations are applied in the order phi first, theta second, psi
-        third. In the extrinsic (global or reference frame fixed coordinate system) the
-        rotations are applied psi first, theta second, phi third.
+    #     Rotation is done in-place. If you need the original T-Matrix make a deepcopy
+    #     first. Rotations can only be applied to global T-Matrices. The angles are given
+    #     in the zyz-convention. In the intrinsic (object fixed coordinate system)
+    #     convention the rotations are applied in the order phi first, theta second, psi
+    #     third. In the extrinsic (global or reference frame fixed coordinate system) the
+    #     rotations are applied psi first, theta second, phi third.
 
-        Args:
-            phi, theta, psi (float): Euler angles
+    #     Args:
+    #         phi, theta, psi (float): Euler angles
 
-        Returns:
-            TMatrix
-        """
-        r = self.rotate(phi, theta, psi, **kwargs)
-        return TMatrix(r @ self @ r.conjugate().T)
+    #     Returns:
+    #         TMatrix
+    #     """
+    #     r = self.rotate(phi, theta, psi, **kwargs)
+    #     return TMatrix(r @ self @ r.conjugate().T)
 
-    def translated(self, r, **kwargs):
-        """Translated T-Matrix.
+    # def translated(self, r, **kwargs):
+    #     """Translated T-Matrix.
 
-        Translation is done in-place.
+    #     Translation is done in-place.
 
-        Args:
-            r (float array): Translation vector
-            modes (array): While translating also take only specific output modes into
-            account
+    #     Args:
+    #         r (float array): Translation vector
+    #         modes (array): While translating also take only specific output modes into
+    #         account
 
-        Returns:
-            TMatrix
-        """
-        return TMatrix(
-            self.translate(r, **kwargs) @ self @ self.translate.inv(r, **kwargs)
-        )
+    #     Returns:
+    #         TMatrix
+    #     """
+    #     return TMatrix(
+    #         self.translate(r, **kwargs) @ self @ self.translate.inv(r, **kwargs)
+    #     )
 
-    def couple(self):
-        """Calculate the coupling term of a block-diagonal T-matrix."""
-        return np.eye(self.shape[0]) - self @ self.expand(modetype="regular")
+    # def couple(self):
+    #     """Calculate the coupling term of a block-diagonal T-matrix."""
+    #     return np.eye(self.shape[0]) - self @ self.expand(modetype="regular")
 
-    def interacted(self):
-        """T-matrix with the self-interaction included."""
-        return TMatrix(np.linalg.solve(self.couple(), self))
+    # def interacted(self):
+    #     """T-matrix with the self-interaction included."""
+    #     return TMatrix(np.linalg.solve(self.couple(), self))
 
     def globalmat(self, basis=None):
         """Global T-matrix.
@@ -438,15 +475,20 @@ class TMatrix(PhysicsArray):
         basis = SWB.default(max(self.basis.l)) if basis is None else basis
         return TMatrix(self.expand(basis) @ self @ self.expand.inv(basis))
 
-    def couple_lattice(self, lattice, kpar, *, eta=0):
-        """Calculate the coupling term of a block-diagonal T-matrix."""
-        return np.eye(self.shape[0]) - self @ self.expandlattice(lattice, kpar, eta=eta)
+    # def couple_lattice(self, lattice, kpar, *, eta=0):
+    #     """Calculate the coupling term of a block-diagonal T-matrix."""
+    #     return np.eye(self.shape[0]) - self @ self.expandlattice(lattice, kpar, eta=eta)
 
-    def interacted_lattice(self, lattice, kpar, *, eta=0):
-        """T-matrix with lattice interaction included."""
-        return TMatrix(
-            np.linalg.solve(self.couple_lattice(lattice, kpar, eta=eta), self)
-        )
+    # def interacted_lattice(self, lattice, kpar, *, eta=0):
+    #     """T-matrix with lattice interaction included."""
+    #     obj = TMatrix(
+    #         np.linalg.solve(self.couple_lattice(lattice, kpar, eta=eta), self)
+    #     )
+    #     lattice, _ = obj.lattice
+    #     obj.lattice = lattice
+    #     kpar, _ = obj.kpar
+    #     obj.kpar = kpar
+    #     return obj
 
     def valid_points(self, grid, radii):
         """Points on the grid where the expansion is valid.
@@ -492,11 +534,14 @@ class TMatrixC(PhysicsArray):
         k0 (float): Wave number in vacuum.
         basis (SphericalWaveBasis, optional): Basis definition.
         material (Material, optional): Embedding material, defaults to vacuum.
-        poltype (str, optional): Polarization type (:ref:`polarizations:Polarizations`).
+        poltype (str, optional): Polarization type (:ref:`params:Polarizations`).
         lattice (Lattice, optional): Lattice definition. If specified the T-Matrix is
             assumed to be periodically repeated in the defined lattice.
         kpar (list, optional): Phase factor for the periodic T-Matrix.
     """
+
+    interact = _Interact()
+    interactlattice = _InteractLattice()
 
     def _check(self):
         """Fill in default values or raise errors for missing attributes."""
@@ -635,7 +680,7 @@ class TMatrixC(PhysicsArray):
             if tm.poltype != poltype:
                 raise ValueError(f"incompatible modetypes: '{poltype}', '{tm.poltype}'")
             dim = tm.shape[0]
-            for m, n in zip(modes, tm.basis["kzmp"]):
+            for m, n in zip(modes, tm.basis.zmp):
                 m.extend(list(n))
             pidx += [j] * dim
             tres[i : i + dim, i : i + dim] = tm
@@ -647,12 +692,10 @@ class TMatrixC(PhysicsArray):
     def from_array(cls, tm, basis, eta=0):
         """1d array of spherical T-matrices."""
         if tm.lattice is None:
-            lattice = basis.hints["lattice"]
-            kpar = basis.hints["kpar"]
-            tm = tm.interacted_lattice(lattice, kpar, eta=eta)
+            tm = tm.interacted_lattice(basis.lattice, basis.kpar, eta=eta)
         p = tm.expandlattice(basis=basis)
         a = tm.expand.inv(basis=basis)
-        return cls(p @ tm @ a)
+        return cls(p @ tm @ a, lattice=tm.lattice, kpar=tm.kpar)
 
     @property
     def xw_ext_avg(self):
@@ -781,47 +824,47 @@ class TMatrixC(PhysicsArray):
             -2 * np.real(illu.conjugate().T @ (p / self.ks[self.basis.pol])) / flux,
         )
 
-    def rotated(self, phi, **kwargs):
-        """Rotated T-Matrix around the z-axis.
+    # def rotated(self, phi, **kwargs):
+    #     """Rotated T-Matrix around the z-axis.
 
-        Rotation is done in-place. If you need the original T-Matrix make a deepcopy
-        first. Rotations can only be applied to global T-Matrices.
+    #     Rotation is done in-place. If you need the original T-Matrix make a deepcopy
+    #     first. Rotations can only be applied to global T-Matrices.
 
-        Args:
-            phi (float): Rotation angle
-            modes (array): While rotating also take only specific output modes into
-            account
+    #     Args:
+    #         phi (float): Rotation angle
+    #         modes (array): While rotating also take only specific output modes into
+    #         account
 
-        Returns:
-            T-MatrixC
-        """
-        r = self.rotate(phi, **kwargs)
-        return TMatrixC(r @ self @ r.conjugate().T)
+    #     Returns:
+    #         T-MatrixC
+    #     """
+    #     r = self.rotate(phi, **kwargs)
+    #     return TMatrixC(r @ self @ r.conjugate().T)
 
-    def translated(self, r, **kwargs):
-        """Translated T-Matrix.
+    # def translated(self, r, **kwargs):
+    #     """Translated T-Matrix.
 
-        Translation is done in-place. If you need the original T-Matrix make a copy
-        first. Translations can only be applied to global T-Matrices.
+    #     Translation is done in-place. If you need the original T-Matrix make a copy
+    #     first. Translations can only be applied to global T-Matrices.
 
-        Args:
-            r (float array): Translation vector
-            modes (array): While translating also take only specific output modes into
-            account
+    #     Args:
+    #         r (float array): Translation vector
+    #         modes (array): While translating also take only specific output modes into
+    #         account
 
-        Returns:
-            TMatrixC
-        """
-        return TMatrixC(
-            self.translate(r, **kwargs) @ self @ self.inv.translate(r, **kwargs)
-        )
+    #     Returns:
+    #         TMatrixC
+    #     """
+    #     return TMatrixC(
+    #         self.translate(r, **kwargs) @ self @ self.inv.translate(r, **kwargs)
+    #     )
 
-    def couple(self):
-        """Calculate the coupling term of a blockdiagonal T-matrix."""
-        return np.eye(self.shape[0]) - self @ self.expand(modetype="regular")
+    # def couple(self):
+    #     """Calculate the coupling term of a blockdiagonal T-matrix."""
+    #     return np.eye(self.shape[0]) - self @ self.expand(modetype="regular")
 
-    def interacted(self):
-        return TMatrixC(np.linalg.solve(self.couple(), self))
+    # def interacted(self):
+    #     return TMatrixC(np.linalg.solve(self.couple(), self))
 
     def globalmat(self, basis=None):
         """Global T-matrix.
@@ -843,14 +886,19 @@ class TMatrixC(PhysicsArray):
             basis = CWB.default(np.unique(self.kz), max(self.basis.l))
         return TMatrix(self.expand(basis) @ self @ self.expand.inv(basis))
 
-    def couple_lattice(self, lattice, kpar, *, eta=0):
-        """Calculate the coupling term of a blockdiagonal T-matrix."""
-        return np.eye(self.shape[0]) - self @ self.expandlattice(lattice, kpar, eta=eta)
+    # def couple_lattice(self, lattice, kpar, *, eta=0):
+    #     """Calculate the coupling term of a blockdiagonal T-matrix."""
+    #     return np.eye(self.shape[0]) - self @ self.expandlattice(lattice, kpar, eta=eta)
 
-    def interacted_lattice(self, lattice, kpar, eta=0):
-        return TMatrix(
-            np.linalg.solve(self.couple_lattice(lattice, kpar, eta=eta), self)
-        )
+    # def interacted_lattice(self, lattice, kpar, eta=0):
+    #     obj = TMatrix(
+    #         np.linalg.solve(self.couple_lattice(lattice, kpar, eta=eta), self)
+    #     )
+    #     lattice, _ = obj.lattice
+    #     obj.lattice = lattice
+    #     kpar, _ = obj.kpar
+    #     obj.kpar = kpar
+    #     return obj
 
     def valid_points(self, grid, radii):
         grid = np.asarray(grid)
@@ -875,7 +923,7 @@ def _plane_wave_partial(
     poltype=None,
 ):
     if basis is None:
-        basis = PWBP.default([kpar])
+        basis = PWBC.default([kpar])
     if pol == 0 or pol == -1:
         pol = [1, 0]
     elif pol == 1:
@@ -917,7 +965,7 @@ def _plane_wave(
     poltype=None,
 ):
     if basis is None:
-        basis = PWBA.default([kvec])
+        basis = PWBUV.default([kvec])
     norm = np.sqrt(np.sum(np.power(kvec, 2)))
     qvec = kvec / norm
     if pol == 0 or pol == -1:
@@ -965,7 +1013,7 @@ def plane_wave(
     Args:
         kvec (Sequence): Wave vector.
         pol (int or Sequence): Polarization index (see
-            :ref:`polarizations:Polarizations`) to have a unit amplitude wave of the
+            :ref:`params:Polarizations`) to have a unit amplitude wave of the
             corresponding wave, two values to specify the amplitude for each
             polarization, or three values in a sequence to specify the Cartesian
             electric field components. In the latter case, if the electric field has
@@ -973,7 +1021,7 @@ def plane_wave(
         basis (PlaneWaveBasis, optional): Basis definition.
         k0 (float, optional): Wave number in vacuum.
         material (Material, optional): Material definition.
-        modetype (str, optional): Mode type (see :ref:`polarizations:Mode types`).
+        modetype (str, optional): Mode type (see :ref:`params:Mode types`).
         poltype (str, optional): Polarization type (see
             :ref:`polarization:Polarizations`).
     """

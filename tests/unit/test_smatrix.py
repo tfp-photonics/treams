@@ -5,13 +5,13 @@ from treams import SMatrix
 
 
 def test_init():
-    b = treams.PlaneWaveBasisPartial.default([0, 0])
+    b = treams.PlaneWaveBasisByComp.default([0, 0])
     sm = SMatrix(np.zeros((2, 2, 2, 2)), basis=b, k0=1)
     assert (sm["up", "down"] == np.zeros((2, 2))).all()
 
 
 def test_interface():
-    b = treams.PlaneWaveBasisPartial.default([1, 2])
+    b = treams.PlaneWaveBasisByComp.default([1, 2])
     sm = SMatrix.interface(2, b, [(2, 2, 1), (9, 1, 2)])
     m = treams.coeffs.fresnel(
         [[2, 6], [2, 10]], [[1j, np.sqrt(31)], [1j, np.sqrt(95)]], [1, 1 / 3]
@@ -28,7 +28,7 @@ def test_interface():
 
 
 def test_slab():
-    b = treams.PlaneWaveBasisPartial.default([1, 2])
+    b = treams.PlaneWaveBasisByComp.default([1, 2])
     sm = SMatrix.slab(6, b, 3, [1, 2, 3])
     stest = SMatrix.interface(6, b, [1, 2])
     stest = stest.add(SMatrix.propagation([0, 0, 3], 6, b, 2))
@@ -40,7 +40,7 @@ class TestArray:
     # a = np.eye(2)
     # b = treams.lattice.reciprocal(a)
     # kpars = [0.5, -1] + treams.lattice.diffr_orders_circle(b, 7) @ b
-    basis = treams.PlaneWaveBasisPartial.diffr_orders([0.5, -1], np.eye(2), 7)
+    basis = treams.PlaneWaveBasisByComp.diffr_orders([0.5, -1], np.eye(2), 7)
     expect = np.zeros((2, 2, 10, 10), complex)
     expect[0, 0, :, :] = [
         [
@@ -545,9 +545,9 @@ class TestArray:
         # A larger range for kz (which later is kx) is needed for convergence
         cwb = treams.CylindricalWaveBasis.diffr_orders(0.5, 4, 1, 10)
         tmc = treams.TMatrixC.from_array(tm, cwb)
-        basis = treams.PlaneWaveBasisPartial._from_iterable(self.basis, "zx")
-        qm = SMatrix.from_array(tmc, basis)
-        assert np.all(np.abs(qm.q - self.expect) < 1e-8)
+        basis = self.basis.permute()
+        sm = SMatrix.from_array(tmc, basis)
+        assert np.all(np.abs(sm - self.expect) < 1e-8)
 
 
 # class TestDouble:
