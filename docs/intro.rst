@@ -35,3 +35,7 @@ solutions.
     :maxdepth: 1
 
     params
+    physicsarray
+    operators
+
+.. operators, tmatrix, tmatrixc, smatrix

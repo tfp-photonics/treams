@@ -1156,7 +1156,7 @@ class PhysicsDict(util.AnnotationDict):
             AnnotationWarning
         """
         if key not in self.properties:
-            raise AttributeError("invalid key '{key}'")
+            raise AttributeError(f"invalid key '{key}'")
         _, testfunc, castfunc = self.properties[key]
         if not testfunc(val):
             val = castfunc(val)

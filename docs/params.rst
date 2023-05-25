@@ -290,3 +290,106 @@ indices for negative and positive helicity) and the impedance
     Material(9.0, 1.0, 0)
     >>> treams.Material.from_nmp((3, 5))
     Material(16.0, 1.0, 1.0)
+
+Lattices
+========
+
+The periodicity of arrangements is given by defining an instance of the class
+:class:`~treams.Lattice`. A lattice can be one-, two-, or three-dimensional.
+
+.. doctest::
+
+    >>> treams.Lattice(1)
+    Lattice(1.0, alignment='z')
+    >>> treams.Lattice([[1, .5], [-.5, 1]])
+    Lattice([[ 1.   0.5]
+            [-0.5  1. ]], alignment='xy')
+    >>> treams.Lattice([1, 2, 3])
+    Lattice([[1. 0. 0.]
+            [0. 2. 0.]
+            [0. 0. 3.]], alignment='xyz')
+
+The one- and two-dimensional lattices have to be aligned with one and two, respectively,
+Cartesian axes. The default alignments are along the z-axis for one-dimensional and in
+the x-y-plane for the two-dimensional lattices. In the last example we see that it is
+sufficient to just specify the diagonal entries. It's also possible to automatically
+create special lattice shapes, for example
+
+.. doctest::
+
+    >>> treams.Lattice.hexagonal(2)
+    Lattice([[2.         0.        ]
+            [1.         1.73205081]], alignment='xy')
+
+creates a hexagonal lattice with sidelength 2. It's also possible to extract a
+lower-dimensional sublattice
+
+.. doctest::
+
+    >>> lat_3d = treams.Lattice([1, 2, 3])
+    >>> treams.Lattice(lat_3d, "zx")
+    Lattice([[0. 1.]
+            [3. 0.]], alignment='zx')
+
+or to combine and compare lattices
+
+.. doctest::
+
+    >>> treams.Lattice(1, "x") | treams.Lattice(2, "y")
+    Lattice([[1. 0.]
+            [0. 2.]], alignment='xy')
+    >>> treams.Lattice([1, 2], "xy") & treams.Lattice([2, 3], "yz")
+    Lattice(2.0, alignment='y')
+    >>> treams.Lattice(1, "x") <= treams.Lattice([1, 2], "xy")
+    True
+
+The volume of the lattice can also be obtained
+
+.. doctest::
+
+    >>> treams.Lattice([[1, 0], [0, 1]]).volume
+    1.0
+    >>> treams.Lattice([[0, 1], [1, 0]]).volume
+    -1.0
+
+as we see the volume is "signed", i.e. it shows if the lattice vectors are in a
+right-handed order, and the reciprocal lattice vectors can be computed
+
+.. doctest::
+
+    >>> treams.Lattice([1, 1]).reciprocal
+    array([[ 6.28318531, -0.        ],
+        [-0.        ,  6.28318531]])
+
+Phase vector
+============
+
+The phase vector, often referred to as ``kpar``, specifies the phase relationship of
+different lattice sites :math:`\exp(\mathrm i \boldsymbol k_\parallel \boldsymbol R)`.
+
+.. doctest::
+
+    >>> treams.PhaseVector()
+    PhaseVector(nan, nan, nan)
+    >>> treams.PhaseVector(1)
+    PhaseVector(nan, nan, 1)
+    >>> treams.PhaseVector(1, "x")
+    PhaseVector(1, nan, nan)
+    >>> treams.PhaseVector((1, 2))
+    PhaseVector(1, 2, nan)
+    >>> treams.PhaseVector((1, 2, 3))
+    PhaseVector(1, 2, 3)
+
+where unspecified directions are represented as ``nan``. The phase vectors can be
+combined and compared.
+
+.. doctest::
+
+    >>> treams.PhaseVector((1, 2)) | treams.PhaseVector((2, 3), "yz")
+    PhaseVector(nan, 2, nan)
+    >>> treams.PhaseVector(1, "x") & treams.PhaseVector(2, "y")
+    PhaseVector(1, 2, nan)
+    >>> treams.PhaseVector(1, "x") >= treams.PhaseVector((1, 2))
+    True
+
+Note that the ordering is from less stric phase vector to the stricter one. 
