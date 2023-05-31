@@ -115,17 +115,17 @@ class OperatorAttribute:
 
     def apply(self, *args, **kwargs):
         if np.ndim(self._obj) == 1:
-            return self.apply_from_left(*args, **kwargs)
+            return self.apply_left(*args, **kwargs)
         try:
             inv = self.inv(*args, **kwargs)
         except NotImplementedError:
-            return self.apply_from_left(*args, **kwargs)
+            return self.apply_left(*args, **kwargs)
         return self(*args, **kwargs) @ self._obj @ inv
 
-    def apply_from_left(self, *args, **kwargs):
+    def apply_left(self, *args, **kwargs):
         return self(*args, **kwargs) @ self._obj
 
-    def apply_from_right(self, *args, **kwargs):
+    def apply_right(self, *args, **kwargs):
         return self._obj @ self.inv(*args, **kwargs)
 
     def __repr__(self):
@@ -750,15 +750,32 @@ class Expand(Operator):
         args = (basis,) if modetype is None else (basis, modetype)
         super().__init__(*args, isinv=isinv)
 
+    def __call__(self, **kwargs):
+        if self.isinv:
+            return self._call_inv(**kwargs)
+        args = list(self._args)
+        if "basis" in kwargs and not isinstance(args[0], tuple):
+            args[0] = (args[0], kwargs.pop("basis"))
+        if "modetype" in kwargs and len(args) > 1 and not isinstance(args[1], tuple):
+            args[1] = (args[1], kwargs.pop("modetype"))
+        return self.FUNC(*args, **kwargs)
+
+    def _call_inv(self, **kwargs):
+        args = list(self._args)
+        if "basis" in kwargs and not isinstance(args[0], tuple):
+            args[0] = (kwargs.pop("basis"), args[0])
+        if "modetype" in kwargs and len(args) > 1 and not isinstance(args[1], tuple):
+            args[1] = (kwargs.pop("modetype"), args[1])
+        return self.FUNC(*args, **kwargs)
+
     def get_kwargs(self, obj, dim=-1):
         kwargs = super().get_kwargs(obj, dim)
-        if len(self._args) > 1:
-            return kwargs
-        val = getattr(obj, "modetype", None)
-        if isinstance(val, tuple):
-            val = val[dim]
-        if val is not None:
-            kwargs["modetype"] = val
+        for name in ("basis", "modetype"):
+            val = getattr(obj, name, None)
+            if isinstance(val, tuple):
+                val = val[dim]
+            if val is not None:
+                kwargs[name] = val
         return kwargs
 
     @property
@@ -775,7 +792,7 @@ class Expand(Operator):
             basis = tuple(basis[::-1])
         if isinstance(modetype, tuple):
             modetype = tuple(modetype[::-1])
-        return type(self)(basis, modetype)
+        return type(self)(basis, modetype, isinv=not self.isinv)
 
 
 def _swl_expand(basis, to_basis, eta, k0, kpar, lattice, material, poltype, where):

@@ -22,9 +22,9 @@ change the type and mix them
 
 but they have mainly two features added. First, they derive from
 :class:`treams.util.AnnotatedArray` so they can carry annotations with them, but these
-annotations are restricted to the physical quantities (as described in :ref:`params`).
+annotations are restricted to the physical quantities (as described in :doc:`params`).
 Second, they offer special methods to create matrices for common transformations like
-rotations, which are described in more detail in :ref:`operators`.
+rotations, which are described in more detail in :doc:`operators`.
 
 Special properties
 ==================

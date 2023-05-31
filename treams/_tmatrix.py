@@ -1001,7 +1001,7 @@ def _plane_wave(
 def plane_wave(
     kvec,
     pol,
-    /,
+    *,
     k0=None,
     basis=None,
     material=None,
