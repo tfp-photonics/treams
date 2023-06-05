@@ -303,11 +303,11 @@ The periodicity of arrangements is given by defining an instance of the class
     Lattice(1.0, alignment='z')
     >>> treams.Lattice([[1, .5], [-.5, 1]])
     Lattice([[ 1.   0.5]
-            [-0.5  1. ]], alignment='xy')
+             [-0.5  1. ]], alignment='xy')
     >>> treams.Lattice([1, 2, 3])
     Lattice([[1. 0. 0.]
-            [0. 2. 0.]
-            [0. 0. 3.]], alignment='xyz')
+             [0. 2. 0.]
+             [0. 0. 3.]], alignment='xyz')
 
 The one- and two-dimensional lattices have to be aligned with one and two, respectively,
 Cartesian axes. The default alignments are along the z-axis for one-dimensional and in
@@ -319,7 +319,7 @@ create special lattice shapes, for example
 
     >>> treams.Lattice.hexagonal(2)
     Lattice([[2.         0.        ]
-            [1.         1.73205081]], alignment='xy')
+             [1.         1.73205081]], alignment='xy')
 
 creates a hexagonal lattice with sidelength 2. It's also possible to extract a
 lower-dimensional sublattice
@@ -329,7 +329,7 @@ lower-dimensional sublattice
     >>> lat_3d = treams.Lattice([1, 2, 3])
     >>> treams.Lattice(lat_3d, "zx")
     Lattice([[0. 1.]
-            [3. 0.]], alignment='zx')
+             [3. 0.]], alignment='zx')
 
 or to combine and compare lattices
 
@@ -337,7 +337,7 @@ or to combine and compare lattices
 
     >>> treams.Lattice(1, "x") | treams.Lattice(2, "y")
     Lattice([[1. 0.]
-            [0. 2.]], alignment='xy')
+             [0. 2.]], alignment='xy')
     >>> treams.Lattice([1, 2], "xy") & treams.Lattice([2, 3], "yz")
     Lattice(2.0, alignment='y')
     >>> treams.Lattice(1, "x") <= treams.Lattice([1, 2], "xy")
@@ -359,7 +359,7 @@ right-handed order, and the reciprocal lattice vectors can be computed
 
     >>> treams.Lattice([1, 1]).reciprocal
     array([[ 6.28318531, -0.        ],
-        [-0.        ,  6.28318531]])
+           [-0.        ,  6.28318531]])
 
 Phase vector
 ============
@@ -392,4 +392,4 @@ combined and compared.
     >>> treams.PhaseVector(1, "x") >= treams.PhaseVector((1, 2))
     True
 
-Note that the ordering is from less stric phase vector to the stricter one. 
+Note that the ordering is from less strict phase vector to the stricter one.

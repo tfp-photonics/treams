@@ -93,4 +93,10 @@ from treams._operators import (  # noqa: F401
     translate,
 )
 from treams._smatrix import SMatrix  # noqa: F401
-from treams._tmatrix import TMatrix, TMatrixC, plane_wave, spherical_wave  # noqa: F401
+from treams._tmatrix import (  # noqa: F401
+    TMatrix,
+    TMatrixC,
+    plane_wave,
+    cylindrical_wave,
+    spherical_wave,
+)

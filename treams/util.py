@@ -510,7 +510,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         >>> a @ b
         AnnotatedArray(
             [2, 8],
-            AnnotationSequence(AnnotationDict({'a': 1}),)
+            AnnotationSequence(AnnotationDict({'a': 1})),
         )
 
     The interoperability with numpy is implemented using :ref:`basics.dispatch`

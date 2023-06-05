@@ -582,8 +582,8 @@ class CylindricalWaveBasis(BasisSet):
         T-matrices.
 
         Example:
-            >>> SphericalWaveBasis.defaultlmax(len(SphericalWaveBasis.default(3)))
-            3
+            >>> CylindricalWaveBasis.defaultmmax(len(CylindricalWaveBasis.default([0], 2)), 1)
+            2
 
         Args:
             dim (int): Dimension of the T-matrix, respectively number of modes
@@ -720,9 +720,9 @@ class PlaneWaveBasisByUnitVector(PlaneWaveBasis):
         Example:
             >>> PlaneWaveBasisByUnitVector.default([[0, 0, 5], [0, 3, 4]])
             PlaneWaveBasisByUnitVector(
-                qx=[0 0 0 0],
-                qy=[0 0 3 3],
-                qz=[5 5 4 4],
+                qx=[0. 0. 0. 0.],
+                qy=[0.  0.  0.6 0.6],
+                qz=[1.  1.  0.8 0.8],
                 pol=[1 0 1 0],
             )
 
@@ -998,7 +998,7 @@ class PlaneWaveBasisByComp(PlaneWaveBasis):
         kpars = kpar + la.diffr_orders_circle(latrec, bmax) @ latrec
         obj = cls.default(kpars, alignment=lattice.alignment)
         obj.lattice = lattice
-        obj.kpar = PhaseVector(kpar)
+        obj.kpar = PhaseVector(kpar, alignment=lattice.alignment)
         return obj
 
     @classmethod
