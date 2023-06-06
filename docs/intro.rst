@@ -37,5 +37,6 @@ solutions.
     params
     physicsarray
     operators
+    tmatrix
 
 .. operators, tmatrix, tmatrixc, smatrix

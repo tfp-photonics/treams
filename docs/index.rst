@@ -6,7 +6,6 @@ Welcome to treams' documentation!
    :maxdepth: 1
 
    gettingstarted
-   examples
    intro
    theory
    treams

@@ -110,7 +110,7 @@ class OperatorAttribute:
 
     def __get__(self, obj, objtype=None):
         self._obj = obj
-        self._objtype = objtype
+        self._objtype = type(obj) if objtype is None else objtype
         return self
 
     def __call__(self, *args, **kwargs):
@@ -120,6 +120,8 @@ class OperatorAttribute:
             inv = self._call_inv(*args, **kwargs)
         except NotImplementedError:
             return self.apply_left(*args, **kwargs)
+        if issubclass(self._objtype, util.AnnotatedArray):
+            return self._objtype.relax(self._call(*args, **kwargs) @ self._obj @ inv)
         return self._call(*args, **kwargs) @ self._obj @ inv
 
     def apply_left(self, *args, **kwargs):
@@ -517,7 +519,7 @@ def _sw_sw_expand(basis, to_basis, to_modetype, k0, material, modetype, poltype,
         or modetype == "singular" == to_modetype
         or (modetype == "singular" and to_modetype == "regular")
     ):
-        raise ValueError(f"invalid expansion from {modetype} to {modetype}")
+        raise ValueError(f"invalid expansion from {modetype} to {to_modetype}")
     rs = sc.car2sph(to_basis.positions[:, None, :] - basis.positions)
     ks = k0 * material.nmp
     res = sw.translate(
@@ -594,7 +596,7 @@ def _cw_cw_expand(basis, to_basis, to_modetype, k0, material, modetype, poltype,
     if modetype == "regular" == to_modetype or modetype == "singular" == to_modetype:
         modetype = to_modetype = None
     elif modetype != "singular" or to_modetype != "regular":
-        raise ValueError(f"invalid expansion from {modetype} to {modetype}")
+        raise ValueError(f"invalid expansion from {modetype} to {to_modetype}")
     rs = sc.car2cyl(to_basis.positions[:, None, :] - basis.positions)
     krhos = material.krhos(k0, basis.kz, basis.pol)
     res = cw.translate(

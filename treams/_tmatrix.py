@@ -15,29 +15,33 @@ from treams.coeffs import mie, mie_cyl
 from treams.util import AnnotationError
 
 
-class _Interact:
+class _Interaction:
     def __init__(self):
         self._obj = self._objtype = None
 
     def __get__(self, obj, objtype=None):
         self._obj = obj
         self._objtype = objtype
+        return self
 
     def __call__(self):
         basis = self._obj.basis
-        return np.eye(self._obj.shape[-1]) - self._obj @ op.Expand(basis, "singular")
+        return (
+            np.eye(self._obj.shape[-1]) - self._obj @ op.Expand(basis, "singular").inv
+        )
 
     def solve(self):
         return np.linalg.solve(self(), self._obj)
 
 
-class _InteractLattice:
+class _LatticeInteraction:
     def __init__(self):
         self._obj = self._objtype = None
 
     def __get__(self, obj, objtype=None):
         self._obj = obj
         self._objtype = objtype
+        return self
 
     def __call__(self, lattice, kpar):
         return np.eye(self._obj.shape[-1]) - self._obj @ op.ExpandLattice(
@@ -71,8 +75,8 @@ class TMatrix(PhysicsArray):
         kpar (list, optional): Phase factor for the periodic T-Matrix.
     """
 
-    interact = _Interact()
-    interactlattice = _InteractLattice()
+    interaction = _Interaction()
+    latticeinteraction = _LatticeInteraction()
 
     def _check(self):
         """Fill in default values or raise errors for missing attributes."""
@@ -197,7 +201,7 @@ class TMatrix(PhysicsArray):
             if tm.poltype != poltype:
                 raise ValueError(f"incompatible modetypes: '{poltype}', '{tm.poltype}'")
             dim = tm.shape[0]
-            for m, n in zip(modes, tm.basis.lmp):
+            for m, n in zip(modes, tm.basis.lms):
                 m.extend(list(n))
             pidx += [j] * dim
             tres[i : i + dim, i : i + dim] = tm
@@ -404,14 +408,13 @@ class TMatrix(PhysicsArray):
         illu_basis = illu.basis
         illu_basis = illu_basis[-2] if isinstance(illu_basis, tuple) else illu_basis
         if not isinstance(illu_basis, SWB):
-            illu = illu.expand(self.basis) @ illu
+            illu = illu.expand(self.basis)
         p = self @ illu
-        invksq = np.power(self.ks[self.basis.pol], -2)
-        m = self.expand() * invksq
+        p_invksq = p * np.power(self.ks[self.basis.pol], -2)
         del illu.modetype
         return (
-            0.5 * np.real(p.conjugate().T @ (m @ p)) / flux,
-            -0.5 * np.real(illu.conjugate().T @ (p * invksq)) / flux,
+            0.5 * np.real(p.conjugate().T @ p_invksq.expand(p.basis)) / flux,
+            -0.5 * np.real(illu.conjugate().T @ p_invksq) / flux,
         )
 
     # def rotated(self, phi, theta=0, psi=0, **kwargs):
@@ -450,14 +453,6 @@ class TMatrix(PhysicsArray):
     #         self.translate(r, **kwargs) @ self @ self.translate.inv(r, **kwargs)
     #     )
 
-    # def couple(self):
-    #     """Calculate the coupling term of a block-diagonal T-matrix."""
-    #     return np.eye(self.shape[0]) - self @ self.expand(modetype="regular")
-
-    # def interacted(self):
-    #     """T-matrix with the self-interaction included."""
-    #     return TMatrix(np.linalg.solve(self.couple(), self))
-
     def globalmat(self, basis=None):
         """Global T-matrix.
 
@@ -473,22 +468,7 @@ class TMatrix(PhysicsArray):
             TMatrix
         """
         basis = SWB.default(max(self.basis.l)) if basis is None else basis
-        return TMatrix(self.expand(basis) @ self @ self.expand.inv(basis))
-
-    # def couple_lattice(self, lattice, kpar, *, eta=0):
-    #     """Calculate the coupling term of a block-diagonal T-matrix."""
-    #     return np.eye(self.shape[0]) - self @ self.expandlattice(lattice, kpar, eta=eta)
-
-    # def interacted_lattice(self, lattice, kpar, *, eta=0):
-    #     """T-matrix with lattice interaction included."""
-    #     obj = TMatrix(
-    #         np.linalg.solve(self.couple_lattice(lattice, kpar, eta=eta), self)
-    #     )
-    #     lattice, _ = obj.lattice
-    #     obj.lattice = lattice
-    #     kpar, _ = obj.kpar
-    #     obj.kpar = kpar
-    #     return obj
+        return TMatrix(self.expand(basis))
 
     def valid_points(self, grid, radii):
         """Points on the grid where the expansion is valid.
@@ -516,6 +496,12 @@ class TMatrix(PhysicsArray):
             res &= np.sum(np.power(grid - p, 2), axis=-1) > r * r
         return res
 
+    def __getitem__(self, key):
+        if isinstance(key, SWB):
+            key = np.array([self.basis.index(i) for i in key])
+            key = (key[:, None], key)
+        return super().__getitem__(key)
+
 
 class TMatrixC(PhysicsArray):
     """T-matrix with a cylindrical basis.
@@ -540,8 +526,8 @@ class TMatrixC(PhysicsArray):
         kpar (list, optional): Phase factor for the periodic T-Matrix.
     """
 
-    interact = _Interact()
-    interactlattice = _InteractLattice()
+    interaction = _Interaction()
+    latticeinteraction = _LatticeInteraction()
 
     def _check(self):
         """Fill in default values or raise errors for missing attributes."""
@@ -692,7 +678,7 @@ class TMatrixC(PhysicsArray):
     def from_array(cls, tm, basis, eta=0):
         """1d array of spherical T-matrices."""
         if tm.lattice is None:
-            tm = tm.interacted_lattice(basis.lattice, basis.kpar, eta=eta)
+            tm = tm.latticeinteraction.solve(basis.lattice, basis.kpar, eta=eta)
         p = tm.expandlattice(basis=basis)
         a = tm.expand.inv(basis=basis)
         return cls(p @ tm @ a, lattice=tm.lattice, kpar=tm.kpar)
@@ -859,13 +845,6 @@ class TMatrixC(PhysicsArray):
     #         self.translate(r, **kwargs) @ self @ self.inv.translate(r, **kwargs)
     #     )
 
-    # def couple(self):
-    #     """Calculate the coupling term of a blockdiagonal T-matrix."""
-    #     return np.eye(self.shape[0]) - self @ self.expand(modetype="regular")
-
-    # def interacted(self):
-    #     return TMatrixC(np.linalg.solve(self.couple(), self))
-
     def globalmat(self, basis=None):
         """Global T-matrix.
 
@@ -889,16 +868,6 @@ class TMatrixC(PhysicsArray):
     # def couple_lattice(self, lattice, kpar, *, eta=0):
     #     """Calculate the coupling term of a blockdiagonal T-matrix."""
     #     return np.eye(self.shape[0]) - self @ self.expandlattice(lattice, kpar, eta=eta)
-
-    # def interacted_lattice(self, lattice, kpar, eta=0):
-    #     obj = TMatrix(
-    #         np.linalg.solve(self.couple_lattice(lattice, kpar, eta=eta), self)
-    #     )
-    #     lattice, _ = obj.lattice
-    #     obj.lattice = lattice
-    #     kpar, _ = obj.kpar
-    #     obj.kpar = kpar
-    #     return obj
 
     def valid_points(self, grid, radii):
         grid = np.asarray(grid)

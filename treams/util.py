@@ -611,6 +611,9 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         except AttributeError:
             del self.ann.as_dict[key]
 
+    def __len__(self):
+        return len(self._array)
+
     def __copy__(self):
         return type(self)(copy.copy(self._array), copy.copy(self._ann))
 
@@ -1104,7 +1107,7 @@ def solve(a, b):
         restype = type(a)
     else:
         restype = type(b)
-    res = restype.relax(np.linalg.solve(np.asanyarray(a), np.asanyarray(b)))
+    res = AnnotatedArray(np.linalg.solve(np.asanyarray(a), np.asanyarray(b)))
     a_ann = list(getattr(a, "ann", [{}, {}]))
     b_ann = list(getattr(b, "ann", [{}, {}]))
     if np.ndim(b) == np.ndim(a) - 1:
@@ -1118,7 +1121,7 @@ def solve(a, b):
         a_ann += [{}]
     res.ann.update(a_ann)
     res.ann.update(b_ann)
-    return res
+    return restype.relax(res)
 
 
 @implements(np.linalg.lstsq)
@@ -1134,13 +1137,14 @@ def lstsq(a, b, rcond="warn"):
     else:
         restype = type(b)
     res = list(np.linalg.lstsq(np.asanyarray(a), np.asanyarray(b), rcond))
-    res[0] = restype.relax(res[0])
+    res[0] = AnnotatedArray(res[0])
     a_ann = getattr(a, "ann", ({},))
     b_ann = getattr(b, "ann", ({},))
     a_ann[0].match(b_ann[0])
     res[0].ann[0].update(a_ann[-1])
     if np.ndim(b) == 2:
         res[0].ann[1].update(b_ann[-1])
+    res[0] = restype.relax(res[0])
     return tuple(res)
 
 

@@ -7,15 +7,6 @@ Getting started
 Installation
 ============
 
-Installation using conda
-------------------------
-
-Currently treams is not available as a conda package. A local repository can be
-installed in development mode (see :ref:`dev:Setting up the development environment`).
-
-Installation using pip
-----------------------
-
 To install the package with pip, use ::
 
    pip install git+https://github.com/tfp-photonics/treams.git
@@ -24,15 +15,13 @@ To install the package with pip, use ::
 How to use treams
 =================
 
-.. todo::
+Import *treams*, create T-matrices and start calculating.
 
-   Give a very short example on how to use the code
+.. doctest::
 
+   >>> import treams
+   >>> tm = treams.TMatrix.sphere(1, .6, 1, [4, 1])
+   >>> tm.xs_ext_avg
+   0.3072497765576123
 
-Where to go from here
-=====================
-
-A couple of simulations with varying degree of complexity can be found in
-:doc:`examples`. There's also a complete :doc:`treams` of the API. If you want to get
-contribute to the development of the program, you can find relevant information under
-:doc:`dev`.
+More detailed examples are given in :doc:`intro`.
