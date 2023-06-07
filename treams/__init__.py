@@ -64,7 +64,7 @@ from treams._core import (  # noqa: F401
     PlaneWaveBasisByComp,
     SphericalWaveBasis,
 )
-from treams._lattice import Lattice, PhaseVector  # noqa: F401
+from treams._lattice import Lattice, WaveVector  # noqa: F401
 from treams._material import Material  # noqa: F401
 from treams._operators import (  # noqa: F401
     BField,

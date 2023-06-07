@@ -8,7 +8,7 @@ import numpy as np
 import treams._operators as op
 import treams.lattice as la
 from treams import util
-from treams._lattice import Lattice, PhaseVector
+from treams._lattice import Lattice, WaveVector
 from treams._material import Material
 
 
@@ -412,7 +412,7 @@ class CylindricalWaveBasis(BasisSet):
 
         self.lattice = self.kpar = None
         if len(self.kz) > 0 and np.all(self.kz == self.kz[0]):
-            self.kpar = PhaseVector(self.kz[0])
+            self.kpar = WaveVector(self.kz[0])
 
     @property
     def positions(self):
@@ -556,7 +556,7 @@ class CylindricalWaveBasis(BasisSet):
         kzs = kz + np.arange(-nkz, nkz + 1) * lattice_z.reciprocal
         res = cls.default(kzs, mmax, nmax, positions=positions)
         res.lattice = lattice
-        res.kpar = PhaseVector(kz)
+        res.kpar = WaveVector(kz)
         return res
 
     @classmethod
@@ -998,7 +998,7 @@ class PlaneWaveBasisByComp(PlaneWaveBasis):
         kpars = kpar + la.diffr_orders_circle(latrec, bmax) @ latrec
         obj = cls.default(kpars, alignment=lattice.alignment)
         obj.lattice = lattice
-        obj.kpar = PhaseVector(kpar, alignment=lattice.alignment)
+        obj.kpar = WaveVector(kpar, alignment=lattice.alignment)
         return obj
 
     @classmethod
@@ -1119,8 +1119,8 @@ class PhysicsDict(util.AnnotationDict):
         "k0": ("Wave number.", lambda x: isinstance(x, float), float),
         "kpar": (
             "Wave vector components tangential to the lattice.",
-            lambda x: isinstance(x, PhaseVector),
-            PhaseVector,
+            lambda x: isinstance(x, WaveVector),
+            WaveVector,
         ),
         "lattice": (
             ":class:`~treams.Lattice`.",
@@ -1255,7 +1255,7 @@ class PhysicsArray(util.AnnotatedArray):
             * All tangential wave vector compontents must be compatible.
         """
         total_lat = None
-        total_kpar = PhaseVector()
+        total_kpar = WaveVector()
         for a in self.ann[-2:]:
             k0 = a.get("k0")
             material = a.get("material")

@@ -563,6 +563,12 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         repr_arr = "    " + repr(self._array)[6:-1].replace("\n  ", "\n")
         return f"{self.__class__.__name__}(\n{repr_arr},\n    {self.ann},\n)"
 
+    def __int__(self):
+        return int(self._array)
+
+    def __float__(self):
+        return float(self._array)
+
     def __array__(self, dtype=None):
         """Convert to an numpy array.
 

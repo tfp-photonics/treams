@@ -55,6 +55,8 @@ class Lattice:
                 2 * np.pi / self[...] if self.dim == 1 else la.reciprocal(self[...])
             )
             return
+        if arr is None:
+            raise ValueError("Lattice cannot be 'None'")
 
         arr = np.array(arr, float)
         arr.flags.writeable = False
@@ -493,7 +495,7 @@ class Lattice:
         return True
 
 
-class PhaseVector(collections.abc.Sequence):
+class WaveVector(collections.abc.Sequence):
     def __init__(self, seq=(), alignment=None):
         try:
             length = len(seq)
@@ -532,7 +534,7 @@ class PhaseVector(collections.abc.Sequence):
         return self.__class__.__name__ + str(self._vec)
 
     def __eq__(self, other):
-        other = PhaseVector(other)
+        other = WaveVector(other)
         for a, b in zip(self, other):
             if a != b and not (np.isnan(a) and np.isnan(b)):
                 return False
@@ -545,40 +547,40 @@ class PhaseVector(collections.abc.Sequence):
         return self._vec[key]
 
     def __or__(self, other):
-        other = PhaseVector(other)
+        other = WaveVector(other)
         seq = ()
         for a, b in zip(self, other):
             isnan = np.isnan(a) or np.isnan(b)
             if a != b and not isnan:
-                raise ValueError("non-matching PhaseVector")
+                raise ValueError("non-matching WaveVector")
             seq += (np.nan,) if isnan else (a,)
-        return PhaseVector(seq)
+        return WaveVector(seq)
 
     def __and__(self, other):
-        other = PhaseVector(other)
+        other = WaveVector(other)
         seq = ()
         for a, b in zip(self, other):
             if a != b and not (np.isnan(a) or np.isnan(b)):
-                raise ValueError("non-matching PhaseVector")
+                raise ValueError("non-matching WaveVector")
             seq += (b,) if np.isnan(a) else (a,)
-        return PhaseVector(seq)
+        return WaveVector(seq)
 
     def permute(self, n=1):
         x, y, z = self
         n = n % 3
         for i in range(n):
             x, y, z = z, x, y
-        return PhaseVector((x, y, z))
+        return WaveVector((x, y, z))
 
     def __le__(self, other):
-        other = PhaseVector(other)
+        other = WaveVector(other)
         for a, b in zip(self, other):
             if a != b and not np.isnan(b):
                 return False
         return True
 
     def isdisjoint(self, other):
-        other = PhaseVector(other)
+        other = WaveVector(other)
         for a, b in zip(self, other):
             if not (np.isnan(a) or np.isnan(b)):
                 return False

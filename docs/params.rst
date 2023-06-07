@@ -364,32 +364,32 @@ right-handed order, and the reciprocal lattice vectors can be computed
 Phase vector
 ============
 
-The phase vector, often referred to as ``kpar``, specifies the phase relationship of
+The wave vector, often referred to as ``kpar``, specifies the phase relationship of
 different lattice sites :math:`\exp(\mathrm i \boldsymbol k_\parallel \boldsymbol R)`.
 
 .. doctest::
 
-    >>> treams.PhaseVector()
-    PhaseVector(nan, nan, nan)
-    >>> treams.PhaseVector(1)
-    PhaseVector(nan, nan, 1)
-    >>> treams.PhaseVector(1, "x")
-    PhaseVector(1, nan, nan)
-    >>> treams.PhaseVector((1, 2))
-    PhaseVector(1, 2, nan)
-    >>> treams.PhaseVector((1, 2, 3))
-    PhaseVector(1, 2, 3)
+    >>> treams.WaveVector()
+    WaveVector(nan, nan, nan)
+    >>> treams.WaveVector(1)
+    WaveVector(nan, nan, 1)
+    >>> treams.WaveVector(1, "x")
+    WaveVector(1, nan, nan)
+    >>> treams.WaveVector((1, 2))
+    WaveVector(1, 2, nan)
+    >>> treams.WaveVector((1, 2, 3))
+    WaveVector(1, 2, 3)
 
-where unspecified directions are represented as ``nan``. The phase vectors can be
+where unspecified directions are represented as ``nan``. The wave vectors can be
 combined and compared.
 
 .. doctest::
 
-    >>> treams.PhaseVector((1, 2)) | treams.PhaseVector((2, 3), "yz")
-    PhaseVector(nan, 2, nan)
-    >>> treams.PhaseVector(1, "x") & treams.PhaseVector(2, "y")
-    PhaseVector(1, 2, nan)
-    >>> treams.PhaseVector(1, "x") >= treams.PhaseVector((1, 2))
+    >>> treams.WaveVector((1, 2)) | treams.WaveVector((2, 3), "yz")
+    WaveVector(nan, 2, nan)
+    >>> treams.WaveVector(1, "x") & treams.WaveVector(2, "y")
+    WaveVector(1, 2, nan)
+    >>> treams.WaveVector(1, "x") >= treams.WaveVector((1, 2))
     True
 
-Note that the ordering is from less strict phase vector to the stricter one.
+Note that the ordering is from less strict wave vector to the stricter one.

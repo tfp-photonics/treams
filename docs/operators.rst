@@ -469,7 +469,7 @@ structure. Then, these fields are expanded as regular fields in a single unit ce
         positions=[[0. 0. 0.]],
     ),
         k0=1.0,
-        kpar=PhaseVector(0, nan, 0.0),
+        kpar=WaveVector(0, nan, 0.0),
         lattice=Lattice(1.0, alignment='x'),
         material=Material(1, 1, 0),
         modetype='regular',
@@ -487,7 +487,7 @@ structure. Then, these fields are expanded as regular fields in a single unit ce
         positions=[[0. 0. 0.]],
     ),
         k0=1.0,
-        kpar=PhaseVector(0, 0, nan),
+        kpar=WaveVector(0, 0, nan),
         lattice=Lattice([[1. 0.]
              [0. 2.]], alignment='xy'),
         material=Material(1, 1, 0),
@@ -516,14 +516,14 @@ lattice along the z-axis can be expanded in cylindrical waves
         positions=[[0. 0. 0.]],
     ),
         k0=1.0,
-        kpar=PhaseVector(nan, nan, 0.1),
+        kpar=WaveVector(nan, nan, 0.1),
         lattice=Lattice(7.0, alignment='z'),
         material=Material(1, 1, 0),
         modetype='singular',
         poltype='helicity',
     )
 
-where the lattice and the phase vector are implicitly defined by the use of the
+where the lattice and the wave vector are implicitly defined by the use of the
 class method :func:`treams.CylindricalWaveBasis.diffr_orders`. Similarly, spherical
 waves in a two-dimensional lattice in the x-y-plane can be expanded in plane waves.
 
@@ -545,7 +545,7 @@ waves in a two-dimensional lattice in the x-y-plane can be expanded in plane wav
         pol=[1 0 1 0 1 0 1 0 1 0],
     ),
         k0=1.0,
-        kpar=PhaseVector(0.1, 0, nan),
+        kpar=WaveVector(0.1, 0, nan),
         lattice=Lattice([[7. 0.]
              [0. 7.]], alignment='xy'),
         material=Material(1, 1, 0),
@@ -575,7 +575,7 @@ lattice along the x-axis can also be expanded in plane waves.
         pol=[1 0 1 0 1 0 1 0 1 0],
     ),
         k0=1.0,
-        kpar=PhaseVector(nan, nan, 0.0),
+        kpar=WaveVector(nan, nan, 0.0),
         lattice=Lattice([[7. 0.]
              [0. 7.]], alignment='zx'),
         material=Material(1, 1, 0),

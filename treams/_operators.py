@@ -9,7 +9,7 @@ import treams.config as config
 import treams.special as sc
 import treams.util as util
 from treams import cw, pw, sw
-from treams._lattice import Lattice, PhaseVector
+from treams._lattice import Lattice, WaveVector
 from treams._material import Material
 
 
@@ -94,7 +94,7 @@ class OperatorAttribute:
     def _merge_kwargs(kwargsa, kwargsb):
         for key, val in kwargsb.items():
             if key == "basis" and key in kwargsa:
-                kwargsa = kwargsa["basis"], val
+                kwargsa[key] = kwargsa["basis"], val
             elif key in kwargsa:
                 raise TypeError(f"got multiple values for keyword argument '{key}'")
             else:
@@ -799,7 +799,6 @@ class Expand(Operator):
 
 def _swl_expand(basis, to_basis, eta, k0, kpar, lattice, material, poltype, where):
     """Expand spherical waves in a lattice."""
-    lattice = Lattice(lattice)
     ks = k0 * material.nmp
     if lattice.dim == 3:
         try:
@@ -816,7 +815,7 @@ def _swl_expand(basis, to_basis, eta, k0, kpar, lattice, material, poltype, wher
                 lattice = Lattice(lattice, "xy")
             elif np.isnan(kpar[0]) and np.isnan(kpar[1]):
                 lattice = Lattice(lattice, "z")
-    kpar = PhaseVector(kpar)
+    kpar = WaveVector(kpar)
     if lattice.dim == 1:
         x = kpar[2]
     elif lattice.dim == 2:
@@ -851,7 +850,7 @@ def _cw_sw_expand(basis, to_basis, k0, kpar, lattice, material, poltype, where):
     """Expand spherical waves in a lattice in cylindrical waves."""
     ks = k0 * material.nmp
     where = np.logical_and(where, to_basis.pidx[:, None] == basis.pidx)
-    kpar = PhaseVector(kpar)
+    kpar = WaveVector(kpar)
     res = sw.periodic_to_cw(
         *(m[:, None] for m in to_basis.zms),
         *basis.lms,
@@ -879,7 +878,7 @@ def _pw_sw_expand(
     """Expand spherical waves in a lattice in plane waves."""
     if modetype is None and isinstance(to_basis, core.PlaneWaveBasisByComp):
         modetype = "up"
-    kpar = PhaseVector(kpar)
+    kpar = WaveVector(kpar)
     res = sw.periodic_to_pw(
         *(b[:, None] for b in to_basis.kvecs(k0, material, modetype)),
         to_basis.pol[:, None],
@@ -921,14 +920,14 @@ def _cwl_expand(basis, to_basis, eta, k0, kpar, lattice, material, poltype, wher
             # Last attempt to determine the dimension of the sum
             if np.isnan(kpar[1]):
                 lattice = Lattice(lattice, "x")
-                kpar = PhaseVector(kpar, "x")
+                kpar = WaveVector(kpar, "x")
             else:
                 lattice = Lattice(lattice, "xy")
     if lattice.dim == 1:
-        kpar = PhaseVector(kpar, "x")
+        kpar = WaveVector(kpar, "x")
         x = kpar[0]
     elif lattice.dim == 2:
-        kpar = PhaseVector(kpar)
+        kpar = WaveVector(kpar)
         x = kpar[:2]
     res = cw.translate_periodic(
         ks,
@@ -960,7 +959,7 @@ def _pw_cw_expand(basis, to_basis, k0, lattice, kpar, material, modetype, where)
     if modetype is None and isinstance(to_basis, core.PlaneWaveBasisByComp):
         modetype = "up"
     if len(kpar) == 1:
-        kpar = PhaseVector(kpar, alignment="x")
+        kpar = WaveVector(kpar, alignment="x")
     res = cw.periodic_to_pw(
         *(b[:, None] for b in to_basis.kvecs(k0, material, modetype)),
         to_basis.pol[:, None],
@@ -1023,11 +1022,8 @@ def expandlattice(
         to_basis, basis = basis
     else:
         to_basis = basis
-    if lattice is None:
-        if basis.lattice is None:
-            lattice = to_basis.lattice
-        else:
-            lattice = basis.lattice
+    if to_basis.lattice is not None:
+        lattice = to_basis.lattice
     if not isinstance(lattice, Lattice) and np.size(lattice) == 1:
         alignment = "x" if isinstance(basis, core.CylindricalWaveBasis) else "z"
     else:
@@ -1087,11 +1083,11 @@ class ExpandLattice(Operator):
     _FUNC = staticmethod(expandlattice)
 
     def __init__(self, lattice=None, kpar=None, basis=None, modetype=None):
-        if lattice is None:
-            if basis is None:
-                raise ValueError("'basis' or 'lattice' needs to be defined")
-            elif basis.lattice is None:
-                raise ValueError("'basis.lattice' or 'lattice' needs to be defined")
+        # if lattice is None:
+        #     if basis is None:
+        #         raise ValueError("'basis' or 'lattice' needs to be defined")
+        #     elif basis.lattice is None:
+        #         raise ValueError("'basis.lattice' or 'lattice' needs to be defined")
         super().__init__(lattice, kpar, basis, modetype)
 
     def __call__(self, **kwargs):
@@ -1103,15 +1099,19 @@ class ExpandLattice(Operator):
                 args[2] = kwargs.pop("basis")
             else:
                 args[2] = (args[2], kwargs.pop("basis"))
+        for i, name in enumerate(("lattice", "kpar")):
+            if name in kwargs and args[i] is None:
+                args[i] = kwargs.pop(name)
         return self.FUNC(*args, **kwargs)
 
     def get_kwargs(self, obj, dim=-1):
         kwargs = super().get_kwargs(obj, dim)
-        val = getattr(obj, "basis", None)
-        if isinstance(val, tuple):
-            val = val[dim]
-        if val is not None:
-            kwargs["basis"] = val
+        for name in ("basis", "lattice", "kpar"):
+            val = getattr(obj, name, None)
+            if isinstance(val, tuple):
+                val = val[dim]
+            if val is not None:
+                kwargs[name] = val
         return kwargs
 
     @property

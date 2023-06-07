@@ -38,5 +38,5 @@ solutions.
     physicsarray
     operators
     tmatrix
-
-.. operators, tmatrix, tmatrixc, smatrix
+    tmatrixc
+    smatrix

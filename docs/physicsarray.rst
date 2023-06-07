@@ -96,14 +96,14 @@ where besides the obvious difference in array types, the property `k0` is preser
 
 The full list of special properties is:
 
-======== ===========================================================
+======== =======================================================
 Name     Description
-======== ===========================================================
+======== =======================================================
 basis    Basis set: spherical, cylindrical, planar
 k0       Vacuum wave number
-kpar     Phase relation in lattices (:class:`treams.PhaseVector`)
+kpar     Phase relation in lattices (:class:`treams.WaveVector`)
 lattice  Definition of a lattice (:class:`treams.Lattice`)
 modetype Modetype, depends on wave (:ref:`params:Mode types`)
 material Embedding material (:class:`treams.Material`)
 poltype  Polarization types (:ref:`params:Polarizations`)
-======== ===========================================================
+======== =======================================================

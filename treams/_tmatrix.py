@@ -49,7 +49,7 @@ class _LatticeInteraction:
         )
 
     def solve(self, lattice, kpar):
-        return np.linalg.solve(self(), self._obj)
+        return np.linalg.solve(self(lattice, kpar), self._obj)
 
 
 class TMatrix(PhysicsArray):
