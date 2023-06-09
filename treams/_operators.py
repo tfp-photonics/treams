@@ -153,8 +153,8 @@ def _cw_rotate(phi, basis, to_basis, where):
     """Rotate cylindrical waves."""
     where = np.logical_and(where, to_basis.pidx[:, None] == basis.pidx)
     res = cw.rotate(
-        *(m[:, None] for m in to_basis.zmp),
-        *basis.zmp,
+        *(m[:, None] for m in to_basis.zms),
+        *basis.zms,
         phi,
         where=where,
     )
@@ -621,7 +621,7 @@ def _cw_pw_expand(basis, to_basis, k0, material, modetype, where):
         modetype = "up" if modetype is None else modetype
     kvecs = basis.kvecs(k0, material, modetype)
     res = pw.to_cw(
-        *(m[:, None] for m in to_basis.zmp),
+        *(m[:, None] for m in to_basis.zms),
         *kvecs,
         basis.pol,
         where=where,

@@ -30,7 +30,7 @@ lattices can consist of an arbitrary number of objects described by a T-matrix.
 Spheres
 =======
 
-It's possible to calculate the T-matrix of a single (mulit-layered) sphere with the
+It's possible to calculate the T-matrix of a single (multi-layered) sphere with the
 method :meth:`~treams.TMatrix.sphere`. We start by defining the relevant parameters for
 our calculation and creating the T-matrices themselves.
 

@@ -417,59 +417,6 @@ class TMatrix(PhysicsArray):
             -0.5 * np.real(illu.conjugate().T @ p_invksq) / flux,
         )
 
-    # def rotated(self, phi, theta=0, psi=0, **kwargs):
-    #     """Rotated T-Matrix.
-
-    #     Rotation is done in-place. If you need the original T-Matrix make a deepcopy
-    #     first. Rotations can only be applied to global T-Matrices. The angles are given
-    #     in the zyz-convention. In the intrinsic (object fixed coordinate system)
-    #     convention the rotations are applied in the order phi first, theta second, psi
-    #     third. In the extrinsic (global or reference frame fixed coordinate system) the
-    #     rotations are applied psi first, theta second, phi third.
-
-    #     Args:
-    #         phi, theta, psi (float): Euler angles
-
-    #     Returns:
-    #         TMatrix
-    #     """
-    #     r = self.rotate(phi, theta, psi, **kwargs)
-    #     return TMatrix(r @ self @ r.conjugate().T)
-
-    # def translated(self, r, **kwargs):
-    #     """Translated T-Matrix.
-
-    #     Translation is done in-place.
-
-    #     Args:
-    #         r (float array): Translation vector
-    #         modes (array): While translating also take only specific output modes into
-    #         account
-
-    #     Returns:
-    #         TMatrix
-    #     """
-    #     return TMatrix(
-    #         self.translate(r, **kwargs) @ self @ self.translate.inv(r, **kwargs)
-    #     )
-
-    def globalmat(self, basis=None):
-        """Global T-matrix.
-
-        Calculate the global T-matrix starting from a local one. This changes the
-        T-matrix.
-
-        Args:
-            basis (SphericalWaveBasis, optional): The basis of the global T-matrix. By
-                default the default basis for the maximal multipolar order found is
-                used.
-
-        Returns
-            TMatrix
-        """
-        basis = SWB.default(max(self.basis.l)) if basis is None else basis
-        return TMatrix(self.expand(basis))
-
     def valid_points(self, grid, radii):
         """Points on the grid where the expansion is valid.
 
@@ -675,13 +622,13 @@ class TMatrixC(PhysicsArray):
         return cls(tres, k0=k0, material=mat, basis=basis, poltype=poltype)
 
     @classmethod
-    def from_array(cls, tm, basis, eta=0):
+    def from_array(cls, tm, basis):
         """1d array of spherical T-matrices."""
-        if tm.lattice is None:
-            tm = tm.latticeinteraction.solve(basis.lattice, basis.kpar, eta=eta)
-        p = tm.expandlattice(basis=basis)
-        a = tm.expand.inv(basis=basis)
-        return cls(p @ tm @ a, lattice=tm.lattice, kpar=tm.kpar)
+        return cls(
+            op.ExpandLattice(basis=basis) @ tm @ op.Expand(basis).inv,
+            lattice=tm.lattice,
+            kpar=tm.kpar,
+        )
 
     @property
     def xw_ext_avg(self):
@@ -810,41 +757,6 @@ class TMatrixC(PhysicsArray):
             -2 * np.real(illu.conjugate().T @ (p / self.ks[self.basis.pol])) / flux,
         )
 
-    # def rotated(self, phi, **kwargs):
-    #     """Rotated T-Matrix around the z-axis.
-
-    #     Rotation is done in-place. If you need the original T-Matrix make a deepcopy
-    #     first. Rotations can only be applied to global T-Matrices.
-
-    #     Args:
-    #         phi (float): Rotation angle
-    #         modes (array): While rotating also take only specific output modes into
-    #         account
-
-    #     Returns:
-    #         T-MatrixC
-    #     """
-    #     r = self.rotate(phi, **kwargs)
-    #     return TMatrixC(r @ self @ r.conjugate().T)
-
-    # def translated(self, r, **kwargs):
-    #     """Translated T-Matrix.
-
-    #     Translation is done in-place. If you need the original T-Matrix make a copy
-    #     first. Translations can only be applied to global T-Matrices.
-
-    #     Args:
-    #         r (float array): Translation vector
-    #         modes (array): While translating also take only specific output modes into
-    #         account
-
-    #     Returns:
-    #         TMatrixC
-    #     """
-    #     return TMatrixC(
-    #         self.translate(r, **kwargs) @ self @ self.inv.translate(r, **kwargs)
-    #     )
-
     def globalmat(self, basis=None):
         """Global T-matrix.
 
@@ -865,10 +777,6 @@ class TMatrixC(PhysicsArray):
             basis = CWB.default(np.unique(self.kz), max(self.basis.l))
         return TMatrix(self.expand(basis) @ self @ self.expand.inv(basis))
 
-    # def couple_lattice(self, lattice, kpar, *, eta=0):
-    #     """Calculate the coupling term of a blockdiagonal T-matrix."""
-    #     return np.eye(self.shape[0]) - self @ self.expandlattice(lattice, kpar, eta=eta)
-
     def valid_points(self, grid, radii):
         grid = np.asarray(grid)
         if grid.shape[-1] not in (2, 3):
@@ -879,6 +787,12 @@ class TMatrixC(PhysicsArray):
         for r, p in zip(radii, self.basis.positions):
             res &= np.sum(np.power(grid[..., :2] - p[:2], 2), axis=-1) > r * r
         return res
+
+    def __getitem__(self, key):
+        if isinstance(key, CWB):
+            key = np.array([self.basis.index(i) for i in key])
+            key = (key[:, None], key)
+        return super().__getitem__(key)
 
 
 def _plane_wave_partial(
