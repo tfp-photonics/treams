@@ -36,7 +36,7 @@ cylinders could also have multiple concentric shells.) Due to the rotation symme
 about the z-axis this matrix is diagonal with respect to :code:`m` and due to the
 translation symmetry it is also diagonal with respect to :code:`kz`.
 
-.. literalinclude:: examples/cylinder.py
+.. literalinclude:: examples/cylinder_tmatrixc.py
     :language: python
     :lines: 6-11
 
@@ -44,24 +44,24 @@ For such infinitely long structures it makes more sense to talk about cross widt
 instead of cross section. We obtain the averaged scattering and extinction cross width
 by 
 
-.. literalinclude:: examples/cylinder.py
+.. literalinclude:: examples/cylinder_tmatrixc.py
     :language: python
     :lines: 13-15
 
 Again, we can also select specific modes only, for example the modes with :math:`m = 0`.
 
-.. literalinclude:: examples/cylinder.py
+.. literalinclude:: examples/cylinder_tmatrixc.py
     :language: python
     :lines: 16-19
 
 to calculate their cross width. Evaluating the field intensity in the x-y-plane is
 equally simple.
 
-.. literalinclude:: examples/cylinder.py
+.. literalinclude:: examples/cylinder_tmatrixc.py
     :language: python
     :lines: 16-19
 
-.. plot:: examples/cylinder.py
+.. plot:: examples/cylinder_tmatrixc.py
 
 Cylindrical T-matrices for one-dimensional arrays of spherical T-matrices
 =========================================================================
