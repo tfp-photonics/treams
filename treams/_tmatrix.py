@@ -613,7 +613,7 @@ class TMatrixC(PhysicsArray):
             if tm.poltype != poltype:
                 raise ValueError(f"incompatible modetypes: '{poltype}', '{tm.poltype}'")
             dim = tm.shape[0]
-            for m, n in zip(modes, tm.basis.zmp):
+            for m, n in zip(modes, tm.basis.zms):
                 m.extend(list(n))
             pidx += [j] * dim
             tres[i : i + dim, i : i + dim] = tm
@@ -767,8 +767,6 @@ class TMatrixC(PhysicsArray):
             origin (array, optional): The origin of the new T-matrix
             modes (array, optional): The modes that are considered for the global
                 T-matrix
-            interacted (bool, optional): If set to `False` the interaction is calulated
-                first.
 
         """
         if not basis.isglobal:

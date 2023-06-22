@@ -14,19 +14,20 @@ kz = 0.005
 spheres = [treams.TMatrix.sphere(lmax, k0, r, materials) for r in radii]
 chain = treams.TMatrix.cluster(spheres, positions).latticeinteraction.solve(lattice, kz)
 
+bmax = 3.1 * lattice.reciprocal
+cwb = treams.CylindricalWaveBasis.diffr_orders(kz, mmax, lattice, bmax, 2, positions)
+chain_tmc = treams.TMatrixC.from_array(chain, cwb)
+
 inc = treams.plane_wave(
     [np.sqrt(k0**2 - kz**2), 0, kz],
     [np.sqrt(0.5), np.sqrt(0.5)],
     k0=chain.k0,
     material=chain.material,
 )
-bmax = 3.1 * lattice.reciprocal
-cwb = treams.CylindricalWaveBasis.diffr_orders(kz, mmax, lattice, bmax, 2, positions)
-chain_tmc = treams.TMatrixC.from_array(chain, cwb)
 sca = chain_tmc @ inc.expand(chain_tmc.basis)
 
 grid = (
-    np.mgrid[-300:300:121j, 0:1, -150:150:61j].squeeze().transpose((1, 2, 0))[:, :-1, :]
+    np.mgrid[-300:300:61j, 0:1, -150:150:31j].squeeze().transpose((1, 2, 0))[:, :-1, :]
 )
 ez = np.zeros_like(grid[..., 0], complex)
 valid = chain_tmc.valid_points(grid, radii)
@@ -71,5 +72,3 @@ ax.set_xlabel("x (nm)")
 ax.set_ylabel("z (nm)")
 ax.set_aspect("equal")
 fig.show()
-
-input()

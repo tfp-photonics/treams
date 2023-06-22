@@ -70,15 +70,75 @@ For our next example we want to look at the system of spheres on a one-dimension
 lattice again (:ref:`tmatrix:One-dimensional arrays (along z)`). They fulfil all
 properties that define structures where the use of cylindrical waves is beneficial,
 namely they have a finite extent in the x-y-plane and they are periodic along the
-x-y-direction.
+z-direction.
 
 So, the initial setup of our calculation starts with spheres in the spherical wave
+basis and place them in a chain. This is the same procedure as in
+:ref:`tmatrix:One-dimensional arrays (along z)`.
+
+.. literalinclude:: examples/cylinder_tmatrixc.py
+    :language: python
+    :lines: 6-15
+
+Next, we convert this chain in the spherical wave basis to a suitable cylindrical wave
 basis.
 
+.. literalinclude:: examples/cylinder_tmatrixc.py
+    :language: python
+    :lines: 17-19
+
+We chose to add the first three diffraction orders (plus a 0.1 margin to avoid problems
+with floating point comparisons).
+
+Finally, we set-up the illumination and calculate the scattering with the usual
+procedure.
+
+.. literalinclude:: examples/cylinder_tmatrixc.py
+    :language: python
+    :lines: 21-27
+
+We evaluate the fields in two regions. Outside of the circumscribing cylinders we can
+use the fast cylindrical wave expansion. Inside of the circumscribing cylinders but
+outside of the spheres we can use the method of
+:ref:`tmatrix:One-dimensional arrays (along z)`.
+
+Finally, we can plot the results. To illustrate the periodicity better, three unit cells
+are shown.
+
+.. plot:: examples/chain_tmatrixc.py
 
 
 Clusters
 ========
+
+Similarly to the case of spheres we can also calculate the response from a cluster of
+objects. For the example want to simulate a cylinder together with a chain of spheres
+in the cylindrical wave basis as described in the previous section.
+
+So, we set up first the spheres in the chain and convert them to the cylindrical wave
+basis as before
+
+.. literalinclude:: examples/cluster_tmatrixc.py
+    :language: python
+    :lines: 6-18
+
+Then, we create the cylinder T-matrix in the cylindrical wave basis
+
+.. literalinclude:: examples/cluster_tmatrixc.py
+    :language: python
+    :lines: 20
+
+Finally, we construct the cluster and let the interaction be solved
+
+.. literalinclude:: examples/cluster_tmatrixc.py
+    :language: python
+    :lines: 22-29
+
+and we solve calculate the scattered field coefficients, whose field representation we
+then plot
+
+.. plot:: examples/cluster_tmatrixc.py
+
 
 One-dimensional arrays (along the x-axis)
 =========================================
