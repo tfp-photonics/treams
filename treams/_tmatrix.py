@@ -209,17 +209,6 @@ class TMatrix(PhysicsArray):
         basis = SWB(zip(pidx, *modes), positions)
         return cls(tres, k0=k0, material=mat, basis=basis, poltype=poltype)
 
-    # @classmethod
-    # def ebcm(cls, lmax, k0, r, dr, epsilon, mu=1, kappa=0, lint=None):
-    #     ks = k0 * misc.refractive_index(epsilon, mu, kappa)
-    #     zs = np.sqrt(np.array(mu) / epsilon)
-    #     modes = cls.ebcmmodes(lmax)
-    #     modes_int = modes if lint is None else cls.ebcmmodes(lint, mmax=lmax)
-    #     qm = ebcm.qmat(r, dr, ks, zs, modes_int[1:], modes[1:])
-    #     rqm = ebcm.qmat(r, dr, ks, zs, modes_int[1:], modes[1:], singular=False)
-    #     tm = -np.linalg.lstsq(qm, rqm, rcond=None)[0]
-    #     return cls(tm, k0, epsilon[-1], mu[-1], kappa[-1], modes=modes)
-
     @property
     def isglobal(self):
         """Test if a T-matrix is global.

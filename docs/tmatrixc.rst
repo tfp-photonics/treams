@@ -143,5 +143,46 @@ then plot
 One-dimensional arrays (along the x-axis)
 =========================================
 
+Now, we take the chain of spheres and a cylinder and place them in a grating structure
+along the x-direction. We start again by defining the parameters and calculating the 
+relevant cylindrical T-matrices.
+
+.. literalinclude:: examples/cluster_tmatrixc.py
+    :language: python
+    :lines: 6-21
+
+Next, we create the cluster and, as usual, let it interact within a lattice of the
+defined periodicity. Then, it's simple to calculate the scattering coefficients.
+
+.. literalinclude:: examples/cluster_tmatrixc.py
+    :language: python
+    :lines: 23-32
+
+In the last step, we want to sum up the scattered fields at each point in the probing
+area
+
+.. literalinclude:: examples/cluster_tmatrixc.py
+    :language: python
+    :lines: 34-43
+
+and plot the results.
+
+.. plot:: examples/grating_tmatrixc.py
+
+
 Two-dimensional arrays (in the x-y-plane)
 =========================================
+
+As last example, we want to examine a structure that is a photonic crystal consisting
+of infinitely long cylinders in a square array in the x-y-plane.
+
+.. literalinclude:: examples/crystal_tmatrixc.py
+    :language: python
+    :lines: 6-23
+
+Similarly to the case of spheres and a three-dimensional lattice, we can check the
+smallest singular value.
+
+.. plot:: examples/crystal_tmatrixc.py
+
+
