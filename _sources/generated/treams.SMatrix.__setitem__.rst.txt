@@ -1,0 +1,6 @@
+treams.SMatrix.\_\_setitem\_\_
+==============================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.__setitem__

@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisByUnitVector.index
+=======================================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasisByUnitVector.index

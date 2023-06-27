@@ -1,0 +1,6 @@
+treams.SMatrix.\_\_array\_ufunc\_\_
+===================================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.__array_ufunc__

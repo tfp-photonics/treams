@@ -10,4 +10,3 @@ treams. For more in-depth information, there is also a list of associated
     :maxdepth: 1
 
     maxwell
-    polarizations

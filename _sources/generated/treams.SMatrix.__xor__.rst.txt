@@ -1,0 +1,6 @@
+treams.SMatrix.\_\_xor\_\_
+==========================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.__xor__

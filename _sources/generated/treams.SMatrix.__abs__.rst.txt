@@ -1,0 +1,6 @@
+treams.SMatrix.\_\_abs\_\_
+==========================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.__abs__

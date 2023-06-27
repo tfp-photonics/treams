@@ -1,0 +1,59 @@
+﻿treams.PlaneWaveBasisByUnitVector
+=================================
+
+.. currentmodule:: treams
+
+.. autoclass:: PlaneWaveBasisByUnitVector
+
+  
+  
+      .. rubric:: Attributes
+
+      .. autosummary::
+         :toctree:
+      
+         ~PlaneWaveBasisByUnitVector.isglobal
+  
+  
+
+  
+      .. rubric:: Methods
+
+      .. autosummary::
+         :toctree:
+
+      
+         ~PlaneWaveBasisByUnitVector.__and__
+         ~PlaneWaveBasisByUnitVector.__eq__
+         ~PlaneWaveBasisByUnitVector.__ge__
+         ~PlaneWaveBasisByUnitVector.__getitem__
+         ~PlaneWaveBasisByUnitVector.__gt__
+         ~PlaneWaveBasisByUnitVector.__le__
+         ~PlaneWaveBasisByUnitVector.__len__
+         ~PlaneWaveBasisByUnitVector.__lt__
+         ~PlaneWaveBasisByUnitVector.__ne__
+         ~PlaneWaveBasisByUnitVector.__or__
+         ~PlaneWaveBasisByUnitVector.__repr__
+         ~PlaneWaveBasisByUnitVector.__str__
+         ~PlaneWaveBasisByUnitVector.__sub__
+         ~PlaneWaveBasisByUnitVector.__xor__
+         ~PlaneWaveBasisByUnitVector.bycomp
+         ~PlaneWaveBasisByUnitVector.count
+         ~PlaneWaveBasisByUnitVector.default
+         ~PlaneWaveBasisByUnitVector.index
+         ~PlaneWaveBasisByUnitVector.isdisjoint
+         ~PlaneWaveBasisByUnitVector.kvecs
+      
+         ~PlaneWaveBasisByUnitVector.__sub__
+         ~PlaneWaveBasisByUnitVector.__gt__
+         ~PlaneWaveBasisByUnitVector.__len__
+         ~PlaneWaveBasisByUnitVector.__repr__
+         ~PlaneWaveBasisByUnitVector.__ne__
+         ~PlaneWaveBasisByUnitVector.__le__
+         ~PlaneWaveBasisByUnitVector.__lt__
+         ~PlaneWaveBasisByUnitVector.__str__
+         ~PlaneWaveBasisByUnitVector.__xor__
+         ~PlaneWaveBasisByUnitVector.__and__
+         ~PlaneWaveBasisByUnitVector.__ge__
+         ~PlaneWaveBasisByUnitVector.__or__
+  

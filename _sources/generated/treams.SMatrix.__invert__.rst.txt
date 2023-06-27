@@ -1,0 +1,6 @@
+treams.SMatrix.\_\_invert\_\_
+=============================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.__invert__

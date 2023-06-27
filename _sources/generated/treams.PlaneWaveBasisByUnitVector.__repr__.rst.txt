@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisByUnitVector.\_\_repr\_\_
+==============================================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasisByUnitVector.__repr__

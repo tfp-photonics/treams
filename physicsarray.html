@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Physics-aware arrays &#8212; treams 0.2.2.dev136+g3e3ba599 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Operators" href="operators.html" />
+    <link rel="prev" title="Basis sets and other core parameters" href="params.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="operators.html" title="Operators"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="params.html" title="Basis sets and other core parameters"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev136+g3e3ba599 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="intro.html" accesskey="U">Introduction</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Physics-aware arrays</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="physics-aware-arrays">
+<h1>Physics-aware arrays<a class="headerlink" href="#physics-aware-arrays" title="Permalink to this heading">¶</a></h1>
+<p>A core building block of the underlying features of treams are physics-aware arrays.
+In most of their properties they behave similar to numpy arrays and one can easily
+change the type and mix them</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="n">treams</span><span class="o">.</span><span class="n">PhysicsArray</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">PhysicsArray(</span>
+<span class="go">    [2, 6],</span>
+<span class="go">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span> <span class="o">@</span> <span class="n">treams</span><span class="o">.</span><span class="n">PhysicsArray</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">8</span>
+</pre></div>
+</div>
+<p>but they have mainly two features added. First, they derive from
+<a class="reference internal" href="generated/treams.util.AnnotatedArray.html#treams.util.AnnotatedArray" title="treams.util.AnnotatedArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">treams.util.AnnotatedArray</span></code></a> so they can carry annotations with them, but these
+annotations are restricted to the physical quantities (as described in <a class="reference internal" href="params.html"><span class="doc">Basis sets and other core parameters</span></a>).
+Second, they offer special methods to create matrices for common transformations like
+rotations, which are described in more detail in <a class="reference internal" href="operators.html"><span class="doc">Operators</span></a>.</p>
+<section id="special-properties">
+<h2>Special properties<a class="headerlink" href="#special-properties" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">PhysicsArray</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span> <span class="n">k0</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">PhysicsArray(</span>
+<span class="go">    [[0, 1],</span>
+<span class="go">     [2, 3]],</span>
+<span class="go">    k0=(1.0, 2.0),</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<p>In this example you can notice that the values for the vacuum wave number <code class="docutils literal notranslate"><span class="pre">k0</span></code> were
+converted from integers to floats. Thus, trying to use
+<code class="code docutils literal notranslate"><span class="pre">tream.PhysicsArray([1],</span> <span class="pre">k0=1j)</span></code> will raise an error, because the complex number
+cannot be interpreted as a float. Additional special keywords are <cite>basis</cite>, <cite>kpar</cite>,
+<cite>lattice</cite>, <cite>material</cite>, <cite>modetype</cite>, and <cite>poltype</cite>. These properties can also be accessed
+by setting the corresponding attribute</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">PhysicsArray</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span>
+<span class="go">PhysicsArray(</span>
+<span class="go">    [1, 2],</span>
+<span class="go">    material=Material(4, 1, 0),</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<p>where we now have a material with the relative permittivity 4. As with its parent class
+these properties are also compared and merged when using operations on these objects</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">PhysicsArray</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">k0</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">treams</span><span class="o">.</span><span class="n">PhysicsArray</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">material</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">PhysicsArray(</span>
+<span class="go">    [2, 4],</span>
+<span class="go">    k0=1.0,</span>
+<span class="go">    material=Material(2, 1, 0),</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<p>and using conflicting values will raise a warning, for example
+<code class="code docutils literal notranslate"><span class="pre">treams.PhysicsArray([0,</span> <span class="pre">1],</span> <span class="pre">k0=1)</span> <span class="pre">+</span> <span class="pre">treams.PhysicsArray([2,</span> <span class="pre">3],</span> <span class="pre">k0=2)</span></code>
+emits <code class="code docutils literal notranslate"><span class="pre">treams/util.py:249:</span> <span class="pre">AnnotationWarning:</span> <span class="pre">at</span> <span class="pre">index</span> <span class="pre">0:</span> <span class="pre">overwriting</span> <span class="pre">key</span> <span class="pre">'k0'</span></code>.
+The special properties have also a unique behavior when appearing in matrix
+multiplications. If one of the two matrices has the special property not set, it becomes
+“transparent” to it. Check out the difference between</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">@</span> <span class="n">treams</span><span class="o">.</span><span class="n">PhysicsArray</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">k0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="go">PhysicsArray(</span>
+<span class="go">    [3., 3.],</span>
+<span class="go">    k0=1.0,</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<p>and</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">@</span> <span class="n">treams</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">AnnotatedArray</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">k0</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,))</span>
+<span class="go">AnnotatedArray(</span>
+<span class="go">    [3., 3.],</span>
+<span class="go">    AnnotationSequence(AnnotationDict({})),</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<p>where besides the obvious difference in array types, the property <cite>k0</cite> is preserved.</p>
+<p>The full list of special properties is:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>basis</p></td>
+<td><p>Basis set: spherical, cylindrical, planar</p></td>
+</tr>
+<tr class="row-odd"><td><p>k0</p></td>
+<td><p>Vacuum wave number</p></td>
+</tr>
+<tr class="row-even"><td><p>kpar</p></td>
+<td><p>Phase relation in lattices (<code class="xref py py-class docutils literal notranslate"><span class="pre">treams.WaveVector</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>lattice</p></td>
+<td><p>Definition of a lattice (<a class="reference internal" href="generated/treams.Lattice_class.html#treams.Lattice" title="treams.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">treams.Lattice</span></code></a>)</p></td>
+</tr>
+<tr class="row-even"><td><p>modetype</p></td>
+<td><p>Modetype, depends on wave (<a class="reference internal" href="params.html#mode-types"><span class="std std-ref">Mode types</span></a>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>material</p></td>
+<td><p>Embedding material (<a class="reference internal" href="generated/treams.Material.html#treams.Material" title="treams.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">treams.Material</span></code></a>)</p></td>
+</tr>
+<tr class="row-even"><td><p>poltype</p></td>
+<td><p>Polarization types (<a class="reference internal" href="params.html#polarizations"><span class="std std-ref">Polarizations</span></a>)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="treams.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+</ul>
+
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="params.html"
+                          title="previous chapter">Basis sets and other core parameters</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="operators.html"
+                          title="next chapter">Operators</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/physicsarray.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="operators.html" title="Operators"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="params.html" title="Basis sets and other core parameters"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev136+g3e3ba599 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="intro.html" >Introduction</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Physics-aware arrays</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Dominik Beutel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    </div>
+  </body>
+</html>

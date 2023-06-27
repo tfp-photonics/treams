@@ -3,9 +3,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Development and contributing &#8212; treams 0.2.2.dev124+g22757010 documentation</title>
+    <title>Development and contributing &#8212; treams 0.2.2.dev136+g3e3ba599 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
@@ -41,7 +41,7 @@
         <li class="right" >
           <a href="generated/treams.special.cython_special.yv_d.html" title="treams.special.cython_special.yv_d"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev124+g22757010 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev136+g3e3ba599 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Development and contributing</a></li> 
       </ul>
     </div>  
@@ -57,11 +57,11 @@
 <h2>Setting up the development environment<a class="headerlink" href="#setting-up-the-development-environment" title="Permalink to this heading">¶</a></h2>
 <p>1.
 Clone the repository with</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone git@git.scc.kit.edu/photonics/treams.git</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone git@github.com/tfp-photonics/treams.git</span>
 </pre></div>
 </div>
 <p>or</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://git.scc.kit.edu/photonics/treams.git</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/tfp-photonics/treams.git</span>
 </pre></div>
 </div>
 <p>and enter the directory</p>
@@ -69,12 +69,12 @@ Clone the repository with</p>
 </pre></div>
 </div>
 <p>2.
-Create a conda environment with</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conda env create -f environment.yml</span>
+This step is optional, but you might want to create an environment where treams and the
+development tools are created</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conda env create --name treams-dev</span>
 </pre></div>
 </div>
-<p>which installs all packages needed for building and running treams, testing, different
-benchmarks, and building the documentation. Activate the environment:</p>
+<p>Activate the environment with:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conda activate treams-dev</span>
 </pre></div>
 </div>
@@ -88,7 +88,7 @@ current folder. This is especially necessary for correctly building the document
 </section>
 <section id="running-tests">
 <h2>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this heading">¶</a></h2>
-<p>Tests can be run with</p>
+<p>Tests can be run using pytest with</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python -m pytest</span>
 </pre></div>
 </div>
@@ -98,10 +98,11 @@ selecting test.</p>
 <p>Some integration tests for the module <a class="reference internal" href="generated/treams.lattice.html#module-treams.lattice"><span class="std std-ref">treams.lattice</span></a>
 take a long time to finish and are therefore disabled by default. You can add them with
 the option <code class="docutils literal notranslate"><span class="pre">--runslow</span></code>.</p>
-<p>If coverage reports should be included on can use the option <code class="docutils literal notranslate"><span class="pre">--cov</span> <span class="pre">treams</span></code>. However,
-this will only report on the pure python files. To also get coverage reports for the
-cython part, it is necessary to compile it with linetracing support. This can be
-achieved by setting the environment variable <code class="docutils literal notranslate"><span class="pre">CYTHON_COVERAGE</span></code>, for example with</p>
+<p>If coverage reports should be included one can use the option <code class="docutils literal notranslate"><span class="pre">--cov</span> <span class="pre">treams</span></code> (which
+requires pytest-cov to be installed). However, this will only report on the pure python
+files. To also get coverage reports for the cython part, it is necessary to compile it
+with linetracing support. This can be achieved by setting the environment variable
+<code class="docutils literal notranslate"><span class="pre">CYTHON_COVERAGE</span></code>, for example with</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">CYTHON_COVERAGE=1 pip install -e .</span>
 </pre></div>
 </div>
@@ -111,11 +112,12 @@ considerably. For the coverage calculation only the unit tests are used.</p>
 </section>
 <section id="building-the-documentation">
 <h2>Building the documentation<a class="headerlink" href="#building-the-documentation" title="Permalink to this heading">¶</a></h2>
-<p>After setting up the development environment run</p>
+<p>The documentation is built with sphinx by using</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sphinx-build -b html docs docs/_build/html</span>
 </pre></div>
 </div>
-<p>from the root directory of the package to build the documentation as html pages.</p>
+<p>from the root directory of the package to build the documentation as html pages.
+Some figures are automatically created, which requires matplotlib.</p>
 </section>
 <section id="building-the-code-on-windows">
 <h2>Building the code on Windows<a class="headerlink" href="#building-the-code-on-windows" title="Permalink to this heading">¶</a></h2>
@@ -179,9 +181,6 @@ but make sure that the version of python that is found on the path corresponds t
 Windows Python. With this setup, building binaries should work with <cite>python -m build</cite>.</p>
 </section>
 </section>
-<section id="other-remarks">
-<h2>Other remarks<a class="headerlink" href="#other-remarks" title="Permalink to this heading">¶</a></h2>
-</section>
 </section>
 
 
@@ -194,7 +193,7 @@ Windows Python. With this setup, building binaries should work with <cite>python
 <h3><a href="index.html">Table of Contents</a></h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="treams.html">Reference</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Development and contributing</a></li>
@@ -247,13 +246,13 @@ Windows Python. With this setup, building binaries should work with <cite>python
         <li class="right" >
           <a href="generated/treams.special.cython_special.yv_d.html" title="treams.special.cython_special.yv_d"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev124+g22757010 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev136+g3e3ba599 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Development and contributing</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2023, Dominik Beutel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
     </div>
   </body>
 </html>

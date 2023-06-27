@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisByComp.byunitvector
+========================================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasisByComp.byunitvector

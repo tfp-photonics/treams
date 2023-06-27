@@ -1,0 +1,4 @@
+treams.SMatrix.hfield
+=====================
+
+.. autoattribute:: treams.SMatrix.hfield

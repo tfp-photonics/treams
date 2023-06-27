@@ -1,6 +1,0 @@
-treams.TMatrix.globalmat
-========================
-
-.. currentmodule:: treams
-
-.. automethod:: TMatrix.globalmat

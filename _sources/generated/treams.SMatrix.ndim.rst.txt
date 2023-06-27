@@ -1,0 +1,6 @@
+treams.SMatrix.ndim
+===================
+
+.. currentmodule:: treams
+
+.. autoproperty:: SMatrix.ndim

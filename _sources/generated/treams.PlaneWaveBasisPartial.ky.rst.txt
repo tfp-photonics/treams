@@ -1,6 +1,0 @@
-treams.PlaneWaveBasisPartial.ky
-===============================
-
-.. currentmodule:: treams
-
-.. autoproperty:: PlaneWaveBasisPartial.ky

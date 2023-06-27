@@ -1,6 +1,0 @@
-treams.TMatrixC.translated
-==========================
-
-.. currentmodule:: treams
-
-.. automethod:: TMatrixC.translated

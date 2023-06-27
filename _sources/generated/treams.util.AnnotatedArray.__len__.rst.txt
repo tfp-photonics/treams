@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.\_\_len\_\_
+======================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotatedArray.__len__

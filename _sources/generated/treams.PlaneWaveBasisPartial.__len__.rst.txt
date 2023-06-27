@@ -1,6 +1,0 @@
-treams.PlaneWaveBasisPartial.\_\_len\_\_
-========================================
-
-.. currentmodule:: treams
-
-.. automethod:: PlaneWaveBasisPartial.__len__

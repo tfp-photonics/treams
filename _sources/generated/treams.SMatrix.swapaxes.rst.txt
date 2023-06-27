@@ -1,0 +1,6 @@
+treams.SMatrix.swapaxes
+=======================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.swapaxes

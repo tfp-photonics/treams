@@ -1,6 +1,0 @@
-treams.TMatrixC.couple\_lattice
-===============================
-
-.. currentmodule:: treams
-
-.. automethod:: TMatrixC.couple_lattice

@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisByUnitVector.default
+=========================================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasisByUnitVector.default

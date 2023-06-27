@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>S-Matrices for plane waves &#8212; treams 0.2.2.dev136+g3e3ba599 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Theory" href="theory.html" />
+    <link rel="prev" title="Cylindrical T-matrices" href="tmatrixc.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="theory.html" title="Theory"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="tmatrixc.html" title="Cylindrical T-matrices"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev136+g3e3ba599 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="intro.html" accesskey="U">Introduction</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">S-Matrices for plane waves</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="s-matrices-for-plane-waves">
+<h1>S-Matrices for plane waves<a class="headerlink" href="#s-matrices-for-plane-waves" title="Permalink to this heading">¶</a></h1>
+<p>In addition to the T-matrix method, where incident and scattered fields are related,
+S-matrices relate incoming and outgoing fields. To describe scattering in the plane
+wave basis, we use exactly such a S-matrix description. The incoming and outgoing waves
+are defined with respect to a plane, typically the x-y-plane. This plane additionally
+separates the whole space into two parts. This then separates the description into
+four parts: the transmission of fields propagating in the positive and negative
+z-direction, and the reflection of those fields.</p>
+<section id="slabs">
+<h2>Slabs<a class="headerlink" href="#slabs" title="Permalink to this heading">¶</a></h2>
+<p>The main object for plane wave computations is the class <code class="xref py py-class docutils literal notranslate"><span class="pre">SMatrices</span></code>
+which exactly collects those four individual S-matrices. For simple interfaces and the
+propagation in a homogeneous medium these S-matrices can be obtained analytically.
+Combining these two objects then allows the description of simple slabs.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k0s</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">materials</span> <span class="o">=</span> <span class="p">[(),</span> <span class="p">(</span><span class="mf">12.4</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="mf">0.1</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="mf">0.05</span><span class="n">j</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
+<span class="n">thickness</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">tr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">k0s</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k0</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">k0s</span><span class="p">):</span>
+    <span class="n">pwb</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">PlaneWaveBasisByComp</span><span class="o">.</span><span class="n">default</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">k0</span><span class="p">])</span>
+    <span class="n">slab</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">SMatrices</span><span class="o">.</span><span class="n">slab</span><span class="p">(</span><span class="n">thickness</span><span class="p">,</span> <span class="n">pwb</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">materials</span><span class="p">)</span>
+    <span class="n">tr</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">slab</span><span class="o">.</span><span class="n">tr</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">tr</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">slab</span><span class="o">.</span><span class="n">tr</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>The setup is fairly simple. The materials are given in order from negative to positive
+z-values. We simply loop over the wave number and calculate transmission and reflection
+in the chiral medium for both helicites.</p>
+<p>(<a class="reference download internal" download="" href="_downloads/502c81c606f06e38ecf4508263a78b42/slab.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/a9131637764322f74edb539c1c5b2e3c/slab.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/265958d2304ee6e3e91d040ccdc9066f/slab.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/76d25fe7155dc739fc41fab28b7a19eb/slab.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/slab.png" class="plot-directive" src="_images/slab.png" />
+</figure>
+</section>
+<section id="from-t-matrix-arrays">
+<h2>From T-matrix arrays<a class="headerlink" href="#from-t-matrix-arrays" title="Permalink to this heading">¶</a></h2>
+<p>While this example is simple we can build more complicated structures from
+two-dimensional arrays of T-matrices. We take spheres on an thin film as an example.
+This means we first calculate the S-matrices for the thin film and the array
+individually and then couple those two systems.</p>
+</section>
+<section id="from-cylindrical-t-matrix-gratings">
+<h2>From cylindrical T-matrix gratings<a class="headerlink" href="#from-cylindrical-t-matrix-gratings" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="band-structures">
+<h2>Band structures<a class="headerlink" href="#band-structures" title="Permalink to this heading">¶</a></h2>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="treams.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+</ul>
+
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="tmatrixc.html"
+                          title="previous chapter">Cylindrical T-matrices</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="theory.html"
+                          title="next chapter">Theory</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/smatrix.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="theory.html" title="Theory"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="tmatrixc.html" title="Cylindrical T-matrices"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev136+g3e3ba599 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="intro.html" >Introduction</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">S-Matrices for plane waves</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Dominik Beutel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    </div>
+  </body>
+</html>

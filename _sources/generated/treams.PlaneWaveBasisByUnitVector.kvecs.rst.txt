@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisByUnitVector.kvecs
+=======================================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasisByUnitVector.kvecs

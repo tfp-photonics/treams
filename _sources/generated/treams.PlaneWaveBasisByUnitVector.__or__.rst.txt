@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisByUnitVector.\_\_or\_\_
+============================================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasisByUnitVector.__or__

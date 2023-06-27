@@ -1,6 +1,0 @@
-treams.PlaneWaveBasisAngle.default
-==================================
-
-.. currentmodule:: treams
-
-.. automethod:: PlaneWaveBasisAngle.default

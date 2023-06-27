@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>T-Matrices &#8212; treams 0.2.2.dev136+g3e3ba599 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Cylindrical T-matrices" href="tmatrixc.html" />
+    <link rel="prev" title="Operators" href="operators.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tmatrixc.html" title="Cylindrical T-matrices"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="operators.html" title="Operators"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev136+g3e3ba599 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="intro.html" accesskey="U">Introduction</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">T-Matrices</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="t-matrices">
+<h1>T-Matrices<a class="headerlink" href="#t-matrices" title="Permalink to this heading">¶</a></h1>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#spheres" id="id6">Spheres</a></p></li>
+<li><p><a class="reference internal" href="#clusters" id="id7">Clusters</a></p></li>
+<li><p><a class="reference internal" href="#one-dimensional-arrays-along-z" id="id8">One-dimensional arrays (along z)</a></p></li>
+<li><p><a class="reference internal" href="#two-dimensional-arrays-in-the-x-y-plane" id="id9">Two-dimensional arrays (in the x-y-plane)</a></p></li>
+<li><p><a class="reference internal" href="#three-dimensional-arrays" id="id10">Three-dimensional arrays</a></p></li>
+</ul>
+</nav>
+<p>One of the main objects for electromagnetic scattering calculations within <em>treams</em> are
+T-matrices. They describe the scattering response of an object by encoding the linear
+relationship between incident and scattered fields. These fields are expanded using
+the vector spherical wave functions.</p>
+<p>The T-matrices of spheres or multiple layers of spherical shells, present for example in
+core-shell particles, can be obtained analytically. For more complicated shapes
+numerical methods are necessary to compute the T-matrix. Once the T-matrix of a single
+object is known, the electromagnetic interaction between particle cluster can be
+calculated efficiently. Such clusters can be analyzed in their local description, where
+the field expansions are centered at each particle of the cluster, or in a global
+description treating the whole cluster as a single object.</p>
+<p><em>treams</em> is particularly aimed at analyzing scattering within lattices. These lattices
+can be periodic in one, two, or all three spatial dimensions. The unit cell of those
+lattices can consist of an arbitrary number of objects described by a T-matrix.</p>
+<section id="spheres">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Spheres</a><a class="headerlink" href="#spheres" title="Permalink to this heading">¶</a></h2>
+<p>It’s possible to calculate the T-matrix of a single (multi-layered) sphere with the
+method <a class="reference internal" href="generated/treams.TMatrix.sphere.html#treams.TMatrix.sphere" title="treams.TMatrix.sphere"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sphere()</span></code></a>. We start by defining the relevant parameters for
+our calculation and creating the T-matrices themselves.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k0s</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">materials</span> <span class="o">=</span> <span class="p">[</span><span class="n">treams</span><span class="o">.</span><span class="n">Material</span><span class="p">(</span><span class="mi">16</span> <span class="o">+</span> <span class="mf">0.5</span><span class="n">j</span><span class="p">),</span> <span class="n">treams</span><span class="o">.</span><span class="n">Material</span><span class="p">()]</span>
+<span class="n">lmax</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">radius</span> <span class="o">=</span> <span class="mi">75</span>
+<span class="n">spheres</span> <span class="o">=</span> <span class="p">[</span><span class="n">treams</span><span class="o">.</span><span class="n">TMatrix</span><span class="o">.</span><span class="n">sphere</span><span class="p">(</span><span class="n">lmax</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">materials</span><span class="p">)</span> <span class="k">for</span> <span class="n">k0</span> <span class="ow">in</span> <span class="n">k0s</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Now, we can easily access quantities like the scattering and extinction cross
+sections</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">xs_sca</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">tm</span><span class="o">.</span><span class="n">xs_sca_avg</span> <span class="k">for</span> <span class="n">tm</span> <span class="ow">in</span> <span class="n">spheres</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">radius</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">xs_ext</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">tm</span><span class="o">.</span><span class="n">xs_ext_avg</span> <span class="k">for</span> <span class="n">tm</span> <span class="ow">in</span> <span class="n">spheres</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">radius</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>From the parameter <code class="docutils literal notranslate"><span class="pre">lmax</span> <span class="pre">=</span> <span class="pre">4</span></code> we see that the T-matrix is calculated up to the forth
+multipolar order. To restrict the T-matrix to the dipolar coefficients only, we can
+select a basis containing only those coefficients.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">swb_lmax1</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">SphericalWaveBasis</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">spheres_lmax1</span> <span class="o">=</span> <span class="p">[</span><span class="n">tm</span><span class="p">[</span><span class="n">swb_lmax1</span><span class="p">]</span> <span class="k">for</span> <span class="n">tm</span> <span class="ow">in</span> <span class="n">spheres</span><span class="p">]</span>
+<span class="n">xs_sca_lmax1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">tm</span><span class="o">.</span><span class="n">xs_sca_avg</span> <span class="k">for</span> <span class="n">tm</span> <span class="ow">in</span> <span class="n">spheres_lmax1</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">radius</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">xs_ext_lmax1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">tm</span><span class="o">.</span><span class="n">xs_ext_avg</span> <span class="k">for</span> <span class="n">tm</span> <span class="ow">in</span> <span class="n">spheres_lmax1</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">radius</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now, we can look at the results by plotting them and observe, unsurprisingly, that for
+larger frequencies the dipolar approximation is not giving an accurate result. Finally,
+we visualize the fields at the largest frequency.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tm</span> <span class="o">=</span> <span class="n">spheres</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">inc</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">plane_wave</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tm</span><span class="o">.</span><span class="n">k0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">k0</span><span class="o">=</span><span class="n">tm</span><span class="o">.</span><span class="n">k0</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="n">tm</span><span class="o">.</span><span class="n">material</span><span class="p">)</span>
+<span class="n">sca</span> <span class="o">=</span> <span class="n">tm</span> <span class="o">@</span> <span class="n">inc</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">tm</span><span class="o">.</span><span class="n">basis</span><span class="p">)</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">:</span><span class="mi">100</span><span class="p">:</span><span class="mi">101</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">:</span><span class="mi">100</span><span class="p">:</span><span class="mi">101</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">intensity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">valid</span> <span class="o">=</span> <span class="n">tm</span><span class="o">.</span><span class="n">valid_points</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="p">[</span><span class="n">radius</span><span class="p">])</span>
+<span class="n">intensity</span><span class="p">[</span><span class="o">~</span><span class="n">valid</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">intensity</span><span class="p">[</span><span class="n">valid</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">inc</span><span class="o">.</span><span class="n">efield</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">valid</span><span class="p">])</span> <span class="o">+</span> <span class="n">sca</span><span class="o">.</span><span class="n">efield</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">valid</span><span class="p">]))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>We select the T-matrix and illuminate it with a plane wave. Next, we set up the grid
+and choose valid points, namely those that are outside of our spherical object. Then,
+we can calculate the fields as a superposition of incident and scattered fields.</p>
+<p>(<a class="reference download internal" download="" href="_downloads/ffac72f8ff42bee317f7ecb436a64a02/sphere.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>)</p>
+<figure class="align-default" id="id1">
+<img alt="_images/sphere_00.png" class="plot-directive" src="_images/sphere_00.png" />
+<figcaption>
+<p><span class="caption-text">(<a class="reference download internal" download="" href="_downloads/db72dcd972d6305444843dc870dc48cc/sphere_00.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/d2e04238bc3b9c7ad53b16590bfab3bb/sphere_00.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/2fa5077c6f7f11952db71dbd0edd30e4/sphere_00.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id2">
+<img alt="_images/sphere_01.png" class="plot-directive" src="_images/sphere_01.png" />
+<figcaption>
+<p><span class="caption-text">(<a class="reference download internal" download="" href="_downloads/23f84ddb4d085e0a02590663ab42cf1e/sphere_01.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/f855723631076c67a9dc328c77caf0f2/sphere_01.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/5d21f568e1b640170bd2a1ca16cd7191/sphere_01.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="clusters">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Clusters</a><a class="headerlink" href="#clusters" title="Permalink to this heading">¶</a></h2>
+<p>Multi-scattering calculations in a cluster of particles is a typical application of the
+T-matrix method. We first construct an object from four different spheres placed at the
+corners of a tetrahedron. Using the definition of the relevant parameters</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">1000</span>
+<span class="n">materials</span> <span class="o">=</span> <span class="p">[</span><span class="n">treams</span><span class="o">.</span><span class="n">Material</span><span class="p">(</span><span class="mi">16</span> <span class="o">+</span> <span class="mf">0.5</span><span class="n">j</span><span class="p">),</span> <span class="n">treams</span><span class="o">.</span><span class="n">Material</span><span class="p">()]</span>
+<span class="n">lmax</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">radii</span> <span class="o">=</span> <span class="p">[</span><span class="mi">110</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">75</span><span class="p">]</span>
+<span class="n">positions</span> <span class="o">=</span> <span class="p">(</span><span class="mi">220</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">24</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+        <span class="p">[</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+        <span class="p">[</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>we can simply first create the spheres and put them together in a cluster, where we
+immediately calculate the interaction.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">spheres</span> <span class="o">=</span> <span class="p">[</span><span class="n">treams</span><span class="o">.</span><span class="n">TMatrix</span><span class="o">.</span><span class="n">sphere</span><span class="p">(</span><span class="n">lmax</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">materials</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">radii</span><span class="p">]</span>
+<span class="n">tm</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">TMatrix</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">spheres</span><span class="p">,</span> <span class="n">positions</span><span class="p">)</span><span class="o">.</span><span class="n">interaction</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Then, we can illuminate with a plane wave and get the scattered field coefficients and
+the scattering and extinction cross sections for that particular illumination.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">inc</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">plane_wave</span><span class="p">([</span><span class="n">k0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">k0</span><span class="o">=</span><span class="n">tm</span><span class="o">.</span><span class="n">k0</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="n">tm</span><span class="o">.</span><span class="n">material</span><span class="p">)</span>
+<span class="n">sca</span> <span class="o">=</span> <span class="n">tm</span> <span class="o">@</span> <span class="n">inc</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">tm</span><span class="o">.</span><span class="n">basis</span><span class="p">)</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="n">tm</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="n">inc</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, with few lines similar to the plotting of the field intensity of a single
+sphere we can obtain the fields outside of the sphere</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="mi">300</span><span class="p">:</span><span class="mi">300</span><span class="p">:</span><span class="mi">101</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">300</span><span class="p">:</span><span class="mi">300</span><span class="p">:</span><span class="mi">101</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">intensity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">valid</span> <span class="o">=</span> <span class="n">tm</span><span class="o">.</span><span class="n">valid_points</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">radii</span><span class="p">)</span>
+<span class="n">intensity</span><span class="p">[</span><span class="o">~</span><span class="n">valid</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">intensity</span><span class="p">[</span><span class="n">valid</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">inc</span><span class="o">.</span><span class="n">efield</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">valid</span><span class="p">])</span> <span class="o">+</span> <span class="n">sca</span><span class="o">.</span><span class="n">efield</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">valid</span><span class="p">]))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Up to here, we did all calculations for the cluster in the local basis. By expanding
+the incident and scattered fields in a basis with a single origin we can describe the
+same object. Often, a larger number of multipoles is needed to do so and some
+information on fields between the particles is lost. But, the description in a global
+basis can be more efficient in terms of matrix size.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tm_global</span> <span class="o">=</span> <span class="n">tm</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">treams</span><span class="o">.</span><span class="n">SphericalWaveBasis</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">sca</span> <span class="o">=</span> <span class="n">tm_global</span> <span class="o">@</span> <span class="n">inc</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">tm_global</span><span class="o">.</span><span class="n">basis</span><span class="p">)</span>
+
+<span class="n">xs</span> <span class="o">=</span> <span class="n">tm_global</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="n">inc</span><span class="p">)</span>
+
+<span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="mi">300</span><span class="p">:</span><span class="mi">300</span><span class="p">:</span><span class="mi">101</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">300</span><span class="p">:</span><span class="mi">300</span><span class="p">:</span><span class="mi">101</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">intensity_global</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">valid</span> <span class="o">=</span> <span class="n">tm_global</span><span class="o">.</span><span class="n">valid_points</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="p">[</span><span class="mi">260</span><span class="p">])</span>
+<span class="n">intensity_global</span><span class="p">[</span><span class="o">~</span><span class="n">valid</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">intensity_global</span><span class="p">[</span><span class="n">valid</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">inc</span><span class="o">.</span><span class="n">efield</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">valid</span><span class="p">])</span> <span class="o">+</span> <span class="n">sca</span><span class="o">.</span><span class="n">efield</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">valid</span><span class="p">]))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>A comparison of the calculated near-fields and the cross sections show good agreement
+between the results of both, local and global, T-matrices.</p>
+<p>(<a class="reference download internal" download="" href="_downloads/acdce4ee8fd3701bf7ca9ae68d6672e1/cluster.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>)</p>
+<figure class="align-default" id="id3">
+<img alt="_images/cluster_00.png" class="plot-directive" src="_images/cluster_00.png" />
+<figcaption>
+<p><span class="caption-text">(<a class="reference download internal" download="" href="_downloads/cb13c09204853787666969ea4b735e55/cluster_00.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/fda1ea54000e3827a99abc13a5bb0f23/cluster_00.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/f49d4f648b11e549581deac890a62745/cluster_00.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id4">
+<img alt="_images/cluster_01.png" class="plot-directive" src="_images/cluster_01.png" />
+<figcaption>
+<p><span class="caption-text">(<a class="reference download internal" download="" href="_downloads/643dd1b93ea25a89842c01385abd1fc4/cluster_01.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/79a8891b7e0ea3c23bb07a615f6feabf/cluster_01.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/24503bcffc50f13be5631f08876f2f1b/cluster_01.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id5">
+<img alt="_images/cluster_02.png" class="plot-directive" src="_images/cluster_02.png" />
+<figcaption>
+<p><span class="caption-text">(<a class="reference download internal" download="" href="_downloads/b7939ff5a3fc032fc04e612d4610a77b/cluster_02.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/36f270879ccc6bf074623c4dc2d223d7/cluster_02.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/239d54294773bf731af657867d20796e/cluster_02.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>In the last figure, the T-matrix is rotated by 90 degrees about the y-axis and the
+illumination is set accordingly to be a plane wave propagating in the negative
+z-direction, such that the whole system is the same simply. It shows how the rotate
+operator produces consistent results.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tm_rotate</span> <span class="o">=</span> <span class="n">tm_global</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">sca</span> <span class="o">=</span> <span class="n">tm_rotate</span> <span class="o">@</span> <span class="n">inc</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">tm_rotate</span><span class="o">.</span><span class="n">basis</span><span class="p">)</span>
+
+<span class="n">xs</span> <span class="o">=</span> <span class="n">tm_rotate</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="n">inc</span><span class="p">)</span>
+
+<span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="mi">300</span><span class="p">:</span><span class="mi">300</span><span class="p">:</span><span class="mi">101</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">300</span><span class="p">:</span><span class="mi">300</span><span class="p">:</span><span class="mi">101</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">intensity_global</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">valid</span> <span class="o">=</span> <span class="n">tm_rotate</span><span class="o">.</span><span class="n">valid_points</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="p">[</span><span class="mi">260</span><span class="p">])</span>
+<span class="n">intensity_global</span><span class="p">[</span><span class="o">~</span><span class="n">valid</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">intensity_global</span><span class="p">[</span><span class="n">valid</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">inc</span><span class="o">.</span><span class="n">efield</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">valid</span><span class="p">])</span> <span class="o">+</span> <span class="n">sca</span><span class="o">.</span><span class="n">efield</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">valid</span><span class="p">]))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+<span class="p">)</span>
+
+</pre></div>
+</div>
+</section>
+<section id="one-dimensional-arrays-along-z">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">One-dimensional arrays (along z)</a><a class="headerlink" href="#one-dimensional-arrays-along-z" title="Permalink to this heading">¶</a></h2>
+<p>Next, we turn to systems that are periodic in the z-direction. We calculate the
+scattering from an array of spheres. Intentionally, we choose a unit cell with two
+spheres that overlap along the z-direction, but are not placed exactly along the same
+line. This is the most general case for the implemented lattice sums. After the common
+setup of the parameters we simply create a cluster in a local basis.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">700</span>
+<span class="n">materials</span> <span class="o">=</span> <span class="p">[</span><span class="n">treams</span><span class="o">.</span><span class="n">Material</span><span class="p">(</span><span class="o">-</span><span class="mf">16.5</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="p">),</span> <span class="n">treams</span><span class="o">.</span><span class="n">Material</span><span class="p">()]</span>
+<span class="n">lmax</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">radii</span> <span class="o">=</span> <span class="p">[</span><span class="mi">75</span><span class="p">,</span> <span class="mi">75</span><span class="p">]</span>
+<span class="n">positions</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">75</span><span class="p">],</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">75</span><span class="p">]]</span>
+<span class="n">lattice</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">kz</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>This time we let them interact specifying a one-dimensional lattice, so that the spheres
+form a chain.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">spheres</span> <span class="o">=</span> <span class="p">[</span><span class="n">treams</span><span class="o">.</span><span class="n">TMatrix</span><span class="o">.</span><span class="n">sphere</span><span class="p">(</span><span class="n">lmax</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">materials</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">radii</span><span class="p">]</span>
+<span class="n">chain</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">TMatrix</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">spheres</span><span class="p">,</span> <span class="n">positions</span><span class="p">)</span><span class="o">.</span><span class="n">latticeinteraction</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">lattice</span><span class="p">,</span> <span class="n">kz</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Next, we choose set the illumination to be propagating along the x-direction and to be
+polarized along z. The z-component of the plane wave has to match to the wave vector
+component of the lattice interaction.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">inc</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">plane_wave</span><span class="p">([</span><span class="n">k0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">k0</span><span class="o">=</span><span class="n">chain</span><span class="o">.</span><span class="n">k0</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="n">chain</span><span class="o">.</span><span class="n">material</span><span class="p">)</span>
+<span class="n">sca</span> <span class="o">=</span> <span class="n">chain</span> <span class="o">@</span> <span class="n">inc</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">basis</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>There are efficient ways to calculate the many properties, especially in the far-field,
+using cylindrical T-matrices. Those will be introduced in <a class="reference internal" href="tmatrixc.html"><span class="doc">Cylindrical T-matrices</span></a>. Here, we will
+stay in the expression of the fields as vector spherical waves. This allows the
+calculation of the fields in the domain between the spheres. To get them accurately, we
+expand the scattered fields in the whole lattice in dipolar approximation at each point
+we want to probe.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="mi">150</span><span class="p">:</span><span class="mi">150</span><span class="p">:</span><span class="mi">31</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">150</span><span class="p">:</span><span class="mi">150</span><span class="p">:</span><span class="mi">31</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">ez</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">valid</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">valid_points</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">radii</span><span class="p">)</span>
+<span class="n">vals</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">valid</span><span class="p">]):</span>
+    <span class="n">swb</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">SphericalWaveBasis</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="p">[</span><span class="n">r</span><span class="p">])</span>
+    <span class="n">field</span> <span class="o">=</span> <span class="n">sca</span><span class="o">.</span><span class="n">expandlattice</span><span class="p">(</span><span class="n">basis</span><span class="o">=</span><span class="n">swb</span><span class="p">)</span><span class="o">.</span><span class="n">efield</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">inc</span><span class="o">.</span><span class="n">efield</span><span class="p">(</span><span class="n">r</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">field</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+<span class="n">ez</span><span class="p">[</span><span class="n">valid</span><span class="p">]</span> <span class="o">=</span> <span class="n">vals</span>
+<span class="n">ez</span><span class="p">[</span><span class="o">~</span><span class="n">valid</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+</pre></div>
+</div>
+<p>Here, we plot the z-component of the electric field. Note, that the values at the top
+and bottom side match exactly, as required due to the periodic boundary conditions.</p>
+<p>(<a class="reference download internal" download="" href="_downloads/a02ea8c2ba18258fe811e93c331ca534/chain.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/5b813460b33e927892bc7d32ed17ee66/chain.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/ad9570cf7c51e4c5e16a4a9670a5317e/chain.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/45203822187097b57b757ff521a4187e/chain.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/chain.png" class="plot-directive" src="_images/chain.png" />
+</figure>
+</section>
+<section id="two-dimensional-arrays-in-the-x-y-plane">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Two-dimensional arrays (in the x-y-plane)</a><a class="headerlink" href="#two-dimensional-arrays-in-the-x-y-plane" title="Permalink to this heading">¶</a></h2>
+<p>The case of periodicity in two directions is similar to the case of the previous section
+with one-dimensional periodicity. Here, by convention the array has to be in the
+x-y-plane.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">700</span>
+<span class="n">materials</span> <span class="o">=</span> <span class="p">[</span><span class="n">treams</span><span class="o">.</span><span class="n">Material</span><span class="p">(</span><span class="o">-</span><span class="mf">16.5</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="p">),</span> <span class="n">treams</span><span class="o">.</span><span class="n">Material</span><span class="p">()]</span>
+<span class="n">lmax</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">radii</span> <span class="o">=</span> <span class="p">[</span><span class="mi">75</span><span class="p">,</span> <span class="mi">75</span><span class="p">]</span>
+<span class="n">positions</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mi">75</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span> <span class="p">[</span><span class="mi">75</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">]]</span>
+<span class="n">lattice</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">Lattice</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">kpar</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+<span class="n">spheres</span> <span class="o">=</span> <span class="p">[</span><span class="n">treams</span><span class="o">.</span><span class="n">TMatrix</span><span class="o">.</span><span class="n">sphere</span><span class="p">(</span><span class="n">lmax</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">materials</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">radii</span><span class="p">]</span>
+<span class="n">chain</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">TMatrix</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">spheres</span><span class="p">,</span> <span class="n">positions</span><span class="p">)</span><span class="o">.</span><span class="n">latticeinteraction</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span>
+    <span class="n">lattice</span><span class="p">,</span> <span class="n">kpar</span>
+<span class="p">)</span>
+
+<span class="n">inc</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">plane_wave</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">k0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">k0</span><span class="o">=</span><span class="n">chain</span><span class="o">.</span><span class="n">k0</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="n">chain</span><span class="o">.</span><span class="n">material</span><span class="p">)</span>
+<span class="n">sca</span> <span class="o">=</span> <span class="n">chain</span> <span class="o">@</span> <span class="n">inc</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">basis</span><span class="p">)</span>
+
+<span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="mi">150</span><span class="p">:</span><span class="mi">150</span><span class="p">:</span><span class="mi">31</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">150</span><span class="p">:</span><span class="mi">150</span><span class="p">:</span><span class="mi">31</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">ez</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">valid</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">valid_points</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">radii</span><span class="p">)</span>
+<span class="n">vals</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">valid</span><span class="p">]):</span>
+    <span class="n">swb</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">SphericalWaveBasis</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="p">[</span><span class="n">r</span><span class="p">])</span>
+    <span class="n">field</span> <span class="o">=</span> <span class="n">sca</span><span class="o">.</span><span class="n">expandlattice</span><span class="p">(</span><span class="n">basis</span><span class="o">=</span><span class="n">swb</span><span class="p">)</span><span class="o">.</span><span class="n">efield</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">inc</span><span class="o">.</span><span class="n">efield</span><span class="p">(</span><span class="n">r</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">field</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+<span class="n">ez</span><span class="p">[</span><span class="n">valid</span><span class="p">]</span> <span class="o">=</span> <span class="n">vals</span>
+<span class="n">ez</span><span class="p">[</span><span class="o">~</span><span class="n">valid</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+</pre></div>
+</div>
+<p>With few changes we get the fields in a square array of the same spheres as in the
+previous examples. Most importantly we changed the value of the variable <code class="code docutils literal notranslate"><span class="pre">lattice</span></code>
+to an instance of a two-dimensional <a class="reference internal" href="generated/treams.Lattice_class.html#treams.Lattice" title="treams.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> and set <code class="code docutils literal notranslate"><span class="pre">kpar</span></code>
+accordingly. Most other changes are just resulting from the change of the coordinate
+system.</p>
+<p>Here, we show the z-component of the electric field.</p>
+<p>(<a class="reference download internal" download="" href="_downloads/f71a90d80aa80eed4c2b9ec5e856bbba/grid.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/4f252cb42dd227d7b627a9f196e4b9be/grid.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/c6fdfce05bfaa3388dd0ded452bc23cf/grid.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/52506a7a67005462bbb516b0d33010ff/grid.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/grid.png" class="plot-directive" src="_images/grid.png" />
+</figure>
+</section>
+<section id="three-dimensional-arrays">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Three-dimensional arrays</a><a class="headerlink" href="#three-dimensional-arrays" title="Permalink to this heading">¶</a></h2>
+<p>In a three-dimensional lattice we’re mostly concerned with finding eigenmodes of a
+crystal. We want to restrict the example to calculating modes at the gamma point in
+reciprocal space. The calculated system consists of a single sphere in a cubic lattice.
+In our very crude analysis, we blindly select the lowest singular value of the lattice
+interaction matrix. Besides the mode when the frequency tends to zero, there are two
+additional modes at higher frequencies in the chosen range.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k0s</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">materials</span> <span class="o">=</span> <span class="p">[</span><span class="n">treams</span><span class="o">.</span><span class="n">Material</span><span class="p">(</span><span class="mf">12.4</span><span class="p">),</span> <span class="n">treams</span><span class="o">.</span><span class="n">Material</span><span class="p">()]</span>
+<span class="n">lmax</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">radius</span> <span class="o">=</span> <span class="mf">0.2</span>
+<span class="n">lattice</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">Lattice</span><span class="o">.</span><span class="n">cubic</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">kpar</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">k0</span> <span class="ow">in</span> <span class="n">k0s</span><span class="p">:</span>
+    <span class="n">sphere</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">TMatrix</span><span class="o">.</span><span class="n">sphere</span><span class="p">(</span><span class="n">lmax</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">materials</span><span class="p">)</span>
+    <span class="n">svd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">sphere</span><span class="o">.</span><span class="n">latticeinteraction</span><span class="p">(</span><span class="n">lattice</span><span class="p">,</span> <span class="n">kpar</span><span class="p">),</span> <span class="n">compute_uv</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">svd</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>(<a class="reference download internal" download="" href="_downloads/39e22a2011006891a22db4047cb077c6/crystal.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/d10652ad1ecda94dd358ee2f466827ed/crystal.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/c03bc89b236043098736a49d436b1ec5/crystal.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/b8dccbece47db9594fb3fe597c55ae53/crystal.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/crystal.png" class="plot-directive" src="_images/crystal.png" />
+</figure>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="treams.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+</ul>
+
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="operators.html"
+                          title="previous chapter">Operators</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="tmatrixc.html"
+                          title="next chapter">Cylindrical T-matrices</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/tmatrix.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tmatrixc.html" title="Cylindrical T-matrices"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="operators.html" title="Operators"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev136+g3e3ba599 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="intro.html" >Introduction</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">T-Matrices</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Dominik Beutel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    </div>
+  </body>
+</html>

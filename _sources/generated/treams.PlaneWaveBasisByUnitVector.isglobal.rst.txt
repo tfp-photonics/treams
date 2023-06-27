@@ -1,0 +1,4 @@
+treams.PlaneWaveBasisByUnitVector.isglobal
+==========================================
+
+.. autoattribute:: treams.PlaneWaveBasisByUnitVector.isglobal

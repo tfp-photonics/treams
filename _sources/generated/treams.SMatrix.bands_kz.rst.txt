@@ -1,6 +1,0 @@
-treams.SMatrix.bands\_kz
-========================
-
-.. currentmodule:: treams
-
-.. automethod:: SMatrix.bands_kz

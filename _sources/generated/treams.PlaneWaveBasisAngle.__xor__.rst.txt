@@ -1,6 +1,0 @@
-treams.PlaneWaveBasisAngle.\_\_xor\_\_
-======================================
-
-.. currentmodule:: treams
-
-.. automethod:: PlaneWaveBasisAngle.__xor__

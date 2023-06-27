@@ -1,0 +1,6 @@
+treams.util.AnnotatedArray.swapaxes
+===================================
+
+.. currentmodule:: treams.util
+
+.. automethod:: AnnotatedArray.swapaxes

@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisByComp.kz
+==============================
+
+.. currentmodule:: treams
+
+.. autoproperty:: PlaneWaveBasisByComp.kz

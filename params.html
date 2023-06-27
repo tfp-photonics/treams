@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Basis sets and other core parameters &#8212; treams 0.2.2.dev136+g3e3ba599 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Physics-aware arrays" href="physicsarray.html" />
+    <link rel="prev" title="Introduction" href="intro.html" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+  </head><body>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="physicsarray.html" title="Physics-aware arrays"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="Introduction"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev136+g3e3ba599 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="intro.html" accesskey="U">Introduction</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Basis sets and other core parameters</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="basis-sets-and-other-core-parameters">
+<h1>Basis sets and other core parameters<a class="headerlink" href="#basis-sets-and-other-core-parameters" title="Permalink to this heading">¶</a></h1>
+<p>Throughout the high-level functions and classes of <em>treams</em> a set of parameters appear
+that define important underlying quantities for the calculation. First, these are the
+different basis sets that are used to solve scattering processes: the spherical,
+cylindrical, and plane wave solutions. Closely related to these basis sets are the
+polarization types and the mode types. The other parameters are the vacuum wave numbers
+and the materials as well as, in the case of calculations with periodicity involved,
+the lattice definitions and the phase shift between lattice sites.</p>
+<section id="basis-sets">
+<h2>Basis sets<a class="headerlink" href="#basis-sets" title="Permalink to this heading">¶</a></h2>
+<p>As described in <a class="reference internal" href="maxwell.html"><span class="doc">Maxwell’s equations and chiral constitutive relations</span></a> it is possible to solve Maxwells equations in different
+coordinate systems. While being in principle equivalent, for different scenarios it is
+beneficial to use suitable solution sets that represent the waves with sufficient
+precision when truncated to a finite number of modes. The chosen finite number of
+modes is given in the the the classes <a class="reference internal" href="generated/treams.SphericalWaveBasis.html#treams.SphericalWaveBasis" title="treams.SphericalWaveBasis"><code class="xref py py-class docutils literal notranslate"><span class="pre">SphericalWaveBasis</span></code></a>,
+<a class="reference internal" href="generated/treams.CylindricalWaveBasis.html#treams.CylindricalWaveBasis" title="treams.CylindricalWaveBasis"><code class="xref py py-class docutils literal notranslate"><span class="pre">CylindricalWaveBasis</span></code></a>, and <code class="xref py py-class docutils literal notranslate"><span class="pre">PlaneWaveBasis</span></code>, which
+are all children of the base call <code class="xref py py-class docutils literal notranslate"><span class="pre">BasisSet</span></code>.</p>
+<p>The modes of the spherical basis can are defined by their degree <code class="docutils literal notranslate"><span class="pre">l</span></code>, the order <code class="docutils literal notranslate"><span class="pre">m</span></code>,
+and an index for the polarization <code class="docutils literal notranslate"><span class="pre">pol</span></code>. The basis is then simply the collection of
+multiple of these modes, each given in a tuple with exactly that order, for example</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">SphericalWaveBasis</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>
+<span class="go">SphericalWaveBasis(</span>
+<span class="go">    pidx=[0 0 0],</span>
+<span class="go">    l=[1 1 1],</span>
+<span class="go">    m=[-1  0  1],</span>
+<span class="go">    pol=[0 0 0],</span>
+<span class="go">    positions=[[0. 0. 0.]],</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<p>results in a basis with three modes. All have the same degree and polarization, but the
+order <code class="docutils literal notranslate"><span class="pre">m</span></code> goes from -1 to 1. We see that there are also the fields <code class="docutils literal notranslate"><span class="pre">pidx</span></code> and
+<code class="docutils literal notranslate"><span class="pre">positions</span></code>. This is a special case for the spherical (and later also the
+cyclindrical) wave basis. Sometimes, the fields are not expanded with respect to a
+single point, but multiple positions. Then <code class="docutils literal notranslate"><span class="pre">positions</span></code> contains the their Cartesian
+coordinates and <code class="docutils literal notranslate"><span class="pre">pidx</span></code> maps each mode to one of those coordinates. Here, the default
+value of the expansion about a single origin is used. These basis sets behave mostly
+like regular Python sets, we can check for example if a mode is in our basis set by</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">in</span> <span class="n">treams</span><span class="o">.</span><span class="n">SphericalWaveBasis</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Equally, it is possible to use the regular comparisons and binary operators of Python
+sets</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">SphericalWaveBasis</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span> <span class="o">&gt;</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)}</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">SphericalWaveBasis</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span> <span class="o">&amp;</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)}</span>
+<span class="go">SphericalWaveBasis(</span>
+<span class="go">    pidx=[0],</span>
+<span class="go">    l=[1],</span>
+<span class="go">    m=[0],</span>
+<span class="go">    pol=[0],</span>
+<span class="go">    positions=[[0. 0. 0.]],</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<p>However, because we want to use those basis sets later to index the rows and columns of
+matrices, the order of the entries is fixed. Therefore, the equality operator is
+stricter. Two basis sets are only considered equal when they have the same number modes
+in the same order and the same positions.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">SphericalWaveBasis</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span> <span class="o">==</span> <span class="n">treams</span><span class="o">.</span><span class="n">SphericalWaveBasis</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p>For convenience it is possible to create a default order up to a maximal multipolar
+order</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">SphericalWaveBasis</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">SphericalWaveBasis(</span>
+<span class="go">    pidx=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0],</span>
+<span class="go">    l=[1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2],</span>
+<span class="go">    m=[-1 -1  0  0  1  1 -2 -2 -1 -1  0  0  1  1  2  2],</span>
+<span class="go">    pol=[1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0],</span>
+<span class="go">    positions=[[0. 0. 0.]],</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<p>where we now have a spherical wave basis up do quadrupolar order.</p>
+<p>The cyclindrical wave basis is mostly similar to the quadrupolar basis. Instead of a the
+multipole <code class="docutils literal notranslate"><span class="pre">l</span></code> the z-component of the wave vector <code class="docutils literal notranslate"><span class="pre">kz</span></code> is used</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">CylindricalWaveBasis</span><span class="p">([(</span><span class="mf">.1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mf">.1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mf">.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>
+<span class="go">CylindricalWaveBasis(</span>
+<span class="go">    pidx=[0 0 0],</span>
+<span class="go">    kz=[0.1 0.1 0.1],</span>
+<span class="go">    m=[-1  0  1],</span>
+<span class="go">    pol=[0 0 0],</span>
+<span class="go">    positions=[[0. 0. 0.]],</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<p>which is a real number. The default function takes a list of <code class="docutils literal notranslate"><span class="pre">kz</span></code> values a maximal
+absolute value for <code class="docutils literal notranslate"><span class="pre">m</span></code>.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">CylindricalWaveBasis</span><span class="o">.</span><span class="n">default</span><span class="p">([</span><span class="o">-</span><span class="mf">.5</span><span class="p">,</span> <span class="mf">.5</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">CylindricalWaveBasis(</span>
+<span class="go">    pidx=[0 0 0 0 0 0 0 0 0 0 0 0],</span>
+<span class="go">    kz=[-0.5 -0.5 -0.5 -0.5 -0.5 -0.5  0.5  0.5  0.5  0.5  0.5  0.5],</span>
+<span class="go">    m=[-1 -1  0  0  1  1 -1 -1  0  0  1  1],</span>
+<span class="go">    pol=[1 0 1 0 1 0 1 0 1 0 1 0],</span>
+<span class="go">    positions=[[0. 0. 0.]],</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<p>The cylindrical wave basis is particularly useful for systems with periodicity in the
+z-direction. Then, a basis with the diffraction orders up to a threshold can be obtained
+by running</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">CylindricalWaveBasis</span><span class="o">.</span><span class="n">diffr_orders</span><span class="p">(</span><span class="n">kz</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span> <span class="n">mmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">lattice</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">bmax</span><span class="o">=</span><span class="mf">1.05</span><span class="p">)</span>
+<span class="go">CylindricalWaveBasis(</span>
+<span class="go">    pidx=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0],</span>
+<span class="go">    kz=[-0.9 -0.9 -0.9 -0.9 -0.9 -0.9  0.1  0.1  0.1  0.1  0.1  0.1  1.1  1.1</span>
+<span class="go">  1.1  1.1  1.1  1.1],</span>
+<span class="go">    m=[-1 -1  0  0  1  1 -1 -1  0  0  1  1 -1 -1  0  0  1  1],</span>
+<span class="go">    pol=[1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0],</span>
+<span class="go">    positions=[[0. 0. 0.]],</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">bmax</span></code> defines a distance in reciprocal space.</p>
+<p>The plane wave basis behaves a little bit different. First, it is currently only defined
+with respect to a single origin so the <code class="docutils literal notranslate"><span class="pre">pidx</span></code> and <code class="docutils literal notranslate"><span class="pre">positions</span></code> is not defined. Also,
+the basis can be defined in two ways: <code class="xref py py-class docutils literal notranslate"><span class="pre">PlaneWaveBasisByUnitVector</span></code> and
+<code class="xref py py-class docutils literal notranslate"><span class="pre">PlaneWaveBasisByComp</span></code>. In the first case, the definition is given by the unit
+vector which, multiplied by the wave number in the medium, gives the full wave vector.
+In the second case, two components of the wave vector are given and the remaining third
+Cartesian component is defined such that it fulfils the dispersion relation.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">PlaneWaveBasisByUnitVector</span><span class="p">([(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
+<span class="go">PlaneWaveBasisByUnitVector(</span>
+<span class="go">    qx=[0.8 0.8],</span>
+<span class="go">    qy=[0. 0.],</span>
+<span class="go">    qz=[0.6 0.6],</span>
+<span class="go">    pol=[0 1],</span>
+<span class="go">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">PlaneWaveBasisByComp</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
+<span class="go">PlaneWaveBasisByComp(</span>
+<span class="go">    kx=[1 1],</span>
+<span class="go">    ky=[0 0],</span>
+<span class="go">    pol=[0 1],</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<p>By default, it is assumed, that the x- and y- components are given for the latter class,
+but other components can also be chosen.</p>
+<p>It is possible to convert between those basis sets by using the corresponding
+functions</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pwbc</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">PlaneWaveBasisByComp</span><span class="p">([(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pwbc</span><span class="o">.</span><span class="n">byunitvector</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">PlaneWaveBasisByUnitVector(</span>
+<span class="go">    qx=[0.6+0.j 0.6+0.j],</span>
+<span class="go">    qy=[0.+0.j 0.+0.j],</span>
+<span class="go">    qz=[0.8+0.j 0.8+0.j],</span>
+<span class="go">    pol=[0 1],</span>
+<span class="go">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pwbuv</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">PlaneWaveBasisByUnitVector</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pwbuv</span><span class="o">.</span><span class="n">bycomp</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">PlaneWaveBasisByComp(</span>
+<span class="go">    kx=[0. 0.],</span>
+<span class="go">    ky=[0. 0.],</span>
+<span class="go">    pol=[0 1],</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+<p>Additionally, similar to the case of cylindrical waves, the basis by components can be
+used for a range of diffraction orders</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">PlaneWaveBasisByComp</span><span class="o">.</span><span class="n">diffr_orders</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="mi">7</span><span class="p">)</span>
+<span class="go">PlaneWaveBasisByComp(</span>
+<span class="go">    kx=[ 0.          0.          0.          0.          0.          0.</span>
+<span class="go">  6.28318531  6.28318531 -6.28318531 -6.28318531],</span>
+<span class="go">    ky=[ 0.          0.          6.28318531  6.28318531 -6.28318531 -6.28318531</span>
+<span class="go">  0.          0.          0.          0.        ],</span>
+<span class="go">    pol=[1 0 1 0 1 0 1 0 1 0],</span>
+<span class="go">)</span>
+</pre></div>
+</div>
+</section>
+<section id="polarizations">
+<h2>Polarizations<a class="headerlink" href="#polarizations" title="Permalink to this heading">¶</a></h2>
+<p>The definitions of the basis sets above are not complete without specifying the
+polarization types. In <em>treams</em> two polarization types are supported: <cite>helicity</cite> and
+<cite>parity</cite>. The first allows the use of chiral material parameters. Each polarization type
+contains two polarizations that are indicated by the integers <cite>0</cite> and <cite>1</cite> throughout the
+code. For helicity polarizations <cite>0</cite> stands for negative helicity and <cite>1</cite> for positive
+helicity. In the case of parity polarizations <cite>0</cite> stands for <cite>TE</cite> or <cite>magnetic</cite>
+polarization and <cite>1</cite> for <cite>TM</cite> or <cite>electric</cite> polarizations. The magnetic parity waves are
+defined in <a class="reference internal" href="generated/treams.special.vsw_M.html#treams.special.vsw_M" title="treams.special.vsw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_M()</span></code></a>, <a class="reference internal" href="generated/treams.special.vsw_rM.html#treams.special.vsw_rM" title="treams.special.vsw_rM"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_rM()</span></code></a>,
+<a class="reference internal" href="generated/treams.special.vcw_M.html#treams.special.vcw_M" title="treams.special.vcw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_M()</span></code></a>, <a class="reference internal" href="generated/treams.special.vcw_rM.html#treams.special.vcw_rM" title="treams.special.vcw_rM"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_rM()</span></code></a>, and
+<a class="reference internal" href="generated/treams.special.vpw_M.html#treams.special.vpw_M" title="treams.special.vpw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vpw_M()</span></code></a>. For spherical waves they are transverse with respect to
+the radial direction, for cylindrical and plane waves they are transverse to the z-axis.
+The corresponding electric parity waves are <a class="reference internal" href="generated/treams.special.vsw_N.html#treams.special.vsw_N" title="treams.special.vsw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_N()</span></code></a>,
+<a class="reference internal" href="generated/treams.special.vsw_rN.html#treams.special.vsw_rN" title="treams.special.vsw_rN"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_rN()</span></code></a>, <a class="reference internal" href="generated/treams.special.vcw_N.html#treams.special.vcw_N" title="treams.special.vcw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_N()</span></code></a>,
+<a class="reference internal" href="generated/treams.special.vcw_rN.html#treams.special.vcw_rN" title="treams.special.vcw_rN"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_rN()</span></code></a>, and <a class="reference internal" href="generated/treams.special.vpw_N.html#treams.special.vpw_N" title="treams.special.vpw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vpw_N()</span></code></a>.</p>
+<p>The helicity waves are defined in <a class="reference internal" href="generated/treams.special.vsw_A.html#treams.special.vsw_A" title="treams.special.vsw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_A()</span></code></a>,
+<a class="reference internal" href="generated/treams.special.vsw_rA.html#treams.special.vsw_rA" title="treams.special.vsw_rA"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_rA()</span></code></a>, <a class="reference internal" href="generated/treams.special.vcw_A.html#treams.special.vcw_A" title="treams.special.vcw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_A()</span></code></a>,
+<a class="reference internal" href="generated/treams.special.vcw_rA.html#treams.special.vcw_rA" title="treams.special.vcw_rA"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_rA()</span></code></a>, and <a class="reference internal" href="generated/treams.special.vpw_A.html#treams.special.vpw_A" title="treams.special.vpw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vpw_A()</span></code></a>.</p>
+<p>The default polarization type to be used can by setting <code class="docutils literal notranslate"><span class="pre">treams.config.POLTYPE</span></code> to the
+corresponding string.</p>
+</section>
+<section id="mode-types">
+<h2>Mode types<a class="headerlink" href="#mode-types" title="Permalink to this heading">¶</a></h2>
+<p>For some basis sets there exist two different types of modes, that distinguish
+propagation features. For the spherical and cylindrical basis theses are <cite>regular</cite>
+and <cite>singular</cite> modes. The former come through the use of (spherical) Bessel Functions
+and the latter through the use of (spherical) Hankel functions of the first kind. The
+regular modes are finite in the whole space. Thus, they are suitable for describing
+incident modes or to expand a plane wave. The singular modes fulfil the radiation
+condition and as such are used for the scattered fields.</p>
+<p>For the plane wave basis of type (<a class="reference internal" href="generated/treams.PlaneWaveBasisByComp.html#treams.PlaneWaveBasisByComp" title="treams.PlaneWaveBasisByComp"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlaneWaveBasisByComp</span></code></a>) only two
+components of the wave vector are given and the third component is only implicitly
+defined by the wave number and the material parameters. The application for this basis
+is mostly within stratified media that are uniform or periodic in the two other
+dimensions. Thus, the two given components of the wave vectors are conserved up to
+reciprocal lattice vectors. To lift the ambiguity of the definition of the third
+component, the mode types <cite>up</cite> and <cite>down</cite> are possible. They define, if the modes
+propagate – or decay for evanescent modes – along the positive or negative direction
+with respect to the third axis.</p>
+</section>
+<section id="vacuum-wave-number">
+<h2>Vacuum wave number<a class="headerlink" href="#vacuum-wave-number" title="Permalink to this heading">¶</a></h2>
+<p>All calculations are executed in frequency domain. Instead of defining the frequency
+<span class="math notranslate nohighlight">\(\nu\)</span> or the angular frequency <span class="math notranslate nohighlight">\(\omega\)</span> itself, <em>treams</em> works by using the
+vacuum wave number</p>
+<div class="math notranslate nohighlight">
+\[k_0 = \frac{2 \pi \nu}{c} = \frac{\omega}{c}\]</div>
+<p>where <span class="math notranslate nohighlight">\(c\)</span> is the speed of light in vacuum. In the code this real-valued number is
+usually referred to by <code class="docutils literal notranslate"><span class="pre">k0</span></code>. Implicitly, it is assumed throughout that all quantities,
+like wave numbers, wave vectors, distances, or lattice vectors are given in the same
+unit of (inverse) length.</p>
+</section>
+<section id="materials">
+<h2>Materials<a class="headerlink" href="#materials" title="Permalink to this heading">¶</a></h2>
+<p>For materials there exists the class <a class="reference internal" href="generated/treams.Material.html#treams.Material" title="treams.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">Material</span></code></a>, which holds the values
+of the relative permittivity, relative permeability, and the chirality parameter. The
+default material is air and can be initialized without any parameters. For other cases,
+the parameters can be given in the order above.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">Material</span><span class="p">()</span>
+<span class="go">Material(1, 1, 0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">Material</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">Material(3, 2, 1)</span>
+</pre></div>
+</div>
+<p>It’s also possible to get the parameters from the refractive index (or the refractive
+indices for negative and positive helicity) and the impedance</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">Material</span><span class="o">.</span><span class="n">from_n</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">Material(9.0, 1.0, 0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">Material</span><span class="o">.</span><span class="n">from_nmp</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="go">Material(16.0, 1.0, 1.0)</span>
+</pre></div>
+</div>
+</section>
+<section id="lattices">
+<h2>Lattices<a class="headerlink" href="#lattices" title="Permalink to this heading">¶</a></h2>
+<p>The periodicity of arrangements is given by defining an instance of the class
+<a class="reference internal" href="generated/treams.Lattice_class.html#treams.Lattice" title="treams.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a>. A lattice can be one-, two-, or three-dimensional.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">Lattice(1.0, alignment=&#39;z&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">Lattice</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">.5</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="go">Lattice([[ 1.   0.5]</span>
+<span class="go">         [-0.5  1. ]], alignment=&#39;xy&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">Lattice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">Lattice([[1. 0. 0.]</span>
+<span class="go">         [0. 2. 0.]</span>
+<span class="go">         [0. 0. 3.]], alignment=&#39;xyz&#39;)</span>
+</pre></div>
+</div>
+<p>The one- and two-dimensional lattices have to be aligned with one and two, respectively,
+Cartesian axes. The default alignments are along the z-axis for one-dimensional and in
+the x-y-plane for the two-dimensional lattices. In the last example we see that it is
+sufficient to just specify the diagonal entries. It’s also possible to automatically
+create special lattice shapes, for example</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">Lattice</span><span class="o">.</span><span class="n">hexagonal</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">Lattice([[2.         0.        ]</span>
+<span class="go">         [1.         1.73205081]], alignment=&#39;xy&#39;)</span>
+</pre></div>
+</div>
+<p>creates a hexagonal lattice with sidelength 2. It’s also possible to extract a
+lower-dimensional sublattice</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lat_3d</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">Lattice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="n">lat_3d</span><span class="p">,</span> <span class="s2">&quot;zx&quot;</span><span class="p">)</span>
+<span class="go">Lattice([[0. 1.]</span>
+<span class="go">         [3. 0.]], alignment=&#39;zx&#39;)</span>
+</pre></div>
+</div>
+<p>or to combine and compare lattices</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="n">treams</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span>
+<span class="go">Lattice([[1. 0.]</span>
+<span class="go">         [0. 2.]], alignment=&#39;xy&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">Lattice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;xy&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">treams</span><span class="o">.</span><span class="n">Lattice</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;yz&quot;</span><span class="p">)</span>
+<span class="go">Lattice(2.0, alignment=&#39;y&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">treams</span><span class="o">.</span><span class="n">Lattice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;xy&quot;</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>The volume of the lattice can also be obtained</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">Lattice</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span><span class="o">.</span><span class="n">volume</span>
+<span class="go">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">Lattice</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span><span class="o">.</span><span class="n">volume</span>
+<span class="go">-1.0</span>
+</pre></div>
+</div>
+<p>as we see the volume is “signed”, i.e. it shows if the lattice vectors are in a
+right-handed order, and the reciprocal lattice vectors can be computed</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">Lattice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">reciprocal</span>
+<span class="go">array([[ 6.28318531, -0.        ],</span>
+<span class="go">       [-0.        ,  6.28318531]])</span>
+</pre></div>
+</div>
+</section>
+<section id="phase-vector">
+<h2>Phase vector<a class="headerlink" href="#phase-vector" title="Permalink to this heading">¶</a></h2>
+<p>The wave vector, often referred to as <code class="docutils literal notranslate"><span class="pre">kpar</span></code>, specifies the phase relationship of
+different lattice sites <span class="math notranslate nohighlight">\(\exp(\mathrm i \boldsymbol k_\parallel \boldsymbol R)\)</span>.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">WaveVector</span><span class="p">()</span>
+<span class="go">WaveVector(nan, nan, nan)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">WaveVector</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">WaveVector(nan, nan, 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">WaveVector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="go">WaveVector(1, nan, nan)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">WaveVector</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">WaveVector(1, 2, nan)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">WaveVector</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="go">WaveVector(1, 2, 3)</span>
+</pre></div>
+</div>
+<p>where unspecified directions are represented as <code class="docutils literal notranslate"><span class="pre">nan</span></code>. The wave vectors can be
+combined and compared.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">WaveVector</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">|</span> <span class="n">treams</span><span class="o">.</span><span class="n">WaveVector</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="s2">&quot;yz&quot;</span><span class="p">)</span>
+<span class="go">WaveVector(nan, 2, nan)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">WaveVector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">treams</span><span class="o">.</span><span class="n">WaveVector</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span>
+<span class="go">WaveVector(1, 2, nan)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">WaveVector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">treams</span><span class="o">.</span><span class="n">WaveVector</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Note that the ordering is from less strict wave vector to the stricter one.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="treams.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">Development and contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+</ul>
+
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="intro.html"
+                          title="previous chapter">Introduction</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="physicsarray.html"
+                          title="next chapter">Physics-aware arrays</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/params.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="physicsarray.html" title="Physics-aware arrays"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="Introduction"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev136+g3e3ba599 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="intro.html" >Introduction</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Basis sets and other core parameters</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Dominik Beutel.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+    </div>
+  </body>
+</html>

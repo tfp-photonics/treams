@@ -1,6 +1,0 @@
-treams.PlaneWaveBasisAngle.\_\_or\_\_
-=====================================
-
-.. currentmodule:: treams
-
-.. automethod:: PlaneWaveBasisAngle.__or__

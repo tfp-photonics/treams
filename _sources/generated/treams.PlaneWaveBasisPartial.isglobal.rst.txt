@@ -1,4 +1,0 @@
-treams.PlaneWaveBasisPartial.isglobal
-=====================================
-
-.. autoattribute:: treams.PlaneWaveBasisPartial.isglobal

@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisByComp.permute
+===================================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasisByComp.permute

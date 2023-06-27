@@ -1,0 +1,4 @@
+treams.SMatrix.expandlattice
+============================
+
+.. autoattribute:: treams.SMatrix.expandlattice

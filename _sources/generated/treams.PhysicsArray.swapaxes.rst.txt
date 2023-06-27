@@ -1,0 +1,6 @@
+treams.PhysicsArray.swapaxes
+============================
+
+.. currentmodule:: treams
+
+.. automethod:: PhysicsArray.swapaxes

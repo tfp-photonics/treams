@@ -1,0 +1,6 @@
+treams.SMatrix.all
+==================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.all

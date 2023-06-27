@@ -1,0 +1,6 @@
+treams.SMatrix.flatten
+======================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.flatten

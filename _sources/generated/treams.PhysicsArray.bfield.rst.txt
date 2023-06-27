@@ -1,0 +1,4 @@
+treams.PhysicsArray.bfield
+==========================
+
+.. autoattribute:: treams.PhysicsArray.bfield

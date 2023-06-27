@@ -1,0 +1,6 @@
+treams.SMatrix.conj
+===================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.conj

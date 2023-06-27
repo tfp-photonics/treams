@@ -1,6 +1,0 @@
-treams.TMatrixC.couple
-======================
-
-.. currentmodule:: treams
-
-.. automethod:: TMatrixC.couple

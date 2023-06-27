@@ -1,0 +1,4 @@
+treams.TMatrix.interaction
+==========================
+
+.. autoattribute:: treams.TMatrix.interaction

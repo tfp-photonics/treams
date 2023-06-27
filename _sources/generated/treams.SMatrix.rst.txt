@@ -7,6 +7,31 @@
 
   
   
+      .. rubric:: Attributes
+
+      .. autosummary::
+         :toctree:
+      
+         ~SMatrix.T
+         ~SMatrix.ann
+         ~SMatrix.bfield
+         ~SMatrix.changepoltype
+         ~SMatrix.dfield
+         ~SMatrix.efield
+         ~SMatrix.expand
+         ~SMatrix.expandlattice
+         ~SMatrix.ffield
+         ~SMatrix.gfield
+         ~SMatrix.hfield
+         ~SMatrix.imag
+         ~SMatrix.ndim
+         ~SMatrix.permute
+         ~SMatrix.real
+         ~SMatrix.rotate
+         ~SMatrix.shape
+         ~SMatrix.size
+         ~SMatrix.translate
+  
   
 
   
@@ -16,35 +41,86 @@
          :toctree:
 
       
+         ~SMatrix.__abs__
+         ~SMatrix.__add__
+         ~SMatrix.__and__
+         ~SMatrix.__array__
+         ~SMatrix.__array_function__
+         ~SMatrix.__array_ufunc__
+         ~SMatrix.__divmod__
          ~SMatrix.__eq__
+         ~SMatrix.__floordiv__
          ~SMatrix.__ge__
          ~SMatrix.__getitem__
          ~SMatrix.__gt__
+         ~SMatrix.__invert__
          ~SMatrix.__le__
+         ~SMatrix.__len__
+         ~SMatrix.__lshift__
          ~SMatrix.__lt__
+         ~SMatrix.__matmul__
+         ~SMatrix.__mod__
+         ~SMatrix.__mul__
          ~SMatrix.__ne__
+         ~SMatrix.__neg__
+         ~SMatrix.__or__
+         ~SMatrix.__pos__
+         ~SMatrix.__pow__
          ~SMatrix.__repr__
+         ~SMatrix.__rshift__
+         ~SMatrix.__setitem__
          ~SMatrix.__str__
-         ~SMatrix.add
-         ~SMatrix.bands_kz
-         ~SMatrix.cd
-         ~SMatrix.chirality_density
-         ~SMatrix.double
-         ~SMatrix.from_array
-         ~SMatrix.illuminate
-         ~SMatrix.interface
-         ~SMatrix.periodic
-         ~SMatrix.poynting_avg
-         ~SMatrix.propagation
-         ~SMatrix.slab
-         ~SMatrix.stack
-         ~SMatrix.tr
+         ~SMatrix.__sub__
+         ~SMatrix.__truediv__
+         ~SMatrix.__xor__
+         ~SMatrix.all
+         ~SMatrix.any
+         ~SMatrix.astype
+         ~SMatrix.conj
+         ~SMatrix.conjugate
+         ~SMatrix.cumprod
+         ~SMatrix.cumsum
+         ~SMatrix.diagonal
+         ~SMatrix.flatten
+         ~SMatrix.max
+         ~SMatrix.min
+         ~SMatrix.prod
+         ~SMatrix.relax
+         ~SMatrix.sum
+         ~SMatrix.swapaxes
+         ~SMatrix.trace
+         ~SMatrix.transpose
       
-         ~SMatrix.__str__
-         ~SMatrix.__ge__
-         ~SMatrix.__gt__
-         ~SMatrix.__le__
+         ~SMatrix.__lshift__
+         ~SMatrix.__array__
+         ~SMatrix.__neg__
+         ~SMatrix.__add__
+         ~SMatrix.__getitem__
+         ~SMatrix.__pos__
+         ~SMatrix.__truediv__
+         ~SMatrix.__array_ufunc__
          ~SMatrix.__repr__
+         ~SMatrix.__array_function__
+         ~SMatrix.__xor__
+         ~SMatrix.__floordiv__
+         ~SMatrix.__mod__
+         ~SMatrix.__gt__
+         ~SMatrix.__len__
+         ~SMatrix.__eq__
          ~SMatrix.__ne__
          ~SMatrix.__lt__
+         ~SMatrix.__rshift__
+         ~SMatrix.__str__
+         ~SMatrix.__abs__
+         ~SMatrix.__and__
+         ~SMatrix.__ge__
+         ~SMatrix.__mul__
+         ~SMatrix.__sub__
+         ~SMatrix.__pow__
+         ~SMatrix.__invert__
+         ~SMatrix.__divmod__
+         ~SMatrix.__le__
+         ~SMatrix.__setitem__
+         ~SMatrix.__matmul__
+         ~SMatrix.__or__
   

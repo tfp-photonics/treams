@@ -1,0 +1,4 @@
+treams.SMatrix.expand
+=====================
+
+.. autoattribute:: treams.SMatrix.expand

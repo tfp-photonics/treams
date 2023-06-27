@@ -1,0 +1,6 @@
+treams.SMatrix.\_\_matmul\_\_
+=============================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrix.__matmul__

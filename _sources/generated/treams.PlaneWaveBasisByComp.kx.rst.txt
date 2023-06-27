@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisByComp.kx
+==============================
+
+.. currentmodule:: treams
+
+.. autoproperty:: PlaneWaveBasisByComp.kx

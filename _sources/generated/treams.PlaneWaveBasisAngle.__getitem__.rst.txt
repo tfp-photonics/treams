@@ -1,6 +1,0 @@
-treams.PlaneWaveBasisAngle.\_\_getitem\_\_
-==========================================
-
-.. currentmodule:: treams
-
-.. automethod:: PlaneWaveBasisAngle.__getitem__

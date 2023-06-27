@@ -14,14 +14,21 @@
       
          ~TMatrixC.T
          ~TMatrixC.ann
+         ~TMatrixC.bfield
          ~TMatrixC.changepoltype
+         ~TMatrixC.dfield
          ~TMatrixC.efield
          ~TMatrixC.expand
          ~TMatrixC.expandlattice
+         ~TMatrixC.ffield
+         ~TMatrixC.gfield
+         ~TMatrixC.hfield
          ~TMatrixC.imag
+         ~TMatrixC.interaction
          ~TMatrixC.isglobal
          ~TMatrixC.krhos
          ~TMatrixC.ks
+         ~TMatrixC.latticeinteraction
          ~TMatrixC.ndim
          ~TMatrixC.permute
          ~TMatrixC.real
@@ -55,6 +62,7 @@
          ~TMatrixC.__gt__
          ~TMatrixC.__invert__
          ~TMatrixC.__le__
+         ~TMatrixC.__len__
          ~TMatrixC.__lshift__
          ~TMatrixC.__lt__
          ~TMatrixC.__matmul__
@@ -78,8 +86,6 @@
          ~TMatrixC.cluster
          ~TMatrixC.conj
          ~TMatrixC.conjugate
-         ~TMatrixC.couple
-         ~TMatrixC.couple_lattice
          ~TMatrixC.cumprod
          ~TMatrixC.cumsum
          ~TMatrixC.cylinder
@@ -87,49 +93,46 @@
          ~TMatrixC.flatten
          ~TMatrixC.from_array
          ~TMatrixC.globalmat
-         ~TMatrixC.interacted
-         ~TMatrixC.interacted_lattice
          ~TMatrixC.max
          ~TMatrixC.min
          ~TMatrixC.prod
          ~TMatrixC.relax
-         ~TMatrixC.rotated
          ~TMatrixC.sum
+         ~TMatrixC.swapaxes
          ~TMatrixC.trace
-         ~TMatrixC.translated
          ~TMatrixC.transpose
          ~TMatrixC.valid_points
          ~TMatrixC.xw
       
-         ~TMatrixC.__add__
-         ~TMatrixC.__le__
-         ~TMatrixC.__neg__
-         ~TMatrixC.__setitem__
-         ~TMatrixC.__truediv__
-         ~TMatrixC.__and__
-         ~TMatrixC.__xor__
-         ~TMatrixC.__ne__
-         ~TMatrixC.__array__
-         ~TMatrixC.__divmod__
-         ~TMatrixC.__pos__
-         ~TMatrixC.__gt__
-         ~TMatrixC.__array_function__
-         ~TMatrixC.__eq__
-         ~TMatrixC.__lt__
-         ~TMatrixC.__getitem__
-         ~TMatrixC.__repr__
-         ~TMatrixC.__mul__
-         ~TMatrixC.__invert__
-         ~TMatrixC.__matmul__
-         ~TMatrixC.__pow__
-         ~TMatrixC.__str__
-         ~TMatrixC.__ge__
-         ~TMatrixC.__abs__
          ~TMatrixC.__lshift__
-         ~TMatrixC.__floordiv__
+         ~TMatrixC.__array__
+         ~TMatrixC.__neg__
+         ~TMatrixC.__add__
+         ~TMatrixC.__pos__
+         ~TMatrixC.__truediv__
          ~TMatrixC.__array_ufunc__
-         ~TMatrixC.__or__
+         ~TMatrixC.__repr__
+         ~TMatrixC.__array_function__
+         ~TMatrixC.__xor__
+         ~TMatrixC.__floordiv__
          ~TMatrixC.__mod__
+         ~TMatrixC.__gt__
+         ~TMatrixC.__len__
+         ~TMatrixC.__eq__
+         ~TMatrixC.__ne__
+         ~TMatrixC.__lt__
          ~TMatrixC.__rshift__
+         ~TMatrixC.__str__
+         ~TMatrixC.__abs__
+         ~TMatrixC.__and__
+         ~TMatrixC.__ge__
+         ~TMatrixC.__mul__
          ~TMatrixC.__sub__
+         ~TMatrixC.__pow__
+         ~TMatrixC.__invert__
+         ~TMatrixC.__divmod__
+         ~TMatrixC.__le__
+         ~TMatrixC.__setitem__
+         ~TMatrixC.__matmul__
+         ~TMatrixC.__or__
   

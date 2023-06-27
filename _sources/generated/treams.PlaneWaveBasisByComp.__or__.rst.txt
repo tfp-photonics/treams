@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisByComp.\_\_or\_\_
+======================================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasisByComp.__or__

@@ -1,0 +1,6 @@
+treams.SMatrix.shape
+====================
+
+.. currentmodule:: treams
+
+.. autoproperty:: SMatrix.shape

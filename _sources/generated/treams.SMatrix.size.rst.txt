@@ -1,0 +1,6 @@
+treams.SMatrix.size
+===================
+
+.. currentmodule:: treams
+
+.. autoproperty:: SMatrix.size

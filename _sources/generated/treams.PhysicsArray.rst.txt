@@ -14,10 +14,15 @@
       
          ~PhysicsArray.T
          ~PhysicsArray.ann
+         ~PhysicsArray.bfield
          ~PhysicsArray.changepoltype
+         ~PhysicsArray.dfield
          ~PhysicsArray.efield
          ~PhysicsArray.expand
          ~PhysicsArray.expandlattice
+         ~PhysicsArray.ffield
+         ~PhysicsArray.gfield
+         ~PhysicsArray.hfield
          ~PhysicsArray.imag
          ~PhysicsArray.ndim
          ~PhysicsArray.permute
@@ -50,6 +55,7 @@
          ~PhysicsArray.__gt__
          ~PhysicsArray.__invert__
          ~PhysicsArray.__le__
+         ~PhysicsArray.__len__
          ~PhysicsArray.__lshift__
          ~PhysicsArray.__lt__
          ~PhysicsArray.__matmul__
@@ -81,36 +87,38 @@
          ~PhysicsArray.prod
          ~PhysicsArray.relax
          ~PhysicsArray.sum
+         ~PhysicsArray.swapaxes
          ~PhysicsArray.trace
          ~PhysicsArray.transpose
       
-         ~PhysicsArray.__add__
-         ~PhysicsArray.__getitem__
-         ~PhysicsArray.__le__
-         ~PhysicsArray.__neg__
-         ~PhysicsArray.__setitem__
-         ~PhysicsArray.__truediv__
-         ~PhysicsArray.__and__
-         ~PhysicsArray.__mul__
-         ~PhysicsArray.__xor__
-         ~PhysicsArray.__invert__
-         ~PhysicsArray.__matmul__
-         ~PhysicsArray.__ne__
-         ~PhysicsArray.__pow__
-         ~PhysicsArray.__array__
-         ~PhysicsArray.__divmod__
-         ~PhysicsArray.__str__
-         ~PhysicsArray.__ge__
-         ~PhysicsArray.__pos__
-         ~PhysicsArray.__abs__
-         ~PhysicsArray.__gt__
          ~PhysicsArray.__lshift__
-         ~PhysicsArray.__floordiv__
-         ~PhysicsArray.__array_function__
-         ~PhysicsArray.__eq__
-         ~PhysicsArray.__or__
          ~PhysicsArray.__mod__
-         ~PhysicsArray.__rshift__
-         ~PhysicsArray.__sub__
+         ~PhysicsArray.__gt__
+         ~PhysicsArray.__array__
+         ~PhysicsArray.__len__
+         ~PhysicsArray.__eq__
+         ~PhysicsArray.__neg__
+         ~PhysicsArray.__ne__
+         ~PhysicsArray.__str__
          ~PhysicsArray.__lt__
+         ~PhysicsArray.__rshift__
+         ~PhysicsArray.__abs__
+         ~PhysicsArray.__and__
+         ~PhysicsArray.__add__
+         ~PhysicsArray.__ge__
+         ~PhysicsArray.__mul__
+         ~PhysicsArray.__getitem__
+         ~PhysicsArray.__pos__
+         ~PhysicsArray.__sub__
+         ~PhysicsArray.__truediv__
+         ~PhysicsArray.__pow__
+         ~PhysicsArray.__invert__
+         ~PhysicsArray.__array_function__
+         ~PhysicsArray.__divmod__
+         ~PhysicsArray.__xor__
+         ~PhysicsArray.__le__
+         ~PhysicsArray.__setitem__
+         ~PhysicsArray.__matmul__
+         ~PhysicsArray.__floordiv__
+         ~PhysicsArray.__or__
   

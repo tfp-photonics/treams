@@ -1,6 +1,0 @@
-treams.PlaneWaveBasisAngle.partial
-==================================
-
-.. currentmodule:: treams
-
-.. automethod:: PlaneWaveBasisAngle.partial

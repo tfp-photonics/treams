@@ -1,6 +1,0 @@
-treams.PlaneWaveBasisPartial.diffr\_orders
-==========================================
-
-.. currentmodule:: treams
-
-.. automethod:: PlaneWaveBasisPartial.diffr_orders

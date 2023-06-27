@@ -1,6 +1,0 @@
-treams.SMatrix.chirality\_density
-=================================
-
-.. currentmodule:: treams
-
-.. automethod:: SMatrix.chirality_density

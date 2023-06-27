@@ -1,6 +1,0 @@
-treams.SMatrix.poynting\_avg
-============================
-
-.. currentmodule:: treams
-
-.. automethod:: SMatrix.poynting_avg

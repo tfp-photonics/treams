@@ -1,4 +1,0 @@
-treams.PlaneWaveBasisAngle.isglobal
-===================================
-
-.. autoattribute:: treams.PlaneWaveBasisAngle.isglobal
