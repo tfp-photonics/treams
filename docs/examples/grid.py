@@ -7,14 +7,16 @@ k0 = 2 * np.pi / 700
 materials = [treams.Material(-16.5 + 1j), treams.Material()]
 lmax = 3
 radii = [75, 75]
-positions = [[-30, 0, -75], [30, 0, 75]]
-lattice = 300
-kz = 0
+positions = [[-75, 0, 30], [75, 0, -30]]
+lattice = treams.Lattice.square(300)
+kpar = [0, 0]
 
 spheres = [treams.TMatrix.sphere(lmax, k0, r, materials) for r in radii]
-chain = treams.TMatrix.cluster(spheres, positions).latticeinteraction.solve(lattice, kz)
+chain = treams.TMatrix.cluster(spheres, positions).latticeinteraction.solve(
+    lattice, kpar
+)
 
-inc = treams.plane_wave([k0, 0, 0], [0, 0, 1], k0=chain.k0, material=chain.material)
+inc = treams.plane_wave([0, 0, k0], [-1, 0, 0], k0=chain.k0, material=chain.material)
 sca = chain @ inc.expand(chain.basis)
 
 grid = np.mgrid[-150:150:31j, 0:1, -150:150:31j].squeeze().transpose((1, 2, 0))
@@ -34,8 +36,8 @@ pcm = ax.pcolormesh(
     grid[:, 0, 0],
     ez.T,
     shading="nearest",
-    vmin=-0.5,
-    vmax=0.5,
+    vmin=-1,
+    vmax=1,
 )
 cb = plt.colorbar(pcm)
 cb.set_label("$E_z$")

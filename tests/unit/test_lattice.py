@@ -2,7 +2,7 @@ import pytest
 
 import numpy as np
 
-from treams import Lattice, PhaseVector
+from treams import Lattice, WaveVector
 
 
 class TestLattice:

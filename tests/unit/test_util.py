@@ -130,6 +130,16 @@ class TestAnnotationSequence:
     def test_eq_true(self):
         assert util.AnnotationSequence({"a": 1}) == util.AnnotationSequence({"a": 1})
 
+    def test_add(self):
+        assert util.AnnotationSequence({"a": 1}) + (
+            {"b": 2},
+        ) == util.AnnotationSequence({"a": 1}, {"b": 2})
+
+    def test_radd(self):
+        assert ({"a": 1},) + util.AnnotationSequence(
+            {"b": 2}
+        ) == util.AnnotationSequence({"a": 1}, {"b": 2})
+
 
 class TestSequenceAsDict:
     def test_set(self):
@@ -287,6 +297,11 @@ class TestAnnotatedArray:
         x = util.AnnotatedArray([[[0, 1], [2, 3]], [[4, 5], [6, 7]]], a=(2, 1, 2))
         y = x[[True, False], :, [1, 0]]
         assert (y == [[1, 3], [0, 2]]).all() and y.ann == ({"a": 2}, {"a": 1})
+
+    def test_getitem_ellipsis_implicit(self):
+        x = util.AnnotatedArray([[1, 2], [3, 4]], a=(2, 1))
+        y = x[1]
+        assert (y == [3, 4]).all() and y.ann == ({"a": 1},)
 
     def test_setitem_slice(self):
         x = util.AnnotatedArray([[1, 2], [3, 4]], a=(0, 1))

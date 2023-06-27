@@ -94,7 +94,7 @@ class TestProperties:
 
     def test_modes(self):
         tm = TMatrix.sphere(2, 3, [4], [(2 + 1j, 1, 1), (9, 1, 2)])
-        l, m, pol = tm.basis["lmp"]
+        l, m, pol = tm.basis.lms
         assert (
             np.all(l == 6 * [1] + 10 * [2])
             and np.all(m == [-1, -1, 0, 0, 1, 1, -2, -2, -1, -1, 0, 0, 1, 1, 2, 2])
@@ -118,18 +118,18 @@ class TestTranslate:
         tm = TMatrix.sphere(3, 0.1, [0.2], [(2 + 1j, 1.1, 1), (9, 1, 2)])
         m = copy.deepcopy(tm)
         rs = np.array([[0.1, 0.2, 0.3], [-0.4, -0.5, -0.4]])
-        tm = tm.translated(rs[0])
-        tm = tm.translated(rs[1])
-        tm = tm.translated(-rs[0] - rs[1])
+        tm = tm.translate(rs[0])
+        tm = tm.translate(rs[1])
+        tm = tm.translate(-rs[0] - rs[1])
         assert np.all(np.abs(tm - m) < 1e-8)
 
     def test_kappa_zero(self):
         tm = TMatrix.sphere(3, 0.1, [0.2], [(2 + 1j, 1.1), (9, 1)])
         m = copy.deepcopy(tm)
         rs = np.array([[0.1, 0.2, 0.3], [-0.4, -0.5, -0.4]])
-        tm.translated(rs[0])
-        tm.translated(rs[1])
-        tm.translated(-rs[0] - rs[1])
+        tm.translate(rs[0])
+        tm.translate(rs[1])
+        tm.translate(-rs[0] - rs[1])
         assert np.all(np.abs(tm - m) < 1e-8)
 
 
@@ -138,12 +138,12 @@ class TestClusterRotate:
         tms = [TMatrix.sphere(3, 0.1, [0.1], [i * i, 1]) for i in range(1, 5)]
         rs1 = np.array([[0, 0, 0], [0.2, 0, 0], [0, 0.2, 0], [0, 0, 0.2]])
         tm1 = TMatrix.cluster(tms, rs1)
-        tm1 = tm1.interacted().globalmat()
-        tm1 = tm1.rotate(1, 2, 3) @ tm1 @ tm1.rotate.inv(1, 2, 3)
+        tm1 = tm1.interaction.solve().expand(treams.SphericalWaveBasis.default(3))
+        tm1 = tm1.rotate(1, 2, 3)
         a = np.array([[np.cos(1), -np.sin(1), 0], [np.sin(1), np.cos(1), 0], [0, 0, 1]])
         b = np.array([[np.cos(2), 0, np.sin(2)], [0, 1, 0], [-np.sin(2), 0, np.cos(2)]])
         c = np.array([[np.cos(3), -np.sin(3), 0], [np.sin(3), np.cos(3), 0], [0, 0, 1]])
         rs2 = (a @ b @ c @ rs1.T).T
         tm2 = TMatrix.cluster(tms, rs2)
-        tm2 = tm2.interacted().globalmat()
+        tm2 = tm2.interaction.solve().expand(treams.SphericalWaveBasis.default(3))
         assert np.all(np.abs(tm1 - tm2) < 1e-16)

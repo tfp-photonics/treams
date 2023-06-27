@@ -1,5 +1,7 @@
 """Operators for common transformations including different types of waves."""
 
+import inspect
+
 import numpy as np
 
 import treams._core as core
@@ -7,71 +9,135 @@ import treams.config as config
 import treams.special as sc
 import treams.util as util
 from treams import cw, pw, sw
-from treams._lattice import Lattice
+from treams._lattice import Lattice, WaveVector
 from treams._material import Material
 
 
 class Operator:
+    __array_priority__ = 1.0
     """Operator base class.
 
     An operator is mainly intended to be used as a descriptor on a class. It will then
     automatically obtain attributes from the class that correspond to the variable names
-    of the function that is linked to the operator in the class attribute `_func`. When
+    of the function that is linked to the operator in the class attribute `_FUNC`. When
     called, the remaining arguments have to be specified.
     """
+    _FUNC = None
+
+    def __init__(self, *args, isinv=False):
+        self._args = args
+        self._isinv = bool(isinv)
+
+    @property
+    def isinv(self):
+        return self._isinv
+
+    @property
+    def inv(self):
+        return type(self)(*self._args, isinv=not self.isinv)
+
+    @property
+    def FUNC(self):
+        return self._FUNC
+
+    def __call__(self, **kwargs):
+        if self.isinv:
+            return self._call_inv(**kwargs)
+        return self.FUNC(*self._args, **kwargs)
+
+    def _call_inv(self, **kwargs):
+        return self.FUNC(*self._args, **kwargs)
+
+    def __matmul__(self, other):
+        if isinstance(other, Operator):
+            raise NotImplementedError
+        return self(**self.get_kwargs(other, max(-2, -np.ndim(other)))) @ other
+
+    def __rmatmul__(self, other):
+        return other @ self(**self.get_kwargs(other))
+
+    def get_kwargs(self, obj, dim=-1):
+        kwargs = {}
+        for name, param in inspect.signature(self.FUNC).parameters.items():
+            if param.kind == param.KEYWORD_ONLY:
+                val = getattr(obj, name, None)
+                if isinstance(val, tuple):
+                    val = val[dim]
+                if val is not None:
+                    kwargs[name] = val
+        return kwargs
+
+    def __repr__(self):
+        if len(self._args) == 1:
+            args = f"({self._args[0]})"
+        else:
+            args = str(self._args)
+        if self.isinv:
+            args = args[:-1] + ", isinv=True)"
+        return f"{type(self).__name__}" + args
+
+
+class OperatorAttribute:
+    def __init__(self, op):
+        self._op = op
+        self._obj = self._objtype = None
+
+    @property
+    def OP(self):
+        return self._op
+
+    def eval(self, *args, **kwargs):
+        op = self.OP(*args)
+        dim = max(-2, -np.ndim(self._obj))
+        return op(**self._merge_kwargs(kwargs, op.get_kwargs(self._obj, dim)))
+
+    @staticmethod
+    def _merge_kwargs(kwargsa, kwargsb):
+        for key, val in kwargsb.items():
+            if key == "basis" and key in kwargsa:
+                kwargsa[key] = kwargsa["basis"], val
+            elif key in kwargsa:
+                raise TypeError(f"got multiple values for keyword argument '{key}'")
+            else:
+                kwargsa[key] = val
+        return kwargsa
+
+    def eval_inv(self, *args, **kwargs):
+        op = self.OP(*args).inv
+        return op(**self._merge_kwargs(kwargs, op.get_kwargs(self._obj)))
 
     def __get__(self, obj, objtype=None):
-        """Descriptor method.
-
-        This function obtains the keyword arguments from the object to which it is
-        attached.
-        """
-        kwargs = getattr(obj, "ann", [{}, {}])[-2:]
-        self._kwargs = tuple(
-            map(
-                lambda x: {
-                    key: x[key] for key in self._func.__code__.co_varnames if key in x
-                },
-                kwargs,
-            )
-        )
+        self._obj = obj
+        self._objtype = type(obj) if objtype is None else objtype
         return self
 
     def __call__(self, *args, **kwargs):
-        """Call the operator function."""
-        kwargsa, kwargsb = self._parse_kwargs(kwargs, self._kwargs[0])
-        return self._func(*args, **kwargsa, **kwargsb)
+        if np.ndim(self._obj) == 1:
+            return self.apply_left(*args, **kwargs)
+        try:
+            inv = self.eval_inv(*args, **kwargs)
+        except NotImplementedError:
+            return self.apply_left(*args, **kwargs)
+        if issubclass(self._objtype, util.AnnotatedArray):
+            return self._objtype.relax(self.eval(*args, **kwargs) @ self._obj @ inv)
+        return self.eval(*args, **kwargs) @ self._obj @ inv
 
-    def inv(self, *args, **kwargs):
-        """Inverse operator function."""
-        kwargsa, kwargsb = self._parse_kwargs(self._kwargs[-1], kwargs)
-        return self._func(*args, **kwargsa, **kwargsb)
+    def apply_left(self, *args, **kwargs):
+        return self.eval(*args, **kwargs) @ self._obj
 
-    @staticmethod
-    def _parse_kwargs(kwargsa, kwargsb):
-        """Merge special keyword arguments.
+    def apply_right(self, *args, **kwargs):
+        return self._obj @ self.eval_inv(*args, **kwargs)
 
-        The keywords `basis`, `modetype`, and `poltype` are merged if they appear in
-        both sets of keyword arguments into a tuple.
-
-        Args:
-            kwargsa (mapping): First keyword set.
-            kwargsb (mapping): Second keyword set.
-        """
-        kwargsa = {**kwargsa}
-        kwargsb = {**kwargsb}
-        for key in ("basis", "modetype", "poltype"):
-            if key in kwargsa and key in kwargsb:
-                kwargsa[key] = kwargsa[key], kwargsb.pop(key)
-        return kwargsa, kwargsb
+    def __repr__(self):
+        return f"{type(self).__name__}({self.OP.__name__})"
 
 
 def _sw_rotate(phi, theta, psi, basis, to_basis, where):
     """Rotate spherical waves."""
     where = np.logical_and(where, to_basis.pidx[:, None] == basis.pidx)
     res = sw.rotate(
-        *(m[:, None] for m in to_basis["lmp"]),
-        *basis["lmp"],
+        *(m[:, None] for m in to_basis.lms),
+        *basis.lms,
         phi,
         theta,
         psi,
@@ -85,8 +151,8 @@ def _cw_rotate(phi, basis, to_basis, where):
     """Rotate cylindrical waves."""
     where = np.logical_and(where, to_basis.pidx[:, None] == basis.pidx)
     res = cw.rotate(
-        *(m[:, None] for m in to_basis["kzmp"]),
-        *basis["kzmp"],
+        *(m[:, None] for m in to_basis.zms),
+        *basis.zms,
         phi,
         where=where,
     )
@@ -100,10 +166,14 @@ def _pwa_rotate(phi, basis, where):
     c1, s1 = np.cos(phi), np.sin(phi)
     r = np.array([[c1, -s1, 0], [s1, c1, 0], [0, 0, 1]])
     kvecs = r @ np.array([basis.qx, basis.qy, basis.qz])
-    modes = zip(*kvecs, basis.pol)
     res = np.eye(len(basis))
     res[..., np.logical_not(where)] = 0
-    return core.PhysicsArray(res, basis=(core.PlaneWaveBasisAngle(modes), basis))
+    newbasis = core.PlaneWaveBasisByUnitVector(zip(*kvecs, basis.pol))
+    if basis.lattice is not None:
+        newbasis.lattice = basis.lattice.rotate(phi)
+    if basis.kpar is not None:
+        newbasis.kpar = basis.kpar.rotate(phi)
+    return core.PhysicsArray(res, basis=(newbasis, basis))
 
 
 def _pwp_rotate(phi, basis, where):
@@ -114,10 +184,14 @@ def _pwp_rotate(phi, basis, where):
     c1, s1 = np.cos(phi), np.sin(phi)
     r = np.array([[c1, -s1], [s1, c1]])
     kx, ky, pol = basis[()]
-    modes = zip(*(r @ np.array([kx, ky])), pol)
     res = np.eye(len(basis))
     res[..., np.logical_not(where)] = 0
-    return core.PhysicsArray(res, basis=(core.PlaneWaveBasisPartial(modes), basis))
+    newbasis = core.PlaneWaveBasisByComp(zip(*(r @ np.array([kx, ky])), pol))
+    if basis.lattice is not None:
+        newbasis.lattice = basis.lattice.rotate(phi)
+    if basis.kpar is not None:
+        newbasis.kpar = basis.kpar.rotate(phi)
+    return core.PhysicsArray(res, basis=(newbasis, basis))
 
 
 def rotate(phi, theta=0, psi=0, *, basis, where=True):
@@ -145,33 +219,28 @@ def rotate(phi, theta=0, psi=0, *, basis, where=True):
         return _sw_rotate(phi, theta, psi, basis, to_basis, where)
     if theta != 0:
         raise ValueError("non-zero theta for rotation")
+    phi = phi + psi
     if isinstance(basis, core.CylindricalWaveBasis):
         return _cw_rotate(phi, basis, to_basis, where)
     if to_basis != basis:
         raise ValueError("invalid basis")
-    if isinstance(basis, core.PlaneWaveBasisPartial):
+    if isinstance(basis, core.PlaneWaveBasisByComp):
         return _pwp_rotate(phi, basis, where)
-    if isinstance(basis, core.PlaneWaveBasis):
+    if isinstance(basis, core.PlaneWaveBasisByUnitVector):
         return _pwa_rotate(phi, basis, where)
     raise TypeError("invalid basis")
 
 
 class Rotate(Operator):
-    """Rotation matrix.
+    _FUNC = staticmethod(rotate)
 
-    When called as attribute of an object it returns a suitable rotation matrix to
-    transform it. See also :func:`rotate`.
-    """
+    def __init__(self, phi, theta=0, psi=0, *, isinv=False):
+        super().__init__(phi, theta, psi, isinv=isinv)
 
-    _func = staticmethod(rotate)
-
-    def inv(self, *args, **kwargs):
-        """Inverse rotation.
-
-        This function applies the inverse rotation. In all basis sets this is just the
-        hermitian conjugated matrix, because the rotations for them are unitary.
-        """
-        return self(*args, **kwargs).conj().T
+    def _call_inv(self, **kwargs):
+        if "basis" in kwargs and isinstance(kwargs["basis"], tuple):
+            kwargs["basis"] = kwargs["basis"][::-1]
+        return self.FUNC(*(-a for a in self._args[::-1]), **kwargs)
 
 
 def _sw_translate(r, basis, to_basis, k0, material, poltype, where):
@@ -180,8 +249,8 @@ def _sw_translate(r, basis, to_basis, k0, material, poltype, where):
     ks = k0 * material.nmp
     r = sc.car2sph(r)
     res = sw.translate(
-        *(m[:, None] for m in to_basis["lmp"]),
-        *basis["lmp"],
+        *(m[:, None] for m in to_basis.lms),
+        *basis.lms,
         ks[basis.pol] * r[..., None, None, 0],
         r[..., None, None, 1],
         r[..., None, None, 2],
@@ -207,8 +276,8 @@ def _cw_translate(r, basis, k0, to_basis, material, where):
     krhos[krhos.imag < 0] = -krhos[krhos.imag < 0]
     r = sc.car2cyl(r)
     res = cw.translate(
-        *(m[:, None] for m in to_basis["kzmp"]),
-        *basis["kzmp"],
+        *(m[:, None] for m in to_basis.zms),
+        *basis.zms,
         krhos * r[..., None, None, 0],
         r[..., None, None, 1],
         r[..., None, None, 2],
@@ -267,9 +336,9 @@ def translate(
         k0 (float, optional): Wave number.
         material (:class:`~treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode, only used for
-            :class:`~treams.PlaneWaveBasisPartial`.
+            :class:`~treams.PlaneWaveBasisByComp`.
         poltype (str, optional): Polarization, see also
-            :ref:`polarizations:Polarizations`.
+            :ref:`params:Polarizations`.
         where (array-like, bool, optional): Only evaluate parts of the translation
             matrix, the given array must have a shape that matches the output shape.
     """
@@ -285,7 +354,7 @@ def translate(
         raise ValueError("invalid 'r'")
 
     if isinstance(basis, core.PlaneWaveBasis):
-        if isinstance(basis, core.PlaneWaveBasisPartial):
+        if isinstance(basis, core.PlaneWaveBasisByComp):
             modetype = "up" if modetype is None else modetype
         return _pw_translate(r, basis, k0, to_basis, material, modetype, where)
     if isinstance(basis, core.SphericalWaveBasis):
@@ -302,19 +371,15 @@ class Translate(Operator):
     transform it. See also :func:`translate`.
     """
 
-    _func = staticmethod(translate)
+    _FUNC = staticmethod(translate)
 
-    def inv(self, *args, **kwargs):
-        """Inverse translation.
+    def __init__(self, r, *, isinv=False):
+        super().__init__(r, isinv=isinv)
 
-        The tranlation is essentially along :math:`-r`.
-        """
-        args = list(args)
-        if len(args) > 0:
-            args[0] = np.negative(args[0])
-        if "r" in kwargs:
-            kwargs["r"] = np.negative(kwargs["r"])
-        return super().inv(*args, **kwargs)
+    def _call_inv(self, **kwargs):
+        if "basis" in kwargs and isinstance(kwargs["basis"], tuple):
+            kwargs["basis"] = kwargs["basis"][::-1]
+        return self.FUNC(np.negative(self._args[0]), **kwargs)
 
 
 def _sw_changepoltype(basis, to_basis, poltype, where):
@@ -378,7 +443,7 @@ def changepoltype(poltype=None, *, basis, where=True):
 
     Args:
         poltype (str, optional): Polarization, see also
-            :ref:`polarizations:Polarizations`.
+            :ref:`params:Polarizations`.
         basis (:class:`~treams.BasisSet` or tuple): Basis set, if it is a tuple of two
             basis sets the output and input modes are taken accordingly, else both sets
             of modes are the same.
@@ -396,14 +461,13 @@ def changepoltype(poltype=None, *, basis, where=True):
         poltype = ("parity", "helicity")
     if poltype != ("helicity", "parity") and poltype != ("parity", "helicity"):
         raise ValueError(f"invalid poltype '{poltype}'")
-
     if isinstance(basis, core.SphericalWaveBasis):
         return _sw_changepoltype(basis, to_basis, poltype, where)
     if isinstance(basis, core.CylindricalWaveBasis):
         return _cw_changepoltype(basis, to_basis, poltype, where)
-    if isinstance(basis, core.PlaneWaveBasisPartial):
+    if isinstance(basis, core.PlaneWaveBasisByComp):
         return _pwp_changepoltype(basis, to_basis, poltype, where)
-    if isinstance(basis, core.PlaneWaveBasisAngle):
+    if isinstance(basis, core.PlaneWaveBasisByUnitVector):
         return _pwa_changepoltype(basis, to_basis, poltype, where)
     raise TypeError("invalid basis")
 
@@ -415,28 +479,34 @@ class ChangePoltype(Operator):
     polarization types between `helicity` and `parity`. See also :func:`changepoltype`.
     """
 
-    _func = staticmethod(changepoltype)
+    _FUNC = staticmethod(changepoltype)
 
-    @staticmethod
-    def _parse_kwargs(kwargsa, kwargsb):
-        """Merge special keyword arguments.
+    def __init__(self, poltype=None, *, isinv=False):
+        args = () if poltype is None else (poltype,)
+        super().__init__(*args, isinv=isinv)
 
-        The keywords `basis`, `modetype`, and `poltype` are merged if they appear in
-        both sets of keyword arguments into a tuple.
-
-        Args:
-            kwargsa (mapping): First keyword set.
-            kwargsb (mapping): Second keyword set.
-        """
-        kwargsa = {**kwargsa}
-        kwargsb = {**kwargsb}
+    def get_kwargs(self, obj, dim=-1):
+        kwargs = super().get_kwargs(obj, dim)
+        if self._args:
+            return kwargs
+        val = getattr(obj, "poltype", None)
+        if isinstance(val, tuple):
+            val = val[dim]
         opp = {"parity": "helicity", "helicity": "parity"}
-        for key in ("basis", "modetype", "poltype"):
-            if key in kwargsa and key in kwargsb:
-                kwargsa[key] = kwargsa[key], kwargsb.pop(key)
-            elif key == "poltype" and key in kwargsb:
-                kwargsa[key] = opp[kwargsb[key]], kwargsb.pop(key)
-        return kwargsa, kwargsb
+        if val is not None:
+            kwargs["poltype"] = opp[val]
+        return kwargs
+
+    def _call_inv(self, **kwargs):
+        if "basis" in kwargs and isinstance(kwargs["basis"], tuple):
+            kwargs["basis"] = kwargs["basis"][::-1]
+        opp = {"parity": "helicity", "helicity": "parity"}
+        poltype = self._args[0] if self._args else kwargs.pop("poltype")
+        if isinstance(poltype, tuple):
+            poltype = poltype[::-1]
+        else:
+            poltype = opp[poltype]
+        return self.FUNC(poltype, **kwargs)
 
 
 def _sw_sw_expand(basis, to_basis, to_modetype, k0, material, modetype, poltype, where):
@@ -446,12 +516,12 @@ def _sw_sw_expand(basis, to_basis, to_modetype, k0, material, modetype, poltype,
         or modetype == "singular" == to_modetype
         or (modetype == "singular" and to_modetype == "regular")
     ):
-        raise ValueError(f"invalid expansion from {modetype} to {modetype}")
+        raise ValueError(f"invalid expansion from {modetype} to {to_modetype}")
     rs = sc.car2sph(to_basis.positions[:, None, :] - basis.positions)
     ks = k0 * material.nmp
     res = sw.translate(
-        *(m[:, None] for m in to_basis["lmp"]),
-        *basis["lmp"],
+        *(m[:, None] for m in to_basis.lms),
+        *basis.lms,
         ks[basis.pol] * rs[to_basis.pidx[:, None], basis.pidx, 0],
         rs[to_basis.pidx[:, None], basis.pidx, 1],
         rs[to_basis.pidx[:, None], basis.pidx, 2],
@@ -473,8 +543,8 @@ def _sw_cw_expand(basis, to_basis, k0, material, poltype, where):
     where = np.logical_and(where, to_basis.pidx[:, None] == basis.pidx)
     ks = material.ks(k0)[basis.pol]
     res = cw.to_sw(
-        *(m[:, None] for m in to_basis["lmp"]),
-        *basis["kzmp"],
+        *(m[:, None] for m in to_basis.lms),
+        *basis.zms,
         ks,
         poltype=poltype,
         where=where,
@@ -492,11 +562,11 @@ def _sw_cw_expand(basis, to_basis, k0, material, poltype, where):
 
 def _sw_pw_expand(basis, to_basis, k0, material, modetype, poltype, where):
     """Expand plane waves in spherical waves."""
-    if isinstance(basis, core.PlaneWaveBasisPartial):
+    if isinstance(basis, core.PlaneWaveBasisByComp):
         modetype = "up" if modetype is None else modetype
     kvecs = basis.kvecs(k0, material, modetype)
     res = pw.to_sw(
-        *(m[:, None] for m in to_basis["lmp"]),
+        *(m[:, None] for m in to_basis.lms),
         *kvecs,
         basis.pol,
         poltype=poltype,
@@ -523,12 +593,12 @@ def _cw_cw_expand(basis, to_basis, to_modetype, k0, material, modetype, poltype,
     if modetype == "regular" == to_modetype or modetype == "singular" == to_modetype:
         modetype = to_modetype = None
     elif modetype != "singular" or to_modetype != "regular":
-        raise ValueError(f"invalid expansion from {modetype} to {modetype}")
+        raise ValueError(f"invalid expansion from {modetype} to {to_modetype}")
     rs = sc.car2cyl(to_basis.positions[:, None, :] - basis.positions)
     krhos = material.krhos(k0, basis.kz, basis.pol)
     res = cw.translate(
-        *(m[:, None] for m in to_basis["kzmp"]),
-        *basis["kzmp"],
+        *(m[:, None] for m in to_basis.zms),
+        *basis.zms,
         krhos * rs[to_basis.pidx[:, None], basis.pidx, 0],
         rs[to_basis.pidx[:, None], basis.pidx, 1],
         rs[to_basis.pidx[:, None], basis.pidx, 2],
@@ -544,11 +614,11 @@ def _cw_cw_expand(basis, to_basis, to_modetype, k0, material, modetype, poltype,
 
 def _cw_pw_expand(basis, to_basis, k0, material, modetype, where):
     """Expand plane waves in cylindrical waves."""
-    if isinstance(basis, core.PlaneWaveBasisPartial):
+    if isinstance(basis, core.PlaneWaveBasisByComp):
         modetype = "up" if modetype is None else modetype
     kvecs = basis.kvecs(k0, material, modetype)
     res = pw.to_cw(
-        *(m[:, None] for m in to_basis["kzmp"]),
+        *(m[:, None] for m in to_basis.zms),
         *kvecs,
         basis.pol,
         where=where,
@@ -570,10 +640,10 @@ def _cw_pw_expand(basis, to_basis, k0, material, modetype, where):
 
 def _pw_pw_expand(basis, to_basis, k0, material, modetype, where):
     """Expand plane waves in plane waves."""
-    if isinstance(basis, core.PlaneWaveBasisPartial):
+    if isinstance(basis, core.PlaneWaveBasisByComp):
         modetype = "up" if modetype is None else modetype
     kvecs = basis.kvecs(k0, material, modetype)
-    if isinstance(to_basis, core.PlaneWaveBasisPartial):
+    if isinstance(to_basis, core.PlaneWaveBasisByComp):
         modetype = "up" if modetype is None else modetype
     kx, ky, kz = to_basis.kvecs(k0, material, modetype)
     res = np.array(
@@ -603,7 +673,7 @@ def expand(
     can also be changed, like for spherical and cylindrical waves from `singular` to
     `regular`. Not all expansions are available, only those that result in a discrete
     set of modes. For example, plane waves can be expanded in spherical waves, but the
-    opposite transformation generally requires a continous spectrum (an integral) over
+    opposite transformation generally requires a continuous spectrum (an integral) over
     plane waves.
 
     Args:
@@ -615,7 +685,7 @@ def expand(
         k0 (float, optional): Wave number.
         material (:class:`~treams.Material` or tuple, optional): Material parameters.
         poltype (str, optional): Polarization, see also
-            :ref:`polarizations:Polarizations`.
+            :ref:`params:Polarizations`.
         where (array-like, bool, optional): Only evaluate parts of the expansion matrix,
             the given array must have a shape that matches the output shape.
     """
@@ -673,47 +743,82 @@ class Expand(Operator):
     See also :func:`expand`.
     """
 
-    _func = staticmethod(expand)
+    _FUNC = staticmethod(expand)
 
-    def __call__(self, basis=None, modetype=None, **kwargs):
-        """Create the expansion matrix."""
-        if basis is not None:
-            kwargs["basis"] = basis
-        if modetype is not None:
-            kwargs["modetype"] = modetype
-        return super().__call__(**kwargs)
+    def __init__(self, basis, modetype=None, *, isinv=False):
+        args = (basis,) if modetype is None else (basis, modetype)
+        super().__init__(*args, isinv=isinv)
 
-    def inv(self, basis=None, modetype=None, **kwargs):
+    def __call__(self, **kwargs):
+        if self.isinv:
+            return self._call_inv(**kwargs)
+        args = list(self._args)
+        if "basis" in kwargs and not isinstance(args[0], tuple):
+            args[0] = (args[0], kwargs.pop("basis"))
+        if "modetype" in kwargs and len(args) > 1 and not isinstance(args[1], tuple):
+            args[1] = (args[1], kwargs.pop("modetype"))
+        return self.FUNC(*args, **kwargs)
+
+    def _call_inv(self, **kwargs):
+        args = list(self._args)
+        if "basis" in kwargs and not isinstance(args[0], tuple):
+            args[0] = (kwargs.pop("basis"), args[0])
+        if "modetype" in kwargs and len(args) > 1 and not isinstance(args[1], tuple):
+            args[1] = (kwargs.pop("modetype"), args[1])
+        return self.FUNC(*args, **kwargs)
+
+    def get_kwargs(self, obj, dim=-1):
+        kwargs = super().get_kwargs(obj, dim)
+        for name in ("basis", "modetype"):
+            val = getattr(obj, name, None)
+            if isinstance(val, tuple):
+                val = val[dim]
+            if val is not None:
+                kwargs[name] = val
+        return kwargs
+
+    @property
+    def inv(self):
         """Inverse expansion.
 
         The inverse transformation is not available for all transformations.
         """
-        if basis is not None:
-            kwargs["basis"] = basis
-        if modetype is not None:
-            kwargs["modetype"] = modetype
-        return super().inv(**kwargs)
+        if len(self._args) == 1:
+            basis, modetype = self._args[0], None
+        else:
+            basis, modetype = self._args
+        if isinstance(basis, tuple):
+            basis = tuple(basis[::-1])
+        if isinstance(modetype, tuple):
+            modetype = tuple(modetype[::-1])
+        return type(self)(basis, modetype, isinv=not self.isinv)
 
 
 def _swl_expand(basis, to_basis, eta, k0, kpar, lattice, material, poltype, where):
     """Expand spherical waves in a lattice."""
-    lattice = Lattice(lattice)
     ks = k0 * material.nmp
-    if len(kpar) == 1:
-        x = kpar[0]
-        kpar = [np.nan, np.nan, x]
-    elif len(kpar) == 2:
-        x = kpar
-        kpar = kpar + [np.nan]
-    elif len(kpar) == 3:
-        if lattice.dim == 3:
-            x = kpar = [0 if np.isnan(x) else x for x in kpar]
-        elif lattice.dim == 2:
-            kpar = [0 if np.isnan(x) else x for x in kpar[:2]] + [np.nan]
-            x = kpar[:2]
-        elif lattice.dim == 1:
-            x = 0 if np.isnan(kpar[2]) else kpar[2]
-            kpar = [np.nan, np.nan, x]
+    if lattice.dim == 3:
+        try:
+            length = len(kpar)
+        except TypeError:
+            length = 1
+        if length == 1:
+            lattice = Lattice(lattice, "z")
+        elif length == 2:
+            lattice = Lattice(lattice, "xy")
+        elif length == 3:
+            # Last attempt to determine the dimension of the sum
+            if np.isnan(kpar[2]):
+                lattice = Lattice(lattice, "xy")
+            elif np.isnan(kpar[0]) and np.isnan(kpar[1]):
+                lattice = Lattice(lattice, "z")
+    kpar = WaveVector(kpar)
+    if lattice.dim == 1:
+        x = kpar[2]
+    elif lattice.dim == 2:
+        x = kpar[:2]
+    else:
+        x = kpar[:]
     res = sw.translate_periodic(
         ks,
         x,
@@ -742,12 +847,10 @@ def _cw_sw_expand(basis, to_basis, k0, kpar, lattice, material, poltype, where):
     """Expand spherical waves in a lattice in cylindrical waves."""
     ks = k0 * material.nmp
     where = np.logical_and(where, to_basis.pidx[:, None] == basis.pidx)
-    if len(kpar) == 1:
-        kpar = [np.nan, np.nan, kpar[0]]
-    kpar = [np.nan, np.nan, kpar[2]]
+    kpar = WaveVector(kpar)
     res = sw.periodic_to_cw(
-        *(m[:, None] for m in to_basis["kzmp"]),
-        *basis["lmp"],
+        *(m[:, None] for m in to_basis.zms),
+        *basis.lms,
         ks[basis.pol],
         Lattice(lattice, "z").volume,
         poltype=poltype,
@@ -770,15 +873,13 @@ def _pw_sw_expand(
     basis, to_basis, k0, kpar, lattice, material, modetype, poltype, where
 ):
     """Expand spherical waves in a lattice in plane waves."""
-    if modetype is None and isinstance(to_basis, core.PlaneWaveBasisPartial):
+    if modetype is None and isinstance(to_basis, core.PlaneWaveBasisByComp):
         modetype = "up"
-    if len(kpar) == 2:
-        kpar = [kpar[0], kpar[1], np.nan]
-    kpar[2] = np.nan
+    kpar = WaveVector(kpar)
     res = sw.periodic_to_pw(
         *(b[:, None] for b in to_basis.kvecs(k0, material, modetype)),
         to_basis.pol[:, None],
-        *basis["lmp"],
+        *basis.lms,
         Lattice(lattice, "xy").volume,
         poltype=poltype,
         where=where,
@@ -803,19 +904,28 @@ def _cwl_expand(basis, to_basis, eta, k0, kpar, lattice, material, poltype, wher
         "x" if not isinstance(lattice, Lattice) and np.size(lattice) == 1 else None
     )
     lattice = Lattice(lattice, alignment)
-    if len(kpar) == 1:
+    if lattice.dim == 3:
+        try:
+            length = len(kpar)
+        except TypeError:
+            length = 1
+        if length == 1:
+            lattice = Lattice(lattice, "x")
+        elif length == 2:
+            lattice = Lattice(lattice, "xy")
+        elif length == 3:
+            # Last attempt to determine the dimension of the sum
+            if np.isnan(kpar[1]):
+                lattice = Lattice(lattice, "x")
+                kpar = WaveVector(kpar, "x")
+            else:
+                lattice = Lattice(lattice, "xy")
+    if lattice.dim == 1:
+        kpar = WaveVector(kpar, "x")
         x = kpar[0]
-        kpar = [x, np.nan, basis.hints["kpar"][2]]
-    elif len(kpar) == 2:
-        x = kpar
-        kpar = kpar + [basis.hints["kpar"][2]]
-    elif len(kpar) == 3:
-        if lattice.dim == 2:
-            kpar = [0 if np.isnan(x) else x for x in kpar[:2]] + kpar[2:3]
-            x = [kpar[0], kpar[1]]
-        elif lattice.dim == 1:
-            x = kpar[0] = 0 if np.isnan(kpar[0]) else kpar[0]
-
+    elif lattice.dim == 2:
+        kpar = WaveVector(kpar)
+        x = kpar[:2]
     res = cw.translate_periodic(
         ks,
         x,
@@ -827,6 +937,9 @@ def _cwl_expand(basis, to_basis, eta, k0, kpar, lattice, material, poltype, wher
         eta=eta,
     )
     res[..., np.logical_not(where)] = 0
+    for b in (to_basis, basis):
+        if b.kpar is not None:
+            kpar = kpar & b.kpar
     return core.PhysicsArray(
         res,
         k0=k0,
@@ -840,15 +953,14 @@ def _cwl_expand(basis, to_basis, eta, k0, kpar, lattice, material, poltype, wher
 
 def _pw_cw_expand(basis, to_basis, k0, lattice, kpar, material, modetype, where):
     """Expand cylindrical waves in a lattice in plane waves."""
-    if modetype is None and isinstance(to_basis, core.PlaneWaveBasisPartial):
+    if modetype is None and isinstance(to_basis, core.PlaneWaveBasisByComp):
         modetype = "up"
     if len(kpar) == 1:
-        kpar = [kpar[0], np.nan, np.nan]
-    kpar[0] = 0 if np.isnan(kpar[0]) else kpar[0]
+        kpar = WaveVector(kpar, alignment="x")
     res = cw.periodic_to_pw(
         *(b[:, None] for b in to_basis.kvecs(k0, material, modetype)),
         to_basis.pol[:, None],
-        *basis["kzmp"],
+        *basis.zms,
         lattice.volume,
         where=where,
     )
@@ -867,12 +979,12 @@ def _pw_cw_expand(basis, to_basis, k0, lattice, kpar, material, modetype, where)
 def expandlattice(
     lattice=None,
     kpar=None,
+    basis=None,
+    modetype=None,
     *,
-    basis,
     eta=0,
     k0=None,
     material=Material(),
-    modetype=None,
     poltype=None,
     where=True,
 ):
@@ -897,9 +1009,9 @@ def expandlattice(
             automatically.
         material (:class:`~treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode, used for
-            :class:`~treams.PlaneWaveBasisPartial`.
+            :class:`~treams.PlaneWaveBasisByComp`.
         poltype (str, optional): Polarization, see also
-            :ref:`polarizations:Polarizations`.
+            :ref:`params:Polarizations`.
         where (array-like, bool, optional): Only evaluate parts of the expansion matrix,
             the give array must have a shape that matches the output shape.
     """
@@ -907,21 +1019,18 @@ def expandlattice(
         to_basis, basis = basis
     else:
         to_basis = basis
-    if lattice is None:
-        try:
-            lattice = to_basis.hints["lattice"]
-        except KeyError:
-            lattice = basis.hints["lattice"]
+    if to_basis.lattice is not None:
+        lattice = to_basis.lattice
     if not isinstance(lattice, Lattice) and np.size(lattice) == 1:
         alignment = "x" if isinstance(basis, core.CylindricalWaveBasis) else "z"
     else:
         alignment = None
     lattice = Lattice(lattice, alignment)
     if kpar is None:
-        try:
-            kpar = to_basis.hints["kpar"]
-        except KeyError:
-            kpar = basis.hints.get("kpar")
+        if basis.kpar is None:
+            kpar = to_basis.kpar
+        else:
+            kpar = basis.kpar
     try:
         kpar = list(kpar)
     except TypeError:
@@ -968,17 +1077,45 @@ class ExpandLattice(Operator):
     See also :func:`expandlattice`.
     """
 
-    _func = staticmethod(expandlattice)
+    _FUNC = staticmethod(expandlattice)
 
-    def __call__(self, lattice=None, kpar=None, **kwargs):
-        """Create the expansion matrix for periodic arrangements."""
-        if lattice is not None:
-            kwargs["lattice"] = lattice
-        if kpar is not None:
-            kwargs["kpar"] = kpar
-        return super().__call__(**kwargs)
+    def __init__(self, lattice=None, kpar=None, basis=None, modetype=None):
+        # if lattice is None:
+        #     if basis is None:
+        #         raise ValueError("'basis' or 'lattice' needs to be defined")
+        #     elif basis.lattice is None:
+        #         raise ValueError("'basis.lattice' or 'lattice' needs to be defined")
+        super().__init__(lattice, kpar, basis, modetype)
 
-    def inv(self, *args, **kwargs):
+    def __call__(self, **kwargs):
+        if self.isinv:
+            return self._call_inv(**kwargs)
+        args = list(self._args)
+        if "basis" in kwargs:
+            if args[2] is None:
+                args[2] = kwargs.pop("basis")
+            else:
+                args[2] = (args[2], kwargs.pop("basis"))
+        if "modetype" in kwargs and args[3] is None:
+            args[3] = kwargs.pop("modetype")
+        for i, name in enumerate(("lattice", "kpar")):
+            if name in kwargs and args[i] is None:
+                args[i] = kwargs.pop(name)
+        return self.FUNC(*args, **kwargs)
+
+    def get_kwargs(self, obj, dim=-1):
+        kwargs = super().get_kwargs(obj, dim)
+        kwargs.pop("modetype", None)
+        for name in ("basis", "lattice", "kpar"):
+            val = getattr(obj, name, None)
+            if isinstance(val, tuple):
+                val = val[dim]
+            if val is not None:
+                kwargs[name] = val
+        return kwargs
+
+    @property
+    def inv(self):
         """Inverse expansion for periodic arrangements.
 
         The inverse transformation is not available.
@@ -986,40 +1123,59 @@ class ExpandLattice(Operator):
         raise NotImplementedError
 
 
-def _pwp_permute(basis, n):
+def _pwp_permute(basis, n, k0, material, modetype, poltype):
     """Permute axes in a partial plane wave basis."""
     alignment = basis.alignment
     dct = {"xy": "yz", "yz": "zx", "zx": "xy"}
-    kpar = basis.hints.get("kpar")
-    while n > 0:
+    for _ in range(n):
         alignment = dct[alignment]
-        kpar = kpar[[2, 0, 1]] if kpar is not None else kpar
-        n -= 1
     obj = type(basis)(zip(basis._kx, basis._ky, basis.pol), alignment)
-    if "lattice" in basis.hints:
-        obj.hints["lattice"] = basis.hints["lattice"].permute(n)
-    if kpar is not None:
-        obj.hints["kpar"] = kpar
-    return core.PhysicsArray(np.eye(len(basis)), basis=(obj, basis))
+    if basis.lattice is not None:
+        obj.lattice = basis.lattice.permute(n)
+    if basis.kpar is not None:
+        obj.kpar = basis.kpar.permute(n)
+    if material is None:
+        raise TypeError("missing definition of 'material'")
+    res = np.eye(len(basis))
+    modetype = "up" if modetype is None else modetype
+    kvecs = np.array(basis.kvecs(k0, material, modetype))
+    where = (kvecs[..., None] == kvecs[:, None, :]).all(0)
+    for _ in range(n):
+        res = (
+            pw.permute_xyz(
+                kvecs[0],
+                kvecs[1],
+                kvecs[2],
+                basis.pol[:, None],
+                basis.pol,
+                poltype=poltype,
+                where=where,
+            )
+            @ res
+        )
+    return core.PhysicsArray(res, basis=(obj, basis), poltype=poltype)
 
 
-def _pwa_permute(basis, n):
+def _pwa_permute(basis, n, poltype):
     """Permute axes in a plane wave basis."""
     qx, qy, qz = basis.qx, basis.qy, basis.qz
-    kpar = basis.hints.get("kpar")
-    while n > 0:
+    where = (qx[:, None] == qx) & (qy[:, None] == qy) & (qz[:, None] == qz)
+    res = np.eye(len(basis))
+    for _ in range(n):
+        res = (
+            pw.permute_xyz(qx, qy, qz, basis.pol[:, None], basis.pol, where=where) @ res
+        )
+    for _ in range(n):
         qx, qy, qz = qz, qx, qy
-        kpar = kpar[[2, 0, 1]] if kpar is not None else None
-        n -= 1
     obj = type(basis)(zip(qx, qy, qz, basis.pol))
-    if "lattice" in basis.hints:
-        obj.hints["lattice"] = basis.hints["lattice"].permute(n)
-    if kpar is not None:
-        obj.hints["kpar"] = kpar
-    return core.PhysicsArray(np.eye(len(basis)), basis=(obj, basis))
+    if basis.lattice is not None:
+        obj.lattice = basis.lattice.permute(n)
+    if basis.kpar is not None:
+        obj.kpar = basis.kpar.permute(n)
+    return core.PhysicsArray(res, basis=(obj, basis), poltype=poltype)
 
 
-def permute(n=1, *, basis):
+def permute(n=1, *, basis, k0=None, material=None, modetype=None, poltype=None):
     """Permutation matrix.
 
     Permute the axes of a plane wave basis expansion.
@@ -1030,13 +1186,14 @@ def permute(n=1, *, basis):
             basis sets the output and input modes are taken accordingly, else both sets
             of modes are the same.
     """
+    poltype = config.POLTYPE if poltype is None else poltype
     if n != int(n):
         raise ValueError("'n' must be integer")
     n = n % 3
-    if isinstance(basis, core.PlaneWaveBasisPartial):
-        return _pwp_permute(basis, n)
-    if isinstance(basis, core.PlaneWaveBasisAngle):
-        return _pwa_permute(basis, n)
+    if isinstance(basis, core.PlaneWaveBasisByComp):
+        return _pwp_permute(basis, n, k0, material, modetype, poltype)
+    if isinstance(basis, core.PlaneWaveBasisByUnitVector):
+        return _pwa_permute(basis, n, poltype)
     raise TypeError("invalid basis")
 
 
@@ -1047,15 +1204,13 @@ class Permute(Operator):
     permute the axis definitions of plane waves. See also :func:`permute`.
     """
 
-    _func = staticmethod(permute)
+    _FUNC = staticmethod(permute)
 
-    def inv(self, *args, **kwargs):
-        """Inverse permutation matrix.
+    def __init__(self, n=1, *, isinv=False):
+        super().__init__(n, isinv=isinv)
 
-        The inverse transformation is simply the transposed result.
-        """
-        x = self(*args, **kwargs)
-        return x.T
+    def _call_inv(self, **kwargs):
+        return self.FUNC(self._args[0], **kwargs).T
 
 
 def _sw_efield(r, basis, k0, material, modetype, poltype):
@@ -1241,7 +1396,7 @@ def efield(r, *, basis, k0, material=Material(), modetype=None, poltype=None):
         material (:class:`~treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode.
         poltype (str, optional): Polarization, see also
-            :ref:`polarizations:Polarizations`.
+            :ref:`params:Polarizations`.
     """
     material = Material(material)
     poltype = config.POLTYPE if poltype is None else poltype
@@ -1249,32 +1404,38 @@ def efield(r, *, basis, k0, material=Material(), modetype=None, poltype=None):
     r = r[..., None, :]
     if isinstance(basis, core.SphericalWaveBasis):
         modetype = "regular" if modetype is None else modetype
-        return _sw_efield(r, basis, k0, material, modetype, poltype)
+        return _sw_efield(r, basis, k0, material, modetype, poltype).swapaxes(-1, -2)
     if isinstance(basis, core.CylindricalWaveBasis):
         modetype = "regular" if modetype is None else modetype
-        return _cw_efield(r, basis, k0, material, modetype, poltype)
+        return _cw_efield(r, basis, k0, material, modetype, poltype).swapaxes(-1, -2)
     if isinstance(basis, core.PlaneWaveBasis):
-        if isinstance(basis, core.PlaneWaveBasisPartial):
+        if isinstance(basis, core.PlaneWaveBasisByComp):
             modetype = "up" if modetype is None else modetype
-        return _pw_efield(r, basis, k0, material, modetype, poltype)
+        return _pw_efield(r, basis, k0, material, modetype, poltype).swapaxes(-1, -2)
     raise TypeError("invalid basis")
 
 
-class EField(Operator):
+class FieldOperator(Operator):
+    def __init__(self, r):
+        super().__init__(r)
+
+    @property
+    def inv(self):
+        """Inverse transformation of an electric field to modes.
+
+        The inverse transformation is not available.
+        """
+        raise NotImplementedError
+
+
+class EField(FieldOperator):
     """Electric field evaluation matrix.
 
     When called as attribute of an object it returns a suitable matrix to evaluate field
     coefficients at specified points. See also :func:`efield`.
     """
 
-    _func = staticmethod(efield)
-
-    def inv(self, *args, **kwargs):
-        """Inverse transformation of an electric field to modes.
-
-        The inverse transformation is not available.
-        """
-        raise NotImplementedError
+    _FUNC = staticmethod(efield)
 
 
 def _sw_hfield(r, basis, k0, material, modetype, poltype):
@@ -1464,7 +1625,7 @@ def hfield(r, *, basis, k0, material=Material(), modetype=None, poltype=None):
         material (:class:`~treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode.
         poltype (str, optional): Polarization, see also
-            :ref:`polarizations:Polarizations`.
+            :ref:`params:Polarizations`.
     """
     material = Material(material)
     poltype = config.POLTYPE if poltype is None else poltype
@@ -1472,32 +1633,25 @@ def hfield(r, *, basis, k0, material=Material(), modetype=None, poltype=None):
     r = r[..., None, :]
     if isinstance(basis, core.SphericalWaveBasis):
         modetype = "regular" if modetype is None else modetype
-        return _sw_hfield(r, basis, k0, material, modetype, poltype)
+        return _sw_hfield(r, basis, k0, material, modetype, poltype).swapaxes(-1, -2)
     if isinstance(basis, core.CylindricalWaveBasis):
         modetype = "regular" if modetype is None else modetype
-        return _cw_hfield(r, basis, k0, material, modetype, poltype)
+        return _cw_hfield(r, basis, k0, material, modetype, poltype).swapaxes(-1, -2)
     if isinstance(basis, core.PlaneWaveBasis):
-        if isinstance(basis, core.PlaneWaveBasisPartial):
+        if isinstance(basis, core.PlaneWaveBasisByComp):
             modetype = "up" if modetype is None else modetype
-        return _pw_hfield(r, basis, k0, material, modetype, poltype)
+        return _pw_hfield(r, basis, k0, material, modetype, poltype).swapaxes(-1, -2)
     raise TypeError("invalid basis")
 
 
-class HField(Operator):
+class HField(FieldOperator):
     """Magnetic field evaluation matrix.
 
     When called as attribute of an object it returns a suitable matrix to evaluate field
     coefficients at specified points. See also :func:`hfield`.
     """
 
-    _func = staticmethod(hfield)
-
-    def inv(self, *args, **kwargs):
-        """Inverse transformation of a magnetic field to modes.
-
-        The inverse transformation is not available.
-        """
-        raise NotImplementedError
+    _FUNC = staticmethod(hfield)
 
 
 def _sw_dfield(r, basis, k0, material, modetype, poltype):
@@ -1545,7 +1699,7 @@ def dfield(r, *, basis, k0, material=Material(), modetype=None, poltype=None):
         material (:class:`~treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode.
         poltype (str, optional): Polarization, see also
-            :ref:`polarizations:Polarizations`.
+            :ref:`params:Polarizations`.
     """
     material = Material(material)
     poltype = config.POLTYPE if poltype is None else poltype
@@ -1553,32 +1707,25 @@ def dfield(r, *, basis, k0, material=Material(), modetype=None, poltype=None):
     r = r[..., None, :]
     if isinstance(basis, core.SphericalWaveBasis):
         modetype = "regular" if modetype is None else modetype
-        return _sw_dfield(r, basis, k0, material, modetype, poltype)
+        return _sw_dfield(r, basis, k0, material, modetype, poltype).swapaxes(-1, -2)
     if isinstance(basis, core.CylindricalWaveBasis):
         modetype = "regular" if modetype is None else modetype
-        return _cw_dfield(r, basis, k0, material, modetype, poltype)
+        return _cw_dfield(r, basis, k0, material, modetype, poltype).swapaxes(-1, -2)
     if isinstance(basis, core.PlaneWaveBasis):
-        if isinstance(basis, core.PlaneWaveBasisPartial):
+        if isinstance(basis, core.PlaneWaveBasisByComp):
             modetype = "up" if modetype is None else modetype
-        return _pw_dfield(r, basis, k0, material, modetype, poltype)
+        return _pw_dfield(r, basis, k0, material, modetype, poltype).swapaxes(-1, -2)
     raise TypeError("invalid basis")
 
 
-class DField(Operator):
+class DField(FieldOperator):
     """Displacement field evaluation matrix.
 
     When called as attribute of an object it returns a suitable matrix to evaluate field
     coefficients at specified points. See also :func:`dfield`.
     """
 
-    _func = staticmethod(dfield)
-
-    def inv(self, *args, **kwargs):
-        """Inverse transformation of a displacement field to modes.
-
-        The inverse transformation is not available.
-        """
-        raise NotImplementedError
+    _FUNC = staticmethod(dfield)
 
 
 def _sw_bfield(r, basis, k0, material, modetype, poltype):
@@ -1627,7 +1774,7 @@ def bfield(r, *, basis, k0=None, material=Material(), modetype=None, poltype=Non
         material (:class:`~treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode.
         poltype (str, optional): Polarization, see also
-            :ref:`polarizations:Polarizations`.
+            :ref:`params:Polarizations`.
     """
     material = Material(material)
     poltype = config.POLTYPE if poltype is None else poltype
@@ -1635,32 +1782,25 @@ def bfield(r, *, basis, k0=None, material=Material(), modetype=None, poltype=Non
     r = r[..., None, :]
     if isinstance(basis, core.SphericalWaveBasis):
         modetype = "regular" if modetype is None else modetype
-        return _sw_bfield(r, basis, k0, material, modetype, poltype)
+        return _sw_bfield(r, basis, k0, material, modetype, poltype).swapaxes(-1, -2)
     if isinstance(basis, core.CylindricalWaveBasis):
         modetype = "regular" if modetype is None else modetype
-        return _cw_bfield(r, basis, k0, material, modetype, poltype)
+        return _cw_bfield(r, basis, k0, material, modetype, poltype).swapaxes(-1, -2)
     if isinstance(basis, core.PlaneWaveBasis):
-        if isinstance(basis, core.PlaneWaveBasisPartial):
+        if isinstance(basis, core.PlaneWaveBasisByComp):
             modetype = "up" if modetype is None else modetype
-        return _pw_bfield(r, basis, k0, material, modetype, poltype)
+        return _pw_bfield(r, basis, k0, material, modetype, poltype).swapaxes(-1, -2)
     raise TypeError("invalid basis")
 
 
-class BField(Operator):
+class BField(FieldOperator):
     """Magnetic flux density evaluation matrix.
 
     When called as attribute of an object it returns a suitable matrix to evaluate field
     coefficients at specified points. See also :func:`bfield`.
     """
 
-    _func = staticmethod(bfield)
-
-    def inv(self, *args, **kwargs):
-        """Inverse transformation of a magnetic flux density to modes.
-
-        The inverse transformation is not available.
-        """
-        raise NotImplementedError
+    _FUNC = staticmethod(bfield)
 
 
 def _sw_gfield(pol, r, basis, k0, material, modetype, poltype):
@@ -1847,7 +1987,7 @@ def gfield(pol, r, *, basis, k0, material=Material(), modetype=None, poltype=Non
         material (:class:`~treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode.
         poltype (str, optional): Polarization, see also
-            :ref:`polarizations:Polarizations`.
+            :ref:`params:Polarizations`.
     """
     if pol == -1:
         pol = 0
@@ -1859,32 +1999,31 @@ def gfield(pol, r, *, basis, k0, material=Material(), modetype=None, poltype=Non
     r = r[..., None, :]
     if isinstance(basis, core.SphericalWaveBasis):
         modetype = "regular" if modetype is None else modetype
-        return _sw_gfield(pol, r, basis, k0, material, modetype, poltype)
+        return _sw_gfield(pol, r, basis, k0, material, modetype, poltype).swapaxes(
+            -1, -2
+        )
     if isinstance(basis, core.CylindricalWaveBasis):
         modetype = "regular" if modetype is None else modetype
-        return _cw_gfield(pol, r, basis, k0, material, modetype, poltype)
+        return _cw_gfield(pol, r, basis, k0, material, modetype, poltype).swapaxes(
+            -1, -2
+        )
     if isinstance(basis, core.PlaneWaveBasis):
-        if isinstance(basis, core.PlaneWaveBasisPartial):
+        if isinstance(basis, core.PlaneWaveBasisByComp):
             modetype = "up" if modetype is None else modetype
-        return _pw_gfield(pol, r, basis, k0, material, modetype, poltype)
+        return _pw_gfield(pol, r, basis, k0, material, modetype, poltype).swapaxes(
+            -1, -2
+        )
     raise TypeError("invalid basis")
 
 
-class GField(Operator):
+class GField(FieldOperator):
     """Riemann-Silberstein field G evaluation matrix.
 
     When called as attribute of an object it returns a suitable matrix to evaluate field
     coefficients at specified points. See also :func:`gfield`.
     """
 
-    _func = staticmethod(gfield)
-
-    def inv(self, *args, **kwargs):
-        """Inverse transformation of a Riemann-Silberstein field to modes.
-
-        The inverse transformation is not available.
-        """
-        raise NotImplementedError
+    _FUNC = staticmethod(gfield)
 
 
 def _sw_ffield(pol, r, basis, k0, material, modetype, poltype):
@@ -1926,7 +2065,7 @@ def ffield(pol, r, *, basis, k0, material=Material(), modetype=None, poltype=Non
         material (:class:`~treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode.
         poltype (str, optional): Polarization, see also
-            :ref:`polarizations:Polarizations`.
+            :ref:`params:Polarizations`.
     """
     if pol == -1:
         pol = 0
@@ -1938,29 +2077,28 @@ def ffield(pol, r, *, basis, k0, material=Material(), modetype=None, poltype=Non
     r = r[..., None, :]
     if isinstance(basis, core.SphericalWaveBasis):
         modetype = "regular" if modetype is None else modetype
-        return _sw_ffield(pol, r, basis, k0, material, modetype, poltype)
+        return _sw_ffield(pol, r, basis, k0, material, modetype, poltype).swapaxes(
+            -1, -2
+        )
     if isinstance(basis, core.CylindricalWaveBasis):
         modetype = "regular" if modetype is None else modetype
-        return _cw_ffield(pol, r, basis, k0, material, modetype, poltype)
+        return _cw_ffield(pol, r, basis, k0, material, modetype, poltype).swapaxes(
+            -1, -2
+        )
     if isinstance(basis, core.PlaneWaveBasis):
-        if isinstance(basis, core.PlaneWaveBasisPartial):
+        if isinstance(basis, core.PlaneWaveBasisByComp):
             modetype = "up" if modetype is None else modetype
-        return _pw_ffield(pol, r, basis, k0, material, modetype, poltype)
+        return _pw_ffield(pol, r, basis, k0, material, modetype, poltype).swapaxes(
+            -1, -2
+        )
     raise TypeError("invalid basis")
 
 
-class FField(Operator):
+class FField(FieldOperator):
     """Riemann-Silberstein field F evaluation matrix.
 
     When called as attribute of an object it returns a suitable matrix to evaluate field
     coefficients at specified points. See also :func:`ffield`.
     """
 
-    _func = staticmethod(ffield)
-
-    def inv(self, *args, **kwargs):
-        """Inverse transformation of a Riemann-Silberstein field to modes.
-
-        The inverse transformation is not available.
-        """
-        raise NotImplementedError
+    _FUNC = staticmethod(ffield)

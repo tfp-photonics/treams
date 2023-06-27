@@ -10,23 +10,23 @@ Setting up the development environment
 1.
 Clone the repository with ::
 
-   git clone git@git.scc.kit.edu/photonics/treams.git
+   git clone git@github.com/tfp-photonics/treams.git
 
 or ::
 
-   git clone https://git.scc.kit.edu/photonics/treams.git
+   git clone https://github.com/tfp-photonics/treams.git
 
 and enter the directory ::
 
    cd treams
 
 2.
-Create a conda environment with ::
+This step is optional, but you might want to create an environment where treams and the
+development tools are created ::
 
-   conda env create -f environment.yml
+   conda env create --name treams-dev
 
-which installs all packages needed for building and running treams, testing, different
-benchmarks, and building the documentation. Activate the environment::
+Activate the environment with::
 
    conda activate treams-dev
 
@@ -42,7 +42,7 @@ current folder. This is especially necessary for correctly building the document
 Running tests
 =============
 
-Tests can be run with ::
+Tests can be run using pytest with ::
 
    python -m pytest
 
@@ -54,10 +54,11 @@ Some integration tests for the module :ref:`generated/treams.lattice:treams.latt
 take a long time to finish and are therefore disabled by default. You can add them with
 the option ``--runslow``.
 
-If coverage reports should be included on can use the option ``--cov treams``. However,
-this will only report on the pure python files. To also get coverage reports for the
-cython part, it is necessary to compile it with linetracing support. This can be
-achieved by setting the environment variable ``CYTHON_COVERAGE``, for example with ::
+If coverage reports should be included one can use the option ``--cov treams`` (which
+requires pytest-cov to be installed). However, this will only report on the pure python
+files. To also get coverage reports for the cython part, it is necessary to compile it
+with linetracing support. This can be achieved by setting the environment variable
+``CYTHON_COVERAGE``, for example with ::
 
     CYTHON_COVERAGE=1 pip install -e .
 
@@ -68,11 +69,12 @@ considerably. For the coverage calculation only the unit tests are used.
 Building the documentation
 ==========================
 
-After setting up the development environment run ::
+The documentation is built with sphinx by using ::
 
    sphinx-build -b html docs docs/_build/html
 
 from the root directory of the package to build the documentation as html pages.
+Some figures are automatically created, which requires matplotlib.
 
 Building the code on Windows
 ============================
@@ -145,9 +147,3 @@ Then, set up your path by prepending the direction for MSYS2's mingw64 binaries 
 MSYS2 with non-default parameters). Check that gcc from MSYS2 is recognized correctly
 but make sure that the version of python that is found on the path corresponds to the
 Windows Python. With this setup, building binaries should work with `python -m build`.
-
-Other remarks
-=============
-
-
-.. todolist::

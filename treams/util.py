@@ -13,6 +13,8 @@ import warnings
 
 import numpy as np
 
+import treams._operators as _op
+
 __all__ = [
     "AnnotatedArray",
     "AnnotationDict",
@@ -338,11 +340,7 @@ class AnnotationSequence(collections.abc.Sequence):
             return False
         if len(self) != lenother:
             return False
-        try:
-            zipped = zip(self, other)
-        except TypeError:
-            return False
-        for a, b in zipped:
+        for a, b in zip(self, other):
             if a != b:
                 return False
         return True
@@ -512,7 +510,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         >>> a @ b
         AnnotatedArray(
             [2, 8],
-            AnnotationSequence(AnnotationDict({'a': 1}),)
+            AnnotationSequence(AnnotationDict({'a': 1})),
         )
 
     The interoperability with numpy is implemented using :ref:`basics.dispatch`
@@ -565,6 +563,12 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         repr_arr = "    " + repr(self._array)[6:-1].replace("\n  ", "\n")
         return f"{self.__class__.__name__}(\n{repr_arr},\n    {self.ann},\n)"
 
+    def __int__(self):
+        return int(self._array)
+
+    def __float__(self):
+        return float(self._array)
+
     def __array__(self, dtype=None):
         """Convert to an numpy array.
 
@@ -612,6 +616,9 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
             super().__delattr__(key)
         except AttributeError:
             del self.ann.as_dict[key]
+
+    def __len__(self):
+        return len(self._array)
 
     def __copy__(self):
         return type(self)(copy.copy(self._array), copy.copy(self._ann))
@@ -1080,6 +1087,19 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
 
     conj = conjugate
 
+    @implements(np.swapaxes)
+    def swapaxes(self, axis1, axis2):
+        axis1 = axis1 % self.ndim
+        axis2 = axis2 % self.ndim
+        opp = {axis1: axis2, axis2: axis1}
+        axes = [opp.get(i, i) for i in range(self.ndim)]
+        return self.relax(self._array.swapaxes(axis1, axis2), self.ann[axes])
+
+    def __matmul__(self, other):
+        if isinstance(other, _op.Operator):
+            return NotImplemented
+        return super().__matmul__(other)
+
 
 @implements(np.linalg.solve)
 def solve(a, b):
@@ -1093,7 +1113,7 @@ def solve(a, b):
         restype = type(a)
     else:
         restype = type(b)
-    res = restype.relax(np.linalg.solve(np.asanyarray(a), np.asanyarray(b)))
+    res = AnnotatedArray(np.linalg.solve(np.asanyarray(a), np.asanyarray(b)))
     a_ann = list(getattr(a, "ann", [{}, {}]))
     b_ann = list(getattr(b, "ann", [{}, {}]))
     if np.ndim(b) == np.ndim(a) - 1:
@@ -1107,7 +1127,7 @@ def solve(a, b):
         a_ann += [{}]
     res.ann.update(a_ann)
     res.ann.update(b_ann)
-    return res
+    return restype.relax(res)
 
 
 @implements(np.linalg.lstsq)
@@ -1123,13 +1143,14 @@ def lstsq(a, b, rcond="warn"):
     else:
         restype = type(b)
     res = list(np.linalg.lstsq(np.asanyarray(a), np.asanyarray(b), rcond))
-    res[0] = restype.relax(res[0])
+    res[0] = AnnotatedArray(res[0])
     a_ann = getattr(a, "ann", ({},))
     b_ann = getattr(b, "ann", ({},))
     a_ann[0].match(b_ann[0])
     res[0].ann[0].update(a_ann[-1])
     if np.ndim(b) == 2:
         res[0].ann[1].update(b_ann[-1])
+    res[0] = restype.relax(res[0])
     return tuple(res)
 
 

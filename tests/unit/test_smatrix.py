@@ -1,18 +1,18 @@
 import numpy as np
 
 import treams
-from treams import SMatrix
+from treams import SMatrices
 
 
 def test_init():
-    b = treams.PlaneWaveBasisPartial.default([0, 0])
-    sm = SMatrix(np.zeros((2, 2, 2, 2)), basis=b, k0=1)
+    b = treams.PlaneWaveBasisByComp.default([0, 0])
+    sm = SMatrices(np.zeros((2, 2, 2, 2)), basis=b, k0=1)
     assert (sm["up", "down"] == np.zeros((2, 2))).all()
 
 
 def test_interface():
-    b = treams.PlaneWaveBasisPartial.default([1, 2])
-    sm = SMatrix.interface(2, b, [(2, 2, 1), (9, 1, 2)])
+    b = treams.PlaneWaveBasisByComp.default([1, 2])
+    sm = SMatrices.interface(b, 2, [(2, 2, 1), (9, 1, 2)])
     m = treams.coeffs.fresnel(
         [[2, 6], [2, 10]], [[1j, np.sqrt(31)], [1j, np.sqrt(95)]], [1, 1 / 3]
     )
@@ -28,11 +28,11 @@ def test_interface():
 
 
 def test_slab():
-    b = treams.PlaneWaveBasisPartial.default([1, 2])
-    sm = SMatrix.slab(6, b, 3, [1, 2, 3])
-    stest = SMatrix.interface(6, b, [1, 2])
-    stest = stest.add(SMatrix.propagation([0, 0, 3], 6, b, 2))
-    stest = stest.add(SMatrix.interface(6, b, [2, 3]))
+    b = treams.PlaneWaveBasisByComp.default([1, 2])
+    sm = SMatrices.slab(3, b, 6, [1, 2, 3])
+    stest = SMatrices.interface(b, 6, [1, 2])
+    stest = stest.add(SMatrices.propagation([0, 0, 3], b, 6, 2))
+    stest = stest.add(SMatrices.interface(b, 6, [2, 3]))
     assert sm == stest
 
 
@@ -40,7 +40,7 @@ class TestArray:
     # a = np.eye(2)
     # b = treams.lattice.reciprocal(a)
     # kpars = [0.5, -1] + treams.lattice.diffr_orders_circle(b, 7) @ b
-    basis = treams.PlaneWaveBasisPartial.diffr_orders([0.5, -1], np.eye(2), 7)
+    basis = treams.PlaneWaveBasisByComp.diffr_orders([0.5, -1], np.eye(2), 7)
     expect = np.zeros((2, 2, 10, 10), complex)
     expect[0, 0, :, :] = [
         [
@@ -532,202 +532,21 @@ class TestArray:
     ]
 
     def test(self):
-        tm = treams.TMatrix.sphere(4, 3, [0.2], [4, 1])
-        sm = SMatrix.from_array(tm, self.basis)
+        tm = treams.TMatrix.sphere(4, 3, [0.2], [4, 1]).latticeinteraction.solve(
+            self.basis.lattice, self.basis.kpar[:2]
+        )
+        sm = SMatrices.from_array(tm, self.basis)
         assert all(
             np.all(np.abs(sm[i, j] - self.expect[i, j]) < 1e-8)
             for i in range(2)
             for j in range(2)
         )
 
-    def test_cyl(self):
-        tm = treams.TMatrix.sphere(4, 3, [0.2], [4, 1])
-        # A larger range for kz (which later is kx) is needed for convergence
-        cwb = treams.CylindricalWaveBasis.diffr_orders(0.5, 4, 1, 10)
-        tmc = treams.TMatrixC.from_array(tm, cwb)
-        basis = treams.PlaneWaveBasisPartial._from_iterable(self.basis, "zx")
-        qm = SMatrix.from_array(tmc, basis)
-        assert np.all(np.abs(qm.q - self.expect) < 1e-8)
-
-
-# class TestDouble:
-#     def test(self):
-#         qm = QMatrix.slab(6, [1, 2], 3, [1, 2, 1])
-#         qm.double()
-#         qtest = QMatrix.slab(6, [1, 2], 6, [1, 2, 1])
-#         assert np.all(np.abs(qm.q - qtest.q) < 1e-8)
-
-# class TestChangeBasis:
-#     def test(self):
-#         q = np.zeros((2, 2, 2, 2))
-#         q[0, 0] = [[1, 2], [3, 4]]
-#         q[0, 1] = [[5, 6], [7, 8]]
-#         q[1, 0] = [[9, 10], [11, 12]]
-#         q[1, 1] = [[13, 14], [15, 16]]
-#         qm = QMatrix(q, 1, modes=([0, 0], [0, 0], [0, 1]))
-#         qm.changebasis()
-#         assert (
-#             not qm.helicity
-#             and np.all(np.abs(qm.q[0, 0] - [[0, 2], [1, 5]]) < 1e-14)
-#             and np.all(np.abs(qm.q[0, 1] - [[0, 2], [1, 13]]) < 1e-14)
-#             and np.all(np.abs(qm.q[1, 0] - [[0, 2], [1, 21]]) < 1e-14)
-#             and np.all(np.abs(qm.q[1, 1] - [[0, 2], [1, 29]]) < 1e-14)
-#         )
-
-# class TestHelicityBasis:
-#     def test(self):
-#         q = np.zeros((2, 2, 2, 2))
-#         q[0, 0] = [[1, 2], [3, 4]]
-#         q[0, 1] = [[5, 6], [7, 8]]
-#         q[1, 0] = [[9, 10], [11, 12]]
-#         q[1, 1] = [[13, 14], [15, 16]]
-#         qm = QMatrix(q, 1, modes=([0, 0], [0, 0], [0, 1]), helicity=False)
-#         qm.helicitybasis()
-#         assert (
-#             qm.helicity
-#             and np.all(np.abs(qm.q[0, 0] - [[0, 2], [1, 5]]) < 1e-14)
-#             and np.all(np.abs(qm.q[0, 1] - [[0, 2], [1, 13]]) < 1e-14)
-#             and np.all(np.abs(qm.q[1, 0] - [[0, 2], [1, 21]]) < 1e-14)
-#             and np.all(np.abs(qm.q[1, 1] - [[0, 2], [1, 29]]) < 1e-14)
-#         )
-#     def test_no_change(self):
-#         q = np.zeros((2, 2, 2, 2))
-#         q[0, 0] = [[1, 2], [3, 4]]
-#         q[0, 1] = [[5, 6], [7, 8]]
-#         q[1, 0] = [[9, 10], [11, 12]]
-#         q[1, 1] = [[13, 14], [15, 16]]
-#         qm = QMatrix(q, 1, modes=([0, 0], [0, 0], [0, 1]), helicity=True)
-#         qm.helicitybasis()
-#         assert qm.helicity and np.all(qm.q == q)
-#     def test_pick(self):
-#         q = np.zeros((2, 2, 2, 2))
-#         q[0, 0] = [[1, 2], [3, 4]]
-#         q[0, 1] = [[5, 6], [7, 8]]
-#         q[1, 0] = [[9, 10], [11, 12]]
-#         q[1, 1] = [[13, 14], [15, 16]]
-#         qm = QMatrix(q, 1, modes=([0, 0], [0, 0], [0, 1]), helicity=True)
-#         qm.helicitybasis(([0], [0], [0]))
-#         assert qm.helicity and np.all(qm.q == q[:, :, :1, :1])
-
-# class TestParityBasis:
-#     def test(self):
-#         q = np.zeros((2, 2, 2, 2))
-#         q[0, 0] = [[1, 2], [3, 4]]
-#         q[0, 1] = [[5, 6], [7, 8]]
-#         q[1, 0] = [[9, 10], [11, 12]]
-#         q[1, 1] = [[13, 14], [15, 16]]
-#         qm = QMatrix(q, 1, modes=([0, 0], [0, 0], [0, 1]))
-#         qm.paritybasis()
-#         assert (
-#             not qm.helicity
-#             and np.all(np.abs(qm.q[0, 0] - [[0, 2], [1, 5]]) < 1e-14)
-#             and np.all(np.abs(qm.q[0, 1] - [[0, 2], [1, 13]]) < 1e-14)
-#             and np.all(np.abs(qm.q[1, 0] - [[0, 2], [1, 21]]) < 1e-14)
-#             and np.all(np.abs(qm.q[1, 1] - [[0, 2], [1, 29]]) < 1e-14)
-#         )
-#     def test_no_change(self):
-#         q = np.zeros((2, 2, 2, 2))
-#         q[0, 0] = [[1, 2], [3, 4]]
-#         q[0, 1] = [[5, 6], [7, 8]]
-#         q[1, 0] = [[9, 10], [11, 12]]
-#         q[1, 1] = [[13, 14], [15, 16]]
-#         qm = QMatrix(q, 1, modes=([0, 0], [0, 0], [0, 1]), helicity=False)
-#         qm.paritybasis()
-#         assert not qm.helicity and np.all(qm.q == q)
-#     def test_pick(self):
-#         q = np.zeros((2, 2, 2, 2))
-#         q[0, 0] = [[1, 2], [3, 4]]
-#         q[0, 1] = [[5, 6], [7, 8]]
-#         q[1, 0] = [[9, 10], [11, 12]]
-#         q[1, 1] = [[13, 14], [15, 16]]
-#         qm = QMatrix(q, 1, modes=([0, 0], [0, 0], [0, 1]), helicity=False)
-#         qm.paritybasis(([0], [0], [0]))
-#         assert not qm.helicity and np.all(qm.q == q[:, :, :1, :1])
-
-# class TestFieldOutside:
-#     def test(self):
-#         q = np.zeros((2, 2, 2, 2))
-#         q[0, 0] = [[1, 2], [3, 4]]
-#         q[0, 1] = [[5, 6], [7, 8]]
-#         q[1, 0] = [[9, 10], [11, 12]]
-#         q[1, 1] = [[13, 14], [15, 16]]
-#         qm = QMatrix(q, 1, modes=([0, 0], [0, 0], [0, 1]))
-#         a, b = qm.field_outside(([1, 2], [3, 4]))
-#         assert np.all(a == [44, 64]) and np.all(b == [124, 144])
-
-
-# class TestFieldInside:
-#     def test(self):
-#         q = np.zeros((2, 2, 2, 2))
-#         q[0, 0] = [[1, 2], [3, 4]]
-#         q[0, 1] = [[5, 6], [7, 8]]
-#         q[1, 0] = [[9, 10], [11, 12]]
-#         q[1, 1] = [[13, 14], [15, 16]]
-#         qm = QMatrix(q, 1, modes=([0, 0], [0, 0], [0, 1]))
-#         a, b = qm.field_inside(([1, 2], [3, 4]), qm)
-#         assert (
-#             np.all(np.abs(a - [-6.41911765, -3.50735294]) < 1e-8)
-#             and np.all(np.abs(b - [ 2.15441176, -3.69852941]) < 1e-8)
-#         )
-
-# class TestField:
-#     def test_helicity(self):
-#         qm = QMatrix(np.eye(2), 5, modes=([-4, -4], [0, 0], [0, 1]))
-#         r = [1, 2, 3]
-#         expect = treams.special.vpw_A(-4, 0, 3, *r, [0, 1])
-#         assert np.all(np.abs(qm.field(r) - expect) < 1e-16)
-#     def test_parity(self):
-#         qm = QMatrix(np.eye(2), 5, modes=([-4, -4], [0, 0], [0, 1]), helicity=False)
-#         r = [1, 2, 3]
-#         expect = np.stack((treams.special.vpw_M(-4, 0, -3, *r), treams.special.vpw_N(-4, 0, -3, *r)))
-#         assert np.all(np.abs(qm.field(r, direction=-1) - expect) < 1e-16)
-
-# class TestTR:
-#     def test_helicity(self):
-#         qm = QMatrix.interface(3, [0, 0], [1.5 + .3j, 1.2 + .1j], [1.1 + .1j, 1], [.1 + .01j, -.2 - .01j])
-#         t, r = qm.tr([.3, .2])
-#         assert np.abs(t + r - 1) < 1e-15
-#     def test_parity(self):
-#         qm = QMatrix.interface(3, [0, 0], [1.5 + .3j, 1.2 + .1j], [1.1 + .1j, 1])
-#         qm.paritybasis()
-#         t, r = qm.tr([.3, .2])
-#         assert np.abs(t + r - 1) < 1e-15
-
-# class TestChiralityDensity:
-#     def test_z_zero_helicity(self):
-#         qm_below = QMatrix.interface(4, [1, 0], [1, 4 + .1j])
-#         qm_below.add(QMatrix.propagation([0, 0, 2], 4, [1, 0], 4 + .1j))
-#         qm_above = QMatrix.interface(4, [1, 0], [4 + .1j, 1])
-#         coeffs = qm_below.field_inside(([1, 0], None), qm_above)
-#         assert isclose(qm_below.chirality_density(coeffs), 0.2972593823648686)
-#     def test_z_zero_parity(self):
-#         qm_below = QMatrix.interface(4, [1, 0], [1, 4 + .1j])
-#         qm_below.add(QMatrix.propagation([0, 0, 2], 4, [1, 0], 4 + .1j))
-#         qm_above = QMatrix.interface(4, [1, 0], [4 + .1j, 1])
-#         qm_below.paritybasis()
-#         qm_above.paritybasis()
-#         coeffs = qm_below.field_inside(([np.sqrt(0.5), -np.sqrt(0.5)], None), qm_above)
-#         assert isclose(qm_below.chirality_density(coeffs), -0.2972593823648686)
-#     def test_helicity(self):
-#         qm_below = QMatrix.interface(4, [1, 0], [1, 4 + .1j])
-#         qm_below.add(QMatrix.propagation([0, 0, 2], 4, [1, 0], 4 + .1j))
-#         qm_above = QMatrix.interface(4, [1, 0], [4 + .1j, 1])
-#         coeffs = qm_below.field_inside(([1, 0], None), qm_above)
-#         assert isclose(qm_below.chirality_density(coeffs, (-2, 0)), 0.38113929722178935,)
-#     def test_parity(self):
-#         qm_below = QMatrix.interface(4, [1, 0], [1, 4 + .1j])
-#         qm_below.add(QMatrix.propagation([0, 0, 2], 4, [1, 0], 4 + .1j))
-#         qm_above = QMatrix.interface(4, [1, 0], [4 + .1j, 1])
-#         qm_below.paritybasis()
-#         qm_above.paritybasis()
-#         coeffs = qm_below.field_inside(([np.sqrt(0.5), -np.sqrt(0.5)], None), qm_above)
-#         assert isclose(qm_below.chirality_density(coeffs, (-2, 0)), -0.38113929722178935, 1e-7)
-
-# class TestCD:
-#     def test_h(self):
-#         qm = QMatrix.slab(4, [1, 0], 4, [1, 4 + .1j, 1], kappa=[0, .5, 0])
-#         assert np.all(np.abs(np.array([-0.003530982180309652, -0.0032078453784040294]) - qm.cd([1, 0])) < 1e-8)
-#     def test_p(self):
-#         qm = QMatrix.slab(4, [1, 0], 4, [1, 4 + .1j, 1], kappa=[0, .5, 0])
-#         qm.paritybasis()
-#         assert np.all(np.abs(np.array([0.003530982180309652, 0.0032078453784040294]) - qm.cd([np.sqrt(.5), -np.sqrt(.5)])) < 1e-8)
+    # def test_cyl(self):
+    #     tm = treams.TMatrix.sphere(4, 3, [0.2], [4, 1])
+    #     # A larger range for kz (which later is kx) is needed for convergence
+    #     cwb = treams.CylindricalWaveBasis.diffr_orders(0.5, 4, 1, 10)
+    #     tmc = treams.TMatrixC.from_array(tm, cwb)
+    #     basis = self.basis.permute()
+    #     sm = SMatrices.from_array(tmc, basis)
+    #     assert np.all(np.abs(sm - self.expect) < 1e-8)

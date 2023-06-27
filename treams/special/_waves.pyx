@@ -599,11 +599,11 @@ cdef void vpw_M(
         out[2 * i] = NAN
     elif kpar == 0:
         out[0] = 0
-        out[1] = -1j * phase
+        out[i] = -1j * phase
         out[2 * i] = 0
     else:
         out[0] = 1j * ky * phase / kpar
-        out[1] = -1j * kx * phase / kpar
+        out[i] = -1j * kx * phase / kpar
         out[2 * i] = 0
 
 
@@ -627,11 +627,11 @@ cdef void vpw_N(
         else:
             sign = 1 if cimag(kz) >= 0 else -1
         out[0] = -phase * sign
-        out[1] = 0
+        out[i] = 0
         out[2 * i] = 0
     else:
         out[0] = -kx * kz * phase / (k * kpar)
-        out[1] = -ky * kz * phase / (k * kpar)
+        out[i] = -ky * kz * phase / (k * kpar)
         out[2 * i] = kpar * phase / k
 
 

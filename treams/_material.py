@@ -93,7 +93,7 @@ class Material:
         return iter((self.epsilon, self.mu, self.kappa))
 
     @classmethod
-    def from_n(cls, n=1, impedance=1, kappa=0):
+    def from_n(cls, n=1, impedance=None, kappa=0):
         r"""Create material from refractive index and relative impedance.
 
         This function calculates the relative permeability and permittivity with
@@ -107,18 +107,20 @@ class Material:
 
         Args:
             n (complex, optional): Refractive index. Defaults to 1.
-            impedance(complex, optional): Relative impedance. Defaults to 1.
-            kappa (complex, optional): Chirality parameter.
+            impedance(complex, optional): Relative impedance. Defaults to the inverse
+                of the refractive index.
+            kappa (complex, optional): Chirality parameter. Defaults to 0.
 
         Returns:
             Material
         """
+        impedance = 1 / n if impedance is None else impedance
         epsilon = n / impedance
         mu = n * impedance
         return cls(epsilon, mu, kappa)
 
     @classmethod
-    def from_nmp(cls, ns=(1, 1), impedance=1):
+    def from_nmp(cls, ns=(1, 1), impedance=None):
         r"""Create material from refractive indices of both helicities.
 
         This function calculates the relative permeability and permittivity and the
@@ -133,15 +135,15 @@ class Material:
         Args:
             ns ((2,)-array-like, optional): Negative and positive helicity refractive
                 index. Defaults to (1, 1).
-            impedance(complex, optional): Relative impedance. Defaults to 1.
+            impedance(complex, optional): Relative impedance. Defaults to the inverse of
+                the refractive index.
 
         Returns:
             Material
         """
-        epsilon = sum(ns) * 0.5 / impedance
-        mu = sum(ns) * 0.5 * impedance
+        n = sum(ns) * 0.5
         kappa = (ns[1] - ns[0]) * 0.5
-        return cls(epsilon, mu, kappa)
+        return cls.from_n(n, impedance, kappa)
 
     @property
     def n(self):
@@ -278,7 +280,7 @@ class Material:
             k0 (float): Wave number in vacuum.
             kz (float, array-like): z-component of the wave vector
             pol (int, array-like): Polarization indices
-                (:ref:`polarizations:Polarizations`).
+                (:ref:`params:Polarizations`).
 
         Returns:
             complex, array-like
@@ -299,7 +301,7 @@ class Material:
             kx (float, array-like): x-component of the wave vector
             ky (float, array-like): y-component of the wave vector
             pol (int, array-like): Polarization indices
-                (:ref:`polarizations:Polarizations`).
+                (:ref:`params:Polarizations`).
 
         Returns:
             complex, array-like
