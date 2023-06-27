@@ -611,10 +611,10 @@ class TMatrixC(PhysicsArray):
         return cls(tres, k0=k0, material=mat, basis=basis, poltype=poltype)
 
     @classmethod
-    def from_array(cls, tm, basis):
+    def from_array(cls, tm, basis, *, eta=0):
         """1d array of spherical T-matrices."""
         return cls(
-            op.ExpandLattice(basis=basis) @ tm @ op.Expand(basis).inv,
+            (tm @ op.Expand(basis).inv).expandlattice(basis=basis, eta=eta),
             lattice=tm.lattice,
             kpar=tm.kpar,
         )

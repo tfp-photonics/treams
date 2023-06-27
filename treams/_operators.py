@@ -51,10 +51,10 @@ class Operator:
     def __matmul__(self, other):
         if isinstance(other, Operator):
             raise NotImplementedError
-        return self(**self.get_kwargs(other)) @ other
+        return self(**self.get_kwargs(other, max(-2, -np.ndim(other)))) @ other
 
     def __rmatmul__(self, other):
-        return other @ self(**self.get_kwargs(other, -1))
+        return other @ self(**self.get_kwargs(other))
 
     def get_kwargs(self, obj, dim=-1):
         kwargs = {}
@@ -86,9 +86,10 @@ class OperatorAttribute:
     def OP(self):
         return self._op
 
-    def _call(self, *args, **kwargs):
+    def eval(self, *args, **kwargs):
         op = self.OP(*args)
-        return op(**self._merge_kwargs(kwargs, op.get_kwargs(self._obj)))
+        dim = max(-2, -np.ndim(self._obj))
+        return op(**self._merge_kwargs(kwargs, op.get_kwargs(self._obj, dim)))
 
     @staticmethod
     def _merge_kwargs(kwargsa, kwargsb):
@@ -101,12 +102,9 @@ class OperatorAttribute:
                 kwargsa[key] = val
         return kwargsa
 
-    def _call_inv(self, *args, **kwargs):
-        dim = max(-2, -np.ndim(self._obj))
-        if dim == 0:
-            raise ValueError("object must be at least one-dimensional")
+    def eval_inv(self, *args, **kwargs):
         op = self.OP(*args).inv
-        return op(**self._merge_kwargs(kwargs, op.get_kwargs(self._obj, dim)))
+        return op(**self._merge_kwargs(kwargs, op.get_kwargs(self._obj)))
 
     def __get__(self, obj, objtype=None):
         self._obj = obj
@@ -117,18 +115,18 @@ class OperatorAttribute:
         if np.ndim(self._obj) == 1:
             return self.apply_left(*args, **kwargs)
         try:
-            inv = self._call_inv(*args, **kwargs)
+            inv = self.eval_inv(*args, **kwargs)
         except NotImplementedError:
             return self.apply_left(*args, **kwargs)
         if issubclass(self._objtype, util.AnnotatedArray):
-            return self._objtype.relax(self._call(*args, **kwargs) @ self._obj @ inv)
-        return self._call(*args, **kwargs) @ self._obj @ inv
+            return self._objtype.relax(self.eval(*args, **kwargs) @ self._obj @ inv)
+        return self.eval(*args, **kwargs) @ self._obj @ inv
 
     def apply_left(self, *args, **kwargs):
-        return self._call(*args, **kwargs) @ self._obj
+        return self.eval(*args, **kwargs) @ self._obj
 
     def apply_right(self, *args, **kwargs):
-        return self._obj @ self._call_inv(*args, **kwargs)
+        return self._obj @ self.eval_inv(*args, **kwargs)
 
     def __repr__(self):
         return f"{type(self).__name__}({self.OP.__name__})"
@@ -463,7 +461,6 @@ def changepoltype(poltype=None, *, basis, where=True):
         poltype = ("parity", "helicity")
     if poltype != ("helicity", "parity") and poltype != ("parity", "helicity"):
         raise ValueError(f"invalid poltype '{poltype}'")
-
     if isinstance(basis, core.SphericalWaveBasis):
         return _sw_changepoltype(basis, to_basis, poltype, where)
     if isinstance(basis, core.CylindricalWaveBasis):
@@ -1099,6 +1096,8 @@ class ExpandLattice(Operator):
                 args[2] = kwargs.pop("basis")
             else:
                 args[2] = (args[2], kwargs.pop("basis"))
+        if "modetype" in kwargs and args[3] is None:
+            args[3] = kwargs.pop("modetype")
         for i, name in enumerate(("lattice", "kpar")):
             if name in kwargs and args[i] is None:
                 args[i] = kwargs.pop(name)
@@ -1106,6 +1105,7 @@ class ExpandLattice(Operator):
 
     def get_kwargs(self, obj, dim=-1):
         kwargs = super().get_kwargs(obj, dim)
+        kwargs.pop("modetype", None)
         for name in ("basis", "lattice", "kpar"):
             val = getattr(obj, name, None)
             if isinstance(val, tuple):
@@ -1123,7 +1123,7 @@ class ExpandLattice(Operator):
         raise NotImplementedError
 
 
-def _pwp_permute(basis, n, k0, modetype, poltype):
+def _pwp_permute(basis, n, k0, material, modetype, poltype):
     """Permute axes in a partial plane wave basis."""
     alignment = basis.alignment
     dct = {"xy": "yz", "yz": "zx", "zx": "xy"}
@@ -1134,15 +1134,18 @@ def _pwp_permute(basis, n, k0, modetype, poltype):
         obj.lattice = basis.lattice.permute(n)
     if basis.kpar is not None:
         obj.kpar = basis.kpar.permute(n)
+    if material is None:
+        raise TypeError("missing definition of 'material'")
     res = np.eye(len(basis))
-    kvecs = basis.kvecs(k0, modetype)
-    where = (kvecs[:, None] == kvecs).all(-1)
+    modetype = "up" if modetype is None else modetype
+    kvecs = np.array(basis.kvecs(k0, material, modetype))
+    where = (kvecs[..., None] == kvecs[:, None, :]).all(0)
     for _ in range(n):
         res = (
             pw.permute_xyz(
-                kvecs[:, 0],
-                kvecs[:, 1],
-                kvecs[:, 2],
+                kvecs[0],
+                kvecs[1],
+                kvecs[2],
                 basis.pol[:, None],
                 basis.pol,
                 poltype=poltype,
@@ -1172,7 +1175,7 @@ def _pwa_permute(basis, n, poltype):
     return core.PhysicsArray(res, basis=(obj, basis), poltype=poltype)
 
 
-def permute(n=1, *, basis, k0=None, modetype=None, poltype=None):
+def permute(n=1, *, basis, k0=None, material=None, modetype=None, poltype=None):
     """Permutation matrix.
 
     Permute the axes of a plane wave basis expansion.
@@ -1188,7 +1191,7 @@ def permute(n=1, *, basis, k0=None, modetype=None, poltype=None):
         raise ValueError("'n' must be integer")
     n = n % 3
     if isinstance(basis, core.PlaneWaveBasisByComp):
-        return _pwp_permute(basis, n, k0, modetype, poltype)
+        return _pwp_permute(basis, n, k0, material, modetype, poltype)
     if isinstance(basis, core.PlaneWaveBasisByUnitVector):
         return _pwa_permute(basis, n, poltype)
     raise TypeError("invalid basis")

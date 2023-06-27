@@ -416,10 +416,10 @@ class TestPWBUV:
         b = treams.PlaneWaveBasisByUnitVector.default([[0, 0, 1], [0, 1, 0]])
         assert a & b == a
 
-    def test_partial(self):
+    def test_bycomp(self):
         a = treams.PlaneWaveBasisByComp.default([0, 1], "yz")
         b = treams.PlaneWaveBasisByUnitVector.default([0, 0, 1])
-        assert b.partial(1, "yz") == a
+        assert b.bycomp(1, "yz") == a
 
 
 class TestPWBC:
@@ -482,10 +482,10 @@ class TestPWBC:
         b = treams.PlaneWaveBasisByComp([[1, 0, 0], [1, 0, 0, 1]])
         assert a == b[:1]
 
-    def test_angle(self):
+    def test_byunitvector(self):
         a = treams.PlaneWaveBasisByUnitVector.default([0, 0, 1])
         b = treams.PlaneWaveBasisByComp.default([0, 1], "yz")
-        assert b.angle(1) == a
+        assert b.byunitvector(1) == a
 
     def test_diffr_orders(self):
         lattice = treams.Lattice(2 * np.pi * np.eye(2))
@@ -531,93 +531,103 @@ class TestPhysicsArray:
     def test_changepoltype(self):
         b = treams.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
         p = treams.PhysicsArray([[1, 0], [0, 1]], basis=b, poltype="helicity")
-        x = p.changepoltype()
+        x = p.changepoltype.apply_left()
+        print(repr(x))
         assert (
             x == np.sqrt(0.5) * np.array([[-1, 1], [1, 1]])
-        ).all() and x.poltype == ("parity", "helicity")
+        ).all() and x.poltype == (
+            "parity",
+            "helicity",
+        )
 
     def test_changepoltype_inv(self):
         b = treams.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
         p = treams.PhysicsArray([[1, 0], [0, 1]], basis=b, poltype="helicity")
-        x = p.changepoltype.inv()
+        x = p.changepoltype.apply_right()
         assert (
             x == np.sqrt(0.5) * np.array([[-1, 1], [1, 1]])
-        ).all() and x.poltype == ("helicity", "parity")
+        ).all() and x.poltype == (
+            "helicity",
+            "parity",
+        )
 
     def test_efield(self):
         b = treams.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
         p = treams.PhysicsArray([1, 0], basis=b, k0=1, poltype="helicity")
         x = p.efield([1, 0, 0])
         assert (
-            x
-            == (
-                treams.special.vsph2car(
-                    treams.special.vsw_rA(1, 0, 1, np.pi / 2, 0, [0, 1]),
-                    [1, np.pi / 2, 0],
-                ).swapaxes(-1, -2)
+            np.abs(
+                x
+                - (
+                    treams.special.vsph2car(
+                        treams.special.vsw_rA(1, 0, 1, np.pi / 2, 0, [0, 1]),
+                        [1, np.pi / 2, 0],
+                    ).sum(0)
+                )
+                < 1e-15
             )
         ).all()
 
     def test_efield_inv(self):
         with pytest.raises(NotImplementedError):
-            treams.PhysicsArray([0]).efield.inv([0, 0, 0])
+            treams.PhysicsArray([0]).efield.apply_right([0, 0, 0])
 
     def test_expand(self):
         b = treams.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
         p = treams.PhysicsArray([1, 0], basis=b, k0=1, poltype="helicity")
         x = p.expand(b)
-        assert (np.abs(x - np.eye(2)) < 1e-14).all()
+        assert (np.abs(x - [1, 0]) < 1e-14).all()
 
     def test_expand_inv(self):
         b = treams.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
         p = treams.PhysicsArray([1, 0], basis=b, k0=1, poltype="helicity")
-        x = p.expand.inv(b)
+        x = p.expand.eval_inv(b)
         assert (np.abs(x - np.eye(2)) < 1e-14).all()
 
     def test_expandlattice(self):
         b = treams.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
         p = treams.PhysicsArray([1, 0], basis=b, k0=1, poltype="helicity")
-        x = p.expandlattice(lattice=[[1, 0], [0, 1]], kpar=[0, 0])
+        x = p.expandlattice.eval(lattice=[[1, 0], [0, 1]], kpar=[0, 0])
         assert x.modetype == ("regular", "singular")
 
     def test_expandlattice_inv(self):
         with pytest.raises(NotImplementedError):
-            treams.PhysicsArray([0]).expandlattice.inv(lattice=1)
+            treams.PhysicsArray([0]).expandlattice.eval_inv(lattice=1)
 
     def test_permute(self):
         b = treams.PlaneWaveBasisByUnitVector([[1, 0, 0, 0], [1, 0, 0, 1]])
         c = treams.PlaneWaveBasisByUnitVector([[0, 1, 0, 0], [0, 1, 0, 1]])
         p = treams.PhysicsArray([1, 0], basis=b)
-        assert p.permute().basis == (c, b)
+        assert p.permute.eval().basis == (c, b)
 
     def test_permute_inv(self):
         b = treams.PlaneWaveBasisByUnitVector([[1, 0, 0, 0], [1, 0, 0, 1]])
         c = treams.PlaneWaveBasisByUnitVector([[0, 1, 0, 0], [0, 1, 0, 1]])
         p = treams.PhysicsArray([1, 0], basis=b)
-        assert p.permute.inv().basis == (b, c)
+        assert p.permute.eval_inv().basis == (b, c)
 
     def test_rotate(self):
         b = treams.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
         p = treams.PhysicsArray([1, 0], basis=b)
-        x = p.rotate(1, 2, 3)
+        x = p.rotate.eval(1, 2, 3)
         y = np.diag([treams.special.wignerd(1, 0, 0, 1, 2, 3)] * 2)
         assert (np.abs(x - y) < 1e-14).all()
 
     def test_rotate_inv(self):
         b = treams.SphericalWaveBasis([[1, -1, 0], [1, 0, 0], [1, 1, 0]])
         p = treams.PhysicsArray([1, 0, 0], basis=b)
-        x = p.rotate.inv(1, 2, 3)
+        x = p.rotate.eval_inv(1, 2, 3)
         y = treams.special.wignerd(1, [[-1], [0], [1]], [-1, 0, 1], 1, 2, 3)
         assert (np.abs(x - y.conj().T) < 1e-14).all()
 
     def test_translate(self):
         b = treams.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
         p = treams.PhysicsArray([1, 0], basis=b, k0=1)
-        x = p.translate([0, 0, 0])
+        x = p.translate.eval([0, 0, 0])
         assert (np.abs(x - np.eye(2)) < 1e-14).all()
 
     def test_translate_inv(self):
         b = treams.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
         p = treams.PhysicsArray([1, 0], basis=b, k0=1)
-        x = p.translate.inv([0, 0, 0])
+        x = p.translate.eval_inv([0, 0, 0])
         assert (np.abs(x - np.eye(2)) < 1e-14).all()

@@ -538,7 +538,7 @@ class TestPermute:
     def test_pwp(self):
         a = treams.PlaneWaveBasisByComp([[1, 2, 1], [1, 2, 0]], "yz")
         b = treams.PlaneWaveBasisByComp([[1, 2, 1], [1, 2, 0]])
-        assert treams.permute(basis=b).basis[0] == a
+        assert treams.permute(basis=b, k0=5, material=1).basis[0] == a
 
 
 class TestEField:

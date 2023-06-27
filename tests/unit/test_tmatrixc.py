@@ -113,7 +113,7 @@ class TestProperties:
 
     def test_modes(self):
         tm = TMatrixC.cylinder([-1, 1], 1, 3, [4], [(2 + 1j, 1, 1), (9, 1, 2)])
-        kz, m, pol = tm.basis["kzmp"]
+        kz, m, pol = tm.basis.zms
         assert (
             np.all(kz == 6 * [-1] + 6 * [1])
             and np.all(m == [-1, -1, 0, 0, 1, 1, -1, -1, 0, 0, 1, 1])

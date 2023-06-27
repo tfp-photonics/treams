@@ -6,13 +6,14 @@ import numpy as np
 from treams import config, util
 from treams._core import PhysicsArray
 from treams._core import PlaneWaveBasisByComp as PWBC
+from treams._core import PlaneWaveBasisByUnitVector as PWBUV
 from treams._material import Material
 from treams._operators import translate
 from treams._tmatrix import TMatrix, TMatrixC
 from treams.coeffs import fresnel
 
 
-class _SMatrix(PhysicsArray):
+class SMatrix(PhysicsArray):
     """S-matrix for a plane wave."""
 
     def _check(self):
@@ -32,10 +33,10 @@ class _SMatrix(PhysicsArray):
         if self.basis is None:
             raise util.AnnotationError("basis not set")
         elif not isinstance(self.basis, PWBC):
-            self.basis = self.basis.partial(self.k0, self.material)
+            self.basis = self.basis.bycomp(self.k0, self.material)
 
 
-class SMatrix:
+class SMatrices:
     r"""Collection of four S-matrices with a plane wave basis.
 
     The S-matrix describes the scattering of incoming into outgoing modes using a plane
@@ -65,7 +66,7 @@ class SMatrix:
     also required.
 
     Args:
-        smats (_SMatrix): S-matrices.
+        smats (SMatrix): S-matrices.
         k0 (float): Wave number in vacuum.
         basis (PlaneWaveBasisByComp): The basis for the S-matrices.
         material (tuple, Material, optional): Material definition, if a tuple of length
@@ -80,15 +81,15 @@ class SMatrix:
         if "material" in kwargs:
             material = kwargs["material"]
             del kwargs["material"]
-        elif getattr(smats[0][0], "material", None) is not None:
+        elif hasattr(smats[0][0], "material"):
             material = smats[0][0].material
-        elif getattr(smats[1][1], "material", None) is not None:
+        elif hasattr(smats[1][1], "material"):
             material = smats[1][1].material
             if isinstance(material, tuple):
                 material = material[::-1]
-        elif getattr(smats[0][1], "material", None) is not None:
+        elif hasattr(smats[0][1], "material"):
             material = smats[0][1].material
-        elif getattr(smats[1][0], "material", None) is not None:
+        elif hasattr(smats[1][0], "material"):
             material = smats[1][0].material
         else:
             material = Material()
@@ -100,7 +101,7 @@ class SMatrix:
         modetype = [[("up", "up"), ("up", "down")], [("down", "up"), ("down", "down")]]
         self._sms = [
             [
-                _SMatrix(s, material=m, modetype=t, **kwargs)
+                SMatrix(s, material=m, modetype=t, **kwargs)
                 for s, m, t in zip(ar, mr, tr)
             ]
             for ar, mr, tr in zip(smats, material, modetype)
@@ -133,19 +134,19 @@ class SMatrix:
         return self._sms[key[0]][key[1]]
 
     @classmethod
-    def interface(cls, k0, basis, materials):
+    def interface(cls, basis, k0, materials):
         """Planar interface between two media.
 
         Args:
-            k0 (float): Wave number in vacuum
             basis (PlaneWaveBasisByComp): Basis definitions.
+            k0 (float): Wave number in vacuum
             materials (Sequence[Material]): Material definitions.
 
         Returns:
             SMatrix
         """
         materials = tuple(map(Material, materials))
-        ks = k0 * np.array((materials[0].nmp, materials[1].nmp))
+        ks = np.array([m.ks(k0) for m in materials])
         choice = basis.pol == 0
         kxs = basis.kx[choice], basis.kx[~choice]
         kys = basis.ky[choice], basis.ky[~choice]
@@ -174,7 +175,7 @@ class SMatrix:
         return cls(qs, k0=k0, basis=basis, material=materials[::-1], poltype="helicity")
 
     @classmethod
-    def slab(cls, k0, basis, thickness, materials):
+    def slab(cls, thickness, basis, k0, materials):
         """Slab of material.
 
         A slab of material, defined by a thickness and three materials. Consecutive
@@ -196,13 +197,13 @@ class SMatrix:
             iter(thickness)
         except TypeError:
             thickness = [thickness]
-        res = cls.interface(k0, basis, materials[:2])
+        res = cls.interface(basis, k0, materials[:2])
         for d, ma, mb in zip(thickness, materials[1:-1], materials[2:]):
             if np.ndim(d) == 0:
                 d = [0, 0, d]
-            x = cls.propagation(d, k0, basis, ma)
+            x = cls.propagation(d, basis, k0, ma)
             res = res.add(x)
-            res = res.add(cls.interface(k0, basis, (ma, mb)))
+            res = res.add(cls.interface(basis, k0, (ma, mb)))
         return res
 
     @classmethod
@@ -225,7 +226,7 @@ class SMatrix:
         return acc
 
     @classmethod
-    def propagation(cls, r, k0, basis, material=Material()):
+    def propagation(cls, r, basis, k0, material=Material()):
         """S-matrix for the propagation along a distance.
 
         This S-matrix translates the reference origin along `r`.
@@ -239,11 +240,13 @@ class SMatrix:
         Returns:
             SMatrix
         """
-        sup = translate(r, k0=k0, basis=basis, material=material, modetype="up")
-        sdown = translate(r, k0=k0, basis=basis, material=material, modetype="down")
+        sup = translate(r, basis=basis, k0=k0, material=material, modetype="up")
+        sdown = translate(
+            np.negative(r), basis=basis, k0=k0, material=material, modetype="down"
+        )
         zero = np.zeros_like(sup)
         material = Material(material)
-        return cls([[sup, zero], [zero, sdown]], k0=k0, basis=basis, material=material)
+        return cls([[sup, zero], [zero, sdown]], basis=basis, k0=k0, material=material)
 
     @classmethod
     def from_array(cls, tm, basis, *, eta=0):
@@ -261,19 +264,12 @@ class SMatrix:
         Returns:
             SMatrix
         """
-        if isinstance(tm, TMatrix):
-            if tm.lattice is None:
-                tm = tm.interacted_lattice(basis.lattice, basis.kpar, eta=eta)
-        elif isinstance(tm, TMatrixC):
-            if tm.lattice is None or "x" not in tm.lattice.alignment:
-                tm = tm.interacted_lattice(basis.lattice, basis.kpar, eta=eta)
-        pu, pd = [tm.expandlattice(basis=basis, modetype=i) for i in ("up", "down")]
-        au, ad = [tm.expand.inv(basis=basis, modetype=i) for i in ("up", "down")]
-
+        if isinstance(tm, TMatrixC):
+            basis = basis.permute()
+        pu, pd = (tm.expandlattice(basis=basis, modetype=i) for i in ("up", "down"))
+        au, ad = (tm.expand.eval_inv(basis, i) for i in ("up", "down"))
         eye = np.eye(len(basis))
-        return cls(
-            [[eye + pu @ tm @ au, pu @ tm @ ad], [pd @ tm @ au, eye + pd @ tm @ ad]]
-        )
+        return cls([[eye + pu @ au, pu @ ad], [pd @ au, eye + pd @ ad]])
 
     def add(self, sm):
         """Couple another S-matrix on top of the current one.
@@ -295,7 +291,7 @@ class SMatrix:
         s_tmp = np.linalg.solve(np.eye(dim) - sm[1][0] @ self[0, 1], sm[1][1])
         snew[1][1] = self[1, 1] @ s_tmp
         snew[0][1] = sm[0][1] + sm[0][0] @ self[0, 1] @ s_tmp
-        return SMatrix(snew)
+        return SMatrices(snew)
 
     def double(self, n=1):
         """Double the S-matrix.
@@ -337,7 +333,7 @@ class SMatrix:
         modetype = getattr(illu, "modetype", "up")
         if isinstance(modetype, tuple):
             modetype = modetype[max(-2, -len(tuple))]
-        illu2 = np.zeros_like(self.kx) if illu2 is None else illu2
+        illu2 = np.zeros(np.shape(illu)[-2:]) if illu2 is None else illu2
         if modetype == "down":
             illu, illu2 = illu2, illu
         if smat is None:
@@ -353,123 +349,6 @@ class SMatrix:
         field_down = self[1, 0] @ illu + self[1, 1] @ field_in_down
         return field_up, field_down, field_in_up, field_in_down
 
-    def poynting_avg(self, coeffs, above=True):
-        r"""Time-averaged z-component of the Poynting vector.
-
-        Calculate the time-averaged Poynting vector's z-component
-
-        .. math::
-
-            \langle S_z \rangle
-            = \frac{1}{2}
-            \Re (\boldsymbol E \times \boldsymbol H^\ast) \boldsymbol{\hat{z}}
-
-        on one side of the S-matrix with the given coefficients.
-
-        Args:
-            coeffs (2-tuple): The first entry are the upwards propagating modes the
-                second one the downwards propagating modes
-            above (bool, optional): Calculate the Poynting vector above or below the
-                S-matrix
-
-        Returns:
-            float
-        """
-        choice = int(bool(above))
-        ky, ky, pol = self.modes
-        selections = pol == 0, pol == 1
-        pref = (
-            self.kz[choice, selections[0]] / self.ks[choice, 0],
-            self.kz[choice, selections[1]] / self.ks[choice, 1],
-        )
-        coeffs = [np.zeros_like(self.kx) if c is None else np.array(c) for c in coeffs]
-        allcoeffs = [
-            (1, -1, coeffs[0][selections[0]]),
-            (1, 1, coeffs[0][selections[1]]),
-            (-1, -1, coeffs[1][selections[0]]),
-            (-1, 1, coeffs[1][selections[1]]),
-        ]
-        res = 0
-        if self.helicity:
-            for (dira, pola, a), (dirb, polb, b) in itertools.product(
-                allcoeffs, repeat=2
-            ):
-                res += a @ (
-                    b.conjugate()
-                    * (
-                        pola * polb * pref[(polb + 1) // 2].conjugate() * dirb
-                        + pref[(pola + 1) // 2] * dira
-                    )
-                )
-            res *= 0.25
-        else:
-            for (dira, _, a), (dirb, _, b) in itertools.product(
-                allcoeffs[::2], repeat=2
-            ):
-                res += a @ (b.conjugate() * pref[0].conjugate() * dirb)
-            for (dira, _, a), (dirb, _, b) in itertools.product(
-                allcoeffs[1::2], repeat=2
-            ):
-                res += a @ (b.conjugate() * pref[1] * dira)
-            res *= 0.5
-        return np.real(
-            res / np.conjugate(np.sqrt(self.mu[choice] / self.epsilon[choice]))
-        )
-
-    def chirality_density(self, coeffs, z=None, above=True):
-        r"""Volume-averaged chirality density.
-
-        Calculate the volume-averaged chirality density
-
-        .. math::
-
-            \int_{A_\text{unit cell}} \mathrm d A \int_{z_0}^{z_1} \mathrm d z
-            |G_+(\boldsymbol r)|^2 - |G_-(\boldsymbol r)|^2
-
-        on one side of the S-matrix with the given coefficients. The calculation can
-        also be done for an infinitely thin sheet. The Riemann-Silberstein vectors are
-        :math:`\sqrt{2} \boldsymbol G_\pm(\boldsymbol r) = \boldsymbol E(\boldsymbol r)
-        + \mathrm i Z_0 Z \boldsymbol H(\boldsymbol r)`.
-
-        Args:
-            coeffs (2-tuple): The first entry are the upwards propagating modes the
-                second one the downwards propagating modes
-            above (bool, optional): Calculate the chirality density above or below the
-                S-matrix
-
-        Returns:
-            float
-        """
-        choice = int(bool(above))
-        z = (0, 0) if z is None else z
-        selections = self.pol == 0, self.pol == 1
-        kzs = (self.kz[choice, selections[0]], self.kz[choice, selections[1]])
-        coeffs = [np.zeros_like(self.kx) if c is None else np.array(c) for c in coeffs]
-        allcoeffs = [
-            (1, 0, coeffs[0][selections[0]]),
-            (1, 1, coeffs[0][selections[1]]),
-            (-1, 0, coeffs[1][selections[0]]),
-            (-1, 1, coeffs[1][selections[1]]),
-        ]
-        res = 0
-        if self.helicity:
-            for (dira, pola, a), (dirb, polb, b) in itertools.product(
-                allcoeffs, repeat=2
-            ):
-                if pola != polb:
-                    continue
-                res += (2 * pola - 1) * _coeff_chirality_density(
-                    self.ks[choice, pola], kzs[pola], a, dira, b, dirb, z
-                )
-        else:
-            for (dira, _, a), (dirb, _, b) in itertools.product(
-                allcoeffs[::2], allcoeffs[1::2]
-            ):
-                res += _coeff_chirality_density(
-                    self.ks[choice, 0], kzs[0], a, dira, b, dirb, z, False
-                )
-        return 0.5 * np.real(res)
-
     def tr(self, illu, direction=1):
         """Transmittance and reflectance.
 
@@ -484,44 +363,49 @@ class SMatrix:
         Returns:
             tuple
         """
-        if direction not in (-1, 1):
-            raise ValueError(f"direction must be '-1' or '1', but is '{direction}''")
-        illu_full = (illu, None) if direction == 1 else (None, illu)
-        field_above, field_below = self.field_outside(illu_full)
-        r = (None, field_below) if direction == 1 else (field_above, None)
-        ir = (illu, field_below) if direction == 1 else (field_above, illu)
-        t = (field_above, None) if direction == 1 else (None, field_below)
+        modetype = getattr(illu, "modetype", "up")
+        if isinstance(modetype, tuple):
+            modetype = modetype[max(-2, -len(tuple))]
+        trans, refl = self.illuminate(illu)
+        material = self.material
+        if not isinstance(material, tuple):
+            material = material, material
+        paz = [poynting_avg_z(self.basis, self.k0, m, self.poltype) for m in material]
+        if modetype == "down":
+            trans, refl = refl, trans
+            paz.reverse()
+        illu = np.asarray(illu)
+        s_t = np.real(trans.conjugate().T @ paz[0][0] @ trans)
+        s_r = np.real(refl.conjugate().T @ paz[1][0] @ refl)
+        s_i = np.real(np.conjugate(illu).T @ paz[1][0] @ illu)
+        s_ir = np.real(
+            refl.conjugate().T @ paz[1][1] @ illu
+            - np.conjugate(illu).T @ paz[1][1] @ refl
+        )
+        return s_t / (s_i + s_ir), s_r / (s_i + s_ir)
 
-        s_r = self.poynting_avg(r, above=direction == -1)
-        s_ir = self.poynting_avg(ir, above=direction == -1)
-        s_t = self.poynting_avg(t, above=direction == 1)
-        return s_t / (s_ir - s_r), s_r / (s_r - s_ir)
-
-    def cd(self, illu, direction=1):
+    def cd(self, illu):
         """Transmission and absorption circular dichroism.
 
-        Calculate the transmission and absoption CD for one S-matrix with the given
+        Calculate the transmission and absorption CD for one S-matrix with the given
         illumination and direction.
 
         Args:
-            illu (complex, array_like): Expansion coefficients for the incoming light
-            direction (int, optional): The direction of the field, options are `-1` and
-                `1`
+            illu (complex, PhysicsArray): Expansion coefficients for the incoming light
 
         Returns:
             tuple
         """
-        minus, plus = self.pol == 0, self.pol == 1
-        illu = np.array(illu)
-        if self.helicity:
+        minus, plus = self.basis.pol == 0, self.basis.pol == 1
+        if self.poltype == "helicity":
             illuopposite = np.zeros_like(illu)
             illuopposite[minus] = illu[plus]
             illuopposite[plus] = illu[minus]
         else:
             illuopposite = copy.deepcopy(illu)
             illuopposite[minus] *= -1
-        tm, rm = self.tr(illu, direction=direction)
-        tp, rp = self.tr(illuopposite, direction=direction)
+        tm, rm = self.tr(illu)
+        tp, rp = self.tr(illuopposite)
         return (tp - tm) / (tp + tm), (tp + rp - tm - rm) / (tp + rp + tm + rm)
 
     def periodic(self):
@@ -544,7 +428,7 @@ class SMatrix:
             complex, array_like
 
         """
-        dim = self[0, 0].shape[0]
+        dim = len(self.basis)
         res = np.empty((2 * dim, 2 * dim), dtype=complex)
         res[0:dim, 0:dim] = self[0, 0]
         res[0:dim, dim:] = self[0, 1]
@@ -585,14 +469,80 @@ class SMatrix:
         w, v = np.linalg.eig(self.periodic())
         return -1j * np.log(w) / az, v
 
+    def __repr__(self):
+        return f"""{type(self).__name__}(...,
+    basis={self.basis},
+    k0={self.k0},
+    material={self.material},
+    poltype="{self.poltype}",
+)"""
 
-def _coeff_chirality_density(k, kz, a, dira, b, dirb, z=None, helicity=True):
-    z = (0, 0) if z is None else z
-    tmp = (dira * kz - dirb * kz.conjugate()) * 0.5
-    pref = np.exp(1j * tmp * (z[1] + z[0]))
+
+def chirality_density(basis, k0, material=Material(), poltype=None, z=(0, 0)):
+    poltype = config.POLTYPE if poltype is None else poltype
+    material = Material(material)
+    kx, ky, kz = basis.kvecs(k0, material)
+    k = material.ks(k0)[basis.pol]
+    re, im = np.real(kz), np.imag(kz)
+    prefuu = 1 + np.real((k * k - kz * 2j * im) / (k * k.conjugate()))
+    prefdu = 1 + np.real((k * k - kz * 2 * re) / (k * k.conjugate()))
     if np.abs(z[1] - z[0]) > 1e-16:
-        pref *= np.sin(tmp * (z[1] - z[0])) / (tmp * (z[1] - z[0]))
-    pref *= 1 + (k * k - kz * (kz - dira * dirb * kz.conjugate())) / (k * k.conjugate())
-    if helicity:
-        return np.sum(a * b.conjugate() * pref)
-    return 2 * np.sum(np.real(a * b.conjugate()) * pref)
+        prefuu *= np.sinh(re * (z[1] - z[0])) / (re * (z[1] - z[0]))
+        prefdd = np.exp(im * (z[1] + z[0])) * prefuu
+        prefuu *= np.exp(-im * (z[1] + z[0]))
+        prefdu *= (
+            np.sin(re * (z[1] - z[0]))
+            * np.cos(re * (z[1] + z[0]))
+            / (re * (z[1] - z[0]))
+        )
+    else:
+        prefdd = prefuu
+    if poltype == "helicity":
+        return (
+            np.diag(prefuu * (2 * basis.pol - 1)),
+            np.diag(prefdd * (2 * basis.pol - 1)),
+            np.diag(2 * prefdu * (2 * basis.pol - 1)),
+        )
+    elif poltype == "parity":
+        where = (
+            (kx[:, None] == kx)
+            & (ky[:, None] == ky)
+            & (basis.pol[:, None] != basis.pol)
+        )
+        return where * prefuu, where * prefdd, where * 2 * prefdu
+    raise ValueError(f"invalid poltype: '{poltype}'")
+
+
+def poynting_avg_z(basis, k0, material=Material(), poltype=None):
+    r"""Time-averaged z-component of the Poynting vector.
+
+    Calculate the time-averaged Poynting vector's z-component
+
+    .. math::
+
+        \langle S_z \rangle
+        = \frac{1}{2}
+        \Re (\boldsymbol E \times \boldsymbol H^\ast) \boldsymbol{\hat{z}}
+
+    on one side of the S-matrix with the given coefficients.
+
+    Returns:
+        tuple
+    """
+    poltype = config.POLTYPE if poltype is None else poltype
+    material = Material(material)
+    kx, ky, kzs = basis.kvecs(k0, material)
+    gamma = kzs / (material.ks(k0)[basis.pol] * material.impedance)
+    selection = (kx[:, None] == kx) & (ky[:, None] == ky)
+    if poltype == "parity":
+        pol = basis.pol
+        selection = selection & (pol[:, None] == pol)
+        a = selection * ((1 - pol) * gamma.conjugate() + pol * gamma) * 0.25
+        b = selection * ((1 - pol) * gamma.conjugate() - pol * gamma) * 0.25
+        return a, b
+    if poltype == "helicity":
+        pol = 2 * basis.pol - 1
+        a = selection * (pol[:, None] * pol * gamma[:, None].conjugate() + gamma) * 0.25
+        b = selection * (pol[:, None] * pol * gamma[:, None].conjugate() - gamma) * 0.25
+        return a, b
+    raise ValueError(f"invalid poltype: '{poltype}'")
