@@ -37,11 +37,11 @@ treams.util.SequenceAsDict
          ~SequenceAsDict.update
          ~SequenceAsDict.values
       
-         ~SequenceAsDict.__gt__
          ~SequenceAsDict.__eq__
-         ~SequenceAsDict.__ne__
+         ~SequenceAsDict.__gt__
          ~SequenceAsDict.__le__
          ~SequenceAsDict.__lt__
-         ~SequenceAsDict.__str__
          ~SequenceAsDict.__ge__
+         ~SequenceAsDict.__ne__
+         ~SequenceAsDict.__str__
   

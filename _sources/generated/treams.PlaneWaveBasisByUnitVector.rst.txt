@@ -43,17 +43,18 @@
          ~PlaneWaveBasisByUnitVector.index
          ~PlaneWaveBasisByUnitVector.isdisjoint
          ~PlaneWaveBasisByUnitVector.kvecs
+         ~PlaneWaveBasisByUnitVector.permute
       
-         ~PlaneWaveBasisByUnitVector.__sub__
+         ~PlaneWaveBasisByUnitVector.__or__
          ~PlaneWaveBasisByUnitVector.__gt__
-         ~PlaneWaveBasisByUnitVector.__len__
-         ~PlaneWaveBasisByUnitVector.__repr__
-         ~PlaneWaveBasisByUnitVector.__ne__
+         ~PlaneWaveBasisByUnitVector.__and__
          ~PlaneWaveBasisByUnitVector.__le__
          ~PlaneWaveBasisByUnitVector.__lt__
-         ~PlaneWaveBasisByUnitVector.__str__
-         ~PlaneWaveBasisByUnitVector.__xor__
-         ~PlaneWaveBasisByUnitVector.__and__
          ~PlaneWaveBasisByUnitVector.__ge__
-         ~PlaneWaveBasisByUnitVector.__or__
+         ~PlaneWaveBasisByUnitVector.__ne__
+         ~PlaneWaveBasisByUnitVector.__repr__
+         ~PlaneWaveBasisByUnitVector.__xor__
+         ~PlaneWaveBasisByUnitVector.__sub__
+         ~PlaneWaveBasisByUnitVector.__str__
+         ~PlaneWaveBasisByUnitVector.__len__
   

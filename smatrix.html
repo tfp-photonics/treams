@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>S-Matrices for plane waves &#8212; treams 0.2.2.dev136+g3e3ba599 documentation</title>
+    <title>S-Matrices for plane waves &#8212; treams 0.3.1.dev1+gf7385239 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
@@ -41,7 +41,7 @@
         <li class="right" >
           <a href="tmatrixc.html" title="Cylindrical T-matrices"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev136+g3e3ba599 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev1+gf7385239 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="intro.html" accesskey="U">Introduction</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">S-Matrices for plane waves</a></li> 
       </ul>
@@ -92,12 +92,95 @@ in the chiral medium for both helicites.</p>
 two-dimensional arrays of T-matrices. We take spheres on an thin film as an example.
 This means we first calculate the S-matrices for the thin film and the array
 individually and then couple those two systems.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k0s</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">350</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">material_slab</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">thickness</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">material_sphere</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+<span class="n">lattice</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">Lattice</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+<span class="n">radius</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">lmax</span> <span class="o">=</span> <span class="mi">3</span>
+</pre></div>
+</div>
+<p>Beforehand, we define all the necessary parameters. First the wave numbers, then the
+parameters of the slab, and finally those for the lattice and the spheres. Then, we can
+use a simple loop to solve the system for all wave numbers.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">k0s</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k0</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">k0s</span><span class="p">):</span>
+    <span class="n">kpar</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">k0</span><span class="p">]</span>
+    <span class="n">spheres</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">TMatrix</span><span class="o">.</span><span class="n">sphere</span><span class="p">(</span>
+        <span class="n">lmax</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="p">[</span><span class="n">material_sphere</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">latticeinteraction</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">lattice</span><span class="p">,</span> <span class="n">kpar</span><span class="p">)</span>
+
+    <span class="n">pwb</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">PlaneWaveBasisByComp</span><span class="o">.</span><span class="n">diffr_orders</span><span class="p">(</span><span class="n">kpar</span><span class="p">,</span> <span class="n">lattice</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
+    <span class="n">plw</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">plane_wave</span><span class="p">(</span><span class="n">kpar</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">k0</span><span class="o">=</span><span class="n">k0</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="n">pwb</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">slab</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">SMatrices</span><span class="o">.</span><span class="n">slab</span><span class="p">(</span><span class="n">thickness</span><span class="p">,</span> <span class="n">pwb</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">material_slab</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">SMatrices</span><span class="o">.</span><span class="n">propagation</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">radius</span><span class="p">],</span> <span class="n">pwb</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">array</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">SMatrices</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">spheres</span><span class="p">,</span> <span class="n">pwb</span><span class="p">)</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">SMatrices</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">slab</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">array</span><span class="p">])</span>
+    <span class="n">tr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">total</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="n">plw</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We set some oblique incidence and the array of spheres. Then, we define a linearly
+polarized plane wave and the needed S-matrices: a slab, the distance between the
+top interface of the slab to the center of the sphere array, and the array in the
+S-matrix representation itself.</p>
+<p>(<a class="reference download internal" download="" href="_downloads/048757fc398f9318e9bd7d27ff6fd517/array_spheres.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/0b89efdb9135a2784a5f29761bc6bca1/array_spheres.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/2de2e1405a9e4257b44727af97076e62/array_spheres.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/f4e6eb44fb0b81cf40d88a4d54e36580/array_spheres.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/array_spheres.png" class="plot-directive" src="_images/array_spheres.png" />
+</figure>
 </section>
 <section id="from-cylindrical-t-matrix-gratings">
 <h2>From cylindrical T-matrix gratings<a class="headerlink" href="#from-cylindrical-t-matrix-gratings" title="Permalink to this heading">¶</a></h2>
+<p>Now, we want to perform a small test of the methods. Instead of creating the
+two-dimensional sphere array right away, we intermediately create a one-dimensional
+array, then calculate cylindrical T-matrices, and place them in a second
+one-dimensional lattice, thereby, obtaining the S-matrix from the previous section.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k0s</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">350</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">material_slab</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">thickness</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">material_sphere</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+<span class="n">pitch</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">lattice</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">Lattice</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">pitch</span><span class="p">)</span>
+<span class="n">radius</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">lmax</span> <span class="o">=</span> <span class="n">mmax</span> <span class="o">=</span> <span class="mi">3</span>
+</pre></div>
+</div>
+<p>The definition of the parameters is quite similar. We store the lattice pitch for later
+use separately and define the maximal order <code class="code docutils literal notranslate"><span class="pre">mmax</span></code> separately.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">k0s</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k0</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">k0s</span><span class="p">):</span>
+    <span class="n">kpar</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">k0</span><span class="p">]</span>
+
+    <span class="n">spheres</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">TMatrix</span><span class="o">.</span><span class="n">sphere</span><span class="p">(</span>
+        <span class="n">lmax</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="p">[</span><span class="n">material_sphere</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">latticeinteraction</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">pitch</span><span class="p">,</span> <span class="n">kpar</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">cwb</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">CylindricalWaveBasis</span><span class="o">.</span><span class="n">diffr_orders</span><span class="p">(</span><span class="n">kpar</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mmax</span><span class="p">,</span> <span class="n">pitch</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
+    <span class="n">spheres_cw</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">TMatrixC</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">spheres</span><span class="p">,</span> <span class="n">cwb</span><span class="p">)</span>
+    <span class="n">chain_cw</span> <span class="o">=</span> <span class="n">spheres_cw</span><span class="o">.</span><span class="n">latticeinteraction</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">pitch</span><span class="p">,</span> <span class="n">kpar</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">pwb</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">PlaneWaveBasisByComp</span><span class="o">.</span><span class="n">diffr_orders</span><span class="p">(</span><span class="n">kpar</span><span class="p">,</span> <span class="n">lattice</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
+    <span class="n">plw</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">plane_wave</span><span class="p">(</span><span class="n">kpar</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">k0</span><span class="o">=</span><span class="n">k0</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="n">pwb</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">slab</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">SMatrices</span><span class="o">.</span><span class="n">slab</span><span class="p">(</span><span class="n">thickness</span><span class="p">,</span> <span class="n">pwb</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">material_slab</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">SMatrices</span><span class="o">.</span><span class="n">propagation</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">radius</span><span class="p">],</span> <span class="n">pwb</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">array</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">SMatrices</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">chain_cw</span><span class="p">,</span> <span class="n">pwb</span><span class="p">)</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">SMatrices</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">slab</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">array</span><span class="p">])</span>
+    <span class="n">tr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">total</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="n">plw</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The first half of the loop is now a little bit different. After creating the spheres
+we solve the interaction along the z-direction, then create the cylindrical T-matrix
+and finally calculate the interaction along the x-direction. The second half is the
+same as in the previous calculation.</p>
+<p>The most important aspect to note here, is that the method
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">treams.SMatrix.from_array()</span></code> implicitly converts the lattice in the z-x-plane to
+a lattice in the x-y-plane.</p>
+<p>(<a class="reference download internal" download="" href="_downloads/fefd0f046d30f3ab9ebfebbdca9ebe99/array_spheres_tmatrixc.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/49d5cff3180096980fec689a2de3e65b/array_spheres_tmatrixc.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/8540c3c72b26cfdde367948483a1d439/array_spheres_tmatrixc.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/02c7adab02893876280c1614bc60d4dd/array_spheres_tmatrixc.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/array_spheres_tmatrixc.png" class="plot-directive" src="_images/array_spheres_tmatrixc.png" />
+</figure>
 </section>
-<section id="band-structures">
-<h2>Band structures<a class="headerlink" href="#band-structures" title="Permalink to this heading">¶</a></h2>
+<section id="band-structure">
+<h2>Band structure<a class="headerlink" href="#band-structure" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -164,7 +247,7 @@ individually and then couple those two systems.</p>
         <li class="right" >
           <a href="tmatrixc.html" title="Cylindrical T-matrices"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev136+g3e3ba599 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev1+gf7385239 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="intro.html" >Introduction</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">S-Matrices for plane waves</a></li> 
       </ul>

@@ -1,0 +1,6 @@
+treams.PlaneWaveBasisByUnitVector.permute
+=========================================
+
+.. currentmodule:: treams
+
+.. automethod:: PlaneWaveBasisByUnitVector.permute

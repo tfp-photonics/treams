@@ -15,9 +15,9 @@ for i, k0 in enumerate(k0s):
 
 fig, ax = plt.subplots()
 ax.set_xlabel("Frequency (THz)")
-ax.plot(299.792458 * k0s / (2 * np.pi), tr[0, :, 0])
-ax.plot(299.792458 * k0s / (2 * np.pi), tr[0, :, 1])
-ax.plot(299.792458 * k0s / (2 * np.pi), tr[1, :, 0], c="C0", linestyle="--")
-ax.plot(299.792458 * k0s / (2 * np.pi), tr[1, :, 1], c="C1", linestyle="--")
+ax.plot(299792.458 * k0s / (2 * np.pi), tr[0, :, 0])
+ax.plot(299792.458 * k0s / (2 * np.pi), tr[0, :, 1])
+ax.plot(299792.458 * k0s / (2 * np.pi), tr[1, :, 0], c="C0", linestyle="--")
+ax.plot(299792.458 * k0s / (2 * np.pi), tr[1, :, 1], c="C1", linestyle="--")
 ax.legend(["$T_+$", "$R_+$", "$T_-$", "$R_-$"])
 fig.show()

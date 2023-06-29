@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>T-Matrices &#8212; treams 0.2.2.dev136+g3e3ba599 documentation</title>
+    <title>T-Matrices &#8212; treams 0.3.1.dev1+gf7385239 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
@@ -41,7 +41,7 @@
         <li class="right" >
           <a href="operators.html" title="Operators"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev136+g3e3ba599 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev1+gf7385239 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="intro.html" accesskey="U">Introduction</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">T-Matrices</a></li> 
       </ul>
@@ -57,11 +57,11 @@
 <nav class="contents local" id="table-of-contents">
 <p class="topic-title">Table of contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#spheres" id="id6">Spheres</a></p></li>
-<li><p><a class="reference internal" href="#clusters" id="id7">Clusters</a></p></li>
-<li><p><a class="reference internal" href="#one-dimensional-arrays-along-z" id="id8">One-dimensional arrays (along z)</a></p></li>
-<li><p><a class="reference internal" href="#two-dimensional-arrays-in-the-x-y-plane" id="id9">Two-dimensional arrays (in the x-y-plane)</a></p></li>
-<li><p><a class="reference internal" href="#three-dimensional-arrays" id="id10">Three-dimensional arrays</a></p></li>
+<li><p><a class="reference internal" href="#spheres" id="id3">Spheres</a></p></li>
+<li><p><a class="reference internal" href="#clusters" id="id4">Clusters</a></p></li>
+<li><p><a class="reference internal" href="#one-dimensional-arrays-along-z" id="id5">One-dimensional arrays (along z)</a></p></li>
+<li><p><a class="reference internal" href="#two-dimensional-arrays-in-the-x-y-plane" id="id6">Two-dimensional arrays (in the x-y-plane)</a></p></li>
+<li><p><a class="reference internal" href="#three-dimensional-arrays" id="id7">Three-dimensional arrays</a></p></li>
 </ul>
 </nav>
 <p>One of the main objects for electromagnetic scattering calculations within <em>treams</em> are
@@ -79,7 +79,7 @@ description treating the whole cluster as a single object.</p>
 can be periodic in one, two, or all three spatial dimensions. The unit cell of those
 lattices can consist of an arbitrary number of objects described by a T-matrix.</p>
 <section id="spheres">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink">Spheres</a><a class="headerlink" href="#spheres" title="Permalink to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Spheres</a><a class="headerlink" href="#spheres" title="Permalink to this heading">¶</a></h2>
 <p>It’s possible to calculate the T-matrix of a single (multi-layered) sphere with the
 method <a class="reference internal" href="generated/treams.TMatrix.sphere.html#treams.TMatrix.sphere" title="treams.TMatrix.sphere"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sphere()</span></code></a>. We start by defining the relevant parameters for
 our calculation and creating the T-matrices themselves.</p>
@@ -138,7 +138,7 @@ we can calculate the fields as a superposition of incident and scattered fields.
 </figure>
 </section>
 <section id="clusters">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink">Clusters</a><a class="headerlink" href="#clusters" title="Permalink to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Clusters</a><a class="headerlink" href="#clusters" title="Permalink to this heading">¶</a></h2>
 <p>Multi-scattering calculations in a cluster of particles is a typical application of the
 T-matrix method. We first construct an object from four different spheres placed at the
 corners of a tetrahedron. Using the definition of the relevant parameters</p>
@@ -202,24 +202,6 @@ basis can be more efficient in terms of matrix size.</p>
 <p>A comparison of the calculated near-fields and the cross sections show good agreement
 between the results of both, local and global, T-matrices.</p>
 <p>(<a class="reference download internal" download="" href="_downloads/acdce4ee8fd3701bf7ca9ae68d6672e1/cluster.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>)</p>
-<figure class="align-default" id="id3">
-<img alt="_images/cluster_00.png" class="plot-directive" src="_images/cluster_00.png" />
-<figcaption>
-<p><span class="caption-text">(<a class="reference download internal" download="" href="_downloads/cb13c09204853787666969ea4b735e55/cluster_00.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/fda1ea54000e3827a99abc13a5bb0f23/cluster_00.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/f49d4f648b11e549581deac890a62745/cluster_00.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-<figure class="align-default" id="id4">
-<img alt="_images/cluster_01.png" class="plot-directive" src="_images/cluster_01.png" />
-<figcaption>
-<p><span class="caption-text">(<a class="reference download internal" download="" href="_downloads/643dd1b93ea25a89842c01385abd1fc4/cluster_01.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/79a8891b7e0ea3c23bb07a615f6feabf/cluster_01.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/24503bcffc50f13be5631f08876f2f1b/cluster_01.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-<figure class="align-default" id="id5">
-<img alt="_images/cluster_02.png" class="plot-directive" src="_images/cluster_02.png" />
-<figcaption>
-<p><span class="caption-text">(<a class="reference download internal" download="" href="_downloads/b7939ff5a3fc032fc04e612d4610a77b/cluster_02.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/36f270879ccc6bf074623c4dc2d223d7/cluster_02.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/239d54294773bf731af657867d20796e/cluster_02.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
 <p>In the last figure, the T-matrix is rotated by 90 degrees about the y-axis and the
 illumination is set accordingly to be a plane wave propagating in the negative
 z-direction, such that the whole system is the same simply. It shows how the rotate
@@ -241,7 +223,7 @@ operator produces consistent results.</p>
 </div>
 </section>
 <section id="one-dimensional-arrays-along-z">
-<h2><a class="toc-backref" href="#id8" role="doc-backlink">One-dimensional arrays (along z)</a><a class="headerlink" href="#one-dimensional-arrays-along-z" title="Permalink to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">One-dimensional arrays (along z)</a><a class="headerlink" href="#one-dimensional-arrays-along-z" title="Permalink to this heading">¶</a></h2>
 <p>Next, we turn to systems that are periodic in the z-direction. We calculate the
 scattering from an array of spheres. Intentionally, we choose a unit cell with two
 spheres that overlap along the z-direction, but are not placed exactly along the same
@@ -295,7 +277,7 @@ and bottom side match exactly, as required due to the periodic boundary conditio
 </figure>
 </section>
 <section id="two-dimensional-arrays-in-the-x-y-plane">
-<h2><a class="toc-backref" href="#id9" role="doc-backlink">Two-dimensional arrays (in the x-y-plane)</a><a class="headerlink" href="#two-dimensional-arrays-in-the-x-y-plane" title="Permalink to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Two-dimensional arrays (in the x-y-plane)</a><a class="headerlink" href="#two-dimensional-arrays-in-the-x-y-plane" title="Permalink to this heading">¶</a></h2>
 <p>The case of periodicity in two directions is similar to the case of the previous section
 with one-dimensional periodicity. Here, by convention the array has to be in the
 x-y-plane.</p>
@@ -339,7 +321,7 @@ system.</p>
 </figure>
 </section>
 <section id="three-dimensional-arrays">
-<h2><a class="toc-backref" href="#id10" role="doc-backlink">Three-dimensional arrays</a><a class="headerlink" href="#three-dimensional-arrays" title="Permalink to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Three-dimensional arrays</a><a class="headerlink" href="#three-dimensional-arrays" title="Permalink to this heading">¶</a></h2>
 <p>In a three-dimensional lattice we’re mostly concerned with finding eigenmodes of a
 crystal. We want to restrict the example to calculating modes at the gamma point in
 reciprocal space. The calculated system consists of a single sphere in a cubic lattice.
@@ -430,7 +412,7 @@ additional modes at higher frequencies in the chosen range.</p>
         <li class="right" >
           <a href="operators.html" title="Operators"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.2.2.dev136+g3e3ba599 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev1+gf7385239 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="intro.html" >Introduction</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">T-Matrices</a></li> 
       </ul>

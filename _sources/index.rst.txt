@@ -33,7 +33,7 @@ computations.
 
 Finally, three classes are the main point of interaction for the user. They allow access
 to the underlying functions operating directly on the spherical and cylindrical
-T-matrices or the Q-matrices based on the plane wave solutions.
+T-matrices or the S-matrices based on the plane wave solutions.
 
 .. todo:: clean up intro
 
