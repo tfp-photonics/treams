@@ -2,14 +2,14 @@ import warnings
 
 import numpy as np
 
+import treams._operators as op
 import treams.special as sc
 from treams import config
 from treams._core import CylindricalWaveBasis as CWB
 from treams._core import PhysicsArray
-from treams._core import PlaneWaveBasisByUnitVector as PWBUV
 from treams._core import PlaneWaveBasisByComp as PWBC
+from treams._core import PlaneWaveBasisByUnitVector as PWBUV
 from treams._core import SphericalWaveBasis as SWB
-import treams._operators as op
 from treams._material import Material
 from treams.coeffs import mie, mie_cyl
 from treams.util import AnnotationError
@@ -190,7 +190,7 @@ class TMatrix(PhysicsArray):
         poltype = tmats[0].poltype
         modes = [], [], []
         pidx = []
-        dim = sum([tmat.shape[0] for tmat in tmats])
+        dim = sum(tmat.shape[0] for tmat in tmats)
         tres = np.zeros((dim, dim), complex)
         i = 0
         for j, tm in enumerate(tmats):
@@ -591,7 +591,7 @@ class TMatrixC(PhysicsArray):
         poltype = tmats[0].poltype
         modes = [], [], []
         pidx = []
-        dim = sum([tmat.shape[0] for tmat in tmats])
+        dim = sum(tmat.shape[0] for tmat in tmats)
         tres = np.zeros((dim, dim), complex)
         i = 0
         for j, tm in enumerate(tmats):
@@ -746,24 +746,6 @@ class TMatrixC(PhysicsArray):
             -2 * np.real(illu.conjugate().T @ (p / self.ks[self.basis.pol])) / flux,
         )
 
-    def globalmat(self, basis=None):
-        """Global T-matrix.
-
-        Calculate the global T-matrix starting from a local one. This changes the
-        T-matrix.
-
-        Args:
-            origin (array, optional): The origin of the new T-matrix
-            modes (array, optional): The modes that are considered for the global
-                T-matrix
-
-        """
-        if not basis.isglobal:
-            raise ValueError("global basis required")
-        if basis is None:
-            basis = CWB.default(np.unique(self.kz), max(self.basis.l))
-        return TMatrix(self.expand(basis) @ self @ self.expand.inv(basis))
-
     def valid_points(self, grid, radii):
         grid = np.asarray(grid)
         if grid.shape[-1] not in (2, 3):
@@ -794,7 +776,7 @@ def _plane_wave_partial(
 ):
     if basis is None:
         basis = PWBC.default([kpar])
-    if pol == 0 or pol == -1:
+    if pol in (0, -1):
         pol = [1, 0]
     elif pol == 1:
         pol = [0, 1]
@@ -838,7 +820,7 @@ def _plane_wave(
         basis = PWBUV.default([kvec])
     norm = np.sqrt(np.sum(np.power(kvec, 2)))
     qvec = kvec / norm
-    if pol == 0 or pol == -1:
+    if pol == (0, -1):
         pol = [1, 0]
     elif pol == 1:
         pol = [0, 1]
@@ -905,7 +887,7 @@ def plane_wave(
             modetype=modetype,
             poltype=poltype,
         )
-    elif len(kvec) == 3:
+    if len(kvec) == 3:
         return _plane_wave(
             kvec,
             pol,

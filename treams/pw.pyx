@@ -245,6 +245,8 @@ cdef double complex _cto_cw(double kzcw, long m, long polcw, double kx, number_t
     if (polcw == polpw == 0 or polcw == polpw == 1) and kzcw == kzpw:
         if m == 0:
             return 1
+        if krho == 0:
+            return cpow(1j, m)
         return cpow((1j * kx + ky) / krho, m)
     elif (polpw == 1 and polcw == 0) or (polpw == 0 and polcw == 1) or kzcw != kzpw:
         return 0.0j
@@ -379,10 +381,6 @@ Returns:
 
 
 cdef double complex _cxyz_to_zxy_p(number_t kx, number_t ky, number_t kz, long polout, long polin) nogil:
-    # We describe the system as if it was aligned along x, periodic along y and
-    # principle direction of propagation was along z. But actually, the system is
-    # in a system where all these arguments are permuted, such that alignment is along
-    # z.
     cdef number_t kyz = sqrt(ky * ky + kz * kz)
     if kyz == 0:
         if polout == polin:
@@ -400,17 +398,9 @@ cdef double complex _cxyz_to_zxy_p(number_t kx, number_t ky, number_t kz, long p
 
 
 cdef double complex _cxyz_to_zxy_h(number_t kx, number_t ky, number_t kz, long polout, long polin) nogil:
-    """Change the coordinate system and basis vectors of a plane wave
-
-    The Q-matrices are expected to extend periodically in the x y plane, but the
-    two-dimensional T-matrices have their cylinder axis along the z direction and the
-    periodicity along x. To match the two computation techniques we need to permute the
-    labels of the coordinates. Also, the polarization basis vectors have to be adjusted
-    accordingly.
-    """
-    cdef number_t kyz = sqrt(ky * ky + kz * kz)
     if polout != polin:
         return 0.0j
+    cdef number_t kyz = sqrt(ky * ky + kz * kz)
     if kyz == 0:
         return (2 * polin - 1) * 1j
     cdef number_t kxy = sqrt(kx * kx + ky * ky)
@@ -421,13 +411,33 @@ cdef double complex _cxyz_to_zxy_h(number_t kx, number_t ky, number_t kz, long p
 
 
 cdef double complex _cxyz_to_yzx_p(number_t kx, number_t ky, number_t kz, long polout, long polin) nogil:
+    cdef number_t kxy = sqrt(kx * kx + ky * ky)
+    if kxy == 0:
+        if polout == polin:
+            return 0
+        return -1j
+    cdef number_t kxz = sqrt(kx * kx + kz * kz)
+    if kxz == 0:
+        if polout == polin:
+            return -1 if creal(ky) > 0 else 1
+        return 0
     if polout == polin:
-        return _cxyz_to_zxy_p(kx, ky, kz, polout, polin)
-    return -_cxyz_to_zxy_p(kx, ky, kz, polout, polin)
+        return -ky * kz / (kxy * kxz)
+    cdef number_t k = sqrt(kx * kx + ky * ky + kz * kz)
+    return -1j * k * kx / (kxy * kxz)
 
 
 cdef double complex _cxyz_to_yzx_h(number_t kx, number_t ky, number_t kz, long polout, long polin) nogil:
-    return _cxyz_to_zxy_h(kx, ky, kz, 1 - polout, 1 - polin)
+    if polout != polin:
+        return 0.0j
+    cdef number_t kxy = sqrt(kx * kx + ky * ky)
+    if kxy == 0:
+        return -1j * (2 * polin - 1)
+    cdef number_t kxz = sqrt(kx * kx + kz * kz)
+    if kxz == 0:
+        return -1 if creal(ky) > 0 else 1
+    cdef number_t k = sqrt(kx * kx + ky * ky + kz * kz)
+    return (-ky * kz - (2 * polin - 1) * 1j * k * kx) / (kxy * kxz)
 
 
 cdef void _loop_yz_d(char **args, np.npy_intp *dims, np.npy_intp *steps, void *data) nogil:
@@ -598,10 +608,10 @@ def permute_xyz(kx, ky, kz, p, q, poltype=None, inverse=False, *args, **kwargs):
     poltype = config.POLTYPE if poltype is None else poltype
     if poltype == "helicity":
         if inverse:
-            return _xyz_to_yzx_h(kx, ky, kz, p, q, *args, **kwargs)
-        return _xyz_to_zxy_h(kx, ky, kz, p, q, *args, **kwargs)
+            return _xyz_to_zxy_h(kx, ky, kz, p, q, *args, **kwargs)
+        return _xyz_to_yzx_h(kx, ky, kz, p, q, *args, **kwargs)
     elif poltype == "parity":
         if inverse:
-            return _xyz_to_yzx_p(kx, ky, kz, p, q, *args, **kwargs)
-        return _xyz_to_zxy_p(kx, ky, kz, p, q, *args, **kwargs)
+            return _xyz_to_zxy_p(kx, ky, kz, p, q, *args, **kwargs)
+        return _xyz_to_yzx_p(kx, ky, kz, p, q, *args, **kwargs)
     raise ValueError(f"invalid poltype {poltype}")

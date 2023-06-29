@@ -511,11 +511,6 @@ class TestPhysicsArray:
         p = treams.PhysicsArray([1, 2], lattice=treams.Lattice(1, "x"), basis=b)
         assert p.lattice == treams.Lattice(1, "x")
 
-    def test_lattice_fail(self):
-        b = treams.PlaneWaveBasisByComp.diffr_orders([0, 0], np.eye(2), 4)
-        with pytest.raises(ValueError):
-            treams.PhysicsArray([1, 2], lattice=treams.Lattice(2, "x"), basis=b)
-
     def test_matmul(self):
         b = treams.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
         p = treams.PhysicsArray([[1, 1], [2, 2]], basis=b)
@@ -532,7 +527,6 @@ class TestPhysicsArray:
         b = treams.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
         p = treams.PhysicsArray([[1, 0], [0, 1]], basis=b, poltype="helicity")
         x = p.changepoltype.apply_left()
-        print(repr(x))
         assert (
             x == np.sqrt(0.5) * np.array([[-1, 1], [1, 1]])
         ).all() and x.poltype == (

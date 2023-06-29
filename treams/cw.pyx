@@ -323,6 +323,8 @@ cdef double complex _cperiodic_to_pw(double kx, number_t ky, double kzpw, long p
             ky_s = 1e-20 + 1e-20j
         elif cimag(ky_s) < 0 or (cimag(ky_s) == 0 and creal(ky_s) < 0):
             ky_s = -ky_s
+        if krho == 0:
+            return 2 * cpow(-1j, m) / (abs(a) * ky_s)
         return 2 * cpow((-1j * kx + ky) / krho, m) / (abs(a) * ky_s)
     elif (polpw == 0 or polpw == 1) and (polcw == 0 or polcw == 1):
         return 0.0j

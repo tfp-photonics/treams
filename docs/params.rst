@@ -22,7 +22,7 @@ As described in :doc:`maxwell` it is possible to solve Maxwells equations in dif
 coordinate systems. While being in principle equivalent, for different scenarios it is
 beneficial to use suitable solution sets that represent the waves with sufficient
 precision when truncated to a finite number of modes. The chosen finite number of
-modes is given in the the the classes :class:`~treams.SphericalWaveBasis`,
+modes is given in the classes :class:`~treams.SphericalWaveBasis`,
 :class:`~treams.CylindricalWaveBasis`, and :class:`~treams._core.PlaneWaveBasis`, which
 are all children of the base call :class:`~treams._core.BasisSet`.
 

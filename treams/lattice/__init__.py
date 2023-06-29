@@ -146,9 +146,9 @@ def diffr_orders_circle(b, rmax):
 def lsumsw(dim, l, m, k, kpar, a, r, eta, out=None, **kwargs):  # noqa: E741
     if dim == 1:
         return lsumsw1d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
-    elif dim == 2:
+    if dim == 2:
         return lsumsw2d_shift(l, m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
-    elif dim == 3:
+    if dim == 3:
         return lsumsw3d(l, m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
     raise ValueError(f"invalid dimension '{dim}'")
 
@@ -158,11 +158,11 @@ def realsumsw(dim, l, m, k, kpar, a, r, eta, out=None, **kwargs):  # noqa: E741
         return realsumsw1d_shift(  # noqa: F405
             l, m, k, kpar, a, r, eta, out=out, **kwargs
         )
-    elif dim == 2:
+    if dim == 2:
         return realsumsw2d_shift(  # noqa: F405
             l, m, k, kpar, a, r, eta, out=out, **kwargs
         )
-    elif dim == 3:
+    if dim == 3:
         return realsumsw3d(l, m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
     raise ValueError(f"invalid dimension '{dim}'")
 
@@ -172,11 +172,11 @@ def recsumsw(dim, l, m, k, kpar, a, r, eta, out=None, **kwargs):  # noqa: E741
         return recsumsw1d_shift(  # noqa: F405
             l, m, k, kpar, a, r, eta, out=out, **kwargs
         )
-    elif dim == 2:
+    if dim == 2:
         return recsumsw2d_shift(  # noqa: F405
             l, m, k, kpar, a, r, eta, out=out, **kwargs
         )
-    elif dim == 3:
+    if dim == 3:
         return recsumsw3d(l, m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
     raise ValueError(f"invalid dimension '{dim}'")
 
@@ -184,7 +184,7 @@ def recsumsw(dim, l, m, k, kpar, a, r, eta, out=None, **kwargs):  # noqa: E741
 def lsumcw(dim, m, k, kpar, a, r, eta, out=None, **kwargs):  # noqa: E741
     if dim == 1:
         return lsumcw1d_shift(m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
-    elif dim == 2:
+    if dim == 2:
         return lsumcw2d(m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
     raise ValueError(f"invalid dimension '{dim}'")
 
@@ -192,7 +192,7 @@ def lsumcw(dim, m, k, kpar, a, r, eta, out=None, **kwargs):  # noqa: E741
 def realsumcw(dim, m, k, kpar, a, r, eta, out=None, **kwargs):
     if dim == 1:
         return realsumcw1d_shift(m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
-    elif dim == 2:
+    if dim == 2:
         return realsumcw2d(m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
     raise ValueError(f"invalid dimension '{dim}'")
 
@@ -200,7 +200,7 @@ def realsumcw(dim, m, k, kpar, a, r, eta, out=None, **kwargs):
 def recsumcw(dim, m, k, kpar, a, r, eta, out=None, **kwargs):
     if dim == 1:
         return recsumcw1d_shift(m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
-    elif dim == 2:
+    if dim == 2:
         return recsumcw2d(m, k, kpar, a, r, eta, out=out, **kwargs)  # noqa: F405
     raise ValueError(f"invalid dimension '{dim}'")
 
@@ -208,9 +208,9 @@ def recsumcw(dim, m, k, kpar, a, r, eta, out=None, **kwargs):
 def dsumsw(dim, l, m, k, kpar, a, r, i, out=None, **kwargs):  # noqa: E741
     if dim == 1:
         return dsumsw1d_shift(l, m, k, kpar, a, r, i, out=out, **kwargs)  # noqa: F405
-    elif dim == 2:
+    if dim == 2:
         return dsumsw2d_shift(l, m, k, kpar, a, r, i, out=out, **kwargs)  # noqa: F405
-    elif dim == 3:
+    if dim == 3:
         return dsumsw3d(l, m, k, kpar, a, r, i, out=out, **kwargs)  # noqa: F405
     raise ValueError(f"invalid dimension '{dim}'")
 
@@ -218,6 +218,6 @@ def dsumsw(dim, l, m, k, kpar, a, r, i, out=None, **kwargs):  # noqa: E741
 def dsumcw(dim, m, k, kpar, a, r, i, out=None, **kwargs):
     if dim == 1:
         return dsumcw1d_shift(m, k, kpar, a, r, i, out=out, **kwargs)  # noqa: F405
-    elif dim == 2:
+    if dim == 2:
         return dsumcw2d(m, k, kpar, a, r, i, out=out, **kwargs)  # noqa: F405
     raise ValueError(f"invalid dimension '{dim}'")

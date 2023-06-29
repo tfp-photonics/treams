@@ -1,6 +1,5 @@
-import pytest
-
 import numpy as np
+import pytest
 import scipy.special as ssc
 
 import treams.special as sc

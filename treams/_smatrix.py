@@ -1,15 +1,13 @@
 import copy
-import itertools
 
 import numpy as np
 
 from treams import config, util
 from treams._core import PhysicsArray
 from treams._core import PlaneWaveBasisByComp as PWBC
-from treams._core import PlaneWaveBasisByUnitVector as PWBUV
 from treams._material import Material
 from treams._operators import translate
-from treams._tmatrix import TMatrix, TMatrixC
+from treams._tmatrix import TMatrixC
 from treams.coeffs import fresnel
 
 
@@ -32,8 +30,39 @@ class SMatrix(PhysicsArray):
             self.material = tuple(Material() if m is None else m for m in material)
         if self.basis is None:
             raise util.AnnotationError("basis not set")
-        elif not isinstance(self.basis, PWBC):
+        if not isinstance(self.basis, PWBC):
             self.basis = self.basis.bycomp(self.k0, self.material)
+
+
+class OperatorAttributeSMatrices:
+    def __init__(self, name):
+        self._name = name
+        self._obj = self._objtype = None
+
+    def __get__(self, obj, objtype=None):
+        self._obj = obj
+        self._objtype = type(obj) if objtype is None else objtype
+        return self
+
+    def __call__(self, *args, **kwargs):
+        res = [
+            [getattr(ii, self._name)(*args, **kwargs) for ii in i] for i in self._obj
+        ]
+        return self._objtype(res)
+
+    def apply_left(self, *args, **kwargs):
+        res = [
+            [getattr(ii, self._name).apply_left(*args, **kwargs) for ii in i]
+            for i in self._obj
+        ]
+        return self._objtype(res)
+
+    def apply_right(self, *args, **kwargs):
+        res = [
+            [getattr(ii, self._name).apply_right(*args, **kwargs) for ii in i]
+            for i in self._obj
+        ]
+        return self._objtype(res)
 
 
 class SMatrices:
@@ -73,6 +102,10 @@ class SMatrices:
             two is specified, this refers to the materials above and below the S-matrix.
         poltype (str, optional): Polarization type (:ref:`params:Polarizations`).
     """
+    permute = OperatorAttributeSMatrices("permute")
+    translate = OperatorAttributeSMatrices("translate")
+    rotate = OperatorAttributeSMatrices("rotate")
+    changepoltype = OperatorAttributeSMatrices("changepoltype")
 
     def __init__(self, smats, **kwargs):
         """Initialization."""
@@ -127,11 +160,17 @@ class SMatrices:
         if key in keys:
             return self._sms[keys[key]]
         if not isinstance(key, tuple) or len(key) not in (1, 2):
-            raise KeyError("invalid key")
+            raise KeyError(f"invalid key: '{key}'")
         if len(key) == 1:
             return self[key[0]]
         key = tuple(keys[k] for k in key)
         return self._sms[key[0]][key[1]]
+
+    def __len__(self):
+        return 2
+
+    def __iter__(self):
+        return iter(self._sms)
 
     @classmethod
     def interface(cls, basis, k0, materials):
@@ -265,11 +304,16 @@ class SMatrices:
             SMatrix
         """
         if isinstance(tm, TMatrixC):
-            basis = basis.permute()
-        pu, pd = (tm.expandlattice(basis=basis, modetype=i) for i in ("up", "down"))
+            basis = basis.permute(-1)
+        pu, pd = (
+            tm.expandlattice(basis=basis, modetype=i, eta=eta) for i in ("up", "down")
+        )
         au, ad = (tm.expand.eval_inv(basis, i) for i in ("up", "down"))
         eye = np.eye(len(basis))
-        return cls([[eye + pu @ au, pu @ ad], [pd @ au, eye + pd @ ad]])
+        res = cls([[eye + pu @ au, pu @ ad], [pd @ au, eye + pd @ ad]])
+        if isinstance(tm, TMatrixC):
+            res = res.permute()
+        return res
 
     def add(self, sm):
         """Couple another S-matrix on top of the current one.
@@ -349,7 +393,7 @@ class SMatrices:
         field_down = self[1, 0] @ illu + self[1, 1] @ field_in_down
         return field_up, field_down, field_in_up, field_in_down
 
-    def tr(self, illu, direction=1):
+    def tr(self, illu):
         """Transmittance and reflectance.
 
         Calculate the transmittance and reflectance for one S-matrix with the given
@@ -357,8 +401,6 @@ class SMatrices:
 
         Args:
             illu (complex, array_like): Expansion coefficients for the incoming light
-            direction (int, optional): The direction of the field, options are `-1` and
-                `1`
 
         Returns:
             tuple
@@ -474,7 +516,7 @@ class SMatrices:
     basis={self.basis},
     k0={self.k0},
     material={self.material},
-    poltype="{self.poltype}",
+    poltype='{self.poltype}',
 )"""
 
 
@@ -503,7 +545,7 @@ def chirality_density(basis, k0, material=Material(), poltype=None, z=(0, 0)):
             np.diag(prefdd * (2 * basis.pol - 1)),
             np.diag(2 * prefdu * (2 * basis.pol - 1)),
         )
-    elif poltype == "parity":
+    if poltype == "parity":
         where = (
             (kx[:, None] == kx)
             & (ky[:, None] == ky)

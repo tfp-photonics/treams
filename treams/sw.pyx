@@ -13,8 +13,7 @@
 
 import numpy as np
 
-from treams import lattice
-from treams import config
+from treams import config, lattice
 
 cimport numpy as np
 from libc.math cimport atan2

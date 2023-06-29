@@ -2,10 +2,8 @@
 
 cimport numpy as np
 
-from treams.lattice cimport _misc
+from treams.lattice cimport _dsum, _esum, _misc
 from treams.special._misc cimport double_complex
-from treams.lattice cimport _esum
-from treams.lattice cimport _dsum
 
 __all__ = [
     "area",

@@ -11,20 +11,11 @@ based on the T-matrix method.
 To install the package with pip, use
 
 ```sh
-pip install git+https://github.com/tfp-photonics/treams.git
+pip install treams
 ```
 
 If you're using the system wide installed version of python, you might consider the
 ``--user`` option.
-
-### Running on Windows
-
-For Windows, there are currently two tested ways how to install treams. The first option
-is using the
-[Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/en-us/windows/wsl/install).
-Within WSL treams can be installed just as described above. The second option, that was
-tested is using [MSYS2](https://www.msys2.org/) with the ``mingw64`` environment.
-Likely, other python versions based on ``mingw-w64`` might also work.
 
 ## Documentation
 

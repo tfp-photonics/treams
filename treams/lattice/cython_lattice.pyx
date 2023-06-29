@@ -4,9 +4,7 @@ This module defines the public interface of the implemented Cython functions tha
 underlying the ufuncs of the module.
 """
 
-from treams.lattice cimport _dsum
-from treams.lattice cimport _esum
-from treams.lattice cimport _misc
+from treams.lattice cimport _dsum, _esum, _misc
 
 
 cdef real_t area(real_t *a, real_t *b) nogil:

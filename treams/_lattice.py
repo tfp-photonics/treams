@@ -259,7 +259,7 @@ class Lattice:
     def __str__(self):
         """String representation.
 
-        This just prints the lattice pitch or lattice vectors.
+        Simply returns the lattice pitch or lattice vectors.
 
         Returns:
             str
@@ -568,7 +568,7 @@ class WaveVector(collections.abc.Sequence):
     def permute(self, n=1):
         x, y, z = self
         n = n % 3
-        for i in range(n):
+        for _ in range(n):
             x, y, z = z, x, y
         return WaveVector((x, y, z))
 

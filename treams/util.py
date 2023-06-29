@@ -7,7 +7,6 @@ aimed to be quite general, while still providing a solid basis for the rest of t
 import abc
 import collections
 import copy
-import functools
 import itertools
 import warnings
 
@@ -46,16 +45,12 @@ class AnnotationWarning(UserWarning):
     By default the warning filter is set to 'always'.
     """
 
-    pass
-
 
 warnings.simplefilter("always", AnnotationWarning)
 
 
 class AnnotationError(Exception):
     """Custom exception for Annotations."""
-
-    pass
 
 
 class AnnotationDict(collections.abc.MutableMapping):
@@ -182,11 +177,11 @@ class SequenceAsDict(collections.abc.MutableMapping):
 
     def __setitem__(self, key, val):
         val = (None,) * (len(self._obj) - len(val)) + val
-        for dct, val in zip(reversed(self._obj), reversed(val)):
-            if val is None:
+        for dct, value in zip(reversed(self._obj), reversed(val)):
+            if value is None:
                 dct.pop(key, None)
             else:
-                dct[key] = val
+                dct[key] = value
 
     def __delitem__(self, key):
         found = False
@@ -663,7 +658,7 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
                 self._ufunc_reduce(inputs_and_where, res, kwargs.get("axis", 0))
             elif method == "at":
                 self._ufunc_at(inputs)
-                return
+                return None
             elif method == "outer":
                 self._ufunc_outer(inputs, res, kwargs.get("where", True))
             else:

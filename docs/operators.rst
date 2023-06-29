@@ -450,7 +450,7 @@ Expand in a different basis with periodic boundaries
 
 There is a special case of expansion implemented for the case of periodic boundaries
 when using spherical or cylindrical waves. These expansions are needed to compute the
-electromagnetic interaction between particles within a lattice. It is assumed the the
+electromagnetic interaction between particles within a lattice. It is assumed that the
 given basis with singular modes are repeated periodically in the given lattice
 structure. Then, these fields are expanded as regular fields in a single unit cell.
 
@@ -615,7 +615,7 @@ waves that are defined by two of their components (and a direction of the modes)
 For this type of waves, the rotation is only implemented about the z-axis. These
 rotations then don't include a relabeling of the Cartesian axes, for example
 :math:`(x', y', z') = (z, x, y)`. This operation is implemented separately as
-permutation, meaning the the axes labels get permuted.
+permutation, meaning the axes labels get permuted.
 
 .. doctest::
 

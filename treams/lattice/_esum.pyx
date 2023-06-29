@@ -7,9 +7,18 @@ from libc.string cimport memcpy
 from numpy.math cimport EULER
 from scipy.linalg.cython_blas cimport daxpy, ddot, dgemv, dscal
 
-from treams.lattice cimport _misc
 cimport treams.special.cython_special as sc
-from treams.special._misc cimport SQPI, array_zero, exp, ipow, min, minusonepow, pow, sqrt
+from treams.lattice cimport _misc
+from treams.special._misc cimport (
+    SQPI,
+    array_zero,
+    exp,
+    ipow,
+    min,
+    minusonepow,
+    pow,
+    sqrt,
+)
 
 
 # The preprocessor directives correct the missing macro in mingw-w64 by

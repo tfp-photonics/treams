@@ -50,19 +50,23 @@ class TestTranslate:
 
 class TestPermuteXyz:
     def test_h(self):
-        assert pw.permute_xyz(1, 2, 3, 0, 0) == (-3 - 2j * np.sqrt(14)) / np.sqrt(65)
+        assert isclose(
+            pw.permute_xyz(1, 2, 3, 0, 0), (-6 + 1j * np.sqrt(14)) / np.sqrt(50)
+        )
 
     def test_h_inv(self):
-        assert pw.permute_xyz(1, 2, 1j, 0, 0, inverse=True) == 3j / np.sqrt(15)
+        assert pw.permute_xyz(1, 2, 1j, 0, 0, inverse=True) == -1j * np.sqrt(5 / 3)
 
     def test_h_opposite(self):
         assert pw.permute_xyz(1, 2, 3, 0, 1) == 0
 
     def test_h_kxy_zero(self):
-        assert pw.permute_xyz(0, 0, -1, 0, 0) == 1
+        assert pw.permute_xyz(0, 0, -1, 0, 0) == 1j
 
     def test_p(self):
-        assert pw.permute_xyz(1, 2, 3, 0, 0, poltype="parity") == -3 / np.sqrt(65)
+        assert isclose(
+            pw.permute_xyz(1, 2, 3, 0, 0, poltype="parity"), -6 / np.sqrt(50)
+        )
 
     def test_p_inv(self):
         assert pw.permute_xyz(
@@ -70,17 +74,17 @@ class TestPermuteXyz:
         ) == -1j / np.sqrt(15)
 
     def test_p_opposite(self):
-        assert pw.permute_xyz(1, 2, 3, 0, 1, poltype="parity") == 2j * np.sqrt(
+        assert pw.permute_xyz(1, 2, 3, 0, 1, poltype="parity") == -1j * np.sqrt(
             14
-        ) / np.sqrt(65)
+        ) / np.sqrt(50)
 
     def test_p_inv_opposite(self):
         assert pw.permute_xyz(
             1, 2, 1j, 0, 1, poltype="parity", inverse=True
-        ) == -4j / np.sqrt(15)
+        ) == 4j / np.sqrt(15)
 
     def test_p_kxy_zero(self):
-        assert pw.permute_xyz(0, 0, -1, 0, 0, poltype="parity") == 1
+        assert pw.permute_xyz(0, 0, -1, 0, 0, poltype="parity") == 0
 
     def test_p_kxy_zero_opposite(self):
-        assert pw.permute_xyz(0, 0, -1, 0, 1, poltype="parity") == 0
+        assert pw.permute_xyz(0, 0, -1, 0, 1, poltype="parity") == -1j

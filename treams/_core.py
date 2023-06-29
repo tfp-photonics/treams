@@ -794,8 +794,7 @@ class PlaneWaveBasisByUnitVector(PlaneWaveBasis):
         return obj
 
     def kvecs(self, k0, material=Material(), modetype=None):
-        """Wave vectors
-
+        """Wave vectors.
 
         Args:
             k0 (float): Wave number.
@@ -806,6 +805,18 @@ class PlaneWaveBasisByUnitVector(PlaneWaveBasis):
         # TODO: check kz depending on modetype (alignment?)
         ks = Material(material).ks(k0)[self.pol]
         return ks * self.qx, ks * self.qy, ks * self.qz
+
+    def permute(self, n=1):
+        n = n % 3
+        lattice = None if self.lattice is None else self.lattice.permute(n)
+        kpar = None if self.kpar is None else self.kpar.permute(n)
+        qx, qy, qz = self.qx, self.qy, self.qz
+        for _ in range(n):
+            qx, qy, qz = qz, qx, qy
+        obj = type(self)(zip(*(qx, qy, qz, self.pol)))
+        obj.lattice = lattice
+        obj.kpar = kpar
+        return obj
 
 
 class PlaneWaveBasisByComp(PlaneWaveBasis):
@@ -891,7 +902,7 @@ class PlaneWaveBasisByComp(PlaneWaveBasis):
         """
         if self.alignment == "xy":
             return self._kx
-        elif self.alignment == "zx":
+        if self.alignment == "zx":
             return self._ky
         return None
 
@@ -903,7 +914,7 @@ class PlaneWaveBasisByComp(PlaneWaveBasis):
         """
         if self.alignment == "xy":
             return self._ky
-        elif self.alignment == "yz":
+        if self.alignment == "yz":
             return self._kx
         return None
 
@@ -915,7 +926,7 @@ class PlaneWaveBasisByComp(PlaneWaveBasis):
         """
         if self.alignment == "yz":
             return self._ky
-        elif self.alignment == "zx":
+        if self.alignment == "zx":
             return self._kx
         return None
 
@@ -1081,7 +1092,7 @@ class PlaneWaveBasisByComp(PlaneWaveBasis):
         kz = material.kzs(k0, kx, ky, self.pol) * (2 * (modetype == "up") - 1)
         if self.alignment == "yz":
             return kz, kx, ky
-        elif self.alignment == "zx":
+        if self.alignment == "zx":
             return ky, kz, kx
         return kx, ky, kz
 
@@ -1212,7 +1223,7 @@ class PhysicsArray(util.AnnotatedArray):
             return super().__getattr__(key)
         except AttributeError as err:
             if key in PhysicsDict.properties:
-                return
+                return None
             raise err from None
 
     def __setattr__(self, key, val):
@@ -1254,23 +1265,12 @@ class PhysicsArray(util.AnnotatedArray):
             * All lattices explicitly given and in the basis hints must be compatible.
             * All tangential wave vector compontents must be compatible.
         """
-        total_lat = None
-        total_kpar = WaveVector()
         for a in self.ann[-2:]:
             k0 = a.get("k0")
             material = a.get("material")
             modetype = a.get("modetype")
             poltype = a.get("poltype")
             basis = a.get("basis", namedtuple("_basis", "lattice kpar")(None, None))
-            lattice = a.get("lattice")
-            for lat in (lattice, basis.lattice):
-                if lat is not None:
-                    total_lat = lat | total_lat
-            for kpar in (a.get("kpar"), basis.kpar):
-                if kpar is not None:
-                    total_kpar = total_kpar & kpar
-            if type(basis) == PlaneWaveBasis and None not in (k0, material):
-                basis.complete(k0, material, modetype)
             if poltype == "parity" and getattr(material, "ischiral", False):
                 raise ValueError("poltype 'parity' not permitted for chiral material")
 

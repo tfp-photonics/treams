@@ -60,36 +60,36 @@ Functions
 from treams._core import (  # noqa: F401
     CylindricalWaveBasis,
     PhysicsArray,
-    PlaneWaveBasisByUnitVector,
     PlaneWaveBasisByComp,
+    PlaneWaveBasisByUnitVector,
     SphericalWaveBasis,
 )
 from treams._lattice import Lattice, WaveVector  # noqa: F401
 from treams._material import Material  # noqa: F401
 from treams._operators import (  # noqa: F401
     BField,
-    bfield,
     ChangePoltype,
-    changepoltype,
     DField,
-    dfield,
     EField,
-    efield,
     Expand,
-    expand,
     ExpandLattice,
-    expandlattice,
     FField,
-    ffield,
     GField,
-    gfield,
     HField,
-    hfield,
     Permute,
-    permute,
     Rotate,
-    rotate,
     Translate,
+    bfield,
+    changepoltype,
+    dfield,
+    efield,
+    expand,
+    expandlattice,
+    ffield,
+    gfield,
+    hfield,
+    permute,
+    rotate,
     translate,
 )
 from treams._smatrix import (  # noqa: F401
@@ -101,8 +101,8 @@ from treams._smatrix import (  # noqa: F401
 from treams._tmatrix import (  # noqa: F401
     TMatrix,
     TMatrixC,
+    cylindrical_wave,
     plane_wave,
     plane_wave_angle,
-    cylindrical_wave,
     spherical_wave,
 )

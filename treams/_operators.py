@@ -5,16 +5,13 @@ import inspect
 import numpy as np
 
 import treams._core as core
-import treams.config as config
 import treams.special as sc
-import treams.util as util
-from treams import cw, pw, sw
+from treams import config, cw, pw, sw, util
 from treams._lattice import Lattice, WaveVector
 from treams._material import Material
 
 
 class Operator:
-    __array_priority__ = 1.0
     """Operator base class.
 
     An operator is mainly intended to be used as a descriptor on a class. It will then
@@ -22,6 +19,8 @@ class Operator:
     of the function that is linked to the operator in the class attribute `_FUNC`. When
     called, the remaining arguments have to be specified.
     """
+
+    __array_priority__ = 1.0
     _FUNC = None
 
     def __init__(self, *args, isinv=False):
@@ -143,7 +142,7 @@ def _sw_rotate(phi, theta, psi, basis, to_basis, where):
         psi,
         where=where,
     )
-    res[..., ~where] = 0
+    res[..., np.logical_not(where)] = 0
     return core.PhysicsArray(res, basis=(to_basis, basis))
 
 
@@ -156,13 +155,12 @@ def _cw_rotate(phi, basis, to_basis, where):
         phi,
         where=where,
     )
-    res[..., ~where] = 0
+    res[..., np.logical_not(where)] = 0
     return core.PhysicsArray(res, basis=(to_basis, basis))
 
 
 def _pwa_rotate(phi, basis, where):
     """Rotate plane waves (actually rotates the basis)."""
-    # TODO: rotate hints: lattice, kpar
     c1, s1 = np.cos(phi), np.sin(phi)
     r = np.array([[c1, -s1, 0], [s1, c1, 0], [0, 0, 1]])
     kvecs = r @ np.array([basis.qx, basis.qy, basis.qz])
@@ -178,9 +176,8 @@ def _pwa_rotate(phi, basis, where):
 
 def _pwp_rotate(phi, basis, where):
     """Rotate partial plane waves (actually rotates the basis)."""
-    # TODO: rotate hints: lattice, kpar
     if basis.alignment != "xy":
-        ValueError(f"rotation on alignment: '{basis.alignment}'")
+        raise ValueError(f"rotation on alignment: '{basis.alignment}'")
     c1, s1 = np.cos(phi), np.sin(phi)
     r = np.array([[c1, -s1], [s1, c1]])
     kx, ky, pol = basis[()]
@@ -428,8 +425,9 @@ def _pwp_changepoltype(basis, to_basis, poltype, where):
     """Change the polarization type of partial plane waves."""
     if to_basis.alignment != basis.alignment:
         raise ValueError("incompatible basis alignments")
-    bkx, bky, bpol = to_basis[()]
-    where = (bkx[:, None] == basis._kx) & (bky[:, None] == basis._ky) & where
+    akx, aky, _ = basis[()]
+    bkx, bky, _ = to_basis[()]
+    where = (bkx[:, None] == akx) & (bky[:, None] == aky) & where
     res = np.zeros_like(where, float)
     res[where] = np.sqrt(0.5)
     res[where & (to_basis.pol[:, None] == basis.pol) & (basis.pol == 0)] = -np.sqrt(0.5)
@@ -459,7 +457,7 @@ def changepoltype(poltype=None, *, basis, where=True):
         poltype = ("helicity", "parity")
     elif poltype == "parity":
         poltype = ("parity", "helicity")
-    if poltype != ("helicity", "parity") and poltype != ("parity", "helicity"):
+    if poltype not in (("helicity", "parity"), ("parity", "helicity")):
         raise ValueError(f"invalid poltype '{poltype}'")
     if isinstance(basis, core.SphericalWaveBasis):
         return _sw_changepoltype(basis, to_basis, poltype, where)
@@ -588,7 +586,7 @@ def _sw_pw_expand(basis, to_basis, k0, material, modetype, poltype, where):
     )
 
 
-def _cw_cw_expand(basis, to_basis, to_modetype, k0, material, modetype, poltype, where):
+def _cw_cw_expand(basis, to_basis, to_modetype, k0, material, modetype, where):
     """Expand cylindrical waves in cylindrical waves."""
     if modetype == "regular" == to_modetype or modetype == "singular" == to_modetype:
         modetype = to_modetype = None
@@ -712,7 +710,7 @@ def expand(
             modetype = "regular" if modetype is None else modetype
             to_modetype = modetype if to_modetype is None else to_modetype
             return _cw_cw_expand(
-                basis, to_basis, to_modetype, k0, material, modetype, poltype, where
+                basis, to_basis, to_modetype, k0, material, modetype, where
             )
         if isinstance(to_basis, core.SphericalWaveBasis):
             if modetype != "regular" and to_modetype not in (None, "regular"):
@@ -897,7 +895,7 @@ def _pw_sw_expand(
     )
 
 
-def _cwl_expand(basis, to_basis, eta, k0, kpar, lattice, material, poltype, where):
+def _cwl_expand(basis, to_basis, eta, k0, kpar, lattice, material, where):
     """Expand cylindrical waves in a lattice."""
     ks = material.ks(k0)
     alignment = (
@@ -1019,10 +1017,14 @@ def expandlattice(
         to_basis, basis = basis
     else:
         to_basis = basis
-    if to_basis.lattice is not None:
+    if lattice is None and to_basis.lattice is not None:
         lattice = to_basis.lattice
     if not isinstance(lattice, Lattice) and np.size(lattice) == 1:
         alignment = "x" if isinstance(basis, core.CylindricalWaveBasis) else "z"
+    elif isinstance(to_basis, core.PlaneWaveBasis) and isinstance(
+        basis, core.CylindricalWaveBasis
+    ):
+        alignment = "x"
     else:
         alignment = None
     lattice = Lattice(lattice, alignment)
@@ -1057,9 +1059,7 @@ def expandlattice(
             )
     if isinstance(basis, core.CylindricalWaveBasis):
         if isinstance(to_basis, core.CylindricalWaveBasis):
-            return _cwl_expand(
-                basis, to_basis, eta, k0, kpar, lattice, material, poltype, where
-            )
+            return _cwl_expand(basis, to_basis, eta, k0, kpar, lattice, material, where)
         if isinstance(to_basis, core.PlaneWaveBasis):
             if isinstance(modetype, tuple):
                 modetype = modetype[0]
@@ -1125,54 +1125,67 @@ class ExpandLattice(Operator):
 
 def _pwp_permute(basis, n, k0, material, modetype, poltype):
     """Permute axes in a partial plane wave basis."""
-    alignment = basis.alignment
-    dct = {"xy": "yz", "yz": "zx", "zx": "xy"}
-    for _ in range(n):
-        alignment = dct[alignment]
-    obj = type(basis)(zip(basis._kx, basis._ky, basis.pol), alignment)
-    if basis.lattice is not None:
-        obj.lattice = basis.lattice.permute(n)
-    if basis.kpar is not None:
-        obj.kpar = basis.kpar.permute(n)
     if material is None:
         raise TypeError("missing definition of 'material'")
-    res = np.eye(len(basis))
     modetype = "up" if modetype is None else modetype
     kvecs = np.array(basis.kvecs(k0, material, modetype))
     where = (kvecs[..., None] == kvecs[:, None, :]).all(0)
-    for _ in range(n):
-        res = (
-            pw.permute_xyz(
-                kvecs[0],
-                kvecs[1],
-                kvecs[2],
-                basis.pol[:, None],
-                basis.pol,
-                poltype=poltype,
-                where=where,
-            )
-            @ res
+    if n == 1:
+        res = pw.permute_xyz(
+            kvecs[0],
+            kvecs[1],
+            kvecs[2],
+            basis.pol[:, None],
+            basis.pol,
+            poltype=poltype,
+            where=where,
         )
-    return core.PhysicsArray(res, basis=(obj, basis), poltype=poltype)
+    elif n == 2:
+        res = pw.permute_xyz(
+            kvecs[0],
+            kvecs[1],
+            kvecs[2],
+            basis.pol[:, None],
+            basis.pol,
+            poltype=poltype,
+            inverse=True,
+            where=where,
+        )
+    else:
+        res = np.eye(len(basis))
+    res[np.logical_not(where)] = 0
+    return core.PhysicsArray(res, basis=(basis.permute(n), basis), poltype=poltype)
 
 
 def _pwa_permute(basis, n, poltype):
     """Permute axes in a plane wave basis."""
     qx, qy, qz = basis.qx, basis.qy, basis.qz
     where = (qx[:, None] == qx) & (qy[:, None] == qy) & (qz[:, None] == qz)
-    res = np.eye(len(basis))
-    for _ in range(n):
-        res = (
-            pw.permute_xyz(qx, qy, qz, basis.pol[:, None], basis.pol, where=where) @ res
+    if n == 1:
+        res = pw.permute_xyz(
+            qx,
+            qy,
+            qz,
+            basis.pol[:, None],
+            basis.pol,
+            poltype=poltype,
+            where=where,
         )
-    for _ in range(n):
-        qx, qy, qz = qz, qx, qy
-    obj = type(basis)(zip(qx, qy, qz, basis.pol))
-    if basis.lattice is not None:
-        obj.lattice = basis.lattice.permute(n)
-    if basis.kpar is not None:
-        obj.kpar = basis.kpar.permute(n)
-    return core.PhysicsArray(res, basis=(obj, basis), poltype=poltype)
+    elif n == 2:
+        res = pw.permute_xyz(
+            qx,
+            qy,
+            qz,
+            basis.pol[:, None],
+            basis.pol,
+            poltype=poltype,
+            inverse=True,
+            where=where,
+        )
+    elif n == 0:
+        res = np.eye(len(basis))
+    res[np.logical_not(where)] = 0
+    return core.PhysicsArray(res, basis=(basis.permute(n), basis), poltype=poltype)
 
 
 def permute(n=1, *, basis, k0=None, material=None, modetype=None, poltype=None):
@@ -1185,6 +1198,11 @@ def permute(n=1, *, basis, k0=None, material=None, modetype=None, poltype=None):
         basis (:class:`~treams.BasisSet` or tuple): Basis set, if it is a tuple of two
             basis sets the output and input modes are taken accordingly, else both sets
             of modes are the same.
+        k0 (float, optional): Wave number.
+        material (:class:`~treams.Material` or tuple, optional): Material parameters.
+        modetype (str, optional): Wave mode.
+        poltype (str, optional): Polarization, see also
+            :ref:`params:Polarizations`.
     """
     poltype = config.POLTYPE if poltype is None else poltype
     if n != int(n):
@@ -1209,8 +1227,14 @@ class Permute(Operator):
     def __init__(self, n=1, *, isinv=False):
         super().__init__(n, isinv=isinv)
 
+    @property
+    def inv(self):
+        return type(self)(*self._args, isinv=not self.isinv)
+
     def _call_inv(self, **kwargs):
-        return self.FUNC(self._args[0], **kwargs).T
+        if "basis" in kwargs:
+            kwargs["basis"] = kwargs["basis"].permute(self._args[0])
+        return self.FUNC(-self._args[0], **kwargs)
 
 
 def _sw_efield(r, basis, k0, material, modetype, poltype):

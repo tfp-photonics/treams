@@ -35,7 +35,6 @@ LENGTHS = {
     "Mm": 1e6,
     "Gm": 1e9,
     "Tm": 1e12,
-    "Tm": 1e12,
     "Pm": 1e15,
     "Em": 1e18,
     "Zm": 1e21,
@@ -348,13 +347,13 @@ def _convert_to_k0(x, xtype, xunit, k0unit=r"nm^{-1}"):
     if xtype == "frequency":
         xunit = FREQUENCIES[xunit]
         return 2 * np.pi * x / c * (xunit / k0unit)
-    elif xtype == "angular_frequency":
+    if xtype == "angular_frequency":
         xunit = FREQUENCIES[xunit]
         return x / c * (xunit / k0unit)
-    elif xtype == "angular_vacuum_wavelength":
+    if xtype == "angular_vacuum_wavelength":
         xunit = INVLENGTHS[xunit]
         return x * (xunit / k0unit)
-    elif xtype == "angular_vacuum_wavenumber":
+    if xtype == "angular_vacuum_wavenumber":
         xunit = LENGTHS[xunit]
         return 2 * np.pi / (x * xunit * k0unit)
     raise ValueError(f"unrecognized frequency/wavenumber/wavelength type: {xtype}")
@@ -464,6 +463,6 @@ def _load_hdf5(h5file, lunit=None):
             material=treams.Material(epsilon[i], mu[i], kappa[i]),
         )
         res[i][ix_sca, ix_inc] = tms[i]
-    if res.shape == ():
+    if not res.shape:
         res = res.item()
     return res

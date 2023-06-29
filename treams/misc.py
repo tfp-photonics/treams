@@ -184,7 +184,7 @@ def firstbrillouin2d(kpar, b, n=2):
     kpar -= b2 * np.round((kpar @ b2) / normsq2)
     # todo: precise
     options = kpar + la.cube(2, 1) @ b
-    for i, option in enumerate(options):
+    for option in options:
         if option @ option < kpar @ kpar:
             kpar = option
     if n == 0 or np.array_equal(kpar, kparstart):
@@ -222,7 +222,7 @@ def firstbrillouin3d(kpar, b, n=2):
     kpar -= b3 * np.round((kpar @ b3) / normsq3)
     # todo: precise
     options = kpar + la.cube(3, 1) @ b
-    for i, option in enumerate(options):
+    for option in options:
         if option @ option < kpar @ kpar:
             kpar = option
     if n == 0 or np.array_equal(kpar, kparstart):
