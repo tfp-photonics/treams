@@ -1,3 +1,7 @@
+![Version](https://img.shields.io/github/v/tag/tfp-photonics/treams)
+![License](https://img.shields.io/github/license/tfp-photonics/treams)
+![PyPI](https://img.shields.io/pypi/v/treams)
+
 # treams
 
 The package `treams` provides a framework to simplify computations of the

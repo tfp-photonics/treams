@@ -456,7 +456,7 @@ structure. Then, these fields are expanded as regular fields in a single unit ce
 
 .. doctest::
 
-    >>> cyw = cylindrical_wave(0, 1, 0, k0=1, material=1, modetype="regular")
+    >>> cyw = cylindrical_wave(0, 1, 0, k0=1, material=1, modetype="singular")
     >>> cyw.expandlattice(1, 0)
     PhysicsArray(
         [0.+0.j        , 2.-3.8655259j , 0.+0.j        , 0.+0.j        ,
@@ -562,9 +562,9 @@ lattice along the x-axis can also be expanded in plane waves.
     >>> ex = ExpandLattice(basis=PlaneWaveBasisByComp.diffr_orders([0, .1], Lattice([7, 7], "zx"), 1))
     >>> ex @ cyw
     PhysicsArray(
-        [0.        +0.j        , 0.04081633-0.0041022j ,
-         0.        +0.j        , 0.04081633-0.58781404j,
-         0.        +0.j        , 0.04081633+0.05397146j,
+        [0.        +0.j        , 0.28571429-0.02871537j,
+         0.        +0.j        , 0.28571429-4.1146983j ,
+         0.        +0.j        , 0.28571429+0.37780019j,
          0.        +0.j        , 0.        +0.j        ,
          0.        +0.j        , 0.        +0.j        ],
         basis=PlaneWaveBasisByComp(
@@ -576,8 +576,7 @@ lattice along the x-axis can also be expanded in plane waves.
     ),
         k0=1.0,
         kpar=WaveVector(nan, nan, 0.0),
-        lattice=Lattice([[7. 0.]
-             [0. 7.]], alignment='zx'),
+        lattice=Lattice(7.0, alignment='x'),
         material=Material(1, 1, 0),
         modetype='up',
     )
@@ -632,7 +631,7 @@ permutation, meaning the axes labels get permuted.
     )
     >>> plw.permute()
     PhysicsArray(
-        [ 0.        +0.j        , -0.49613894-0.86824314j],
+        [ 0.        +0.j        , -0.78935222+0.61394061j],
         basis=PlaneWaveBasisByUnitVector(
         qx=[0.85714286 0.85714286],
         qy=[0.28571429 0.28571429],

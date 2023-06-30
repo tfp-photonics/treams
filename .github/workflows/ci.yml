@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  docs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -14,7 +14,7 @@ jobs:
         fetch-depth: 0
     - uses: actions/setup-python@v4
       with:
-        python-version: '3.10' 
+        python-version: '3.11'
     - name: Build treams
       run: python -m pip install -e .
     - name: Build html
@@ -26,9 +26,43 @@ jobs:
       with:
         name: html-docs
         path: docs/_build/html/
-    - name: Deploy
+    - name: Deploy docs
       uses: peaceiris/actions-gh-pages@v3
       if: github.ref == 'refs/heads/main'
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: docs/_build/html
+
+  doctest:
+    needs: docs
+    steps:
+    - name: Build doctest
+      run: sphinx-build -b doctest docs docs/_build/doctest
+
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    - name: Build treams with tracing
+      run: CYTHON_COVERAGE=1 python -m pip install -e .
+    - name: Run tests
+      run: |
+        python -m pip install treams[tests]
+        python -m pytest tests/unit --cov treams
+    - name: Coverage comment
+      id: coverage_comment
+      uses: py-cov-action/python-coverage-comment-action@v3
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        VERBOSE: true
+    - name: Deploy coverage results
+      uses: actions/upload-artifact@v3
+      if: steps.coverage_comment.outputs.COMMENT_FILE_WRITTEN == 'true'
+      with:
+        name: python-coverage-comment-action
+        path: python-coverage-comment-action.txt

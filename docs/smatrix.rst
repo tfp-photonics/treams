@@ -1,3 +1,7 @@
+.. highlight:: python
+
+.. only:: builder_html
+
 ==========================
 S-Matrices for plane waves
 ==========================

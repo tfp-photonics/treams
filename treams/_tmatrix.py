@@ -820,7 +820,7 @@ def _plane_wave(
         basis = PWBUV.default([kvec])
     norm = np.sqrt(np.sum(np.power(kvec, 2)))
     qvec = kvec / norm
-    if pol == (0, -1):
+    if pol in (0, -1):
         pol = [1, 0]
     elif pol == 1:
         pol = [0, 1]
