@@ -447,15 +447,7 @@ class TestDiffrOrdersCircle:
     def test_hex(self):
         assert np.array_equal(
             la.diffr_orders_circle([[1, 0], [0.5, np.sqrt(0.75)]], 1.1),
-            [
-                [0, 0],
-                [0, 1],
-                [0, -1],
-                [1, 0],
-                [-1, 0],
-                [1, -1],
-                [-1, 1],
-            ],
+            [[0, 0], [0, 1], [0, -1], [1, 0], [-1, 0], [1, -1], [-1, 1],],
         )
 
     def test_neg(self):

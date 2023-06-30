@@ -1144,11 +1144,7 @@ class PhysicsDict(util.AnnotationDict):
             Material,
         ),
         "modetype": ("Mode type.", lambda x: isinstance(x, str), str),
-        "poltype": (
-            ":ref:`params:Polarizations`.",
-            lambda x: isinstance(x, str),
-            str,
-        ),
+        "poltype": (":ref:`params:Polarizations`.", lambda x: isinstance(x, str), str,),
     }
     """Special properties tracked by the PhysicsDict."""
 

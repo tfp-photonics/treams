@@ -107,10 +107,7 @@ class TestXs:
         tm = TMatrix.sphere(2, 3, [4], [(2 + 1j, 1, 1), (9, 1, 2)])
         illu = treams.plane_wave([0, 0, 1], [0.5, 0], k0=tm.k0, material=tm.material)
         xs = tm.xs(illu, 0.125)
-        assert isclose(
-            xs[0],
-            3.194830855171616,
-        ) and isclose(xs[1], 5.63547158)
+        assert isclose(xs[0], 3.194830855171616,) and isclose(xs[1], 5.63547158)
 
 
 class TestTranslate:

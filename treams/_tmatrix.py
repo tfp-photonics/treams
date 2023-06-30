@@ -765,14 +765,7 @@ class TMatrixC(PhysicsArray):
 
 
 def _plane_wave_partial(
-    kpar,
-    pol,
-    *,
-    k0=None,
-    basis=None,
-    material=None,
-    modetype=None,
-    poltype=None,
+    kpar, pol, *, k0=None, basis=None, material=None, modetype=None, poltype=None,
 ):
     if basis is None:
         basis = PWBC.default([kpar])
@@ -797,24 +790,12 @@ def _plane_wave_partial(
             raise ValueError(f"invalid 'poltype': {poltype}")
     res = [pol[x[2]] * (np.abs(np.array(kpar) - x[:2]) < 1e-14).all() for x in basis]
     return PhysicsArray(
-        res,
-        basis=basis,
-        k0=k0,
-        material=material,
-        modetype=modetype,
-        poltype=poltype,
+        res, basis=basis, k0=k0, material=material, modetype=modetype, poltype=poltype,
     )
 
 
 def _plane_wave(
-    kvec,
-    pol,
-    *,
-    k0=None,
-    basis=None,
-    material=None,
-    modetype=None,
-    poltype=None,
+    kvec, pol, *, k0=None, basis=None, material=None, modetype=None, poltype=None,
 ):
     if basis is None:
         basis = PWBUV.default([kvec])
@@ -841,24 +822,12 @@ def _plane_wave(
             raise ValueError(f"invalid 'poltype': {poltype}")
     res = [pol[x[3]] * (np.abs(qvec - x[:3]) < 1e-14).all() for x in basis]
     return PhysicsArray(
-        res,
-        basis=basis,
-        k0=k0,
-        material=material,
-        modetype=modetype,
-        poltype=poltype,
+        res, basis=basis, k0=k0, material=material, modetype=modetype, poltype=poltype,
     )
 
 
 def plane_wave(
-    kvec,
-    pol,
-    *,
-    k0=None,
-    basis=None,
-    material=None,
-    modetype=None,
-    poltype=None,
+    kvec, pol, *, k0=None, basis=None, material=None, modetype=None, poltype=None,
 ):
     """Array describing a plane wave.
 
@@ -928,15 +897,7 @@ def spherical_wave(
 
 
 def cylindrical_wave(
-    kz,
-    m,
-    pol,
-    *,
-    k0=None,
-    basis=None,
-    material=None,
-    modetype=None,
-    poltype=None,
+    kz, m, pol, *, k0=None, basis=None, material=None, modetype=None, poltype=None,
 ):
     if basis is None:
         basis = CWB.default([kz], abs(m))

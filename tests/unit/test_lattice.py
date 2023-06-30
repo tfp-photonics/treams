@@ -40,7 +40,7 @@ class TestLattice:
 
     def test_hexagonal_3d(self):
         assert Lattice.hexagonal(1, 2) == Lattice(
-            [[1, 0, 0], [0.5, 0.75**0.5, 0], [0, 0, 2]]
+            [[1, 0, 0], [0.5, 0.75 ** 0.5, 0], [0, 0, 2]]
         )
 
     def test_reciprocal(self):

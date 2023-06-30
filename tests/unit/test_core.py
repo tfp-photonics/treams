@@ -135,9 +135,7 @@ class TestSWB:
         a = treams.SphericalWaveBasis.ebcm(2, mmax=1)
         b = treams.SphericalWaveBasis(
             zip(
-                3 * [1, 1, 2, 2],
-                [-1, -1, -1, -1, 0, 0, 0, 0, 1, 1, 1, 1],
-                6 * [1, 0],
+                3 * [1, 1, 2, 2], [-1, -1, -1, -1, 0, 0, 0, 0, 1, 1, 1, 1], 6 * [1, 0],
             ),
         )
         assert a == b
@@ -529,10 +527,7 @@ class TestPhysicsArray:
         x = p.changepoltype.apply_left()
         assert (
             x == np.sqrt(0.5) * np.array([[-1, 1], [1, 1]])
-        ).all() and x.poltype == (
-            "parity",
-            "helicity",
-        )
+        ).all() and x.poltype == ("parity", "helicity",)
 
     def test_changepoltype_inv(self):
         b = treams.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])
@@ -540,10 +535,7 @@ class TestPhysicsArray:
         x = p.changepoltype.apply_right()
         assert (
             x == np.sqrt(0.5) * np.array([[-1, 1], [1, 1]])
-        ).all() and x.poltype == (
-            "helicity",
-            "parity",
-        )
+        ).all() and x.poltype == ("helicity", "parity",)
 
     def test_efield(self):
         b = treams.SphericalWaveBasis([[1, 0, 0], [1, 0, 1]])

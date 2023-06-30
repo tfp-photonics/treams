@@ -349,11 +349,7 @@ class TestLpmv:
 
     def test_complex_asso(self):
         assert isclose(
-            sc.lpmv(3, 3, 0.1 + 0j),
-            ssc.clpmn(3, 3, -0.1 + 0j, type=2)[0][
-                3,
-                3,
-            ],
+            sc.lpmv(3, 3, 0.1 + 0j), ssc.clpmn(3, 3, -0.1 + 0j, type=2)[0][3, 3,],
         )
 
     def test_complex_asso_above(self):

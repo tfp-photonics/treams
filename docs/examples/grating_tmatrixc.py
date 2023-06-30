@@ -24,7 +24,7 @@ cluster = treams.TMatrixC.cluster(
     [chain_tmc, cylinder], positions
 ).latticeinteraction.solve(lattice_x, 0)
 inc = treams.plane_wave(
-    [0, np.sqrt(k0**2 - kz**2), kz],
+    [0, np.sqrt(k0 ** 2 - kz ** 2), kz],
     [np.sqrt(0.5), -np.sqrt(0.5)],
     k0=chain.k0,
     material=chain.material,
@@ -45,12 +45,7 @@ ex[~valid] = np.nan
 
 fig, ax = plt.subplots(figsize=(10, 20))
 pcm = ax.pcolormesh(
-    grid[0, :, 2],
-    grid[:, 0, 1],
-    ex.T,
-    shading="nearest",
-    vmin=-1,
-    vmax=1,
+    grid[0, :, 2], grid[:, 0, 1], ex.T, shading="nearest", vmin=-1, vmax=1,
 )
 cb = plt.colorbar(pcm)
 cb.set_label("$E_x$")

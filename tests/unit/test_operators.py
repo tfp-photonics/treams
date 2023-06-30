@@ -252,10 +252,7 @@ class TestExpand:
         where = [True, False]
         x = treams.expand((a, b), k0=2.5, material=(2, 2, 0), where=where)
         y = treams.PhysicsArray(
-            [[1, 0], [0, 0]],
-            basis=(a, b),
-            k0=2.5,
-            material=treams.Material(2, 2, 0),
+            [[1, 0], [0, 0]], basis=(a, b), k0=2.5, material=treams.Material(2, 2, 0),
         )
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
@@ -488,9 +485,7 @@ class TestChangePoltype:
         where = [True, False]
         x = treams.changepoltype(basis=b, where=where)
         y = treams.PhysicsArray(
-            [[-np.sqrt(0.5), 0], [0, 0]],
-            basis=(b, b),
-            poltype=("helicity", "parity"),
+            [[-np.sqrt(0.5), 0], [0, 0]], basis=(b, b), poltype=("helicity", "parity"),
         )
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
@@ -500,9 +495,7 @@ class TestChangePoltype:
         where = [True, False]
         x = treams.changepoltype(basis=(a, b), where=where)
         y = treams.PhysicsArray(
-            [[-np.sqrt(0.5), 0], [0, 0]],
-            basis=(a, b),
-            poltype=("helicity", "parity"),
+            [[-np.sqrt(0.5), 0], [0, 0]], basis=(a, b), poltype=("helicity", "parity"),
         )
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
@@ -511,9 +504,7 @@ class TestChangePoltype:
         where = [True, False]
         x = treams.changepoltype(basis=b, where=where)
         y = treams.PhysicsArray(
-            [[-np.sqrt(0.5), 0], [0, 0]],
-            basis=(b, b),
-            poltype=("helicity", "parity"),
+            [[-np.sqrt(0.5), 0], [0, 0]], basis=(b, b), poltype=("helicity", "parity"),
         )
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
@@ -522,9 +513,7 @@ class TestChangePoltype:
         where = [True, False]
         x = treams.changepoltype(basis=b, where=where)
         y = treams.PhysicsArray(
-            [[-np.sqrt(0.5), 0], [0, 0]],
-            basis=(b, b),
-            poltype=("helicity", "parity"),
+            [[-np.sqrt(0.5), 0], [0, 0]], basis=(b, b), poltype=("helicity", "parity"),
         )
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
@@ -597,11 +586,7 @@ class TestEField:
         x = treams.efield(r, basis=b, k0=k0, poltype="parity", material=material)
         rsph = sc.car2sph(r[:, None] - positions)
         y = sc.vsw_rM(
-            [3, 1],
-            [-2, 1],
-            2 * k0 * rsph[..., 0],
-            rsph[..., 1],
-            rsph[..., 2],
+            [3, 1], [-2, 1], 2 * k0 * rsph[..., 0], rsph[..., 1], rsph[..., 2],
         )
         assert np.all(sc.vsph2car(y, rsph).swapaxes(-1, -2) == x)
 
@@ -613,20 +598,11 @@ class TestEField:
         k0 = 4
         material = (4, 1)
         x = treams.efield(
-            r,
-            basis=b,
-            k0=k0,
-            poltype="parity",
-            material=material,
-            modetype="singular",
+            r, basis=b, k0=k0, poltype="parity", material=material, modetype="singular",
         )
         rsph = sc.car2sph(r[None] - positions)
         y = sc.vsw_N(
-            [3, 1],
-            [-2, 1],
-            2 * k0 * rsph[..., 0],
-            rsph[..., 1],
-            rsph[..., 2],
+            [3, 1], [-2, 1], 2 * k0 * rsph[..., 0], rsph[..., 1], rsph[..., 2],
         )
         assert np.all(sc.vsph2car(y, rsph).swapaxes(-1, -2) == x)
 
@@ -642,7 +618,7 @@ class TestEField:
         y = sc.vcw_rA(
             [0.3, 0.1],
             [-2, 1],
-            rcyl[..., 0] * [np.sqrt(16 - 0.3**2), np.sqrt(144 - 0.1**2)],
+            rcyl[..., 0] * [np.sqrt(16 - 0.3 ** 2), np.sqrt(144 - 0.1 ** 2)],
             rcyl[..., 1],
             rcyl[..., 2],
             [k0, 3 * k0],
@@ -669,7 +645,7 @@ class TestEField:
         y = sc.vcw_A(
             [0.3, 0.1],
             [-2, 1],
-            rcyl[..., 0] * [np.sqrt(16 - 0.3**2), np.sqrt(144 - 0.1**2)],
+            rcyl[..., 0] * [np.sqrt(16 - 0.3 ** 2), np.sqrt(144 - 0.1 ** 2)],
             rcyl[..., 1],
             rcyl[..., 2],
             [k0, 3 * k0],
@@ -689,7 +665,7 @@ class TestEField:
         y = sc.vcw_rM(
             [0.3, 0.1],
             [-2, 1],
-            rcyl[..., 0] * [np.sqrt(64 - 0.3**2), np.sqrt(64 - 0.1**2)],
+            rcyl[..., 0] * [np.sqrt(64 - 0.3 ** 2), np.sqrt(64 - 0.1 ** 2)],
             rcyl[..., 1],
             rcyl[..., 2],
         )
@@ -703,18 +679,13 @@ class TestEField:
         k0 = 4
         material = (4, 1)
         x = treams.efield(
-            r,
-            basis=b,
-            k0=k0,
-            poltype="parity",
-            material=material,
-            modetype="singular",
+            r, basis=b, k0=k0, poltype="parity", material=material, modetype="singular",
         )
         rcyl = sc.car2cyl(r[:, None] - positions)
         y = sc.vcw_N(
             [0.3, 0.1],
             [-2, 1],
-            rcyl[..., 0] * [np.sqrt(64 - 0.3**2), np.sqrt(64 - 0.1**2)],
+            rcyl[..., 0] * [np.sqrt(64 - 0.3 ** 2), np.sqrt(64 - 0.1 ** 2)],
             rcyl[..., 1],
             rcyl[..., 2],
             8,
