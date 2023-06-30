@@ -39,10 +39,10 @@ treams.util.AnnotationDict
          ~AnnotationDict.values
       
          ~AnnotationDict.__gt__
-         ~AnnotationDict.__ne__
          ~AnnotationDict.__le__
-         ~AnnotationDict.__str__
          ~AnnotationDict.__ge__
-         ~AnnotationDict.__lt__
+         ~AnnotationDict.__str__
          ~AnnotationDict.__eq__
+         ~AnnotationDict.__lt__
+         ~AnnotationDict.__ne__
   
