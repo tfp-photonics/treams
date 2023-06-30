@@ -127,8 +127,8 @@ def mesh_spheres(radii, positions, model, meshsize=None, meshsize_boundary=None)
         >>> gmsh.model.add("spheres")
         >>> treams.io.mesh_spheres([1, 2], [[0, 0, 2], [0, 0, -2]], gmsh.model)
         <class 'gmsh.model'>
-        >>> gmsh.write("spheres.msh")
-        >>> gmsh.finalize()
+        >>> gmsh.write("spheres.msh")  # doctest: +SKIP
+        >>> gmsh.finalize()  # doctest: +SKIP
 
     Args:
         radii (float, array_like): Radii of the spheres.

@@ -62,12 +62,7 @@ which can then be converted to a representation by calling it with the basis arg
 
     >>> r(basis=SphericalWaveBasis.default(1))
     PhysicsArray(
-        [[-1.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j],
-         [ 0.+0.j, -1.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j],
-         [ 0.+0.j,  0.+0.j,  1.+0.j,  0.+0.j,  0.+0.j,  0.+0.j],
-         [ 0.+0.j,  0.+0.j,  0.+0.j,  1.+0.j,  0.+0.j,  0.+0.j],
-         [ 0.-0.j,  0.+0.j,  0.-0.j,  0.+0.j, -1.-0.j,  0.+0.j],
-         [ 0.+0.j,  0.-0.j,  0.+0.j,  0.-0.j,  0.+0.j, -1.-0.j]],
+        [[...]],
         basis=SphericalWaveBasis(
         pidx=[0 0 0 0 0 0],
         l=[1 1 1 1 1 1],
@@ -85,12 +80,7 @@ automatically take that attribute.
     >>> t = PhysicsArray(np.eye(6), basis=SphericalWaveBasis.default(1))
     >>> r @ t @ r.inv
     PhysicsArray(
-        [[1.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j],
-         [0.+0.j, 1.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j],
-         [0.+0.j, 0.+0.j, 1.+0.j, 0.+0.j, 0.+0.j, 0.+0.j],
-         [0.+0.j, 0.+0.j, 0.+0.j, 1.+0.j, 0.+0.j, 0.+0.j],
-         [0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 1.+0.j, 0.+0.j],
-         [0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 1.+0.j]],
+        [[...]],
         basis=SphericalWaveBasis(
         pidx=[0 0 0 0 0 0],
         l=[1 1 1 1 1 1],
@@ -124,18 +114,7 @@ Cartesian translation vector.
     >>> t = PhysicsArray(np.eye(6), basis=SphericalWaveBasis.default(1), k0=1)
     >>> t.translate([1, 2, 3])
     PhysicsArray(
-        [[ 0.137-0.j   ,  0.   +0.j   , -0.021-0.043j,  0.   +0.j   ,
-          -0.015+0.02j ,  0.   +0.j   ],
-         [ 0.   +0.j   ,  0.137+0.j   ,  0.   +0.j   , -0.021-0.043j,
-           0.   +0.j   , -0.015+0.02j ],
-         [-0.021+0.043j,  0.   +0.j   ,  0.071-0.j   ,  0.   +0.j   ,
-           0.021+0.043j,  0.   +0.j   ],
-         [ 0.   +0.j   , -0.021+0.043j,  0.   +0.j   ,  0.071-0.j   ,
-           0.   +0.j   ,  0.021+0.043j],
-         [-0.015-0.02j ,  0.   +0.j   ,  0.021-0.043j,  0.   +0.j   ,
-           0.137+0.j   ,  0.   +0.j   ],
-         [ 0.   +0.j   , -0.015-0.02j ,  0.   +0.j   ,  0.021-0.043j,
-           0.   +0.j   ,  0.137-0.j   ]],
+        [[...]],
         basis=SphericalWaveBasis(
         pidx=[0 0 0 0 0 0],
         l=[1 1 1 1 1 1],

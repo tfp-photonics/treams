@@ -20,4 +20,5 @@ jobs:
     - name: Run doctests
       run: |
         python -m pip install treams[docs]
+        python -m pip install treams[io]
         sphinx-build -b doctest docs docs/_build/doctest
