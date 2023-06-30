@@ -8,6 +8,9 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
     steps:
     - uses: actions/checkout@v3
       with:
@@ -27,7 +30,6 @@ jobs:
       uses: py-cov-action/python-coverage-comment-action@v3
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        VERBOSE: true
     - name: Deploy coverage results
       uses: actions/upload-artifact@v3
       if: steps.coverage_comment.outputs.COMMENT_FILE_WRITTEN == 'true'
