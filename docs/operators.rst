@@ -62,18 +62,12 @@ which can then be converted to a representation by calling it with the basis arg
 
     >>> r(basis=SphericalWaveBasis.default(1))
     PhysicsArray(
-        [[-1.+1.2246468e-16j,  0.+0.0000000e+00j,  0.+0.0000000e+00j,
-           0.+0.0000000e+00j,  0.+0.0000000e+00j,  0.+0.0000000e+00j],
-         [ 0.+0.0000000e+00j, -1.+1.2246468e-16j,  0.+0.0000000e+00j,
-           0.+0.0000000e+00j,  0.+0.0000000e+00j,  0.+0.0000000e+00j],
-         [ 0.+0.0000000e+00j,  0.+0.0000000e+00j,  1.+0.0000000e+00j,
-           0.+0.0000000e+00j,  0.+0.0000000e+00j,  0.+0.0000000e+00j],
-         [ 0.+0.0000000e+00j,  0.+0.0000000e+00j,  0.+0.0000000e+00j,
-           1.+0.0000000e+00j,  0.+0.0000000e+00j,  0.+0.0000000e+00j],
-         [ 0.-0.0000000e+00j,  0.+0.0000000e+00j,  0.-0.0000000e+00j,
-           0.+0.0000000e+00j, -1.-1.2246468e-16j,  0.+0.0000000e+00j],
-         [ 0.+0.0000000e+00j,  0.-0.0000000e+00j,  0.+0.0000000e+00j,
-           0.-0.0000000e+00j,  0.+0.0000000e+00j, -1.-1.2246468e-16j]],
+        [[-1.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j],
+         [ 0.+0.j, -1.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j],
+         [ 0.+0.j,  0.+0.j,  1.+0.j,  0.+0.j,  0.+0.j,  0.+0.j],
+         [ 0.+0.j,  0.+0.j,  0.+0.j,  1.+0.j,  0.+0.j,  0.+0.j],
+         [ 0.-0.j,  0.+0.j,  0.-0.j,  0.+0.j, -1.-0.j,  0.+0.j],
+         [ 0.+0.j,  0.-0.j,  0.+0.j,  0.-0.j,  0.+0.j, -1.-0.j]],
         basis=SphericalWaveBasis(
         pidx=[0 0 0 0 0 0],
         l=[1 1 1 1 1 1],
@@ -130,24 +124,18 @@ Cartesian translation vector.
     >>> t = PhysicsArray(np.eye(6), basis=SphericalWaveBasis.default(1), k0=1)
     >>> t.translate([1, 2, 3])
     PhysicsArray(
-        [[ 0.13702594-1.38777878e-17j,  0.        +0.00000000e+00j,
-          -0.02142403-4.28480668e-02j,  0.        +0.00000000e+00j,
-          -0.01514908+2.01987724e-02j,  0.        +0.00000000e+00j],
-         [ 0.        +0.00000000e+00j,  0.13702594+0.00000000e+00j,
-           0.        +0.00000000e+00j, -0.02142403-4.28480668e-02j,
-           0.        +0.00000000e+00j, -0.01514908+2.01987724e-02j],
-         [-0.02142403+4.28480668e-02j,  0.        +0.00000000e+00j,
-           0.07137993-6.84670061e-18j,  0.        +0.00000000e+00j,
-           0.02142403+4.28480668e-02j,  0.        +0.00000000e+00j],
-         [ 0.        +0.00000000e+00j, -0.02142403+4.28480668e-02j,
-           0.        +0.00000000e+00j,  0.07137993-1.52119906e-17j,
-           0.        +0.00000000e+00j,  0.02142403+4.28480668e-02j],
-         [-0.01514908-2.01987724e-02j,  0.        +0.00000000e+00j,
-           0.02142403-4.28480668e-02j,  0.        +0.00000000e+00j,
-           0.13702594+6.93889390e-18j,  0.        +0.00000000e+00j],
-         [ 0.        +0.00000000e+00j, -0.01514908-2.01987724e-02j,
-           0.        +0.00000000e+00j,  0.02142403-4.28480668e-02j,
-           0.        +0.00000000e+00j,  0.13702594-6.93889390e-18j]],
+        [[ 0.137-0.j   ,  0.   +0.j   , -0.021-0.043j,  0.   +0.j   ,
+          -0.015+0.02j ,  0.   +0.j   ],
+         [ 0.   +0.j   ,  0.137+0.j   ,  0.   +0.j   , -0.021-0.043j,
+           0.   +0.j   , -0.015+0.02j ],
+         [-0.021+0.043j,  0.   +0.j   ,  0.071-0.j   ,  0.   +0.j   ,
+           0.021+0.043j,  0.   +0.j   ],
+         [ 0.   +0.j   , -0.021+0.043j,  0.   +0.j   ,  0.071-0.j   ,
+           0.   +0.j   ,  0.021+0.043j],
+         [-0.015-0.02j ,  0.   +0.j   ,  0.021-0.043j,  0.   +0.j   ,
+           0.137+0.j   ,  0.   +0.j   ],
+         [ 0.   +0.j   , -0.015-0.02j ,  0.   +0.j   ,  0.021-0.043j,
+           0.   +0.j   ,  0.137-0.j   ]],
         basis=SphericalWaveBasis(
         pidx=[0 0 0 0 0 0],
         l=[1 1 1 1 1 1],
@@ -231,9 +219,8 @@ Next, we can expand this plane wave also in cylindrical and in spherical waves.
     )
     >>> Expand(SphericalWaveBasis.default(1)) @ plw
     PhysicsArray(
-        [ 3.06998012e-01-3.75964133e-17j, -2.76298211e+00+3.38367720e-16j,
-         -7.97540364e-17-1.30248226e+00j, -7.97540364e-17-1.30248226e+00j,
-         -2.76298211e+00+0.00000000e+00j,  3.06998012e-01+0.00000000e+00j],
+        [ 0.307-0.j   , -2.763+0.j   , -0.   -1.302j, -0.   -1.302j,
+         -2.763+0.j   ,  0.307+0.j   ],
         basis=SphericalWaveBasis(
         pidx=[0 0 0 0 0 0],
         l=[1 1 1 1 1 1],
@@ -264,9 +251,8 @@ and expand it around the origin
     >>> ex = Expand(SphericalWaveBasis.default(1))
     >>> ex @ spw
     PhysicsArray(
-        [ 0.00000000e+00+0.00000000e+00j,  5.86797393e-17+3.19437623e-01j,
-          0.00000000e+00+0.00000000e+00j,  8.10453459e-01+3.79855139e-18j,
-          0.00000000e+00+0.00000000e+00j, -1.95599131e-17+3.19437623e-01j],
+        [ 0.  +0.j   ,  0.  +0.319j,  0.  +0.j   ,  0.81+0.j   ,
+          0.  +0.j   , -0.  +0.319j],
         basis=SphericalWaveBasis(
         pidx=[0 0 0 0 0 0],
         l=[1 1 1 1 1 1],
@@ -291,9 +277,8 @@ around a different origin
     >>> ex = Expand(SphericalWaveBasis.default(1), "regular")
     >>> ex @ spw
     PhysicsArray(
-        [0.        +0.j        , 1.4655919 +0.31943762j,
-         0.        +0.j        , 0.81045346+1.26220648j,
-         0.        +0.j        , 1.4655919 +0.31943762j],
+        [0.   +0.j   , 1.466+0.319j, 0.   +0.j   , 0.81 +1.262j,
+         0.   +0.j   , 1.466+0.319j],
         basis=SphericalWaveBasis(
         pidx=[0 0 0 0 0 0],
         l=[1 1 1 1 1 1],
@@ -318,12 +303,8 @@ origins, which works quite similarly
     >>> local_swb = SphericalWaveBasis.default(1, 2, positions=[[0, 0, 1], [0, 0, -1]])
     >>> sw_global.expand.apply_left(local_swb)
     PhysicsArray(
-        [0.        +0.00000000e+00j, 0.        +0.00000000e+00j,
-         0.        +0.00000000e+00j, 0.90350604-7.59710279e-18j,
-         0.        +0.00000000e+00j, 0.        +0.00000000e+00j,
-         0.        +0.00000000e+00j, 0.        +0.00000000e+00j,
-         0.        +0.00000000e+00j, 0.90350604-7.59710279e-18j,
-         0.        +0.00000000e+00j, 0.        +0.00000000e+00j],
+        [0.   +0.j, 0.   +0.j, 0.   +0.j, 0.904-0.j, 0.   +0.j, 0.   +0.j,
+         0.   +0.j, 0.   +0.j, 0.   +0.j, 0.904-0.j, 0.   +0.j, 0.   +0.j],
         basis=SphericalWaveBasis(
         pidx=[0 0 0 0 0 0 1 1 1 1 1 1],
         l=[1 1 1 1 1 1 1 1 1 1 1 1],
@@ -401,9 +382,8 @@ same properties than spherical waves.
     >>> ex = Expand(CylindricalWaveBasis.default([0], 1))
     >>> ex @ cyw
     PhysicsArray(
-        [ 0.        +0.00000000e+00j,  0.11490348-1.40716185e-17j,
-          0.        +0.00000000e+00j, -0.44005059+5.38906541e-17j,
-          0.        +0.00000000e+00j,  0.76519769+0.00000000e+00j],
+        [ 0.   +0.j,  0.115-0.j,  0.   +0.j, -0.44 +0.j,  0.   +0.j,
+          0.765+0.j],
         basis=CylindricalWaveBasis(
         pidx=[0 0 0 0 0 0],
         kz=[0. 0. 0. 0. 0. 0.],
@@ -425,8 +405,7 @@ of the spherical and cylindrical waves must be equal.
     >>> cyw = cylindrical_wave(0, 1, 0, k0=1, material=1, modetype="regular")
     >>> cyw.expand(SphericalWaveBasis.default(1))
     PhysicsArray(
-        [0.        +0.j, 0.        +0.j, 0.        +0.j, 0.        +0.j,
-         0.        +0.j, 3.06998012+0.j],
+        [0.  +0.j, 0.  +0.j, 0.  +0.j, 0.  +0.j, 0.  +0.j, 3.07+0.j],
         basis=SphericalWaveBasis(
         pidx=[0 0 0 0 0 0],
         l=[1 1 1 1 1 1],
@@ -459,8 +438,7 @@ structure. Then, these fields are expanded as regular fields in a single unit ce
     >>> cyw = cylindrical_wave(0, 1, 0, k0=1, material=1, modetype="singular")
     >>> cyw.expandlattice(1, 0)
     PhysicsArray(
-        [0.+0.j        , 2.-3.8655259j , 0.+0.j        , 0.+0.j        ,
-         0.+0.j        , 1.+1.23397896j],
+        [0.+0.j   , 2.-3.866j, 0.+0.j   , 0.+0.j   , 0.+0.j   , 1.+1.234j],
         basis=CylindricalWaveBasis(
         pidx=[0 0 0 0 0 0],
         kz=[0. 0. 0. 0. 0. 0.],
@@ -477,8 +455,8 @@ structure. Then, these fields are expanded as regular fields in a single unit ce
     >>> spw = spherical_wave(1, 0, 0, k0=1, material=1)
     >>> spw.expandlattice([1, 2], [0, 0])
     PhysicsArray(
-        [ 0.+0.j        ,  0.+0.j        ,  0.+0.j        , -1.+7.72202545j,
-          0.+0.j        ,  0.+0.j        ],
+        [ 0.+0.j   ,  0.+0.j   ,  0.+0.j   , -1.+7.722j,  0.+0.j   ,
+          0.+0.j   ],
         basis=SphericalWaveBasis(
         pidx=[0 0 0 0 0 0],
         l=[1 1 1 1 1 1],
@@ -505,12 +483,11 @@ lattice along the z-axis can be expanded in cylindrical waves
     >>> ex = ExpandLattice(basis=CylindricalWaveBasis.diffr_orders([.1], 0, 7, 1))
     >>> ex @ spw
     PhysicsArray(
-        [ 0.00000000e+00+0.j        , -5.72699981e-18+0.093529j  ,
-          0.00000000e+00+0.j        , -9.44693623e-18+0.15428018j,
-          0.00000000e+00+0.j        , -6.57692473e-19+0.01074093j],
+        [ 0.+0.j   , -0.+0.094j,  0.+0.j   , -0.+0.154j,  0.+0.j   ,
+         -0.+0.011j],
         basis=CylindricalWaveBasis(
         pidx=[0 0 0 0 0 0],
-        kz=[-0.7975979 -0.7975979  0.1        0.1        0.9975979  0.9975979],
+        kz=[-0.798 -0.798  0.1    0.1    0.998  0.998],
         m=[0 0 0 0 0 0],
         pol=[1 0 1 0 1 0],
         positions=[[0. 0. 0.]],
@@ -532,16 +509,11 @@ waves in a two-dimensional lattice in the x-y-plane can be expanded in plane wav
     >>> ex = ExpandLattice(basis=PlaneWaveBasisByComp.diffr_orders([.1, 0], [7, 7], 1))
     >>> ex @ spw
     PhysicsArray(
-        [ 0.00000000e+00+0.j        , -2.72638852e-19+0.00445253j,
-          0.00000000e+00+0.j        , -5.70665864e-18+0.09319681j,
-          0.00000000e+00+0.j        , -5.70665864e-18+0.09319681j,
-          0.00000000e+00+0.j        , -3.90671188e-17+0.63801447j,
-          0.00000000e+00+0.j        , -3.58703457e-18+0.05858072j],
+        [ 0.+0.j   , -0.+0.004j,  0.+0.j   , -0.+0.093j,  0.+0.j   ,
+         -0.+0.093j,  0.+0.j   , -0.+0.638j,  0.+0.j   , -0.+0.059j],
         basis=PlaneWaveBasisByComp(
-        kx=[ 0.1        0.1        0.1        0.1        0.1        0.1
-      0.9975979  0.9975979 -0.7975979 -0.7975979],
-        ky=[ 0.         0.         0.8975979  0.8975979 -0.8975979 -0.8975979
-      0.         0.         0.         0.       ],
+        kx=[ 0.1    0.1    0.1    0.1    0.1    0.1    0.998  0.998 -0.798 -0.798],
+        ky=[ 0.     0.     0.898  0.898 -0.898 -0.898  0.     0.     0.     0.   ],
         pol=[1 0 1 0 1 0 1 0 1 0],
     ),
         k0=1.0,
@@ -562,16 +534,12 @@ lattice along the x-axis can also be expanded in plane waves.
     >>> ex = ExpandLattice(basis=PlaneWaveBasisByComp.diffr_orders([0, .1], Lattice([7, 7], "zx"), 1))
     >>> ex @ cyw
     PhysicsArray(
-        [0.        +0.j        , 0.28571429-0.02871537j,
-         0.        +0.j        , 0.28571429-4.1146983j ,
-         0.        +0.j        , 0.28571429+0.37780019j,
-         0.        +0.j        , 0.        +0.j        ,
-         0.        +0.j        , 0.        +0.j        ],
+        [0.   +0.j   , 0.286-0.029j, 0.   +0.j   , 0.286-4.115j,
+         0.   +0.j   , 0.286+0.378j, 0.   +0.j   , 0.   +0.j   ,
+         0.   +0.j   , 0.   +0.j   ],
         basis=PlaneWaveBasisByComp(
-        kz=[ 0.         0.         0.         0.         0.         0.
-      0.8975979  0.8975979 -0.8975979 -0.8975979],
-        kx=[ 0.1        0.1        0.9975979  0.9975979 -0.7975979 -0.7975979
-      0.1        0.1        0.1        0.1      ],
+        kz=[ 0.     0.     0.     0.     0.     0.     0.898  0.898 -0.898 -0.898],
+        kx=[ 0.1    0.1    0.998  0.998 -0.798 -0.798  0.1    0.1    0.1    0.1  ],
         pol=[1 0 1 0 1 0 1 0 1 0],
     ),
         k0=1.0,
@@ -594,8 +562,7 @@ can be expressed as an operator.
     >>> spw = spherical_wave(1, 0, 0, poltype="helicity")
     >>> spw.changepoltype("parity")
     PhysicsArray(
-        [ 0.        ,  0.        ,  0.70710678, -0.70710678,  0.        ,
-          0.        ],
+        [ 0.   ,  0.   ,  0.707, -0.707,  0.   ,  0.   ],
         basis=SphericalWaveBasis(
         pidx=[0 0 0 0 0 0],
         l=[1 1 1 1 1 1],
@@ -623,19 +590,19 @@ permutation, meaning the axes labels get permuted.
     PhysicsArray(
         [0, 1],
         basis=PlaneWaveBasisByUnitVector(
-        qx=[0.28571429 0.28571429],
-        qy=[0.42857143 0.42857143],
-        qz=[0.85714286 0.85714286],
+        qx=[0.286 0.286],
+        qy=[0.429 0.429],
+        qz=[0.857 0.857],
         pol=[1 0],
     ),
     )
     >>> plw.permute()
     PhysicsArray(
-        [ 0.        +0.j        , -0.78935222+0.61394061j],
+        [ 0.   +0.j   , -0.789+0.614j],
         basis=PlaneWaveBasisByUnitVector(
-        qx=[0.85714286 0.85714286],
-        qy=[0.28571429 0.28571429],
-        qz=[0.42857143 0.42857143],
+        qx=[0.857 0.857],
+        qy=[0.286 0.286],
+        qz=[0.429 0.429],
         pol=[1 0],
     ),
         poltype='helicity',
@@ -659,6 +626,6 @@ different definitions of the Riemann-Silberstein vectors
     >>> spw = spherical_wave(1, 0, 0, k0=1, material=1, poltype="helicity", modetype="regular")
     >>> spw.efield([[0, 0, 0], [1, 0, 0]])
     PhysicsArray(
-        [[0.+0.00000000e+00j, 0.+0.00000000e+00j, 0.+1.62867504e-01j],
-         [0.-8.08245652e-18j, 0.-7.35758865e-02j, 0.+1.31996532e-01j]],
+        [[0.+0.j   , 0.+0.j   , 0.+0.163j],
+         [0.-0.j   , 0.-0.074j, 0.+0.132j]],
     )

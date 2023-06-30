@@ -196,10 +196,8 @@ used for a range of diffraction orders
 
     >>> treams.PlaneWaveBasisByComp.diffr_orders([0, 0], np.eye(2), 7)
     PlaneWaveBasisByComp(
-        kx=[ 0.          0.          0.          0.          0.          0.
-      6.28318531  6.28318531 -6.28318531 -6.28318531],
-        ky=[ 0.          0.          6.28318531  6.28318531 -6.28318531 -6.28318531
-      0.          0.          0.          0.        ],
+        kx=[ 0.     0.     0.     0.     0.     0.     6.283  6.283 -6.283 -6.283],
+        ky=[ 0.     0.     6.283  6.283 -6.283 -6.283  0.     0.     0.     0.   ],
         pol=[1 0 1 0 1 0 1 0 1 0],
     )
 
@@ -318,8 +316,8 @@ create special lattice shapes, for example
 .. doctest::
 
     >>> treams.Lattice.hexagonal(2)
-    Lattice([[2.         0.        ]
-             [1.         1.73205081]], alignment='xy')
+    Lattice([[2.    0.   ]
+             [1.    1.732]], alignment='xy')
 
 creates a hexagonal lattice with sidelength 2. It's also possible to extract a
 lower-dimensional sublattice
@@ -358,8 +356,8 @@ right-handed order, and the reciprocal lattice vectors can be computed
 .. doctest::
 
     >>> treams.Lattice([1, 1]).reciprocal
-    array([[ 6.28318531, -0.        ],
-           [-0.        ,  6.28318531]])
+    array([[ 6.283, -0.   ],
+           [-0.   ,  6.283]])
 
 Phase vector
 ============

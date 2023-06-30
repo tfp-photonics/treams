@@ -316,12 +316,12 @@ class Lattice:
 
         Examples:
             >>> Lattice.hexagonal(1, 2).permute()
-            Lattice([[0.        1.        0.       ]
-                     [0.        0.5       0.8660254]
-                     [2.        0.        0.       ]], alignment='xyz')
+            Lattice([[0.    1.    0.   ]
+                     [0.    0.5   0.866]
+                     [2.    0.    0.   ]], alignment='xyz')
             >>> Lattice.hexagonal(1).permute()
-            Lattice([[1.        0.       ]
-                     [0.5       0.8660254]], alignment='yz')
+            Lattice([[1.    0.   ]
+                     [0.5   0.866]], alignment='yz')
 
         Args:
             n (int, optional): Number of repeated permutations. Defaults to `1`.

@@ -54,6 +54,8 @@ autosummary_filename_map = {
 doctest_global_setup = """
 import numpy as np
 from treams import *
+
+np.set_printoptions(precision=3, suppress=True)
 """
 intersphinx_mapping = {
     "scipy": ("https://docs.scipy.org/doc/scipy", None),
