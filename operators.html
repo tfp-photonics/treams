@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Operators &#8212; treams 0.3.1.dev4+g7bb16ee8 documentation</title>
+    <title>Operators &#8212; treams 0.3.1.dev5+gb45efd05 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="physicsarray.html" title="Physics-aware arrays"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev4+g7bb16ee8 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev5+gb45efd05 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="intro.html" accesskey="U">Introduction</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Operators</a></li> 
       </ul>
@@ -99,18 +99,12 @@ abstract rotation operator by using <code class="xref py py-class docutils liter
 <p>which can then be converted to a representation by calling it with the basis argument.</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="p">(</span><span class="n">basis</span><span class="o">=</span><span class="n">SphericalWaveBasis</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 <span class="go">PhysicsArray(</span>
-<span class="go">    [[-1.+1.2246468e-16j,  0.+0.0000000e+00j,  0.+0.0000000e+00j,</span>
-<span class="go">       0.+0.0000000e+00j,  0.+0.0000000e+00j,  0.+0.0000000e+00j],</span>
-<span class="go">     [ 0.+0.0000000e+00j, -1.+1.2246468e-16j,  0.+0.0000000e+00j,</span>
-<span class="go">       0.+0.0000000e+00j,  0.+0.0000000e+00j,  0.+0.0000000e+00j],</span>
-<span class="go">     [ 0.+0.0000000e+00j,  0.+0.0000000e+00j,  1.+0.0000000e+00j,</span>
-<span class="go">       0.+0.0000000e+00j,  0.+0.0000000e+00j,  0.+0.0000000e+00j],</span>
-<span class="go">     [ 0.+0.0000000e+00j,  0.+0.0000000e+00j,  0.+0.0000000e+00j,</span>
-<span class="go">       1.+0.0000000e+00j,  0.+0.0000000e+00j,  0.+0.0000000e+00j],</span>
-<span class="go">     [ 0.-0.0000000e+00j,  0.+0.0000000e+00j,  0.-0.0000000e+00j,</span>
-<span class="go">       0.+0.0000000e+00j, -1.-1.2246468e-16j,  0.+0.0000000e+00j],</span>
-<span class="go">     [ 0.+0.0000000e+00j,  0.-0.0000000e+00j,  0.+0.0000000e+00j,</span>
-<span class="go">       0.-0.0000000e+00j,  0.+0.0000000e+00j, -1.-1.2246468e-16j]],</span>
+<span class="go">    [[-1.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j],</span>
+<span class="go">     [ 0.+0.j, -1.+0.j,  0.+0.j,  0.+0.j,  0.+0.j,  0.+0.j],</span>
+<span class="go">     [ 0.+0.j,  0.+0.j,  1.+0.j,  0.+0.j,  0.+0.j,  0.+0.j],</span>
+<span class="go">     [ 0.+0.j,  0.+0.j,  0.+0.j,  1.+0.j,  0.+0.j,  0.+0.j],</span>
+<span class="go">     [ 0.-0.j,  0.+0.j,  0.-0.j,  0.+0.j, -1.-0.j,  0.+0.j],</span>
+<span class="go">     [ 0.+0.j,  0.-0.j,  0.+0.j,  0.-0.j,  0.+0.j, -1.-0.j]],</span>
 <span class="go">    basis=SphericalWaveBasis(</span>
 <span class="go">    pidx=[0 0 0 0 0 0],</span>
 <span class="go">    l=[1 1 1 1 1 1],</span>
@@ -162,24 +156,18 @@ Cartesian translation vector.</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">PhysicsArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="n">basis</span><span class="o">=</span><span class="n">SphericalWaveBasis</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">k0</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">translate</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 <span class="go">PhysicsArray(</span>
-<span class="go">    [[ 0.13702594-1.38777878e-17j,  0.        +0.00000000e+00j,</span>
-<span class="go">      -0.02142403-4.28480668e-02j,  0.        +0.00000000e+00j,</span>
-<span class="go">      -0.01514908+2.01987724e-02j,  0.        +0.00000000e+00j],</span>
-<span class="go">     [ 0.        +0.00000000e+00j,  0.13702594+0.00000000e+00j,</span>
-<span class="go">       0.        +0.00000000e+00j, -0.02142403-4.28480668e-02j,</span>
-<span class="go">       0.        +0.00000000e+00j, -0.01514908+2.01987724e-02j],</span>
-<span class="go">     [-0.02142403+4.28480668e-02j,  0.        +0.00000000e+00j,</span>
-<span class="go">       0.07137993-6.84670061e-18j,  0.        +0.00000000e+00j,</span>
-<span class="go">       0.02142403+4.28480668e-02j,  0.        +0.00000000e+00j],</span>
-<span class="go">     [ 0.        +0.00000000e+00j, -0.02142403+4.28480668e-02j,</span>
-<span class="go">       0.        +0.00000000e+00j,  0.07137993-1.52119906e-17j,</span>
-<span class="go">       0.        +0.00000000e+00j,  0.02142403+4.28480668e-02j],</span>
-<span class="go">     [-0.01514908-2.01987724e-02j,  0.        +0.00000000e+00j,</span>
-<span class="go">       0.02142403-4.28480668e-02j,  0.        +0.00000000e+00j,</span>
-<span class="go">       0.13702594+6.93889390e-18j,  0.        +0.00000000e+00j],</span>
-<span class="go">     [ 0.        +0.00000000e+00j, -0.01514908-2.01987724e-02j,</span>
-<span class="go">       0.        +0.00000000e+00j,  0.02142403-4.28480668e-02j,</span>
-<span class="go">       0.        +0.00000000e+00j,  0.13702594-6.93889390e-18j]],</span>
+<span class="go">    [[ 0.137-0.j   ,  0.   +0.j   , -0.021-0.043j,  0.   +0.j   ,</span>
+<span class="go">      -0.015+0.02j ,  0.   +0.j   ],</span>
+<span class="go">     [ 0.   +0.j   ,  0.137+0.j   ,  0.   +0.j   , -0.021-0.043j,</span>
+<span class="go">       0.   +0.j   , -0.015+0.02j ],</span>
+<span class="go">     [-0.021+0.043j,  0.   +0.j   ,  0.071-0.j   ,  0.   +0.j   ,</span>
+<span class="go">       0.021+0.043j,  0.   +0.j   ],</span>
+<span class="go">     [ 0.   +0.j   , -0.021+0.043j,  0.   +0.j   ,  0.071-0.j   ,</span>
+<span class="go">       0.   +0.j   ,  0.021+0.043j],</span>
+<span class="go">     [-0.015-0.02j ,  0.   +0.j   ,  0.021-0.043j,  0.   +0.j   ,</span>
+<span class="go">       0.137+0.j   ,  0.   +0.j   ],</span>
+<span class="go">     [ 0.   +0.j   , -0.015-0.02j ,  0.   +0.j   ,  0.021-0.043j,</span>
+<span class="go">       0.   +0.j   ,  0.137-0.j   ]],</span>
 <span class="go">    basis=SphericalWaveBasis(</span>
 <span class="go">    pidx=[0 0 0 0 0 0],</span>
 <span class="go">    l=[1 1 1 1 1 1],</span>
@@ -254,9 +242,8 @@ specified.</p>
 <span class="go">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Expand</span><span class="p">(</span><span class="n">SphericalWaveBasis</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">@</span> <span class="n">plw</span>
 <span class="go">PhysicsArray(</span>
-<span class="go">    [ 3.06998012e-01-3.75964133e-17j, -2.76298211e+00+3.38367720e-16j,</span>
-<span class="go">     -7.97540364e-17-1.30248226e+00j, -7.97540364e-17-1.30248226e+00j,</span>
-<span class="go">     -2.76298211e+00+0.00000000e+00j,  3.06998012e-01+0.00000000e+00j],</span>
+<span class="go">    [ 0.307-0.j   , -2.763+0.j   , -0.   -1.302j, -0.   -1.302j,</span>
+<span class="go">     -2.763+0.j   ,  0.307+0.j   ],</span>
 <span class="go">    basis=SphericalWaveBasis(</span>
 <span class="go">    pidx=[0 0 0 0 0 0],</span>
 <span class="go">    l=[1 1 1 1 1 1],</span>
@@ -284,9 +271,8 @@ and expand it around the origin</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">=</span> <span class="n">Expand</span><span class="p">(</span><span class="n">SphericalWaveBasis</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">@</span> <span class="n">spw</span>
 <span class="go">PhysicsArray(</span>
-<span class="go">    [ 0.00000000e+00+0.00000000e+00j,  5.86797393e-17+3.19437623e-01j,</span>
-<span class="go">      0.00000000e+00+0.00000000e+00j,  8.10453459e-01+3.79855139e-18j,</span>
-<span class="go">      0.00000000e+00+0.00000000e+00j, -1.95599131e-17+3.19437623e-01j],</span>
+<span class="go">    [ 0.  +0.j   ,  0.  +0.319j,  0.  +0.j   ,  0.81+0.j   ,</span>
+<span class="go">      0.  +0.j   , -0.  +0.319j],</span>
 <span class="go">    basis=SphericalWaveBasis(</span>
 <span class="go">    pidx=[0 0 0 0 0 0],</span>
 <span class="go">    l=[1 1 1 1 1 1],</span>
@@ -309,9 +295,8 @@ around a different origin</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">=</span> <span class="n">Expand</span><span class="p">(</span><span class="n">SphericalWaveBasis</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;regular&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">@</span> <span class="n">spw</span>
 <span class="go">PhysicsArray(</span>
-<span class="go">    [0.        +0.j        , 1.4655919 +0.31943762j,</span>
-<span class="go">     0.        +0.j        , 0.81045346+1.26220648j,</span>
-<span class="go">     0.        +0.j        , 1.4655919 +0.31943762j],</span>
+<span class="go">    [0.   +0.j   , 1.466+0.319j, 0.   +0.j   , 0.81 +1.262j,</span>
+<span class="go">     0.   +0.j   , 1.466+0.319j],</span>
 <span class="go">    basis=SphericalWaveBasis(</span>
 <span class="go">    pidx=[0 0 0 0 0 0],</span>
 <span class="go">    l=[1 1 1 1 1 1],</span>
@@ -333,12 +318,8 @@ origins, which works quite similarly</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">local_swb</span> <span class="o">=</span> <span class="n">SphericalWaveBasis</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sw_global</span><span class="o">.</span><span class="n">expand</span><span class="o">.</span><span class="n">apply_left</span><span class="p">(</span><span class="n">local_swb</span><span class="p">)</span>
 <span class="go">PhysicsArray(</span>
-<span class="go">    [0.        +0.00000000e+00j, 0.        +0.00000000e+00j,</span>
-<span class="go">     0.        +0.00000000e+00j, 0.90350604-7.59710279e-18j,</span>
-<span class="go">     0.        +0.00000000e+00j, 0.        +0.00000000e+00j,</span>
-<span class="go">     0.        +0.00000000e+00j, 0.        +0.00000000e+00j,</span>
-<span class="go">     0.        +0.00000000e+00j, 0.90350604-7.59710279e-18j,</span>
-<span class="go">     0.        +0.00000000e+00j, 0.        +0.00000000e+00j],</span>
+<span class="go">    [0.   +0.j, 0.   +0.j, 0.   +0.j, 0.904-0.j, 0.   +0.j, 0.   +0.j,</span>
+<span class="go">     0.   +0.j, 0.   +0.j, 0.   +0.j, 0.904-0.j, 0.   +0.j, 0.   +0.j],</span>
 <span class="go">    basis=SphericalWaveBasis(</span>
 <span class="go">    pidx=[0 0 0 0 0 0 1 1 1 1 1 1],</span>
 <span class="go">    l=[1 1 1 1 1 1 1 1 1 1 1 1],</span>
@@ -408,9 +389,8 @@ same properties than spherical waves.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">=</span> <span class="n">Expand</span><span class="p">(</span><span class="n">CylindricalWaveBasis</span><span class="o">.</span><span class="n">default</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">@</span> <span class="n">cyw</span>
 <span class="go">PhysicsArray(</span>
-<span class="go">    [ 0.        +0.00000000e+00j,  0.11490348-1.40716185e-17j,</span>
-<span class="go">      0.        +0.00000000e+00j, -0.44005059+5.38906541e-17j,</span>
-<span class="go">      0.        +0.00000000e+00j,  0.76519769+0.00000000e+00j],</span>
+<span class="go">    [ 0.   +0.j,  0.115-0.j,  0.   +0.j, -0.44 +0.j,  0.   +0.j,</span>
+<span class="go">      0.765+0.j],</span>
 <span class="go">    basis=CylindricalWaveBasis(</span>
 <span class="go">    pidx=[0 0 0 0 0 0],</span>
 <span class="go">    kz=[0. 0. 0. 0. 0. 0.],</span>
@@ -430,8 +410,7 @@ of the spherical and cylindrical waves must be equal.</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cyw</span> <span class="o">=</span> <span class="n">cylindrical_wave</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">k0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">modetype</span><span class="o">=</span><span class="s2">&quot;regular&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cyw</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">SphericalWaveBasis</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 <span class="go">PhysicsArray(</span>
-<span class="go">    [0.        +0.j, 0.        +0.j, 0.        +0.j, 0.        +0.j,</span>
-<span class="go">     0.        +0.j, 3.06998012+0.j],</span>
+<span class="go">    [0.  +0.j, 0.  +0.j, 0.  +0.j, 0.  +0.j, 0.  +0.j, 3.07+0.j],</span>
 <span class="go">    basis=SphericalWaveBasis(</span>
 <span class="go">    pidx=[0 0 0 0 0 0],</span>
 <span class="go">    l=[1 1 1 1 1 1],</span>
@@ -461,8 +440,7 @@ structure. Then, these fields are expanded as regular fields in a single unit ce
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cyw</span> <span class="o">=</span> <span class="n">cylindrical_wave</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">k0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">modetype</span><span class="o">=</span><span class="s2">&quot;singular&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cyw</span><span class="o">.</span><span class="n">expandlattice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="go">PhysicsArray(</span>
-<span class="go">    [0.+0.j        , 2.-3.8655259j , 0.+0.j        , 0.+0.j        ,</span>
-<span class="go">     0.+0.j        , 1.+1.23397896j],</span>
+<span class="go">    [0.+0.j   , 2.-3.866j, 0.+0.j   , 0.+0.j   , 0.+0.j   , 1.+1.234j],</span>
 <span class="go">    basis=CylindricalWaveBasis(</span>
 <span class="go">    pidx=[0 0 0 0 0 0],</span>
 <span class="go">    kz=[0. 0. 0. 0. 0. 0.],</span>
@@ -479,8 +457,8 @@ structure. Then, these fields are expanded as regular fields in a single unit ce
 <span class="gp">&gt;&gt;&gt; </span><span class="n">spw</span> <span class="o">=</span> <span class="n">spherical_wave</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">k0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">spw</span><span class="o">.</span><span class="n">expandlattice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 <span class="go">PhysicsArray(</span>
-<span class="go">    [ 0.+0.j        ,  0.+0.j        ,  0.+0.j        , -1.+7.72202545j,</span>
-<span class="go">      0.+0.j        ,  0.+0.j        ],</span>
+<span class="go">    [ 0.+0.j   ,  0.+0.j   ,  0.+0.j   , -1.+7.722j,  0.+0.j   ,</span>
+<span class="go">      0.+0.j   ],</span>
 <span class="go">    basis=SphericalWaveBasis(</span>
 <span class="go">    pidx=[0 0 0 0 0 0],</span>
 <span class="go">    l=[1 1 1 1 1 1],</span>
@@ -505,12 +483,11 @@ lattice along the z-axis can be expanded in cylindrical waves</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">=</span> <span class="n">ExpandLattice</span><span class="p">(</span><span class="n">basis</span><span class="o">=</span><span class="n">CylindricalWaveBasis</span><span class="o">.</span><span class="n">diffr_orders</span><span class="p">([</span><span class="mf">.1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">@</span> <span class="n">spw</span>
 <span class="go">PhysicsArray(</span>
-<span class="go">    [ 0.00000000e+00+0.j        , -5.72699981e-18+0.093529j  ,</span>
-<span class="go">      0.00000000e+00+0.j        , -9.44693623e-18+0.15428018j,</span>
-<span class="go">      0.00000000e+00+0.j        , -6.57692473e-19+0.01074093j],</span>
+<span class="go">    [ 0.+0.j   , -0.+0.094j,  0.+0.j   , -0.+0.154j,  0.+0.j   ,</span>
+<span class="go">     -0.+0.011j],</span>
 <span class="go">    basis=CylindricalWaveBasis(</span>
 <span class="go">    pidx=[0 0 0 0 0 0],</span>
-<span class="go">    kz=[-0.7975979 -0.7975979  0.1        0.1        0.9975979  0.9975979],</span>
+<span class="go">    kz=[-0.798 -0.798  0.1    0.1    0.998  0.998],</span>
 <span class="go">    m=[0 0 0 0 0 0],</span>
 <span class="go">    pol=[1 0 1 0 1 0],</span>
 <span class="go">    positions=[[0. 0. 0.]],</span>
@@ -530,16 +507,11 @@ waves in a two-dimensional lattice in the x-y-plane can be expanded in plane wav
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">=</span> <span class="n">ExpandLattice</span><span class="p">(</span><span class="n">basis</span><span class="o">=</span><span class="n">PlaneWaveBasisByComp</span><span class="o">.</span><span class="n">diffr_orders</span><span class="p">([</span><span class="mf">.1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">@</span> <span class="n">spw</span>
 <span class="go">PhysicsArray(</span>
-<span class="go">    [ 0.00000000e+00+0.j        , -2.72638852e-19+0.00445253j,</span>
-<span class="go">      0.00000000e+00+0.j        , -5.70665864e-18+0.09319681j,</span>
-<span class="go">      0.00000000e+00+0.j        , -5.70665864e-18+0.09319681j,</span>
-<span class="go">      0.00000000e+00+0.j        , -3.90671188e-17+0.63801447j,</span>
-<span class="go">      0.00000000e+00+0.j        , -3.58703457e-18+0.05858072j],</span>
+<span class="go">    [ 0.+0.j   , -0.+0.004j,  0.+0.j   , -0.+0.093j,  0.+0.j   ,</span>
+<span class="go">     -0.+0.093j,  0.+0.j   , -0.+0.638j,  0.+0.j   , -0.+0.059j],</span>
 <span class="go">    basis=PlaneWaveBasisByComp(</span>
-<span class="go">    kx=[ 0.1        0.1        0.1        0.1        0.1        0.1</span>
-<span class="go">  0.9975979  0.9975979 -0.7975979 -0.7975979],</span>
-<span class="go">    ky=[ 0.         0.         0.8975979  0.8975979 -0.8975979 -0.8975979</span>
-<span class="go">  0.         0.         0.         0.       ],</span>
+<span class="go">    kx=[ 0.1    0.1    0.1    0.1    0.1    0.1    0.998  0.998 -0.798 -0.798],</span>
+<span class="go">    ky=[ 0.     0.     0.898  0.898 -0.898 -0.898  0.     0.     0.     0.   ],</span>
 <span class="go">    pol=[1 0 1 0 1 0 1 0 1 0],</span>
 <span class="go">),</span>
 <span class="go">    k0=1.0,</span>
@@ -558,16 +530,12 @@ lattice along the x-axis can also be expanded in plane waves.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">=</span> <span class="n">ExpandLattice</span><span class="p">(</span><span class="n">basis</span><span class="o">=</span><span class="n">PlaneWaveBasisByComp</span><span class="o">.</span><span class="n">diffr_orders</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">.1</span><span class="p">],</span> <span class="n">Lattice</span><span class="p">([</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="s2">&quot;zx&quot;</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">@</span> <span class="n">cyw</span>
 <span class="go">PhysicsArray(</span>
-<span class="go">    [0.        +0.j        , 0.28571429-0.02871537j,</span>
-<span class="go">     0.        +0.j        , 0.28571429-4.1146983j ,</span>
-<span class="go">     0.        +0.j        , 0.28571429+0.37780019j,</span>
-<span class="go">     0.        +0.j        , 0.        +0.j        ,</span>
-<span class="go">     0.        +0.j        , 0.        +0.j        ],</span>
+<span class="go">    [0.   +0.j   , 0.286-0.029j, 0.   +0.j   , 0.286-4.115j,</span>
+<span class="go">     0.   +0.j   , 0.286+0.378j, 0.   +0.j   , 0.   +0.j   ,</span>
+<span class="go">     0.   +0.j   , 0.   +0.j   ],</span>
 <span class="go">    basis=PlaneWaveBasisByComp(</span>
-<span class="go">    kz=[ 0.         0.         0.         0.         0.         0.</span>
-<span class="go">  0.8975979  0.8975979 -0.8975979 -0.8975979],</span>
-<span class="go">    kx=[ 0.1        0.1        0.9975979  0.9975979 -0.7975979 -0.7975979</span>
-<span class="go">  0.1        0.1        0.1        0.1      ],</span>
+<span class="go">    kz=[ 0.     0.     0.     0.     0.     0.     0.898  0.898 -0.898 -0.898],</span>
+<span class="go">    kx=[ 0.1    0.1    0.998  0.998 -0.798 -0.798  0.1    0.1    0.1    0.1  ],</span>
 <span class="go">    pol=[1 0 1 0 1 0 1 0 1 0],</span>
 <span class="go">),</span>
 <span class="go">    k0=1.0,</span>
@@ -588,8 +556,7 @@ can be expressed as an operator.</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">spw</span> <span class="o">=</span> <span class="n">spherical_wave</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">poltype</span><span class="o">=</span><span class="s2">&quot;helicity&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">spw</span><span class="o">.</span><span class="n">changepoltype</span><span class="p">(</span><span class="s2">&quot;parity&quot;</span><span class="p">)</span>
 <span class="go">PhysicsArray(</span>
-<span class="go">    [ 0.        ,  0.        ,  0.70710678, -0.70710678,  0.        ,</span>
-<span class="go">      0.        ],</span>
+<span class="go">    [ 0.   ,  0.   ,  0.707, -0.707,  0.   ,  0.   ],</span>
 <span class="go">    basis=SphericalWaveBasis(</span>
 <span class="go">    pidx=[0 0 0 0 0 0],</span>
 <span class="go">    l=[1 1 1 1 1 1],</span>
@@ -615,19 +582,19 @@ permutation, meaning the axes labels get permuted.</p>
 <span class="go">PhysicsArray(</span>
 <span class="go">    [0, 1],</span>
 <span class="go">    basis=PlaneWaveBasisByUnitVector(</span>
-<span class="go">    qx=[0.28571429 0.28571429],</span>
-<span class="go">    qy=[0.42857143 0.42857143],</span>
-<span class="go">    qz=[0.85714286 0.85714286],</span>
+<span class="go">    qx=[0.286 0.286],</span>
+<span class="go">    qy=[0.429 0.429],</span>
+<span class="go">    qz=[0.857 0.857],</span>
 <span class="go">    pol=[1 0],</span>
 <span class="go">),</span>
 <span class="go">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plw</span><span class="o">.</span><span class="n">permute</span><span class="p">()</span>
 <span class="go">PhysicsArray(</span>
-<span class="go">    [ 0.        +0.j        , -0.78935222+0.61394061j],</span>
+<span class="go">    [ 0.   +0.j   , -0.789+0.614j],</span>
 <span class="go">    basis=PlaneWaveBasisByUnitVector(</span>
-<span class="go">    qx=[0.85714286 0.85714286],</span>
-<span class="go">    qy=[0.28571429 0.28571429],</span>
-<span class="go">    qz=[0.42857143 0.42857143],</span>
+<span class="go">    qx=[0.857 0.857],</span>
+<span class="go">    qy=[0.286 0.286],</span>
+<span class="go">    qz=[0.429 0.429],</span>
 <span class="go">    pol=[1 0],</span>
 <span class="go">),</span>
 <span class="go">    poltype=&#39;helicity&#39;,</span>
@@ -649,8 +616,8 @@ different definitions of the Riemann-Silberstein vectors
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">spw</span> <span class="o">=</span> <span class="n">spherical_wave</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">k0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">poltype</span><span class="o">=</span><span class="s2">&quot;helicity&quot;</span><span class="p">,</span> <span class="n">modetype</span><span class="o">=</span><span class="s2">&quot;regular&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">spw</span><span class="o">.</span><span class="n">efield</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
 <span class="go">PhysicsArray(</span>
-<span class="go">    [[0.+0.00000000e+00j, 0.+0.00000000e+00j, 0.+1.62867504e-01j],</span>
-<span class="go">     [0.-8.08245652e-18j, 0.-7.35758865e-02j, 0.+1.31996532e-01j]],</span>
+<span class="go">    [[0.+0.j   , 0.+0.j   , 0.+0.163j],</span>
+<span class="go">     [0.-0.j   , 0.-0.074j, 0.+0.132j]],</span>
 <span class="go">)</span>
 </pre></div>
 </div>
@@ -720,7 +687,7 @@ different definitions of the Riemann-Silberstein vectors
         <li class="right" >
           <a href="physicsarray.html" title="Physics-aware arrays"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev4+g7bb16ee8 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev5+gb45efd05 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="intro.html" >Introduction</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Operators</a></li> 
       </ul>
