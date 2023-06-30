@@ -349,7 +349,11 @@ class TestLpmv:
 
     def test_complex_asso(self):
         assert isclose(
-            sc.lpmv(3, 3, 0.1 + 0j), ssc.clpmn(3, 3, -0.1 + 0j, type=2)[0][3, 3,]
+            sc.lpmv(3, 3, 0.1 + 0j),
+            ssc.clpmn(3, 3, -0.1 + 0j, type=2)[0][
+                3,
+                3,
+            ],
         )
 
     def test_complex_asso_above(self):
@@ -1189,8 +1193,12 @@ class TestCar2Sph:
         assert np.array_equal(sc.car2sph([0, 0, 0]), [0, 0, 0])
 
     def test_1(self):
-        assert np.array_equal(
-            sc.car2sph([3, -4, 1]), [np.sqrt(26), np.arctan2(5, 1), -0.9272952180016122]
+        assert np.all(
+            np.abs(
+                sc.car2sph([3, -4, 1])
+                - [np.sqrt(26), np.arctan2(5, 1), -0.9272952180016122]
+            )
+            < EPSSQ
         )
 
 
