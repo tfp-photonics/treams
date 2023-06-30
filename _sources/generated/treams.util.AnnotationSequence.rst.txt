@@ -42,7 +42,7 @@ treams.util.AnnotationSequence
          ~AnnotationSequence.__gt__
          ~AnnotationSequence.__le__
          ~AnnotationSequence.__lt__
-         ~AnnotationSequence.__ge__
-         ~AnnotationSequence.__ne__
          ~AnnotationSequence.__str__
+         ~AnnotationSequence.__ne__
+         ~AnnotationSequence.__ge__
   

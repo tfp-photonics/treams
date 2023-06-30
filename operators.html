@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Operators &#8212; treams 0.3.1.dev1+gf7385239 documentation</title>
+    <title>Operators &#8212; treams 0.3.1.dev3+gac03f27e documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="physicsarray.html" title="Physics-aware arrays"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev1+gf7385239 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev3+gac03f27e documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="intro.html" accesskey="U">Introduction</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Operators</a></li> 
       </ul>
@@ -458,7 +458,7 @@ when using spherical or cylindrical waves. These expansions are needed to comput
 electromagnetic interaction between particles within a lattice. It is assumed that the
 given basis with singular modes are repeated periodically in the given lattice
 structure. Then, these fields are expanded as regular fields in a single unit cell.</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cyw</span> <span class="o">=</span> <span class="n">cylindrical_wave</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">k0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">modetype</span><span class="o">=</span><span class="s2">&quot;regular&quot;</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cyw</span> <span class="o">=</span> <span class="n">cylindrical_wave</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">k0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">modetype</span><span class="o">=</span><span class="s2">&quot;singular&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cyw</span><span class="o">.</span><span class="n">expandlattice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="go">PhysicsArray(</span>
 <span class="go">    [0.+0.j        , 2.-3.8655259j , 0.+0.j        , 0.+0.j        ,</span>
@@ -558,9 +558,9 @@ lattice along the x-axis can also be expanded in plane waves.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">=</span> <span class="n">ExpandLattice</span><span class="p">(</span><span class="n">basis</span><span class="o">=</span><span class="n">PlaneWaveBasisByComp</span><span class="o">.</span><span class="n">diffr_orders</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">.1</span><span class="p">],</span> <span class="n">Lattice</span><span class="p">([</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="s2">&quot;zx&quot;</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ex</span> <span class="o">@</span> <span class="n">cyw</span>
 <span class="go">PhysicsArray(</span>
-<span class="go">    [0.        +0.j        , 0.04081633-0.0041022j ,</span>
-<span class="go">     0.        +0.j        , 0.04081633-0.58781404j,</span>
-<span class="go">     0.        +0.j        , 0.04081633+0.05397146j,</span>
+<span class="go">    [0.        +0.j        , 0.28571429-0.02871537j,</span>
+<span class="go">     0.        +0.j        , 0.28571429-4.1146983j ,</span>
+<span class="go">     0.        +0.j        , 0.28571429+0.37780019j,</span>
 <span class="go">     0.        +0.j        , 0.        +0.j        ,</span>
 <span class="go">     0.        +0.j        , 0.        +0.j        ],</span>
 <span class="go">    basis=PlaneWaveBasisByComp(</span>
@@ -572,8 +572,7 @@ lattice along the x-axis can also be expanded in plane waves.</p>
 <span class="go">),</span>
 <span class="go">    k0=1.0,</span>
 <span class="go">    kpar=WaveVector(nan, nan, 0.0),</span>
-<span class="go">    lattice=Lattice([[7. 0.]</span>
-<span class="go">         [0. 7.]], alignment=&#39;zx&#39;),</span>
+<span class="go">    lattice=Lattice(7.0, alignment=&#39;x&#39;),</span>
 <span class="go">    material=Material(1, 1, 0),</span>
 <span class="go">    modetype=&#39;up&#39;,</span>
 <span class="go">)</span>
@@ -624,7 +623,7 @@ permutation, meaning the axes labels get permuted.</p>
 <span class="go">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plw</span><span class="o">.</span><span class="n">permute</span><span class="p">()</span>
 <span class="go">PhysicsArray(</span>
-<span class="go">    [ 0.        +0.j        , -0.49613894-0.86824314j],</span>
+<span class="go">    [ 0.        +0.j        , -0.78935222+0.61394061j],</span>
 <span class="go">    basis=PlaneWaveBasisByUnitVector(</span>
 <span class="go">    qx=[0.85714286 0.85714286],</span>
 <span class="go">    qy=[0.28571429 0.28571429],</span>
@@ -721,7 +720,7 @@ different definitions of the Riemann-Silberstein vectors
         <li class="right" >
           <a href="physicsarray.html" title="Physics-aware arrays"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev1+gf7385239 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev3+gac03f27e documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="intro.html" >Introduction</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Operators</a></li> 
       </ul>
