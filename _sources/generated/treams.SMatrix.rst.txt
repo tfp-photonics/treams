@@ -91,36 +91,36 @@
          ~SMatrix.trace
          ~SMatrix.transpose
       
+         ~SMatrix.__neg__
+         ~SMatrix.__or__
+         ~SMatrix.__mod__
+         ~SMatrix.__array__
+         ~SMatrix.__floordiv__
+         ~SMatrix.__lshift__
+         ~SMatrix.__ge__
+         ~SMatrix.__str__
          ~SMatrix.__truediv__
-         ~SMatrix.__eq__
+         ~SMatrix.__ne__
+         ~SMatrix.__array_ufunc__
+         ~SMatrix.__invert__
+         ~SMatrix.__mul__
+         ~SMatrix.__pow__
+         ~SMatrix.__divmod__
+         ~SMatrix.__len__
+         ~SMatrix.__array_function__
+         ~SMatrix.__lt__
+         ~SMatrix.__and__
+         ~SMatrix.__matmul__
+         ~SMatrix.__rshift__
+         ~SMatrix.__repr__
+         ~SMatrix.__gt__
+         ~SMatrix.__getitem__
+         ~SMatrix.__pos__
+         ~SMatrix.__setitem__
          ~SMatrix.__add__
          ~SMatrix.__le__
-         ~SMatrix.__ge__
          ~SMatrix.__sub__
-         ~SMatrix.__rshift__
-         ~SMatrix.__getitem__
-         ~SMatrix.__str__
-         ~SMatrix.__repr__
-         ~SMatrix.__matmul__
-         ~SMatrix.__array__
-         ~SMatrix.__gt__
-         ~SMatrix.__neg__
-         ~SMatrix.__floordiv__
-         ~SMatrix.__array_function__
-         ~SMatrix.__and__
-         ~SMatrix.__lshift__
-         ~SMatrix.__len__
-         ~SMatrix.__array_ufunc__
-         ~SMatrix.__ne__
-         ~SMatrix.__or__
          ~SMatrix.__abs__
-         ~SMatrix.__mul__
-         ~SMatrix.__setitem__
-         ~SMatrix.__pow__
-         ~SMatrix.__invert__
-         ~SMatrix.__lt__
-         ~SMatrix.__mod__
-         ~SMatrix.__pos__
+         ~SMatrix.__eq__
          ~SMatrix.__xor__
-         ~SMatrix.__divmod__
   
