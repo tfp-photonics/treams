@@ -41,12 +41,7 @@ fig.show()
 
 fig, ax = plt.subplots()
 pcm = ax.pcolormesh(
-    grid[0, :, 1],
-    grid[:, 0, 0],
-    intensity.T,
-    shading="nearest",
-    vmin=0,
-    vmax=1,
+    grid[0, :, 1], grid[:, 0, 0], intensity.T, shading="nearest", vmin=0, vmax=1,
 )
 cb = plt.colorbar(pcm)
 cb.set_label("Intensity")

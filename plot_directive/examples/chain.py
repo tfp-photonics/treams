@@ -30,12 +30,7 @@ ez[~valid] = np.nan
 
 fig, ax = plt.subplots()
 pcm = ax.pcolormesh(
-    grid[0, :, 2],
-    grid[:, 0, 0],
-    ez.T,
-    shading="nearest",
-    vmin=-0.5,
-    vmax=0.5,
+    grid[0, :, 2], grid[:, 0, 0], ez.T, shading="nearest", vmin=-0.5, vmax=0.5,
 )
 cb = plt.colorbar(pcm)
 cb.set_label("$E_z$")

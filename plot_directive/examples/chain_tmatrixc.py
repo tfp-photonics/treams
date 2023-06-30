@@ -19,7 +19,7 @@ cwb = treams.CylindricalWaveBasis.diffr_orders(kz, mmax, lattice, bmax, 2, posit
 chain_tmc = treams.TMatrixC.from_array(chain, cwb)
 
 inc = treams.plane_wave(
-    [np.sqrt(k0**2 - kz**2), 0, kz],
+    [np.sqrt(k0 ** 2 - kz ** 2), 0, kz],
     [np.sqrt(0.5), np.sqrt(0.5)],
     k0=chain.k0,
     material=chain.material,
@@ -49,23 +49,10 @@ ez = np.concatenate(
         np.real(ez.T * np.exp(1j * kz * lattice[...])),
     )
 )
-zaxis = np.concatenate(
-    (
-        grid[0, :, 2] - 300,
-        grid[0, :, 2],
-        grid[0, :, 2] + 300,
-    )
-)
+zaxis = np.concatenate((grid[0, :, 2] - 300, grid[0, :, 2], grid[0, :, 2] + 300,))
 
 fig, ax = plt.subplots(figsize=(10, 20))
-pcm = ax.pcolormesh(
-    grid[:, 0, 0],
-    zaxis,
-    ez,
-    shading="nearest",
-    vmin=-1,
-    vmax=1,
-)
+pcm = ax.pcolormesh(grid[:, 0, 0], zaxis, ez, shading="nearest", vmin=-1, vmax=1,)
 cb = plt.colorbar(pcm)
 cb.set_label("$E_z$")
 ax.set_xlabel("x (nm)")

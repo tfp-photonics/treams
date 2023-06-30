@@ -33,12 +33,7 @@ intensity[valid] = 0.5 * np.sum(
 
 fig, ax = plt.subplots()
 pcm = ax.pcolormesh(
-    grid[0, :, 2],
-    grid[:, 0, 0],
-    intensity.T,
-    shading="nearest",
-    vmin=0,
-    vmax=2,
+    grid[0, :, 2], grid[:, 0, 0], intensity.T, shading="nearest", vmin=0, vmax=2,
 )
 cb = plt.colorbar(pcm)
 cb.set_label("Intensity")
@@ -69,12 +64,7 @@ intensity_global[valid] = 0.5 * np.sum(
 
 fig, ax = plt.subplots()
 pcm = ax.pcolormesh(
-    grid[0, :, 2],
-    grid[:, 0, 0],
-    intensity_global.T,
-    shading="nearest",
-    vmin=0,
-    vmax=2,
+    grid[0, :, 2], grid[:, 0, 0], intensity_global.T, shading="nearest", vmin=0, vmax=2,
 )
 cb = plt.colorbar(pcm)
 cb.set_label("Intensity")
@@ -106,12 +96,7 @@ intensity_global[valid] = 0.5 * np.sum(
 
 fig, ax = plt.subplots()
 pcm = ax.pcolormesh(
-    grid[0, :, 2],
-    grid[:, 0, 0],
-    intensity_global.T,
-    shading="nearest",
-    vmin=0,
-    vmax=2,
+    grid[0, :, 2], grid[:, 0, 0], intensity_global.T, shading="nearest", vmin=0, vmax=2,
 )
 cb = plt.colorbar(pcm)
 cb.set_label("Intensity")

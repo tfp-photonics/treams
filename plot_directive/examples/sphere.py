@@ -9,13 +9,13 @@ lmax = 4
 radius = 75
 spheres = [treams.TMatrix.sphere(lmax, k0, radius, materials) for k0 in k0s]
 
-xs_sca = np.array([tm.xs_sca_avg for tm in spheres]) / (np.pi * radius**2)
-xs_ext = np.array([tm.xs_ext_avg for tm in spheres]) / (np.pi * radius**2)
+xs_sca = np.array([tm.xs_sca_avg for tm in spheres]) / (np.pi * radius ** 2)
+xs_ext = np.array([tm.xs_ext_avg for tm in spheres]) / (np.pi * radius ** 2)
 
 swb_lmax1 = treams.SphericalWaveBasis.default(1)
 spheres_lmax1 = [tm[swb_lmax1] for tm in spheres]
-xs_sca_lmax1 = np.array([tm.xs_sca_avg for tm in spheres_lmax1]) / (np.pi * radius**2)
-xs_ext_lmax1 = np.array([tm.xs_ext_avg for tm in spheres_lmax1]) / (np.pi * radius**2)
+xs_sca_lmax1 = np.array([tm.xs_sca_avg for tm in spheres_lmax1]) / (np.pi * radius ** 2)
+xs_ext_lmax1 = np.array([tm.xs_ext_avg for tm in spheres_lmax1]) / (np.pi * radius ** 2)
 
 tm = spheres[-1]
 inc = treams.plane_wave([0, 0, tm.k0], 1, k0=tm.k0, material=tm.material)
@@ -40,12 +40,7 @@ fig.show()
 
 fig, ax = plt.subplots()
 pcm = ax.pcolormesh(
-    grid[0, :, 2],
-    grid[:, 0, 0],
-    intensity.T,
-    shading="nearest",
-    vmin=0,
-    vmax=1,
+    grid[0, :, 2], grid[:, 0, 0], intensity.T, shading="nearest", vmin=0, vmax=1,
 )
 cb = plt.colorbar(pcm)
 cb.set_label("Intensity")

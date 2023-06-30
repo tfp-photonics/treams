@@ -46,8 +46,8 @@
          ~Material.kzs
       
          ~Material.__gt__
-         ~Material.__ge__
-         ~Material.__lt__
-         ~Material.__le__
          ~Material.__ne__
+         ~Material.__lt__
+         ~Material.__ge__
+         ~Material.__le__
   
