@@ -20,7 +20,7 @@ jobs:
     - name: Run tests
       run: |
         python -m pip install treams[test]
-        python -m pip install treams[io]
+        python -m pip install h5py
         python -m pytest tests/unit --cov treams
     - name: Coverage comment
       id: coverage_comment

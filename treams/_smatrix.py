@@ -193,7 +193,7 @@ class SMatrices:
         if all(kxs[0] == kxs[1]) and all(kys[0] == kys[1]):
             kzs = np.stack(
                 [
-                    m.kzs(k0, kxs[0][:, None], kys[0][:, None], [[0, 1]])
+                    m.kzs(k0, kxs[0][:, None], kys[0][:, None], np.array([[0, 1]]))
                     for m in materials
                 ],
                 -2,

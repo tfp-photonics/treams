@@ -1,15 +1,18 @@
 import os
 import tempfile
 
-import gmsh
 import h5py
 import numpy as np
+import pytest
 
 import treams
 from treams import io
 
 
+@pytest.mark.gmsh
 def test_meshspheres():
+    import gmsh
+
     gmsh.initialize()
     gmsh.model.add("spheres")
     io.mesh_spheres([1, 2], [[0, 0, 2], [0, 0, -2]], gmsh.model)
