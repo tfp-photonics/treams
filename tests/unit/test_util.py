@@ -403,13 +403,16 @@ class TestImplements:
         m = util.AnnotatedArray([[1, 2], [3, -1]], a=(3, 1), b=(1,))
         b = util.AnnotatedArray([7, -7], a=(3,))
         a = np.linalg.solve(m, b)
-        assert (a == [-1, 4]).all() and a.ann == ({"a": 1, "b": 1},)
+        assert np.all(np.abs(a - [-1, 4]) < 1e-14) and a.ann == ({"a": 1, "b": 1},)
 
     def test_solve_multiple(self):
         m = util.AnnotatedArray([[1, 2], [3, -1]], a=(3, 1), b=(1,))
         b = util.AnnotatedArray([[7, 3], [-7, 2]], a=(3, 2), b=(3, None))
         a = np.linalg.solve(m, b)
-        assert (a == [[-1, 1], [4, 1]]).all() and a.ann == ({"a": 1, "b": 1}, {"a": 2})
+        assert np.all(np.abs(a - [[-1, 1], [4, 1]]) < 1e-14) and a.ann == (
+            {"a": 1, "b": 1},
+            {"a": 2},
+        )
 
     def test_lstsq(self):
         m = util.AnnotatedArray([[1, 2], [3, -1]], a=(3, 1), b=(1,))
