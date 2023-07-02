@@ -3,6 +3,5 @@ exclude_lines =
     @abc.abstractmethod
 
 [run]
-relative_files = true
 plugins = Cython.Coverage
 omit = treams/ebcm.py
