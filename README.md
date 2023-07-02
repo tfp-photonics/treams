@@ -1,9 +1,10 @@
 ![Version](https://img.shields.io/github/v/tag/tfp-photonics/treams)
 ![License](https://img.shields.io/github/license/tfp-photonics/treams)
-![PyPI](https://img.shields.io/pypi/v/treams)
-![docs](https://github.com/tfp-photonics/treams/actions/workflows/docs.yml/badge.svg)
+![![PyPI](https://img.shields.io/pypi/v/treams)](https://pypi.org/project/treams)
+![![docs](https://github.com/tfp-photonics/treams/actions/workflows/docs.yml/badge.svg)](https://tfp-photonics.github.io/treams)
 ![doctests](https://github.com/tfp-photonics/treams/actions/workflows/doctests.yml/badge.svg)
 ![tests](https://github.com/tfp-photonics/treams/actions/workflows/tests.yml/badge.svg)
+![![coverage](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Ftfp-photonics%2Ftreams%2Fhtmlcov%2Fendpoint.json)](https://htmlpreview.github.io/?https://github.com/tfp-photonics/treams/blob/htmlcov/index.html)
 
 # treams
 
