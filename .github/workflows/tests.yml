@@ -37,6 +37,7 @@ jobs:
         elif [ "$TOTAL" -lt 95 ]; then echo -n "green" >> htmlcov/endpoint.json; \
         else echo -n "brightgreen" >> htmlcov/endpoint.json; fi
         echo "\" }" >> htmlcov/endpoint.json
+        rm htmlcov/.gitignore
 
     - name: Deploy report
       uses: s0/git-publish-subdir-action@develop
