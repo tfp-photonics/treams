@@ -1,6 +1,7 @@
 ![Version](https://img.shields.io/github/v/tag/tfp-photonics/treams)
-![License](https://img.shields.io/github/license/tfp-photonics/treams)
 [![PyPI](https://img.shields.io/pypi/v/treams)](https://pypi.org/project/treams)
+![License](https://img.shields.io/github/license/tfp-photonics/treams)
+![build](https://github.com/tfp-photonics/treams/actions/workflows/build.yml/badge.svg)
 [![docs](https://github.com/tfp-photonics/treams/actions/workflows/docs.yml/badge.svg)](https://tfp-photonics.github.io/treams)
 ![doctests](https://github.com/tfp-photonics/treams/actions/workflows/doctests.yml/badge.svg)
 ![tests](https://github.com/tfp-photonics/treams/actions/workflows/tests.yml/badge.svg)

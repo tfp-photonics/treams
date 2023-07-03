@@ -16,3 +16,7 @@ profile = "black"
 
 [tool.pylint.messages_control]
 extension-pkg-whitelist = "treams"
+
+[tool.cibuildwheel]
+archs = ["auto64"]
+skip = ["pp*", "*musllinux*"]
