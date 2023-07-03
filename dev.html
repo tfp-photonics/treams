@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Development and contributing &#8212; treams 0.3.1.dev16+gc80a0454 documentation</title>
+    <title>Development and contributing &#8212; treams 0.3.1.dev17+gafc170c5 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
@@ -41,7 +41,7 @@
         <li class="right" >
           <a href="generated/treams.special.cython_special.yv_d.html" title="treams.special.cython_special.yv_d"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev16+gc80a0454 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev17+gafc170c5 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Development and contributing</a></li> 
       </ul>
     </div>  
@@ -57,7 +57,7 @@
 <h2>Setting up the development environment<a class="headerlink" href="#setting-up-the-development-environment" title="Permalink to this heading">¶</a></h2>
 <p>1.
 Clone the repository with</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone git@github.com/tfp-photonics/treams.git</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone git@github.com:tfp-photonics/treams.git</span>
 </pre></div>
 </div>
 <p>or</p>
@@ -71,7 +71,7 @@ Clone the repository with</p>
 <p>2.
 This step is optional, but you might want to create an environment where treams and the
 development tools are created</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conda env create --name treams-dev</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conda env create --name treams-dev python</span>
 </pre></div>
 </div>
 <p>Activate the environment with:</p>
@@ -88,6 +88,10 @@ current folder. This is especially necessary for correctly building the document
 </section>
 <section id="running-tests">
 <h2>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this heading">¶</a></h2>
+<p>To install the required packages for testing use</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install treams[test]</span>
+</pre></div>
+</div>
 <p>Tests can be run using pytest with</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python -m pytest</span>
 </pre></div>
@@ -109,24 +113,32 @@ with linetracing support. This can be achieved by setting the environment variab
 <p>Make sure that new C code files are generated and that those files are compiled.
 Enabling the tracing for getting code coverage slows down the integration tests
 considerably. For the coverage calculation only the unit tests are used.</p>
+<p>Some test for importing and exporting need gmsh. These tests can be activated with
+<code class="docutils literal notranslate"><span class="pre">--rungmsh</span></code> analogous to the option <code class="docutils literal notranslate"><span class="pre">--runslow</span></code> above.</p>
 </section>
 <section id="building-the-documentation">
 <h2>Building the documentation<a class="headerlink" href="#building-the-documentation" title="Permalink to this heading">¶</a></h2>
+<p>To install the required packages for testing use</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install treams[docs]</span>
+</pre></div>
+</div>
 <p>The documentation is built with sphinx by using</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sphinx-build -b html docs docs/_build/html</span>
 </pre></div>
 </div>
 <p>from the root directory of the package to build the documentation as html pages.
 Some figures are automatically created, which requires matplotlib.</p>
+<p>The doctests can be run with</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sphinx-build -b doctest docs docs/_build/doctest</span>
+</pre></div>
+</div>
 </section>
 <section id="building-the-code-on-windows">
 <h2>Building the code on Windows<a class="headerlink" href="#building-the-code-on-windows" title="Permalink to this heading">¶</a></h2>
 <p>The main issue with using treams on Windows is the compilation step. For Windows Python
 is usually compiled with MSVC for Visual Studio. However, especially for calculations
-with complex numbers, Cython creates code that conforms to the (C99-) standard.Thus, it
+with complex numbers, Cython creates code that conforms to the (C99-) standard. Thus, it
 is not compatible with the non-standard implementation of complex numbers by Microsoft.</p>
-<p>As I understand, even large projects like numpy and scipy do not compile their code with
-MSVC (at least not completely) for the Windows distribution.</p>
 <p>Below you find three tested ways, how one can use treams with Windows. The first two
 ways actually use a non-Windows version of Python, but have a more straightforward
 installation procedure. However, the last one works with Windows’ version of Python e.g.
@@ -150,29 +162,13 @@ treams. First, install MSYS2 and update it according to the instructions. Then, 
 install python and, if you want, the dependencies of treams. Otherwise, the dependencies
 are installed by pip.</p>
 </section>
-<section id="compilation-with-mingw-w64-for-msvc-python">
-<h3>Compilation with mingw-w64 for MSVC Python<a class="headerlink" href="#compilation-with-mingw-w64-for-msvc-python" title="Permalink to this heading">¶</a></h3>
+<section id="compilation-with-mingw-w64">
+<h3>Compilation with mingw-w64<a class="headerlink" href="#compilation-with-mingw-w64" title="Permalink to this heading">¶</a></h3>
 <p>This is approach is different from the others, since it finally combines binaries from
 two different compilers. Although it works and was tested on some systems, it is not
 guaranteed that it will work for all systems. The following part describes, how treams
-can be built for Windows. It was initially inspired by
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/building/windows.html">https://docs.scipy.org/doc/scipy/reference/building/windows.html</a>. However, it is
-not completely tested, which steps could possible be omitted.</p>
-<p>The first step is the installation of MSYS2 and components of Microsoft Visual Studio
-The installation of MSYS2 is pretty straightforward. Regarding the Microsoft Visual
-Studio components, it is unclear to me, which one are actually used, so for this part we
-just rely on the description for scipy, which is a sufficient set of components. Feel
-free to test this and adjust here accordingly. I suspect, that it might not be necessary
-to install most components at all. The only requirement so far seems to be the presence
-of <cite>vcruntime140.dll</cite>, which should come shipped with recent versions of Python
-(see also
-<a class="reference external" href="https://stevedower.id.au/blog/building-for-python-3-5-part-two">Steve Dower’s blog post</a>).
-If not present, they can additionally be installed with the pip package <cite>msvc-runtime</cite>.
-Obviously, an installation of Python on Windows is necessary. This can either be pure
-Python or can come with a distribution like Anaconda. In some cases, it might be
-necessary to patch distutils’ <cite>cygwinccompiler.py</cite> to return <cite>vcruntime140</cite> instead of
-<cite>msvcr140</cite>.</p>
-<p>Within MSYS2 install <cite>mingw-w64-x86_64-gcc</cite>.</p>
+can be built for Windows.</p>
+<p>After installing MSYS2 use it to install <code class="docutils literal notranslate"><span class="pre">mingw-w64-x86_64-gcc</span></code>.</p>
 <p>The compilation is steered from the command line. First go into the directory of treams.
 Then, set up your path by prepending the direction for MSYS2’s mingw64 binaries with
 <code class="docutils literal notranslate"><span class="pre">set</span> <span class="pre">PATH=C:\msys64\mingw64\bin;%PATH%</span></code> (adjust accordingly if you have installed
@@ -180,6 +176,14 @@ MSYS2 with non-default parameters). Check that gcc from MSYS2 is recognized corr
 but make sure that the version of python that is found on the path corresponds to the
 Windows Python. With this setup, building binaries should work with <cite>python -m build</cite>.</p>
 </section>
+</section>
+<section id="continuous-integration">
+<h2>Continuous integration<a class="headerlink" href="#continuous-integration" title="Permalink to this heading">¶</a></h2>
+<p>Using Github actions the steps above (building the documentation, running the doctests,
+running the tests with a coverage report, and building for all platforms) are
+implemented to run automatically on specific triggers. The relevant files in the
+<code class="docutils literal notranslate"><span class="pre">.gihub/workflows</span></code> directory can be also used as examples in addition to the
+description above.</p>
 </section>
 </section>
 
@@ -246,7 +250,7 @@ Windows Python. With this setup, building binaries should work with <cite>python
         <li class="right" >
           <a href="generated/treams.special.cython_special.yv_d.html" title="treams.special.cython_special.yv_d"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev16+gc80a0454 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev17+gafc170c5 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Development and contributing</a></li> 
       </ul>
     </div>
