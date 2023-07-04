@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Development and contributing &#8212; treams 0.3.1.dev20+gc1315b80 documentation</title>
+    <title>Development and contributing &#8212; treams 0.3.1.dev22+g1056b14b documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
@@ -41,7 +41,7 @@
         <li class="right" >
           <a href="generated/treams.special.cython_special.yv_d.html" title="treams.special.cython_special.yv_d"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev20+gc1315b80 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev22+g1056b14b documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Development and contributing</a></li> 
       </ul>
     </div>  
@@ -102,11 +102,11 @@ selecting test.</p>
 <p>Some integration tests for the module <a class="reference internal" href="generated/treams.lattice.html#module-treams.lattice"><span class="std std-ref">treams.lattice</span></a>
 take a long time to finish and are therefore disabled by default. You can add them with
 the option <code class="docutils literal notranslate"><span class="pre">--runslow</span></code>.</p>
-<p>If coverage reports should be included one can use the option <code class="docutils literal notranslate"><span class="pre">--cov</span> <span class="pre">treams</span></code> (which
-requires pytest-cov to be installed). However, this will only report on the pure python
-files. To also get coverage reports for the cython part, it is necessary to compile it
-with linetracing support. This can be achieved by setting the environment variable
-<code class="docutils literal notranslate"><span class="pre">CYTHON_COVERAGE</span></code>, for example with</p>
+<p>If coverage reports should be included one can use the option <code class="docutils literal notranslate"><span class="pre">--cov</span> <span class="pre">src/treams</span></code>
+(which requires pytest-cov to be installed). However, this will only report on the pure
+python files. To also get coverage reports for the cython part, it is necessary to
+compile it with linetracing support. This can be achieved by setting the environment
+variable <code class="docutils literal notranslate"><span class="pre">CYTHON_COVERAGE</span></code>, for example with</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">CYTHON_COVERAGE=1 pip install -e .</span>
 </pre></div>
 </div>
@@ -250,7 +250,7 @@ description above.</p>
         <li class="right" >
           <a href="generated/treams.special.cython_special.yv_d.html" title="treams.special.cython_special.yv_d"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev20+gc1315b80 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev22+g1056b14b documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Development and contributing</a></li> 
       </ul>
     </div>
