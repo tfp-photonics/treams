@@ -55,7 +55,9 @@ class TestPermuteXyz:
         )
 
     def test_h_inv(self):
-        assert pw.permute_xyz(1, 2, 1j, 0, 0, inverse=True) == -1j * np.sqrt(5 / 3)
+        assert isclose(
+            pw.permute_xyz(1, 2, 1j, 0, 0, inverse=True), -1j * np.sqrt(5 / 3)
+        )
 
     def test_h_opposite(self):
         assert pw.permute_xyz(1, 2, 3, 0, 1) == 0

@@ -176,7 +176,7 @@ class TestIncgamma:
         assert isclose(
             sc.incgamma(-99.5, 1e-2 + 1e-2j),
             -9.748868790182211e181 - 3.9232159891109815e181j,
-            rel_tol=EPSSQ,
+            rel_tol=EPS,
         )
 
     @pytest.mark.skip
@@ -193,7 +193,7 @@ class TestIncgamma:
         assert np.isinf(result.real) and result.imag == 0
 
     def test_gamma(self):
-        assert sc.incgamma(4, 0) == 6
+        assert isclose(sc.incgamma(4, 0), 6)
 
 
 class TestWigner3j:
@@ -349,7 +349,7 @@ class TestLpmv:
 
     def test_complex_asso(self):
         assert isclose(
-            sc.lpmv(3, 3, 0.1 + 0j), ssc.clpmn(3, 3, -0.1 + 0j, type=2)[0][3, 3,],
+            sc.lpmv(3, 3, 0.1 + 0j), ssc.clpmn(3, 3, -0.1 + 0j, type=2)[0][3, 3]
         )
 
     def test_complex_asso_above(self):

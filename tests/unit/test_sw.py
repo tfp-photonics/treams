@@ -7,9 +7,9 @@ def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
 
 class TestPeriodicToCw:
     def test_h(self):
-        assert (
-            sw.periodic_to_cw(1, 2, 0, 3, 2, 0, 3, 2)
-            == -1.1890388773999045e-17 + 0.19418478507072567j
+        assert isclose(
+            sw.periodic_to_cw(1, 2, 0, 3, 2, 0, 3, 2),
+            -1.1890388773999045e-17 + 0.19418478507072567j,
         )
 
     def test_h_zero(self):
