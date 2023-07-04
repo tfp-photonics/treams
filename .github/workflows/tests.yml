@@ -22,8 +22,7 @@ jobs:
       run: CYTHON_COVERAGE=1 python -m pip install -e .
     - name: Run tests
       run: |
-        python -m pip install treams[test]
-        python -m pip install h5py
+        python -m pip install treams[test,coverage,io]
         python -m pytest tests/unit --cov treams --cov-report html
     - name: Get coverage report
       run: |

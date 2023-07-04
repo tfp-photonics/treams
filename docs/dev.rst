@@ -43,7 +43,7 @@ Running tests
 
 To install the required packages for testing use ::
 
-   pip install treams[test]
+   pip install treams[test,coverage,io]
 
 Tests can be run using pytest with ::
 
