@@ -20,5 +20,5 @@ extension-pkg-whitelist = "treams"
 [tool.cibuildwheel]
 archs = ["auto64"]
 skip = ["pp*", "*musllinux*"]
-test-command = "python -m pytest {project}/tests/unit"
+test-command = "python -m pytest {package}/tests/unit"
 test-extras = ["test", "io"]
