@@ -45,8 +45,8 @@
          ~Lattice.rectangular
          ~Lattice.square
       
+         ~Lattice.__gt__
          ~Lattice.__ne__
          ~Lattice.__lt__
-         ~Lattice.__gt__
          ~Lattice.__ge__
   
