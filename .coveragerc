@@ -4,4 +4,4 @@ exclude_lines =
 
 [run]
 plugins = Cython.Coverage
-omit = treams/ebcm.py
+omit = src/treams/ebcm.py

@@ -57,11 +57,11 @@ Some integration tests for the module :ref:`generated/treams.lattice:treams.latt
 take a long time to finish and are therefore disabled by default. You can add them with
 the option ``--runslow``.
 
-If coverage reports should be included one can use the option ``--cov treams`` (which
-requires pytest-cov to be installed). However, this will only report on the pure python
-files. To also get coverage reports for the cython part, it is necessary to compile it
-with linetracing support. This can be achieved by setting the environment variable
-``CYTHON_COVERAGE``, for example with ::
+If coverage reports should be included one can use the option ``--cov src/treams``
+(which requires pytest-cov to be installed). However, this will only report on the pure
+python files. To also get coverage reports for the cython part, it is necessary to
+compile it with linetracing support. This can be achieved by setting the environment
+variable ``CYTHON_COVERAGE``, for example with ::
 
     CYTHON_COVERAGE=1 pip install -e .
 
