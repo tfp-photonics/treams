@@ -1,3 +1,3 @@
-global-exclude *.pyx *.pxd .coveragerc .gitignore .gitlab-ci.yml environment.yml
-include treams/lattice/cython_lattice.pxd
-include treams/special/cython_special.pxd
+global-exclude *.pyx *.pxd .gitignore
+include src/treams/lattice/cython_lattice.pxd
+include src/treams/special/cython_special.pxd

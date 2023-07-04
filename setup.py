@@ -12,7 +12,6 @@ except ImportError:
 
 
 if os.name == "nt":
-
     link_args = [
         "-static-libgcc",
         "-static-libstdc++",
@@ -38,7 +37,6 @@ if os.name == "nt":
                     e.extra_compile_args = compile_args
                     e.extra_link_args = link_args
             super().build_extensions()
-
 
 else:
     build_ext = _build_ext
@@ -91,7 +89,7 @@ extension_names = [
     "treams.special.cython_special",
 ]
 extensions = [
-    Extension(name, [f"{name.replace('.', '/')}.pyx"], **keys)
+    Extension(name, [f"src/{name.replace('.', '/')}.pyx"], **keys)
     for name in extension_names
 ]
 
