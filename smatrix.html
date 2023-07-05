@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>S-Matrices for plane waves &#8212; treams 0.3.1.dev24+g13756fec documentation</title>
+    <title>S-Matrices for plane waves &#8212; treams 0.3.1.dev27+g4349fa42 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pyramid.css" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
@@ -13,6 +13,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -41,7 +42,7 @@
         <li class="right" >
           <a href="tmatrixc.html" title="Cylindrical T-matrices"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev24+g13756fec documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev27+g4349fa42 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="intro.html" accesskey="U">Introduction</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">S-Matrices for plane waves</a></li> 
       </ul>
@@ -181,6 +182,55 @@ a lattice in the x-y-plane.</p>
 </section>
 <section id="band-structure">
 <h2>Band structure<a class="headerlink" href="#band-structure" title="Permalink to this heading">¶</a></h2>
+<p>Finally, we want to compute the band structure of a system consisting of the periodic
+repetition of an S-matrix along the z-direction. In principle, one can obtain this
+band structure also from the lattice interaction in the T-matrix, but calculating it
+from the S-matrix has two benefits. First, more complex systems can be analyzed, because
+slabs and objects described by cylindrical T-matrices can be included. Second, one only
+defines <span class="math notranslate nohighlight">\(k_0\)</span>, <span class="math notranslate nohighlight">\(k_x\)</span>, and <span class="math notranslate nohighlight">\(k_y\)</span>. Then, the result of the calculation
+are all components <span class="math notranslate nohighlight">\(k_z\)</span> and the plane wave decomposition of the polarization from
+an eigenvalue decomposition. So, instead of a 4-dimensional parameter sweep only a
+3-dimensional sweep is necessary decreasing the computation time. The downside is, that
+one is restricted to unit cells, where one vector points along the z-axis and is
+perpendicular to the other two.</p>
+<p>We take the array of spheres on top of a slab and continue this one infinitely along the
+z-axis. Thus, the setup is</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k0s</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">10_000</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">350</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">material_slab</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">thickness</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">material_sphere</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span> <span class="o">+</span> <span class="mf">0.1</span><span class="n">j</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+<span class="n">lattice</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">Lattice</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+<span class="n">radius</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">lmax</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">az</span> <span class="o">=</span> <span class="mi">210</span>
+</pre></div>
+</div>
+<p>where <code class="code docutils literal notranslate"><span class="pre">az</span></code> is the length of the lattice vector pointing in the z-direction. With a
+simple loop we can get the band structure for <span class="math notranslate nohighlight">\(k_x = 0 = k_y\)</span>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k0</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">k0s</span><span class="p">):</span>
+    <span class="n">kpar</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">spheres</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">TMatrix</span><span class="o">.</span><span class="n">sphere</span><span class="p">(</span>
+        <span class="n">lmax</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="p">[</span><span class="n">material_sphere</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">latticeinteraction</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">lattice</span><span class="p">,</span> <span class="n">kpar</span><span class="p">)</span>
+
+    <span class="n">pwb</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">PlaneWaveBasisByComp</span><span class="o">.</span><span class="n">diffr_orders</span><span class="p">(</span><span class="n">kpar</span><span class="p">,</span> <span class="n">lattice</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
+    <span class="n">plw</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">plane_wave</span><span class="p">(</span><span class="n">kpar</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">k0</span><span class="o">=</span><span class="n">k0</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="n">pwb</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">slab</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">SMatrices</span><span class="o">.</span><span class="n">slab</span><span class="p">(</span><span class="n">thickness</span><span class="p">,</span> <span class="n">pwb</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">material_slab</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">SMatrices</span><span class="o">.</span><span class="n">propagation</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">radius</span><span class="p">],</span> <span class="n">pwb</span><span class="p">,</span> <span class="n">k0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">array</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">SMatrices</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">spheres</span><span class="p">,</span> <span class="n">pwb</span><span class="p">)</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">treams</span><span class="o">.</span><span class="n">SMatrices</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">slab</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">dist</span><span class="p">])</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">total</span><span class="o">.</span><span class="n">bands_kz</span><span class="p">(</span><span class="n">az</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">az</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="n">sel</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="p">]</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sel</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>which looks as follows, after a cut on the imaginary part of the <span class="math notranslate nohighlight">\(k_z\)</span> component.</p>
+<p>(<a class="reference download internal" download="" href="_downloads/956f1eadf0c55da88a253bc4f8eb131a/band_structure.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/4de0ccf5db752d52992027fa7e1458f3/band_structure.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/3002056c2e52fd8903f78e53bc946115/band_structure.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/6e2a9426068ae10ce6c5fb8bd728c060/band_structure.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/band_structure.png" class="plot-directive" src="_images/band_structure.png" />
+</figure>
 </section>
 </section>
 
@@ -247,7 +297,7 @@ a lattice in the x-y-plane.</p>
         <li class="right" >
           <a href="tmatrixc.html" title="Cylindrical T-matrices"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev24+g13756fec documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.1.dev27+g4349fa42 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="intro.html" >Introduction</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">S-Matrices for plane waves</a></li> 
       </ul>
