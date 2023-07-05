@@ -17,7 +17,7 @@ cdef double _coeffc(long j1, long j2, long j3, long m3) nogil:
     """
     cdef double x = (
         (j3 * j3 - (j1 - j2) * (j1 - j2))
-        * ((j1 + j2 + 1) * (j1 + j2 + 1) - j3 * j3)
+        * <double>((j1 + j2 + 1) * (j1 + j2 + 1) - j3 * j3)
         * (j3 * j3 - m3 * m3)
     )
     return sqrt(x)
