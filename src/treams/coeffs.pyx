@@ -386,7 +386,7 @@ cdef void loop_fresnel_D(char **args, np.npy_intp *dims, np.npy_intp *steps, voi
                 ks[j][k] = (<double complex*>(ip0 + j * steps[4] + k * steps[5]))[0]
                 kzs[j][k] = (<double complex*>(ip1 + j * steps[6] + k * steps[7]))[0]
             zs[j] = (<double complex*>(ip2 + j * steps[8]))[0]
-        (<double complex (*)(double complex[2][2], double complex[2][2], double complex[2], double complex[2][2][2][2]) nogil>func)(ks, kzs, zs, res)
+        (<void (*)(double complex[2][2], double complex[2][2], double complex[2], double complex[2][2][2][2]) nogil>func)(ks, kzs, zs, res)
         for j in range(2):
             for k in range(2):
                 (<double complex*>(op0 + j * steps[9] + k * steps[10]))[0] = res[j][k][0][0]
