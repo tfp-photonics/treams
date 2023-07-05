@@ -93,4 +93,32 @@ a lattice in the x-y-plane.
 Band structure
 ==============
 
+Finally, we want to compute the band structure of a system consisting of the periodic
+repetition of an S-matrix along the z-direction. In principle, one can obtain this
+band structure also from the lattice interaction in the T-matrix, but calculating it
+from the S-matrix has two benefits. First, more complex systems can be analyzed, because
+slabs and objects described by cylindrical T-matrices can be included. Second, one only
+defines :math:`k_0`, :math:`k_x`, and :math:`k_y`. Then, the result of the calculation
+are all components :math:`k_z` and the plane wave decomposition of the polarization from
+an eigenvalue decomposition. So, instead of a 4-dimensional parameter sweep only a
+3-dimensional sweep is necessary decreasing the computation time. The downside is, that
+one is restricted to unit cells, where one vector points along the z-axis and is
+perpendicular to the other two.
 
+We take the array of spheres on top of a slab and continue this one infinitely along the
+z-axis. Thus, the setup is
+
+.. literalinclude:: examples/band_structure.py
+   :language: python
+   :lines: 6-13
+
+where :code:`az` is the length of the lattice vector pointing in the z-direction. With a
+simple loop we can get the band structure for :math:`k_x = 0 = k_y`.
+
+.. literalinclude:: examples/band_structure.py
+   :language: python
+   :lines: 15-31
+
+which looks as follows, after a cut on the imaginary part of the :math:`k_z` component.
+
+.. plot:: examples/band_structure.py
