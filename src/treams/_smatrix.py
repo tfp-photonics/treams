@@ -288,7 +288,7 @@ class SMatrices:
         return cls([[sup, zero], [zero, sdown]], basis=basis, k0=k0, material=material)
 
     @classmethod
-    def from_array(cls, tm, basis, *, eta=0):
+    def from_array(cls, tm, basis):
         """S-matrix from an array of (cylindrical) T-matrices.
 
         Create a S-matrix for a two-dimensional array of objects described by the
@@ -305,9 +305,7 @@ class SMatrices:
         """
         if isinstance(tm, TMatrixC):
             basis = basis.permute(-1)
-        pu, pd = (
-            tm.expandlattice(basis=basis, modetype=i, eta=eta) for i in ("up", "down")
-        )
+        pu, pd = (tm.expandlattice(basis=basis, modetype=i) for i in ("up", "down"))
         au, ad = (tm.expand.eval_inv(basis, i) for i in ("up", "down"))
         eye = np.eye(len(basis))
         res = cls([[eye + pu @ au, pu @ ad], [pd @ au, eye + pd @ ad]])

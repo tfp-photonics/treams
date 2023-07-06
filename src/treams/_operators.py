@@ -135,7 +135,7 @@ def _sw_rotate(phi, theta, psi, basis, to_basis, where):
     """Rotate spherical waves."""
     where = np.logical_and(where, to_basis.pidx[:, None] == basis.pidx)
     res = sw.rotate(
-        *(m[:, None] for m in to_basis.lms), *basis.lms, phi, theta, psi, where=where,
+        *(m[:, None] for m in to_basis.lms), *basis.lms, phi, theta, psi, where=where
     )
     res[..., np.logical_not(where)] = 0
     return core.PhysicsArray(res, basis=(to_basis, basis))
@@ -144,7 +144,7 @@ def _sw_rotate(phi, theta, psi, basis, to_basis, where):
 def _cw_rotate(phi, basis, to_basis, where):
     """Rotate cylindrical waves."""
     where = np.logical_and(where, to_basis.pidx[:, None] == basis.pidx)
-    res = cw.rotate(*(m[:, None] for m in to_basis.zms), *basis.zms, phi, where=where,)
+    res = cw.rotate(*(m[:, None] for m in to_basis.zms), *basis.zms, phi, where=where)
     res[..., np.logical_not(where)] = 0
     return core.PhysicsArray(res, basis=(to_basis, basis))
 
@@ -273,7 +273,7 @@ def _cw_translate(r, basis, k0, to_basis, material, where):
     )
     res[..., np.logical_not(where)] = 0
     return core.PhysicsArray(
-        res, k0=(k0, k0), basis=(to_basis, basis), material=(material, material),
+        res, k0=(k0, k0), basis=(to_basis, basis), material=(material, material)
     )
 
 
@@ -603,7 +603,7 @@ def _cw_pw_expand(basis, to_basis, k0, material, modetype, where):
         modetype = "up" if modetype is None else modetype
     kvecs = basis.kvecs(k0, material, modetype)
     res = pw.to_cw(
-        *(m[:, None] for m in to_basis.zms), *kvecs, basis.pol, where=where,
+        *(m[:, None] for m in to_basis.zms), *kvecs, basis.pol, where=where
     ) * pw.translate(
         *kvecs,
         to_basis.positions[to_basis.pidx, None, 0],
@@ -641,7 +641,7 @@ def _pw_pw_expand(basis, to_basis, k0, material, modetype, where):
 
 
 def expand(
-    basis, modetype=None, *, k0=None, material=Material(), poltype=None, where=True,
+    basis, modetype=None, *, k0=None, material=Material(), poltype=None, where=True
 ):
     """Expansion matrix.
 
@@ -852,8 +852,15 @@ def _pw_sw_expand(
     if modetype is None and isinstance(to_basis, core.PlaneWaveBasisByComp):
         modetype = "up"
     kpar = WaveVector(kpar)
-    res = sw.periodic_to_pw(
-        *(b[:, None] for b in to_basis.kvecs(k0, material, modetype)),
+    kvecs = to_basis.kvecs(k0, material, modetype)
+    transl = pw.translate(
+        *(b[:, None] for b in kvecs),
+        -basis.positions[:, 0],
+        -basis.positions[:, 1],
+        -basis.positions[:, 2],
+    )
+    res = transl[:, basis.pidx] * sw.periodic_to_pw(
+        *(b[:, None] for b in kvecs),
         to_basis.pol[:, None],
         *basis.lms,
         Lattice(lattice, "xy").volume,
@@ -933,8 +940,15 @@ def _pw_cw_expand(basis, to_basis, k0, lattice, kpar, material, modetype, where)
         modetype = "up"
     if len(kpar) == 1:
         kpar = WaveVector(kpar, alignment="x")
-    res = cw.periodic_to_pw(
-        *(b[:, None] for b in to_basis.kvecs(k0, material, modetype)),
+    kvecs = to_basis.kvecs(k0, material, modetype)
+    transl = pw.translate(
+        *(b[:, None] for b in kvecs),
+        -basis.positions[:, 0],
+        -basis.positions[:, 1],
+        -basis.positions[:, 2],
+    )
+    res = transl[:, basis.pidx] * cw.periodic_to_pw(
+        *(b[:, None] for b in kvecs),
         to_basis.pol[:, None],
         *basis.zms,
         lattice.volume,
@@ -1057,13 +1071,13 @@ class ExpandLattice(Operator):
 
     _FUNC = staticmethod(expandlattice)
 
-    def __init__(self, lattice=None, kpar=None, basis=None, modetype=None):
+    def __init__(self, lattice=None, kpar=None, basis=None, modetype=None, eta=0):
         # if lattice is None:
         #     if basis is None:
         #         raise ValueError("'basis' or 'lattice' needs to be defined")
         #     elif basis.lattice is None:
         #         raise ValueError("'basis.lattice' or 'lattice' needs to be defined")
-        super().__init__(lattice, kpar, basis, modetype)
+        super().__init__(lattice, kpar, basis, modetype, eta)
 
     def __call__(self, **kwargs):
         if self.isinv:
@@ -1079,6 +1093,9 @@ class ExpandLattice(Operator):
         for i, name in enumerate(("lattice", "kpar")):
             if name in kwargs and args[i] is None:
                 args[i] = kwargs.pop(name)
+        if args[4] != 0:
+            kwargs["eta"] = args[4]
+        args = args[:4]
         return self.FUNC(*args, **kwargs)
 
     def get_kwargs(self, obj, dim=-1):
@@ -1141,7 +1158,7 @@ def _pwa_permute(basis, n, poltype):
     where = (qx[:, None] == qx) & (qy[:, None] == qy) & (qz[:, None] == qz)
     if n == 1:
         res = pw.permute_xyz(
-            qx, qy, qz, basis.pol[:, None], basis.pol, poltype=poltype, where=where,
+            qx, qy, qz, basis.pol[:, None], basis.pol, poltype=poltype, where=where
         )
     elif n == 2:
         res = pw.permute_xyz(
@@ -1350,11 +1367,11 @@ def _pw_efield(r, basis, k0, material, modetype, poltype):
     res = None
     kvecs = basis.kvecs(k0, material, modetype)
     if poltype == "helicity":
-        res = sc.vpw_A(*kvecs, r[..., 0], r[..., 1], r[..., 2], basis.pol,)
+        res = sc.vpw_A(*kvecs, r[..., 0], r[..., 1], r[..., 2], basis.pol)
     elif poltype == "parity":
         res = (1 - basis.pol[:, None]) * sc.vpw_M(
-            *kvecs, r[..., 0], r[..., 1], r[..., 2],
-        ) + basis.pol[:, None] * sc.vpw_N(*kvecs, r[..., 0], r[..., 1], r[..., 2],)
+            *kvecs, r[..., 0], r[..., 1], r[..., 2]
+        ) + basis.pol[:, None] * sc.vpw_N(*kvecs, r[..., 0], r[..., 1], r[..., 2])
     if res is None:
         raise ValueError("invalid parameters")
     res = util.AnnotatedArray(res)
@@ -1564,14 +1581,12 @@ def _pw_hfield(r, basis, k0, material, modetype, poltype):
     kvecs = basis.kvecs(k0, material, modetype)
     if poltype == "helicity":
         res = (2 * basis.pol[:, None] - 1) * sc.vpw_A(
-            *kvecs, r[..., 0], r[..., 1], r[..., 2], basis.pol,
+            *kvecs, r[..., 0], r[..., 1], r[..., 2], basis.pol
         )
     elif poltype == "parity":
-        res = basis.pol[:, None] * sc.vpw_M(
-            *kvecs, r[..., 0], r[..., 1], r[..., 2],
-        ) + (1 - basis.pol[:, None]) * sc.vpw_N(
-            *kvecs, r[..., 0], r[..., 1], r[..., 2],
-        )
+        res = basis.pol[:, None] * sc.vpw_M(*kvecs, r[..., 0], r[..., 1], r[..., 2]) + (
+            1 - basis.pol[:, None]
+        ) * sc.vpw_N(*kvecs, r[..., 0], r[..., 1], r[..., 2])
     res *= -1j / material.impedance
     if res is None:
         raise ValueError("invalid parameters")
@@ -1918,13 +1933,13 @@ def _pw_gfield(pol, r, basis, k0, material, modetype, poltype):
     kvecs = basis.kvecs(k0, material, modetype)
     if poltype == "helicity":
         res = (basis.pol[:, None] == pol) * sc.vpw_A(
-            *kvecs, r[..., 0], r[..., 1], r[..., 2], basis.pol,
+            *kvecs, r[..., 0], r[..., 1], r[..., 2], basis.pol
         )
     elif poltype == "parity":
         res = (1 + 2 * (pol - 1) * basis.pol[:, None]) * sc.vpw_M(
-            *kvecs, r[..., 0], r[..., 1], r[..., 2],
+            *kvecs, r[..., 0], r[..., 1], r[..., 2]
         ) + (2 * pol - 1 - 2 * (pol - 1) * basis.pol[:, None]) * sc.vpw_N(
-            *kvecs, r[..., 0], r[..., 1], r[..., 2],
+            *kvecs, r[..., 0], r[..., 1], r[..., 2]
         )
     if res is None:
         raise ValueError("invalid parameters")
