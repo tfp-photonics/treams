@@ -564,6 +564,9 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
     def __float__(self):
         return float(self._array)
 
+    def __complex__(self):
+        return complex(self._array)
+
     def __array__(self, dtype=None):
         """Convert to an numpy array.
 
@@ -590,8 +593,13 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         self._ann.update(ann)
 
     def __getattr__(self, key):
-        if key in self.ann.as_dict:
-            res = self.ann.as_dict[key]
+        # In most cases, we shouldn't arrive here with the key "_ann", an exception is
+        # pickle.load which needs this early error to not result in an infinite
+        # recursion
+        if key == "_ann":
+            raise AttributeError()
+        if key in self._ann.as_dict:
+            res = self._ann.as_dict[key]
             if all(res[0] == i for i in res[1:]):
                 return res[0]
             return res
