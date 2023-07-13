@@ -57,29 +57,38 @@ def translate(kx, ky, kz, x, y, z, *args, **kwargs):
     return np.exp(1j * (kx * x + ky * y + kz * z), *args, **kwargs)
 
 
-cdef double complex _cto_sw_h(long l, long m, long polvsw, double kx, double ky, number_t kz, long polpw) nogil:
+cdef double complex _cto_sw_h(long l, long m, long polvsw, number_t kx, number_t ky, number_t kz, long polpw) nogil:
     if polvsw != polpw:
         return 0.0j
-    cdef double phi = atan2(ky, kx)
+    cdef double complex pref
+    cdef number_t kxy = sqrt(kx * kx + ky * ky)
+    if kxy == 0:
+        pref = 1
+    else:
+        pref = cpow((kx - 1j * ky) / kxy, m)
     cdef number_t k = sqrt(kx * kx + ky * ky + kz * kz)
     cdef double complex costheta = kz / k
     return (
         2 * sqrtd(pi * (2 * l + 1) / <double>(l * (l + 1)))
         * expd(0.5 * (lgamma(l - m + 1) - lgamma(l + m + 1)))
         * cpow(1j, l)
-        * cexp(-1j * m * phi)
+        * pref
     ) * (cs.tau_fun(l, m, costheta) + (2 * polpw - 1) * cs.pi_fun(l, m, costheta))
 
 
-cdef double complex _cto_sw_p(long l, long m, long polvsw, double kx, double ky, number_t kz, long polpw) nogil:
-    cdef double phi = atan2(ky, kx)
+cdef double complex _cto_sw_p(long l, long m, long polvsw, number_t kx, number_t ky, number_t kz, long polpw) nogil:
+    cdef double complex pref
+    cdef number_t kxy = sqrt(kx * kx + ky * ky)
+    if kxy == 0:
+        pref = 1
+    else:
+        pref = cpow((kx - 1j * ky) / kxy, m)
     cdef number_t k = sqrt(kx * kx + ky * ky + kz * kz)
     cdef double complex costheta = kz / k
-    cdef double complex pref = (
+    pref *= (
         2 * sqrtd(pi * (2 * l + 1) / <double>(l * (l + 1)))
         * expd(0.5 * (lgamma(l - m + 1) - lgamma(l + m + 1)))
         * cpow(1j, l)
-        * cexp(-1j * m * phi)
     )
     if polvsw == polpw:
         return pref * cs.tau_fun(l, m, costheta)
@@ -132,12 +141,12 @@ cdef void _loop_sw_D(char **args, np.npy_intp *dims, np.npy_intp *steps, void *d
     cdef char *op0 = args[7]
     cdef double complex ov0
     for i in range(n):
-        ov0 = (<double complex(*)(long, long, long, double, double, double complex, long) nogil>func)(
+        ov0 = (<double complex(*)(long, long, long, double complex, double complex, double complex, long) nogil>func)(
             <long>(<long*>ip0)[0],
             <long>(<long*>ip1)[0],
             <long>(<long*>ip2)[0],
-            <double>(<double*>ip3)[0],
-            <double>(<double*>ip4)[0],
+            <double complex>(<double complex*>ip3)[0],
+            <double complex>(<double complex*>ip4)[0],
             <double complex>(<double complex*>ip5)[0],
             <long>(<long*>ip6)[0],
         )
@@ -170,8 +179,8 @@ ufunc_sw_types[7] = <char>np.NPY_CDOUBLE
 ufunc_sw_types[8] = <char>np.NPY_LONG
 ufunc_sw_types[9] = <char>np.NPY_LONG
 ufunc_sw_types[10] = <char>np.NPY_LONG
-ufunc_sw_types[11] = <char>np.NPY_DOUBLE
-ufunc_sw_types[12] = <char>np.NPY_DOUBLE
+ufunc_sw_types[11] = <char>np.NPY_CDOUBLE
+ufunc_sw_types[12] = <char>np.NPY_CDOUBLE
 ufunc_sw_types[13] = <char>np.NPY_CDOUBLE
 ufunc_sw_types[14] = <char>np.NPY_LONG
 ufunc_sw_types[15] = <char>np.NPY_CDOUBLE
