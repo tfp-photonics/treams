@@ -111,7 +111,7 @@ class TMatrix(PhysicsArray):
         return self.material.ks(self.k0)
 
     @classmethod
-    def sphere(cls, lmax, k0, radii, materials):
+    def sphere(cls, lmax, k0, radii, materials, poltype=None):
         """T-Matrix of a (multi-layered) sphere.
 
         Construct the T-matrix of the given order and material for a sphere. The object
@@ -126,10 +126,12 @@ class TMatrix(PhysicsArray):
                 layered sphere it is a list of increasing radii for all shells.
             material (list[Material]): The material parameters from the inside to the
                 outside. The last material in the list specifies the embedding medium.
+            poltype (str, optional): Polarization type (:ref:`params:Polarizations`).
 
         Returns:
             TMatrix
         """
+        poltype = config.POLTYPE if poltype is None else poltype
         materials = [Material(m) for m in materials]
         radii = np.atleast_1d(radii)
         if radii.size != len(materials) - 1:
@@ -143,7 +145,18 @@ class TMatrix(PhysicsArray):
                 tmat[
                     pos + 2 * i : pos + 2 * i + 2, pos + 2 * i : pos + 2 * i + 2
                 ] = miecoeffs[::-1, ::-1]
-        return cls(tmat, k0=k0, basis=SWB.default(lmax), material=materials[-1])
+        res = cls(
+            tmat,
+            k0=k0,
+            basis=SWB.default(lmax),
+            material=materials[-1],
+            poltype="helicity",
+        )
+        if poltype == "helicity":
+            return res
+        res = res.changepoltype(poltype)
+        res[~np.eye(len(res), dtype=bool)] = 0
+        return res
 
     @classmethod
     def cluster(cls, tmats, positions):
