@@ -41,10 +41,11 @@ cdef number_t _check_eta(number_t eta, number_t k, double *a, long ds, long dl) 
     if eta != 0:
         return eta
     if ds == 2:
+        # Shift to reciprocal sum for the common case of imaginary k
         if dl == 1:
-            return sqrtd(2 * pi) / (k * fabs(a[0]))
+            return sqrtd(4 * pi) / (k * fabs(a[0]))
         if dl == 2:
-            return sqrtd(2 * pi / fabs(_misc.area(a, a + 2))) / k
+            return sqrtd(4 * pi / fabs(_misc.area(a, a + 2))) / k
     if ds == 3:
         if dl == 1:
             return sqrtd(2 * pi) / (k * fabs(a[0]))
