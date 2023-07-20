@@ -68,7 +68,7 @@ class TestLSumCW1d:
         kpar = 0
         assert isclose(
             la.lsumcw1d(l, k, kpar, a, r, 0),
-            np.sum(la.dsumcw1d(l, k, kpar, a, r, np.arange(800_000))),
+            np.sum(la.dsumcw1d(l, k, kpar, a, r, np.arange(1_600_000))),
             rel_tol=0.05,
             abs_tol=EPSSQ,
         )
@@ -489,7 +489,7 @@ class TestLSumCW1dShift:
         a = 2 * np.pi
         assert isclose(
             la.lsumcw1d_shift(l, k, kpar, a, r, 0),
-            la.dsumcw1d_shift(l, k, kpar, a, r, np.arange(800_000)).sum(),
+            la.dsumcw1d_shift(l, k, kpar, a, r, np.arange(1_800_000)).sum(),
             rel_tol=1e-1,
             abs_tol=EPS,
         )

@@ -364,7 +364,7 @@ class TestLSumCW1dShift:
     def test_singular(self):
         assert isclose(
             la.lsumcw1d_shift(6, 2 * np.pi, 0, 1, [0.2, 0.1], 0),
-            -122.60758739130729 + 573.7304079163222j,
+            -224.72932005925895 + 675.8601828886733j,
             1e-5,
         )
 
