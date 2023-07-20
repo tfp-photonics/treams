@@ -46,15 +46,15 @@
          ~CylindricalWaveBasis.index
          ~CylindricalWaveBasis.isdisjoint
       
-         ~CylindricalWaveBasis.__or__
-         ~CylindricalWaveBasis.__str__
-         ~CylindricalWaveBasis.__sub__
          ~CylindricalWaveBasis.__le__
+         ~CylindricalWaveBasis.__or__
+         ~CylindricalWaveBasis.__sub__
+         ~CylindricalWaveBasis.__str__
          ~CylindricalWaveBasis.__gt__
-         ~CylindricalWaveBasis.__ne__
+         ~CylindricalWaveBasis.__len__
          ~CylindricalWaveBasis.__and__
          ~CylindricalWaveBasis.__ge__
+         ~CylindricalWaveBasis.__ne__
          ~CylindricalWaveBasis.__lt__
-         ~CylindricalWaveBasis.__len__
          ~CylindricalWaveBasis.__xor__
   
