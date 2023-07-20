@@ -11,6 +11,7 @@ cimport treams.special.cython_special as sc
 from treams.lattice cimport _misc
 from treams.special._misc cimport (
     SQPI,
+    abs,
     array_zero,
     exp,
     ipow,
@@ -40,25 +41,22 @@ cdef extern from "<complex.h>" nogil:
 cdef number_t _check_eta(number_t eta, number_t k, double *a, long ds, long dl) nogil:
     if eta != 0:
         return eta
-    if ds == 2:
-        # Shift to reciprocal sum for the common case of imaginary k
-        if fabs(cimag(k)) > fabs(creal(k)):
-            if dl == 1:
-                return sqrtd(16 * pi) / (k * fabs(a[0]))
-            if dl == 2:
-                return sqrtd(16 * pi / fabs(_misc.area(a, a + 2))) / k
-        if dl == 1:
-            return sqrtd(2 * pi) / (k * fabs(a[0]))
-        if dl == 2:
-            return sqrtd(2 * pi / fabs(_misc.area(a, a + 2))) / k
-    if ds == 3:
-        if dl == 1:
-            return sqrtd(2 * pi) / (k * fabs(a[0]))
-        if dl == 2:
-            return sqrtd(2 * pi / fabs(_misc.area(a, a + 2))) / k
-        if dl == 3:
-            return sqrtd(2 * pi) / (k * fabs(pow(_misc.volume(a, a + 3, a + 6), 1. / 3)))
-    return NAN
+    cdef number_t res = 1
+    if dl == 1:
+        res /= k * fabs(a[0])
+    elif dl == 2:
+        res /= k * sqrtd(fabs(_misc.area(a, a + 2)))
+    elif dl == 3:
+        res /= k * pow(fabs(_misc.volume(a, a + 3, a + 6)), 2.0 / 3)
+    else:
+        return NAN
+    cdef double absres = abs(res)
+    if absres < 0.1:
+        res *= 0.1 / absres
+    elif absres > 10:
+        res *= 10 / absres
+    return res * sqrtd(2 * pi)
+
 
 cdef double complex _redincgamma(double n, double complex z) nogil:
     r"""
