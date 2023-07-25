@@ -1,6 +1,6 @@
 from libc.math cimport INFINITY, M_SQRT2, NAN, atan2
 from libc.math cimport exp as expd
-from libc.math cimport fabs, hypot, lgamma, log, pi
+from libc.math cimport fabs, hypot, lgamma, log, pi, tgamma
 from libc.math cimport sqrt as sqrtd
 from libc.stdlib cimport labs
 from libc.string cimport memcpy
@@ -86,12 +86,10 @@ cdef double complex _redincgamma(double n, double complex z) nogil:
     cdef double singularity = 0.5e-3  # Value of the singularity: smaller is stronger
     cdef double complex res
     if creal(z) * creal(z) + cimag(z) * cimag(z) < 1e-12:
-        if twicen > 2:
-            raise ValueError("l must not be larger than one for z equal zero")
         if twicen == 0:
             return -<double>EULER - 2 * log(singularity) + 0.5j * pi
-        if twicen == 1:
-            res = CMPLX(1.0, -1.0) * SQPI / (2 * singularity)
+        if twicen > 0 and (twicen + 2) % 4 != 0:
+            res = tgamma(n) * (1 + exp(-1j * pi * n)) / (2 * singularity)
         else:
             res = 0.0
         return res - cpow(-1.0j, 2 * n) / n
