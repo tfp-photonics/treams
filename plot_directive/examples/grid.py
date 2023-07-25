@@ -12,16 +12,16 @@ lattice = treams.Lattice.square(300)
 kpar = [0, 0]
 
 spheres = [treams.TMatrix.sphere(lmax, k0, r, materials) for r in radii]
-chain = treams.TMatrix.cluster(spheres, positions).latticeinteraction.solve(
+array = treams.TMatrix.cluster(spheres, positions).latticeinteraction.solve(
     lattice, kpar
 )
 
-inc = treams.plane_wave([0, 0, k0], [-1, 0, 0], k0=chain.k0, material=chain.material)
-sca = chain @ inc.expand(chain.basis)
+inc = treams.plane_wave([0, 0, k0], [-1, 0, 0], k0=array.k0, material=array.material)
+sca = array @ inc.expand(array.basis)
 
 grid = np.mgrid[-150:150:31j, 0:1, -150:150:31j].squeeze().transpose((1, 2, 0))
 ez = np.zeros_like(grid[..., 0])
-valid = chain.valid_points(grid, radii)
+valid = array.valid_points(grid, radii)
 vals = []
 for i, r in enumerate(grid[valid]):
     swb = treams.SphericalWaveBasis.default(1, positions=[r])
