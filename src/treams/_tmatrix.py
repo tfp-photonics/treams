@@ -750,13 +750,13 @@ class TMatrixC(PhysicsArray):
         illu_basis = illu.basis
         illu_basis = illu_basis[-2] if isinstance(illu_basis, tuple) else illu_basis
         if not isinstance(illu_basis, CWB):
-            illu = illu.expand(self.basis) @ illu
+            illu = illu.expand(self.basis)
         p = self @ illu
-        m = self.expand() / self.ks[self.basis.pol]
+        p_invk = p / self.ks[self.basis.pol]
         del illu.modetype
         return (
-            2 * np.real(p.conjugate().T @ (m @ p)) / flux,
-            -2 * np.real(illu.conjugate().T @ (p / self.ks[self.basis.pol])) / flux,
+            2 * np.real(p.conjugate().T @ p_invk.expand(p.basis)) / flux,
+            -2 * np.real(illu.conjugate().T @ p_invk) / flux,
         )
 
     def valid_points(self, grid, radii):
