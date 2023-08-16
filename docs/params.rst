@@ -224,7 +224,7 @@ The helicity waves are defined in :func:`treams.special.vsw_A`,
 :func:`treams.special.vsw_rA`, :func:`treams.special.vcw_A`,
 :func:`treams.special.vcw_rA`, and :func:`treams.special.vpw_A`.
 
-The default polarization type to be used can by setting ``treams.config.POLTYPE`` to the
+The default polarization type to be used can be specified by setting ``treams.config.POLTYPE`` to the
 corresponding string.
 
 Mode types
