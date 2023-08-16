@@ -136,7 +136,7 @@ class Material:
             ns ((2,)-array-like, optional): Negative and positive helicity refractive
                 index. Defaults to (1, 1).
             impedance(complex, optional): Relative impedance. Defaults to the inverse of
-                the refractive index.
+                the average refractive index.
 
         Returns:
             Material
