@@ -1,6 +1,6 @@
-============
-Introduction
-============
+========
+Examples
+========
 
 *treams* is a program that covers various aspects of T-matrix calculations and
 associated topics. The functionality can be roughly separated into three levels:
