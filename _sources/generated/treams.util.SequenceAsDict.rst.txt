@@ -38,10 +38,10 @@ treams.util.SequenceAsDict
          ~SequenceAsDict.values
       
          ~SequenceAsDict.__eq__
+         ~SequenceAsDict.__ne__
+         ~SequenceAsDict.__lt__
+         ~SequenceAsDict.__le__
+         ~SequenceAsDict.__ge__
          ~SequenceAsDict.__str__
          ~SequenceAsDict.__gt__
-         ~SequenceAsDict.__ge__
-         ~SequenceAsDict.__le__
-         ~SequenceAsDict.__lt__
-         ~SequenceAsDict.__ne__
   

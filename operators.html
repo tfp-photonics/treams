@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Operators &#8212; treams 0.3.3.dev10+g308c2d3c documentation</title>
+    <title>Operators &#8212; treams 0.3.3.dev14+g2770a63d documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4848ba22" />
-    <link rel="stylesheet" type="text/css" href="_static/pyramid.css?v=6f14c262" />
+    <link rel="stylesheet" type="text/css" href="_static/pyramid.css?v=a5b9c134" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=f4ec84db" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b8a5a091"></script>
+    <script src="_static/documentation_options.js?v=1271839b"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
@@ -42,8 +42,8 @@
         <li class="right" >
           <a href="physicsarray.html" title="Physics-aware arrays"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.3.dev10+g308c2d3c documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="intro.html" accesskey="U">Introduction</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.3.dev14+g2770a63d documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="intro.html" accesskey="U">Examples</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Operators</a></li> 
       </ul>
     </div>  
@@ -54,7 +54,7 @@
           <div class="body" role="main">
             
   <section id="operators">
-<h1>Operators<a class="headerlink" href="#operators" title="Permalink to this heading">¶</a></h1>
+<h1>Operators<a class="headerlink" href="#operators" title="Link to this heading">¶</a></h1>
 <p>There are numerous operators implemented in <em>treams</em>. They replicate to some extend the
 way active transformations with operators work on linear mapping <span class="math notranslate nohighlight">\(M\)</span></p>
 <div class="math notranslate nohighlight">
@@ -87,7 +87,7 @@ equivalent to <code class="code docutils literal notranslate"><span class="pre">
 inverse, it is equivalent to <code class="code docutils literal notranslate"><span class="pre">arr.op.apply_left()</span></code>, otherwise it corresponds to
 <code class="code docutils literal notranslate"><span class="pre">op</span> <span class="pre">&#64;</span> <span class="pre">arr</span> <span class="pre">&#64;</span> <span class="pre">op.inv</span></code>.</p>
 <section id="rotation">
-<h2>Rotation<a class="headerlink" href="#rotation" title="Permalink to this heading">¶</a></h2>
+<h2>Rotation<a class="headerlink" href="#rotation" title="Link to this heading">¶</a></h2>
 <p>As already mentioned a common transformation are rotations. The representation of the
 rotation operator depends on which basis we use. For example, for the T-matrix using the
 spherical wave basis, such a rotation is represented by the Wigner D-matrix elements,
@@ -140,7 +140,7 @@ from one side. For some basis sets only rotations about the z-axis are possible,
 other basis sets allow rotations including all three Euler angles.</p>
 </section>
 <section id="translation">
-<h2>Translation<a class="headerlink" href="#translation" title="Permalink to this heading">¶</a></h2>
+<h2>Translation<a class="headerlink" href="#translation" title="Link to this heading">¶</a></h2>
 <p>The next transformation that is implemented are translations where the parameter is the
 Cartesian translation vector.</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">PhysicsArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="n">basis</span><span class="o">=</span><span class="n">SphericalWaveBasis</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">k0</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -172,7 +172,7 @@ positions in such a case.</p>
 </div>
 </section>
 <section id="expand-in-a-different-basis">
-<h2>Expand in a different basis<a class="headerlink" href="#expand-in-a-different-basis" title="Permalink to this heading">¶</a></h2>
+<h2>Expand in a different basis<a class="headerlink" href="#expand-in-a-different-basis" title="Link to this heading">¶</a></h2>
 <p>The expansion in a different basis set is a little bit more complicated due to the
 number of possible combinations of which basis set can be expanded in which other basis
 sets. Therefore, we will treat each source basis set separately in the following.</p>
@@ -181,7 +181,7 @@ some extent because it makes little sense to first define an abstract expansion 
 e.g., spherical waves without specifying the relevant multipoles. Thus, the concrete
 representation of the target basis is the argument of the operator.</p>
 <section id="plane-waves">
-<h3>Plane waves<a class="headerlink" href="#plane-waves" title="Permalink to this heading">¶</a></h3>
+<h3>Plane waves<a class="headerlink" href="#plane-waves" title="Link to this heading">¶</a></h3>
 <p>Plane waves can be expanded into a different set of plane waves and into regular
 spherical and cylindrical waves. The expansion into a different set of plane waves
 is basically just a matching of the wave vectors and polarizations.</p>
@@ -239,7 +239,7 @@ specified.</p>
 </div>
 </section>
 <section id="spherical-waves">
-<h3>Spherical waves<a class="headerlink" href="#spherical-waves" title="Permalink to this heading">¶</a></h3>
+<h3>Spherical waves<a class="headerlink" href="#spherical-waves" title="Link to this heading">¶</a></h3>
 <p>Next, we have spherical waves. In comparison to the plane waves, spherical waves have
 the added difficulty of the categorization of “regular” and “singular” functions and the
 distinction of global and local basis sets.</p>
@@ -358,7 +358,7 @@ matrices.</p>
 spectrum and is currently not implemented.</p>
 </section>
 <section id="cylindrical-waves">
-<h3>Cylindrical waves<a class="headerlink" href="#cylindrical-waves" title="Permalink to this heading">¶</a></h3>
+<h3>Cylindrical waves<a class="headerlink" href="#cylindrical-waves" title="Link to this heading">¶</a></h3>
 <p>Cylindrical waves are similar to spherical waves, in the sense, that they can be
 separated into regular and singular modes and that they can be defined with multiple
 origins within treams. Therefore, the expansion within cylindrical waves follows the
@@ -410,7 +410,7 @@ implemented.</p>
 </section>
 </section>
 <section id="expand-in-a-different-basis-with-periodic-boundaries">
-<h2>Expand in a different basis with periodic boundaries<a class="headerlink" href="#expand-in-a-different-basis-with-periodic-boundaries" title="Permalink to this heading">¶</a></h2>
+<h2>Expand in a different basis with periodic boundaries<a class="headerlink" href="#expand-in-a-different-basis-with-periodic-boundaries" title="Link to this heading">¶</a></h2>
 <p>There is a special case of expansion implemented for the case of periodic boundaries
 when using spherical or cylindrical waves. These expansions are needed to compute the
 electromagnetic interaction between particles within a lattice. It is assumed that the
@@ -527,7 +527,7 @@ lattice along the x-axis can also be expanded in plane waves.</p>
 </div>
 </section>
 <section id="change-the-polarization-type">
-<h2>Change the polarization type<a class="headerlink" href="#change-the-polarization-type" title="Permalink to this heading">¶</a></h2>
+<h2>Change the polarization type<a class="headerlink" href="#change-the-polarization-type" title="Link to this heading">¶</a></h2>
 <p>Changing the polarization type is a simple operation. All waves can be expanded in
 modes of well-defined helicity. For an achiral material these waves can equally be
 expressed in modes of well-defined parity. The change between those polarization types
@@ -549,7 +549,7 @@ can be expressed as an operator.</p>
 </div>
 </section>
 <section id="permute-the-axes">
-<h2>Permute the axes<a class="headerlink" href="#permute-the-axes" title="Permalink to this heading">¶</a></h2>
+<h2>Permute the axes<a class="headerlink" href="#permute-the-axes" title="Link to this heading">¶</a></h2>
 <p>The permute operator is only implemented for plane waves, in particular for plane
 waves that are defined by two of their components (and a direction of the modes).
 For this type of waves, the rotation is only implemented about the z-axis. These
@@ -582,7 +582,7 @@ permutation, meaning the axes labels get permuted.</p>
 </div>
 </section>
 <section id="evaluate-the-field">
-<h2>Evaluate the field<a class="headerlink" href="#evaluate-the-field" title="Permalink to this heading">¶</a></h2>
+<h2>Evaluate the field<a class="headerlink" href="#evaluate-the-field" title="Link to this heading">¶</a></h2>
 <p>From a programming perspective, the evaluation of the field values at specified points
 is also implemented by a couple of operators. The electric field <span class="math notranslate nohighlight">\(\boldsymbol E\)</span>,
 the magnetic field <span class="math notranslate nohighlight">\(\boldsymbol H\)</span>, the displacement field <span class="math notranslate nohighlight">\(\boldsymbol D\)</span>,
@@ -613,7 +613,7 @@ different definitions of the Riemann-Silberstein vectors
 <h3><a href="index.html">Table of Contents</a></h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="intro.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="treams.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev.html">Development and contributing</a></li>
@@ -666,14 +666,14 @@ different definitions of the Riemann-Silberstein vectors
         <li class="right" >
           <a href="physicsarray.html" title="Physics-aware arrays"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.3.dev10+g308c2d3c documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="intro.html" >Introduction</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.3.dev14+g2770a63d documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="intro.html" >Examples</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Operators</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
     &#169; Copyright 2023, Dominik Beutel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
     </div>
   </body>
 </html>

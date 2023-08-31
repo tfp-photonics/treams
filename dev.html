@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Development and contributing &#8212; treams 0.3.3.dev10+g308c2d3c documentation</title>
+    <title>Development and contributing &#8212; treams 0.3.3.dev14+g2770a63d documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4848ba22" />
-    <link rel="stylesheet" type="text/css" href="_static/pyramid.css?v=6f14c262" />
+    <link rel="stylesheet" type="text/css" href="_static/pyramid.css?v=a5b9c134" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=f4ec84db" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b8a5a091"></script>
+    <script src="_static/documentation_options.js?v=1271839b"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -41,7 +41,7 @@
         <li class="right" >
           <a href="generated/treams.special.cython_special.yv_d.html" title="treams.special.cython_special.yv_d"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.3.dev10+g308c2d3c documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.3.dev14+g2770a63d documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Development and contributing</a></li> 
       </ul>
     </div>  
@@ -52,9 +52,9 @@
           <div class="body" role="main">
             
   <section id="development-and-contributing">
-<h1>Development and contributing<a class="headerlink" href="#development-and-contributing" title="Permalink to this heading">¶</a></h1>
+<h1>Development and contributing<a class="headerlink" href="#development-and-contributing" title="Link to this heading">¶</a></h1>
 <section id="setting-up-the-development-environment">
-<h2>Setting up the development environment<a class="headerlink" href="#setting-up-the-development-environment" title="Permalink to this heading">¶</a></h2>
+<h2>Setting up the development environment<a class="headerlink" href="#setting-up-the-development-environment" title="Link to this heading">¶</a></h2>
 <p>1.
 Clone the repository with</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone git@github.com:tfp-photonics/treams.git</span>
@@ -87,7 +87,7 @@ Setup the package with</p>
 current folder. This is especially necessary for correctly building the documentation.</p>
 </section>
 <section id="running-tests">
-<h2>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this heading">¶</a></h2>
+<h2>Running tests<a class="headerlink" href="#running-tests" title="Link to this heading">¶</a></h2>
 <p>To install the required packages for testing use</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install treams[test,coverage,io]</span>
 </pre></div>
@@ -117,7 +117,7 @@ considerably. For the coverage calculation only the unit tests are used.</p>
 <code class="docutils literal notranslate"><span class="pre">--rungmsh</span></code> analogous to the option <code class="docutils literal notranslate"><span class="pre">--runslow</span></code> above.</p>
 </section>
 <section id="building-the-documentation">
-<h2>Building the documentation<a class="headerlink" href="#building-the-documentation" title="Permalink to this heading">¶</a></h2>
+<h2>Building the documentation<a class="headerlink" href="#building-the-documentation" title="Link to this heading">¶</a></h2>
 <p>To install the required packages for testing use</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install treams[docs]</span>
 </pre></div>
@@ -134,7 +134,7 @@ Some figures are automatically created, which requires matplotlib.</p>
 </div>
 </section>
 <section id="building-the-code-on-windows">
-<h2>Building the code on Windows<a class="headerlink" href="#building-the-code-on-windows" title="Permalink to this heading">¶</a></h2>
+<h2>Building the code on Windows<a class="headerlink" href="#building-the-code-on-windows" title="Link to this heading">¶</a></h2>
 <p>The main issue with using treams on Windows is the compilation step. For Windows Python
 is usually compiled with MSVC for Visual Studio. However, especially for calculations
 with complex numbers, Cython creates code that conforms to the (C99-) standard. Thus, it
@@ -144,7 +144,7 @@ ways actually use a non-Windows version of Python, but have a more straightforwa
 installation procedure. However, the last one works with Windows’ version of Python e.g.
 when installed with conda under Windows.</p>
 <section id="windows-subsystem-for-linux">
-<h3>Windows Subsystem for Linux<a class="headerlink" href="#windows-subsystem-for-linux" title="Permalink to this heading">¶</a></h3>
+<h3>Windows Subsystem for Linux<a class="headerlink" href="#windows-subsystem-for-linux" title="Link to this heading">¶</a></h3>
 <p>The
 <a class="reference external" href="https://docs.microsoft.com/en-us/windows/wsl/install">Windows Subsystem for Linux (WSL)</a>
 exists on recent versions of Windows. To install it, open the command line interpreter
@@ -156,14 +156,14 @@ with the distribution’s Python or a conda-installed Python.</p>
 install WSL.</p>
 </section>
 <section id="pure-msys2">
-<h3>Pure MSYS2<a class="headerlink" href="#pure-msys2" title="Permalink to this heading">¶</a></h3>
+<h3>Pure MSYS2<a class="headerlink" href="#pure-msys2" title="Link to this heading">¶</a></h3>
 <p>Using <a class="reference external" href="https://www.msys2.org/">MSYS2</a>, it is also possible to compile and install
 treams. First, install MSYS2 and update it according to the instructions. Then, also
 install python and, if you want, the dependencies of treams. Otherwise, the dependencies
 are installed by pip.</p>
 </section>
 <section id="compilation-with-mingw-w64">
-<h3>Compilation with mingw-w64<a class="headerlink" href="#compilation-with-mingw-w64" title="Permalink to this heading">¶</a></h3>
+<h3>Compilation with mingw-w64<a class="headerlink" href="#compilation-with-mingw-w64" title="Link to this heading">¶</a></h3>
 <p>This is approach is different from the others, since it finally combines binaries from
 two different compilers. Although it works and was tested on some systems, it is not
 guaranteed that it will work for all systems. The following part describes, how treams
@@ -178,7 +178,7 @@ Windows Python. With this setup, building binaries should work with <cite>python
 </section>
 </section>
 <section id="continuous-integration">
-<h2>Continuous integration<a class="headerlink" href="#continuous-integration" title="Permalink to this heading">¶</a></h2>
+<h2>Continuous integration<a class="headerlink" href="#continuous-integration" title="Link to this heading">¶</a></h2>
 <p>Using Github actions the steps above (building the documentation, running the doctests,
 running the tests with a coverage report, and building for all platforms) are
 implemented to run automatically on specific triggers. The relevant files in the
@@ -197,7 +197,7 @@ description above.</p>
 <h3><a href="index.html">Table of Contents</a></h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="treams.html">Reference</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Development and contributing</a></li>
@@ -250,13 +250,13 @@ description above.</p>
         <li class="right" >
           <a href="generated/treams.special.cython_special.yv_d.html" title="treams.special.cython_special.yv_d"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.3.dev10+g308c2d3c documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.3.dev14+g2770a63d documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Development and contributing</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
     &#169; Copyright 2023, Dominik Beutel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
     </div>
   </body>
 </html>

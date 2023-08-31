@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Basis sets and other core parameters &#8212; treams 0.3.3.dev10+g308c2d3c documentation</title>
+    <title>Basis sets and other core parameters &#8212; treams 0.3.3.dev14+g2770a63d documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4848ba22" />
-    <link rel="stylesheet" type="text/css" href="_static/pyramid.css?v=6f14c262" />
+    <link rel="stylesheet" type="text/css" href="_static/pyramid.css?v=a5b9c134" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=f4ec84db" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b8a5a091"></script>
+    <script src="_static/documentation_options.js?v=1271839b"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Physics-aware arrays" href="physicsarray.html" />
-    <link rel="prev" title="Introduction" href="intro.html" />
+    <link rel="prev" title="Examples" href="intro.html" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
 <!--[if lte IE 6]>
@@ -40,10 +40,10 @@
           <a href="physicsarray.html" title="Physics-aware arrays"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="intro.html" title="Introduction"
+          <a href="intro.html" title="Examples"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.3.dev10+g308c2d3c documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="intro.html" accesskey="U">Introduction</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.3.dev14+g2770a63d documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="intro.html" accesskey="U">Examples</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Basis sets and other core parameters</a></li> 
       </ul>
     </div>  
@@ -54,7 +54,7 @@
           <div class="body" role="main">
             
   <section id="basis-sets-and-other-core-parameters">
-<h1>Basis sets and other core parameters<a class="headerlink" href="#basis-sets-and-other-core-parameters" title="Permalink to this heading">¶</a></h1>
+<h1>Basis sets and other core parameters<a class="headerlink" href="#basis-sets-and-other-core-parameters" title="Link to this heading">¶</a></h1>
 <p>Throughout the high-level functions and classes of <em>treams</em> a set of parameters appear
 that define important underlying quantities for the calculation. First, these are the
 different basis sets that are used to solve scattering processes: the spherical,
@@ -63,7 +63,7 @@ polarization types and the mode types. The other parameters are the vacuum wave 
 and the materials as well as, in the case of calculations with periodicity involved,
 the lattice definitions and the phase shift between lattice sites.</p>
 <section id="basis-sets">
-<h2>Basis sets<a class="headerlink" href="#basis-sets" title="Permalink to this heading">¶</a></h2>
+<h2>Basis sets<a class="headerlink" href="#basis-sets" title="Link to this heading">¶</a></h2>
 <p>As described in <a class="reference internal" href="maxwell.html"><span class="doc">Maxwell’s equations and chiral constitutive relations</span></a> it is possible to solve Maxwells equations in different
 coordinate systems. While being in principle equivalent, for different scenarios it is
 beneficial to use suitable solution sets that represent the waves with sufficient
@@ -225,7 +225,7 @@ used for a range of diffraction orders</p>
 </div>
 </section>
 <section id="polarizations">
-<h2>Polarizations<a class="headerlink" href="#polarizations" title="Permalink to this heading">¶</a></h2>
+<h2>Polarizations<a class="headerlink" href="#polarizations" title="Link to this heading">¶</a></h2>
 <p>The definitions of the basis sets above are not complete without specifying the
 polarization types. In <em>treams</em> two polarization types are supported: <cite>helicity</cite> and
 <cite>parity</cite>. The first allows the use of chiral material parameters. Each polarization type
@@ -247,7 +247,7 @@ The corresponding electric parity waves are <a class="reference internal" href="
 corresponding string.</p>
 </section>
 <section id="mode-types">
-<h2>Mode types<a class="headerlink" href="#mode-types" title="Permalink to this heading">¶</a></h2>
+<h2>Mode types<a class="headerlink" href="#mode-types" title="Link to this heading">¶</a></h2>
 <p>For some basis sets there exist two different types of modes, that distinguish
 propagation features. For the spherical and cylindrical basis theses are <cite>regular</cite>
 and <cite>singular</cite> modes. The former come through the use of (spherical) Bessel Functions
@@ -266,7 +266,7 @@ propagate – or decay for evanescent modes – along the positive or negative d
 with respect to the third axis.</p>
 </section>
 <section id="vacuum-wave-number">
-<h2>Vacuum wave number<a class="headerlink" href="#vacuum-wave-number" title="Permalink to this heading">¶</a></h2>
+<h2>Vacuum wave number<a class="headerlink" href="#vacuum-wave-number" title="Link to this heading">¶</a></h2>
 <p>All calculations are executed in frequency domain. Instead of defining the frequency
 <span class="math notranslate nohighlight">\(\nu\)</span> or the angular frequency <span class="math notranslate nohighlight">\(\omega\)</span> itself, <em>treams</em> works by using the
 vacuum wave number</p>
@@ -278,7 +278,7 @@ like wave numbers, wave vectors, distances, or lattice vectors are given in the 
 unit of (inverse) length.</p>
 </section>
 <section id="materials">
-<h2>Materials<a class="headerlink" href="#materials" title="Permalink to this heading">¶</a></h2>
+<h2>Materials<a class="headerlink" href="#materials" title="Link to this heading">¶</a></h2>
 <p>For materials there exists the class <a class="reference internal" href="generated/treams.Material.html#treams.Material" title="treams.Material"><code class="xref py py-class docutils literal notranslate"><span class="pre">Material</span></code></a>, which holds the values
 of the relative permittivity, relative permeability, and the chirality parameter. The
 default material is air and can be initialized without any parameters. For other cases,
@@ -299,7 +299,7 @@ indices for negative and positive helicity) and the impedance</p>
 </div>
 </section>
 <section id="lattices">
-<h2>Lattices<a class="headerlink" href="#lattices" title="Permalink to this heading">¶</a></h2>
+<h2>Lattices<a class="headerlink" href="#lattices" title="Link to this heading">¶</a></h2>
 <p>The periodicity of arrangements is given by defining an instance of the class
 <a class="reference internal" href="generated/treams.Lattice_class.html#treams.Lattice" title="treams.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a>. A lattice can be one-, two-, or three-dimensional.</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -357,7 +357,7 @@ right-handed order, and the reciprocal lattice vectors can be computed</p>
 </div>
 </section>
 <section id="phase-vector">
-<h2>Phase vector<a class="headerlink" href="#phase-vector" title="Permalink to this heading">¶</a></h2>
+<h2>Phase vector<a class="headerlink" href="#phase-vector" title="Link to this heading">¶</a></h2>
 <p>The wave vector, often referred to as <code class="docutils literal notranslate"><span class="pre">kpar</span></code>, specifies the phase relationship of
 different lattice sites <span class="math notranslate nohighlight">\(\exp(\mathrm i \boldsymbol k_\parallel \boldsymbol R)\)</span>.</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">WaveVector</span><span class="p">()</span>
@@ -396,7 +396,7 @@ combined and compared.</p>
 <h3><a href="index.html">Table of Contents</a></h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="intro.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="treams.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev.html">Development and contributing</a></li>
@@ -406,7 +406,7 @@ combined and compared.</p>
   <div>
     <h4>Previous topic</h4>
     <p class="topless"><a href="intro.html"
-                          title="previous chapter">Introduction</a></p>
+                          title="previous chapter">Examples</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -447,16 +447,16 @@ combined and compared.</p>
           <a href="physicsarray.html" title="Physics-aware arrays"
              >next</a> |</li>
         <li class="right" >
-          <a href="intro.html" title="Introduction"
+          <a href="intro.html" title="Examples"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.3.dev10+g308c2d3c documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="intro.html" >Introduction</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.3.dev14+g2770a63d documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="intro.html" >Examples</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Basis sets and other core parameters</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
     &#169; Copyright 2023, Dominik Beutel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
     </div>
   </body>
 </html>

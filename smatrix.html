@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>S-Matrices for plane waves &#8212; treams 0.3.3.dev10+g308c2d3c documentation</title>
+    <title>S-Matrices for plane waves &#8212; treams 0.3.3.dev14+g2770a63d documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4848ba22" />
-    <link rel="stylesheet" type="text/css" href="_static/pyramid.css?v=6f14c262" />
+    <link rel="stylesheet" type="text/css" href="_static/pyramid.css?v=a5b9c134" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=f4ec84db" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b8a5a091"></script>
+    <script src="_static/documentation_options.js?v=1271839b"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
@@ -42,8 +42,8 @@
         <li class="right" >
           <a href="tmatrixc.html" title="Cylindrical T-matrices"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.3.dev10+g308c2d3c documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="intro.html" accesskey="U">Introduction</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.3.dev14+g2770a63d documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="intro.html" accesskey="U">Examples</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">S-Matrices for plane waves</a></li> 
       </ul>
     </div>  
@@ -54,7 +54,7 @@
           <div class="body" role="main">
             
   <section id="s-matrices-for-plane-waves">
-<h1>S-Matrices for plane waves<a class="headerlink" href="#s-matrices-for-plane-waves" title="Permalink to this heading">¶</a></h1>
+<h1>S-Matrices for plane waves<a class="headerlink" href="#s-matrices-for-plane-waves" title="Link to this heading">¶</a></h1>
 <p>In addition to the T-matrix method, where incident and scattered fields are related,
 S-matrices relate incoming and outgoing fields. To describe scattering in the plane
 wave basis, we use exactly such a S-matrix description. The incoming and outgoing waves
@@ -63,7 +63,7 @@ separates the whole space into two parts. This then separates the description in
 four parts: the transmission of fields propagating in the positive and negative
 z-direction, and the reflection of those fields.</p>
 <section id="slabs">
-<h2>Slabs<a class="headerlink" href="#slabs" title="Permalink to this heading">¶</a></h2>
+<h2>Slabs<a class="headerlink" href="#slabs" title="Link to this heading">¶</a></h2>
 <p>The main object for plane wave computations is the class <code class="xref py py-class docutils literal notranslate"><span class="pre">SMatrices</span></code>
 which exactly collects those four individual S-matrices. For simple interfaces and the
 propagation in a homogeneous medium these S-matrices can be obtained analytically.
@@ -88,7 +88,7 @@ in the chiral medium for both helicites.</p>
 </figure>
 </section>
 <section id="from-t-matrix-arrays">
-<h2>From T-matrix arrays<a class="headerlink" href="#from-t-matrix-arrays" title="Permalink to this heading">¶</a></h2>
+<h2>From T-matrix arrays<a class="headerlink" href="#from-t-matrix-arrays" title="Link to this heading">¶</a></h2>
 <p>While this example is simple we can build more complicated structures from
 two-dimensional arrays of T-matrices. We take spheres on an thin film as an example.
 This means we first calculate the S-matrices for the thin film and the array
@@ -131,7 +131,7 @@ S-matrix representation itself.</p>
 </figure>
 </section>
 <section id="from-cylindrical-t-matrix-gratings">
-<h2>From cylindrical T-matrix gratings<a class="headerlink" href="#from-cylindrical-t-matrix-gratings" title="Permalink to this heading">¶</a></h2>
+<h2>From cylindrical T-matrix gratings<a class="headerlink" href="#from-cylindrical-t-matrix-gratings" title="Link to this heading">¶</a></h2>
 <p>Now, we want to perform a small test of the methods. Instead of creating the
 two-dimensional sphere array right away, we intermediately create a one-dimensional
 array, then calculate cylindrical T-matrices, and place them in a second
@@ -181,7 +181,7 @@ a lattice in the x-y-plane.</p>
 </figure>
 </section>
 <section id="band-structure">
-<h2>Band structure<a class="headerlink" href="#band-structure" title="Permalink to this heading">¶</a></h2>
+<h2>Band structure<a class="headerlink" href="#band-structure" title="Link to this heading">¶</a></h2>
 <p>Finally, we want to compute the band structure of a system consisting of the periodic
 repetition of an S-matrix along the z-direction. In principle, one can obtain this
 band structure also from the lattice interaction in the T-matrix, but calculating it
@@ -244,7 +244,7 @@ simple loop we can get the band structure for <span class="math notranslate nohi
 <h3><a href="index.html">Table of Contents</a></h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="intro.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="treams.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev.html">Development and contributing</a></li>
@@ -297,14 +297,14 @@ simple loop we can get the band structure for <span class="math notranslate nohi
         <li class="right" >
           <a href="tmatrixc.html" title="Cylindrical T-matrices"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.3.dev10+g308c2d3c documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="intro.html" >Introduction</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.3.3.dev14+g2770a63d documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="intro.html" >Examples</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">S-Matrices for plane waves</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
     &#169; Copyright 2023, Dominik Beutel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
     </div>
   </body>
 </html>

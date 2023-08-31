@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>treams.Lattice &#8212; treams 0.3.3.dev10+g308c2d3c documentation</title>
+    <title>treams.Lattice &#8212; treams 0.3.3.dev14+g2770a63d documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=4848ba22" />
-    <link rel="stylesheet" type="text/css" href="../_static/pyramid.css?v=6f14c262" />
+    <link rel="stylesheet" type="text/css" href="../_static/pyramid.css?v=a5b9c134" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=f4ec84db" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b8a5a091"></script>
+    <script src="../_static/documentation_options.js?v=1271839b"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -41,7 +41,7 @@
         <li class="right" >
           <a href="treams.TMatrixC.xw.html" title="treams.TMatrixC.xw"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.3.3.dev10+g308c2d3c documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.3.3.dev14+g2770a63d documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" accesskey="U">Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.Lattice</a></li> 
       </ul>
@@ -53,10 +53,10 @@
           <div class="body" role="main">
             
   <section id="treams-lattice">
-<h1>treams.Lattice<a class="headerlink" href="#treams-lattice" title="Permalink to this heading">¶</a></h1>
+<h1>treams.Lattice<a class="headerlink" href="#treams-lattice" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="treams.Lattice">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">treams.</span></span><span class="sig-name descname"><span class="pre">Lattice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alignment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#treams.Lattice" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">treams.</span></span><span class="sig-name descname"><span class="pre">Lattice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alignment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#treams.Lattice" title="Link to this definition">¶</a></dt>
 <dd><p>Lattice definition.</p>
 <p>The lattice can be one-, two-, or three-dimensional. If it is not three-dimensional
 it is required to be embedded into a lower dimensional subspace that is aligned with
@@ -161,17 +161,17 @@ lattice vector, each column to the axis defined in <cite>alignment</cite>.</p></
 <tr class="row-even"><td><p><a class="reference internal" href="treams.Lattice.square.html#treams.Lattice.square" title="treams.Lattice.square"><code class="xref py py-obj docutils literal notranslate"><span class="pre">square</span></code></a>(pitch[, alignment])</p></td>
 <td><p>Create a two-dimensional square lattice.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.Lattice.__ne__.html#treams.Lattice.__ne__" title="treams.Lattice.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(value, /)</p></td>
+<td><p>Return self!=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.Lattice.__lt__.html#treams.Lattice.__lt__" title="treams.Lattice.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(value, /)</p></td>
+<td><p>Return self&lt;value.</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="treams.Lattice.__ge__.html#treams.Lattice.__ge__" title="treams.Lattice.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(value, /)</p></td>
 <td><p>Return self&gt;=value.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="treams.Lattice.__gt__.html#treams.Lattice.__gt__" title="treams.Lattice.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(value, /)</p></td>
 <td><p>Return self&gt;value.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.Lattice.__lt__.html#treams.Lattice.__lt__" title="treams.Lattice.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(value, /)</p></td>
-<td><p>Return self&lt;value.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.Lattice.__ne__.html#treams.Lattice.__ne__" title="treams.Lattice.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(value, /)</p></td>
-<td><p>Return self!=value.</p></td>
 </tr>
 </tbody>
 </table>
@@ -189,7 +189,7 @@ lattice vector, each column to the axis defined in <cite>alignment</cite>.</p></
 <h3><a href="../index.html">Table of Contents</a></h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../treams.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dev.html">Development and contributing</a></li>
@@ -242,14 +242,14 @@ lattice vector, each column to the axis defined in <cite>alignment</cite>.</p></
         <li class="right" >
           <a href="treams.TMatrixC.xw.html" title="treams.TMatrixC.xw"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.3.3.dev10+g308c2d3c documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.3.3.dev14+g2770a63d documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.Lattice</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
     &#169; Copyright 2023, Dominik Beutel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.5.
     </div>
   </body>
 </html>

@@ -79,27 +79,27 @@ treams.util.AnnotatedArray
          ~AnnotatedArray.trace
          ~AnnotatedArray.transpose
       
-         ~AnnotatedArray.__eq__
-         ~AnnotatedArray.__neg__
+         ~AnnotatedArray.__invert__
+         ~AnnotatedArray.__pos__
+         ~AnnotatedArray.__truediv__
+         ~AnnotatedArray.__and__
+         ~AnnotatedArray.__mod__
+         ~AnnotatedArray.__rshift__
+         ~AnnotatedArray.__gt__
          ~AnnotatedArray.__pow__
          ~AnnotatedArray.__add__
-         ~AnnotatedArray.__and__
-         ~AnnotatedArray.__mul__
-         ~AnnotatedArray.__gt__
-         ~AnnotatedArray.__pos__
-         ~AnnotatedArray.__floordiv__
-         ~AnnotatedArray.__sub__
-         ~AnnotatedArray.__ge__
-         ~AnnotatedArray.__invert__
-         ~AnnotatedArray.__truediv__
-         ~AnnotatedArray.__rshift__
-         ~AnnotatedArray.__divmod__
-         ~AnnotatedArray.__or__
-         ~AnnotatedArray.__lshift__
-         ~AnnotatedArray.__le__
-         ~AnnotatedArray.__lt__
          ~AnnotatedArray.__abs__
+         ~AnnotatedArray.__neg__
+         ~AnnotatedArray.__eq__
          ~AnnotatedArray.__ne__
-         ~AnnotatedArray.__mod__
+         ~AnnotatedArray.__lt__
          ~AnnotatedArray.__xor__
+         ~AnnotatedArray.__floordiv__
+         ~AnnotatedArray.__lshift__
+         ~AnnotatedArray.__sub__
+         ~AnnotatedArray.__or__
+         ~AnnotatedArray.__le__
+         ~AnnotatedArray.__mul__
+         ~AnnotatedArray.__ge__
+         ~AnnotatedArray.__divmod__
   
