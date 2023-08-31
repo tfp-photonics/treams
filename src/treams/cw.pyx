@@ -228,7 +228,7 @@ def translate(kz, mu, pol, qz, m, qol, krr, phi, z, singular=True, *args, **kwar
 
 cdef double complex _crotate(double kz, long mu, long pol, double qz, long m, long qol, double phi) nogil:
     if (kz == qz) and (m == mu) and (pol == qol) and (pol == 0 or qol == 1):
-        return cexp(1j * m * phi)
+        return cexp(-1j * m * phi)
     elif (pol == 0 or pol == 1) and (qol == 0 or qol == 1):
         return 0
     raise ValueError("polarisation must be 0 or 1")
