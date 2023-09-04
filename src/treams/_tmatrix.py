@@ -320,12 +320,12 @@ class TMatrix(PhysicsArray):
             raise NotImplementedError
         sel = np.array(self.basis.pol, bool)
         re, im = self.real, self.imag
-        plus = -np.sum(re[sel[:, None] & sel]) / (self.ks[1] * self.ks[1])
+        plus = -np.sum(re.diagonal()[sel]) / (self.ks[1] * self.ks[1])
         re_part = re[:, sel] / self.ks[self.basis.pol, None]
         im_part = im[:, sel] / self.ks[self.basis.pol, None]
         plus -= np.sum(re_part * re_part + im_part * im_part)
         sel = ~sel
-        minus = -np.sum(re[sel[:, None] & sel]) / (self.ks[0] * self.ks[0])
+        minus = -np.sum(re.diagonal()[sel]) / (self.ks[0] * self.ks[0])
         re_part = re[:, sel] / self.ks[self.basis.pol, None]
         im_part = im[:, sel] / self.ks[self.basis.pol, None]
         minus -= np.sum(re_part * re_part + im_part * im_part)
