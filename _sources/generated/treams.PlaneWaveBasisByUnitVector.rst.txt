@@ -46,15 +46,15 @@
          ~PlaneWaveBasisByUnitVector.permute
       
          ~PlaneWaveBasisByUnitVector.__and__
-         ~PlaneWaveBasisByUnitVector.__ne__
-         ~PlaneWaveBasisByUnitVector.__lt__
-         ~PlaneWaveBasisByUnitVector.__xor__
-         ~PlaneWaveBasisByUnitVector.__sub__
-         ~PlaneWaveBasisByUnitVector.__repr__
-         ~PlaneWaveBasisByUnitVector.__or__
-         ~PlaneWaveBasisByUnitVector.__le__
-         ~PlaneWaveBasisByUnitVector.__ge__
          ~PlaneWaveBasisByUnitVector.__str__
          ~PlaneWaveBasisByUnitVector.__gt__
+         ~PlaneWaveBasisByUnitVector.__xor__
          ~PlaneWaveBasisByUnitVector.__len__
+         ~PlaneWaveBasisByUnitVector.__ne__
+         ~PlaneWaveBasisByUnitVector.__le__
+         ~PlaneWaveBasisByUnitVector.__or__
+         ~PlaneWaveBasisByUnitVector.__repr__
+         ~PlaneWaveBasisByUnitVector.__sub__
+         ~PlaneWaveBasisByUnitVector.__ge__
+         ~PlaneWaveBasisByUnitVector.__lt__
   
