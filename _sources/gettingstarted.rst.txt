@@ -9,7 +9,7 @@ Installation
 
 To install the package with pip, use ::
 
-   pip install git+https://github.com/tfp-photonics/treams.git
+   pip install treams
 
 
 How to use treams
