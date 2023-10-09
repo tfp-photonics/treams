@@ -51,10 +51,8 @@ cdef number_t _check_eta(number_t eta, number_t k, double *a, long ds, long dl) 
     else:
         return NAN
     cdef double absres = abs(res)
-    if absres < 0.1:
-        res *= 0.1 / absres
-    elif absres > 10:
-        res *= 10 / absres
+    if absres < 0.125:
+        res *= 0.125 / absres
     return res * sqrtd(2 * pi)
 
 
@@ -83,11 +81,11 @@ cdef double complex _redincgamma(double n, double complex z) nogil:
     cdef long twicen = <long>(2 * n)
     if twicen != 2 * n:
         raise ValueError("l is not integer of half-integer")
-    cdef double singularity = 0.5e-3  # Value of the singularity: smaller is stronger
+    cdef double singularity = 1e-7  # Value of the singularity: smaller is stronger
     cdef double complex res
     if creal(z) * creal(z) + cimag(z) * cimag(z) < 1e-12:
         if twicen == 0:
-            return -<double>EULER - 2 * log(singularity) + 0.5j * pi
+            return -<double>EULER - log(singularity) + 0.5j * pi
         if twicen > 0 and (twicen + 2) % 4 != 0:
             res = tgamma(n) * (1 + exp(-1j * pi * n)) / (2 * singularity)
         else:
@@ -533,7 +531,7 @@ cdef double complex realsumcw2d(long l, number_t k, double *kpar, double *a, dou
     cdef double mone = -1, zero = 0
     cdef int dim = 2, inc = 1
     cdef char c = b'N'
-    for i in range(start, 50):
+    for i in range(start, 20):
         pprev = prev
         prev = realsum
         point[0] = -i
@@ -571,7 +569,7 @@ cdef double complex recsumcw2d(long l, number_t k, double *kpar, double *a, doub
     cdef char c = b'N'
     cdef double b[4]
     _misc.recvec2(a, a + 2, b , b + 2)
-    for i in range(50):
+    for i in range(20):
         pprev = prev
         prev = recsum
         point[0] = -i
@@ -619,7 +617,7 @@ cdef double complex realsumsw2d(long l, long m, number_t k, double *kpar, double
     cdef double mone = -1, zero = 0
     cdef int dim = 2, inc = 1
     cdef char c = b'N'
-    for i in range(start, 50):
+    for i in range(start, 20):
         pprev = prev
         prev = realsum
         point[0] = -i
@@ -672,7 +670,7 @@ cdef double complex recsumsw2d(long l, long m, number_t k, double *kpar, double 
     cdef char c = b'N'
     cdef double b[4]
     _misc.recvec2(a, a + 2, b , b + 2)
-    for i in range(50):
+    for i in range(20):
         pprev = prev
         prev = recsum
         point[0] = -i
@@ -841,7 +839,7 @@ cdef double complex realsumsw3d(long l, long m, number_t k, double *kpar, double
     cdef double mone = -1, zero = 0
     cdef int dim = 3, inc = 1
     cdef char c = b'N'
-    for i in range(start, 50):
+    for i in range(start, 10):
         pprev = prev
         prev = realsum
         point[0] = -i
@@ -884,7 +882,7 @@ cdef double complex recsumsw3d(long l, long m, number_t k, double *kpar, double 
     cdef double one = 1
     cdef int dim = 3, inc = 1
     cdef char c = b'N'
-    for i in range(50):
+    for i in range(10):
         pprev = prev
         prev = recsum
         point[0] = -i
@@ -1051,7 +1049,7 @@ cdef double complex realsumsw2d_shift(long l, long m, number_t k, double *kpar, 
     cdef long point[3]
     cdef int dim = 2, inc = 1
     cdef char c = b'N'
-    for i in range(50):
+    for i in range(20):
         pprev = prev
         prev = realsum
         point[0] = -i
@@ -1116,7 +1114,7 @@ cdef double complex recsumsw2d_shift(long l, long m, number_t k, double *kpar, d
     cdef char c = b'N'
     cdef double b[4]
     _misc.recvec2(a, a + 2, b, b + 2)
-    for i in range(50):
+    for i in range(20):
         pprev = prev
         prev = recsum
         point[0] = -i
@@ -1291,7 +1289,7 @@ cdef double complex recsumsw1d_shift(long l, long m, number_t k, double kpar, do
     """
     if l < 0:
         return NAN
-    eta = _check_eta(eta, k, &a, 3, 2)
+    eta = _check_eta(eta, k, &a, 3, 1)
     if fabs(r[0]) < 1e-100 and fabs(r[1]) < 1e-100:
         if m == 0:
             return recsumsw1d(l, k, kpar, a, r[2], eta)
