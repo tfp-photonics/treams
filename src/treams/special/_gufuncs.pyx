@@ -1161,7 +1161,7 @@ The vector spherical harmonics can be defined via the (scalar) spherical harmoni
 .. math::
 
     \boldsymbol X_{lm}(\theta, \varphi)
-    = \frac{1}{\sqrt{l (l + 1)}} \nabla Y_{lm}(\theta, \varphi)
+    = \frac{\nabla \times \boldsymbol r}{\sqrt{l (l + 1)}} Y_{lm}(\theta, \varphi)
 
 which can be expressed as
 
