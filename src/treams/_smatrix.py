@@ -173,17 +173,19 @@ class SMatrices:
         return iter(self._sms)
 
     @classmethod
-    def interface(cls, basis, k0, materials):
+    def interface(cls, basis, k0, materials, poltype=None):
         """Planar interface between two media.
 
         Args:
             basis (PlaneWaveBasisByComp): Basis definitions.
             k0 (float): Wave number in vacuum
             materials (Sequence[Material]): Material definitions.
+            poltype (str, optional): Polarization type (:ref:`params:Polarizations`).
 
         Returns:
             SMatrix
         """
+        poltype = config.POLTYPE if poltype is None else poltype
         materials = tuple(map(Material, materials))
         ks = np.array([m.ks(k0) for m in materials])
         choice = basis.pol == 0
@@ -211,10 +213,18 @@ class SMatrices:
                     kzs = np.array([m.kzs(k0, kx, ky) for m in materials])
                     vals = fresnel(ks, kzs, [m.impedance for m in materials])
                     qs[:, :, ii, i] = vals[:, :, pol2, pol]
-        return cls(qs, k0=k0, basis=basis, material=materials[::-1], poltype="helicity")
+        res = cls(qs, k0=k0, basis=basis, material=materials[::-1], poltype="helicity")
+        if poltype == "helicity":
+            return res
+        res = res.changepoltype(poltype)
+        res[0, 0][~np.eye(len(res), dtype=bool)] = 0
+        res[0, 1][~np.eye(len(res), dtype=bool)] = 0
+        res[1, 0][~np.eye(len(res), dtype=bool)] = 0
+        res[1, 1][~np.eye(len(res), dtype=bool)] = 0
+        return res
 
     @classmethod
-    def slab(cls, thickness, basis, k0, materials):
+    def slab(cls, thickness, basis, k0, materials, poltype=None):
         """Slab of material.
 
         A slab of material, defined by a thickness and three materials. Consecutive
@@ -228,6 +238,7 @@ class SMatrices:
                 slabs in order from negative to positive z.
             materials (Sequenze[Material]): Material definitions from negative to
                 positive z.
+            poltype (str, optional): Polarization type (:ref:`params:Polarizations`).
 
         Returns:
             SMatrix
@@ -236,13 +247,14 @@ class SMatrices:
             iter(thickness)
         except TypeError:
             thickness = [thickness]
-        res = cls.interface(basis, k0, materials[:2])
+        poltype = config.POLTYPE if poltype is None else poltype
+        res = cls.interface(basis, k0, materials[:2], poltype)
         for d, ma, mb in zip(thickness, materials[1:-1], materials[2:]):
             if np.ndim(d) == 0:
                 d = [0, 0, d]
-            x = cls.propagation(d, basis, k0, ma)
+            x = cls.propagation(d, basis, k0, ma, poltype)
             res = res.add(x)
-            res = res.add(cls.interface(basis, k0, (ma, mb)))
+            res = res.add(cls.interface(basis, k0, (ma, mb), poltype))
         return res
 
     @classmethod
@@ -265,7 +277,7 @@ class SMatrices:
         return acc
 
     @classmethod
-    def propagation(cls, r, basis, k0, material=Material()):
+    def propagation(cls, r, basis, k0, material=Material(), poltype=None):
         """S-matrix for the propagation along a distance.
 
         This S-matrix translates the reference origin along `r`.
@@ -275,17 +287,32 @@ class SMatrices:
             k0 (float): Wave number in vacuum.
             basis (PlaneWaveBasis): Basis definition.
             material (Material, optional): Material definition.
+            poltype (str, optional): Polarization type (:ref:`params:Polarizations`).
 
         Returns:
             SMatrix
         """
-        sup = translate(r, basis=basis, k0=k0, material=material, modetype="up")
+        poltype = config.POLTYPE if poltype is None else poltype
+        sup = translate(
+            r, basis=basis, k0=k0, material=material, modetype="up", poltype=poltype
+        )
         sdown = translate(
-            np.negative(r), basis=basis, k0=k0, material=material, modetype="down"
+            np.negative(r),
+            basis=basis,
+            k0=k0,
+            material=material,
+            modetype="down",
+            poltype=poltype,
         )
         zero = np.zeros_like(sup)
         material = Material(material)
-        return cls([[sup, zero], [zero, sdown]], basis=basis, k0=k0, material=material)
+        return cls(
+            [[sup, zero], [zero, sdown]],
+            basis=basis,
+            k0=k0,
+            material=material,
+            poltype=poltype,
+        )
 
     @classmethod
     def from_array(cls, tm, basis):
