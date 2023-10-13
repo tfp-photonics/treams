@@ -790,15 +790,23 @@ def _plane_wave_partial(
         modetype = "up" if modetype is None else modetype
         if modetype not in ("up", "down"):
             raise ValueError(f"invalid 'modetype': {modetype}")
-        kzs = Material(material).kzs(k0, *kpar, [0, 1])
+        kvecs = np.array(basis.kvecs(k0, material, modetype))
         poltype = config.POLTYPE if poltype is None else poltype
         if poltype == "parity":
+            kvec = kvecs[:, basis.index((kpar[0], kpar[1], 0))]
             pol = [
-                -sc.vpw_M(*kpar, kzs[0], 0, 0, 0) @ pol,
-                sc.vpw_N(*kpar, kzs[1], 0, 0, 0) @ pol,
+                -sc.vpw_M(*kvec, 0, 0, 0) @ pol,
+                sc.vpw_N(*kvec, 0, 0, 0) @ pol,
             ]
         elif poltype == "helicity":
-            pol = sc.vpw_A(*kpar, kzs[::-1], 0, 0, 0, [1, 0]) @ pol
+            kvec = kvecs[
+                :,
+                [
+                    basis.index((kpar[0], kpar[1], 1)),
+                    basis.index((kpar[0], kpar[1], 0)),
+                ],
+            ]
+            pol = sc.vpw_A(*kvec, 0, 0, 0, [1, 0]) @ pol
         else:
             raise ValueError(f"invalid 'poltype': {poltype}")
     res = [pol[x[2]] * (np.abs(np.array(kpar) - x[:2]) < 1e-14).all() for x in basis]
