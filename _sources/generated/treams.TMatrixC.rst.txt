@@ -103,35 +103,35 @@
          ~TMatrixC.valid_points
          ~TMatrixC.xw
       
-         ~TMatrixC.__neg__
-         ~TMatrixC.__mul__
-         ~TMatrixC.__add__
-         ~TMatrixC.__rshift__
-         ~TMatrixC.__array__
-         ~TMatrixC.__lt__
-         ~TMatrixC.__repr__
-         ~TMatrixC.__pos__
-         ~TMatrixC.__mod__
-         ~TMatrixC.__or__
-         ~TMatrixC.__truediv__
-         ~TMatrixC.__setitem__
-         ~TMatrixC.__pow__
-         ~TMatrixC.__floordiv__
-         ~TMatrixC.__ne__
-         ~TMatrixC.__sub__
-         ~TMatrixC.__abs__
-         ~TMatrixC.__len__
-         ~TMatrixC.__ge__
          ~TMatrixC.__le__
+         ~TMatrixC.__rshift__
+         ~TMatrixC.__sub__
+         ~TMatrixC.__matmul__
+         ~TMatrixC.__str__
+         ~TMatrixC.__array_ufunc__
+         ~TMatrixC.__truediv__
+         ~TMatrixC.__array__
+         ~TMatrixC.__add__
+         ~TMatrixC.__lt__
+         ~TMatrixC.__len__
+         ~TMatrixC.__neg__
+         ~TMatrixC.__mod__
+         ~TMatrixC.__repr__
+         ~TMatrixC.__setitem__
+         ~TMatrixC.__floordiv__
+         ~TMatrixC.__abs__
+         ~TMatrixC.__xor__
+         ~TMatrixC.__pow__
+         ~TMatrixC.__mul__
+         ~TMatrixC.__divmod__
+         ~TMatrixC.__lshift__
+         ~TMatrixC.__pos__
          ~TMatrixC.__array_function__
          ~TMatrixC.__gt__
          ~TMatrixC.__eq__
-         ~TMatrixC.__str__
-         ~TMatrixC.__array_ufunc__
-         ~TMatrixC.__divmod__
          ~TMatrixC.__and__
-         ~TMatrixC.__xor__
-         ~TMatrixC.__matmul__
-         ~TMatrixC.__lshift__
          ~TMatrixC.__invert__
+         ~TMatrixC.__or__
+         ~TMatrixC.__ne__
+         ~TMatrixC.__ge__
   
