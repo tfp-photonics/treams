@@ -26,6 +26,7 @@ Matrices and Arrays
 
    PhysicsArray
    SMatrix
+   SMatrices
    TMatrix
    TMatrixC
 
@@ -46,12 +47,14 @@ Functions
 
    bfield
    changepoltype
+   chirality_density
    dfield
    efield
    expand
    expandlattice
    hfield
    permute
+   plane_wave
    rotate
    translate
 

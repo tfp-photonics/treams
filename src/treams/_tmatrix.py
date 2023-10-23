@@ -865,7 +865,7 @@ def plane_wave(
         material (Material, optional): Material definition.
         modetype (str, optional): Mode type (see :ref:`params:Mode types`).
         poltype (str, optional): Polarization type (see
-            :ref:`polarization:Polarizations`).
+            :ref:`params:Polarizations`).
     """
     if len(kvec) == 2:
         return _plane_wave_partial(
