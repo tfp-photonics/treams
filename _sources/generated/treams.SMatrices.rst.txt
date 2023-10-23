@@ -1,0 +1,58 @@
+﻿treams.SMatrices
+================
+
+.. currentmodule:: treams
+
+.. autoclass:: SMatrices
+
+  
+  
+      .. rubric:: Attributes
+
+      .. autosummary::
+         :toctree:
+      
+         ~SMatrices.changepoltype
+         ~SMatrices.permute
+         ~SMatrices.rotate
+         ~SMatrices.translate
+  
+  
+
+  
+      .. rubric:: Methods
+
+      .. autosummary::
+         :toctree:
+
+      
+         ~SMatrices.__eq__
+         ~SMatrices.__ge__
+         ~SMatrices.__getitem__
+         ~SMatrices.__gt__
+         ~SMatrices.__le__
+         ~SMatrices.__len__
+         ~SMatrices.__lt__
+         ~SMatrices.__ne__
+         ~SMatrices.__repr__
+         ~SMatrices.__str__
+         ~SMatrices.add
+         ~SMatrices.bands_kz
+         ~SMatrices.cd
+         ~SMatrices.double
+         ~SMatrices.from_array
+         ~SMatrices.illuminate
+         ~SMatrices.interface
+         ~SMatrices.periodic
+         ~SMatrices.propagation
+         ~SMatrices.slab
+         ~SMatrices.stack
+         ~SMatrices.tr
+      
+         ~SMatrices.__ge__
+         ~SMatrices.__gt__
+         ~SMatrices.__lt__
+         ~SMatrices.__le__
+         ~SMatrices.__ne__
+         ~SMatrices.__str__
+  

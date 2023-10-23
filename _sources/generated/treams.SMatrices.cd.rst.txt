@@ -1,0 +1,6 @@
+treams.SMatrices.cd
+===================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrices.cd

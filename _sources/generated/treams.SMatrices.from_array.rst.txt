@@ -1,0 +1,6 @@
+treams.SMatrices.from\_array
+============================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrices.from_array

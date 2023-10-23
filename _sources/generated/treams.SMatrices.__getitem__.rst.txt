@@ -1,0 +1,6 @@
+treams.SMatrices.\_\_getitem\_\_
+================================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrices.__getitem__

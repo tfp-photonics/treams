@@ -5,12 +5,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Reference &#8212; treams 0.4.1.dev6+g247974f6 documentation</title>
+    <title>Reference &#8212; treams 0.4.1.dev7+ge8f8ba29 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4848ba22" />
     <link rel="stylesheet" type="text/css" href="_static/pyramid.css?v=a5b9c134" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=f4ec84db" />
-    <script src="_static/documentation_options.js?v=de4a4455"></script>
+    <script src="_static/documentation_options.js?v=e3cf27c2"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="author" title="About these documents" href="about.html" />
@@ -41,7 +41,7 @@
         <li class="right" >
           <a href="maxwell.html" title="Maxwell’s equations and chiral constitutive relations"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.4.1.dev6+g247974f6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.4.1.dev7+ge8f8ba29 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Reference</a></li> 
       </ul>
     </div>  
@@ -86,10 +86,13 @@
 <tr class="row-even"><td><p><a class="reference internal" href="generated/treams.SMatrix.html#treams.SMatrix" title="treams.SMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SMatrix</span></code></a>(arr[, ann])</p></td>
 <td><p>S-matrix for a plane wave.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.TMatrix.html#treams.TMatrix" title="treams.TMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TMatrix</span></code></a>(arr[, ann])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.SMatrices.html#treams.SMatrices" title="treams.SMatrices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SMatrices</span></code></a>(smats, **kwargs)</p></td>
+<td><p>Collection of four S-matrices with a plane wave basis.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/treams.TMatrix.html#treams.TMatrix" title="treams.TMatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TMatrix</span></code></a>(arr[, ann])</p></td>
 <td><p>T-matrix with a spherical basis.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/treams.TMatrixC.html#treams.TMatrixC" title="treams.TMatrixC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TMatrixC</span></code></a>(arr[, ann])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.TMatrixC.html#treams.TMatrixC" title="treams.TMatrixC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TMatrixC</span></code></a>(arr[, ann])</p></td>
 <td><p>T-matrix with a cylindrical basis.</p></td>
 </tr>
 </tbody>
@@ -119,23 +122,29 @@
 <tr class="row-even"><td><p><a class="reference internal" href="generated/treams.changepoltype.html#treams.changepoltype" title="treams.changepoltype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">changepoltype</span></code></a>([poltype, where])</p></td>
 <td><p>Matrix to change polarization types.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.dfield.html#treams.dfield" title="treams.dfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dfield</span></code></a>(r, *, basis, k0[, material, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.chirality_density.html#treams.chirality_density" title="treams.chirality_density"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chirality_density</span></code></a>(basis, k0[, material, ...])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/treams.dfield.html#treams.dfield" title="treams.dfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dfield</span></code></a>(r, *, basis, k0[, material, ...])</p></td>
 <td><p>Displacement field.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/treams.efield.html#treams.efield" title="treams.efield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">efield</span></code></a>(r, *, basis, k0[, material, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.efield.html#treams.efield" title="treams.efield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">efield</span></code></a>(r, *, basis, k0[, material, ...])</p></td>
 <td><p>Electric field.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.expand.html#treams.expand" title="treams.expand"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expand</span></code></a>(basis[, modetype, k0, material, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/treams.expand.html#treams.expand" title="treams.expand"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expand</span></code></a>(basis[, modetype, k0, material, ...])</p></td>
 <td><p>Expansion matrix.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/treams.expandlattice.html#treams.expandlattice" title="treams.expandlattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expandlattice</span></code></a>([lattice, kpar, basis, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.expandlattice.html#treams.expandlattice" title="treams.expandlattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expandlattice</span></code></a>([lattice, kpar, basis, ...])</p></td>
 <td><p>Expansion matrix in lattices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.hfield.html#treams.hfield" title="treams.hfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hfield</span></code></a>(r, *, basis, k0[, material, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/treams.hfield.html#treams.hfield" title="treams.hfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hfield</span></code></a>(r, *, basis, k0[, material, ...])</p></td>
 <td><p>Magnetic field.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/treams.permute.html#treams.permute" title="treams.permute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">permute</span></code></a>([n, k0, material, modetype, poltype])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.permute.html#treams.permute" title="treams.permute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">permute</span></code></a>([n, k0, material, modetype, poltype])</p></td>
 <td><p>Permutation matrix.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/treams.plane_wave.html#treams.plane_wave" title="treams.plane_wave"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plane_wave</span></code></a>(kvec, pol, *[, k0, basis, ...])</p></td>
+<td><p>Array describing a plane wave.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/treams.rotate.html#treams.rotate" title="treams.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a>(phi[, theta, psi, where])</p></td>
 <td><p>Rotation matrix.</p></td>
@@ -284,7 +293,7 @@ mathematical functions</p>
         <li class="right" >
           <a href="maxwell.html" title="Maxwell’s equations and chiral constitutive relations"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.4.1.dev6+g247974f6 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.4.1.dev7+ge8f8ba29 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Reference</a></li> 
       </ul>
     </div>

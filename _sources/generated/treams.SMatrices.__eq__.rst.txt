@@ -1,0 +1,6 @@
+treams.SMatrices.\_\_eq\_\_
+===========================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrices.__eq__

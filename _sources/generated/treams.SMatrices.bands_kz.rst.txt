@@ -1,0 +1,6 @@
+treams.SMatrices.bands\_kz
+==========================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrices.bands_kz

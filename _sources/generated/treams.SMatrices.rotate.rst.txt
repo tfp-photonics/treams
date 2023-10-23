@@ -1,0 +1,4 @@
+treams.SMatrices.rotate
+=======================
+
+.. autoattribute:: treams.SMatrices.rotate

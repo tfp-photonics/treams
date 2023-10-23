@@ -1,0 +1,6 @@
+treams.SMatrices.illuminate
+===========================
+
+.. currentmodule:: treams
+
+.. automethod:: SMatrices.illuminate
