@@ -40,7 +40,7 @@ class TestLSumSW1d:
         kpar = 0
         assert isclose(
             la.lsumsw1d(l, k, kpar, a, r, 0),
-            np.sum(la.dsumsw1d(l, k, kpar, a, r, np.arange(1_100_000))),
+            np.sum(la.dsumsw1d(l, k, kpar, a, r, np.arange(1_300_000))),
             rel_tol=0.05,
             abs_tol=EPSSQ,
         )
@@ -68,7 +68,7 @@ class TestLSumCW1d:
         kpar = 0
         assert isclose(
             la.lsumcw1d(l, k, kpar, a, r, 0),
-            np.sum(la.dsumcw1d(l, k, kpar, a, r, np.arange(1_600_000))),
+            np.sum(la.dsumcw1d(l, k, kpar, a, r, np.arange(2_000_000))),
             rel_tol=0.05,
             abs_tol=EPSSQ,
         )
@@ -453,14 +453,14 @@ class TestLSumSW1dShift:
         if lm == (2, 0) and np.array_equal(r, [0.2, 0.2, 1.1]):
             assert isclose(
                 la.lsumsw1d_shift(*lm, k, kpar, a, r, 0),
-                la.dsumsw1d_shift(*lm, k, kpar, a, r, np.arange(2_200_000)).sum(),
+                la.dsumsw1d_shift(*lm, k, kpar, a, r, np.arange(700_000)).sum(),
                 rel_tol=1e-1,
                 abs_tol=EPS,
             )
         else:
             assert isclose(
                 la.lsumsw1d_shift(*lm, k, kpar, a, r, 0),
-                la.dsumsw1d_shift(*lm, k, kpar, a, r, np.arange(800_000)).sum(),
+                la.dsumsw1d_shift(*lm, k, kpar, a, r, np.arange(1_100_000)).sum(),
                 rel_tol=1e-1,
                 abs_tol=EPS,
             )

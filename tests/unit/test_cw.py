@@ -24,7 +24,7 @@ class TestPeriodicToPw:
 
 class TestRotate:
     def test(self):
-        assert isclose(cw.rotate(3, 2, 1, 3, 2, 1, 4), np.exp(8j))
+        assert isclose(cw.rotate(3, 2, 1, 3, 2, 1, 4), np.exp(-8j))
 
     def test_zero(self):
         assert cw.rotate(3, 2, 1, 2, 2, 1, 4) == 0

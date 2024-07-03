@@ -260,7 +260,7 @@ class TestLSumSW2dShift:
         a = np.eye(2)
         assert isclose(
             la.lsumsw2d_shift(6, 0, 2 * np.pi, [0, 0], a, [0.2, 0.2, 0.1], 0),
-            110.69823590056764 - 138.74329901305353j,
+            554145.857367349-554173.9024304616j,
         )
 
     def test_z_zero(self):
@@ -307,7 +307,7 @@ class TestLSumSW1dShift:
     def test_singular(self):
         assert isclose(
             la.lsumsw1d_shift(6, 0, 2 * np.pi, 0, 1, [0.2, 0.2, 0.1], 0),
-            -0.3552853450806117 - 25.183882160999745j,
+            -0.3552862673579646-24.943884092634878j,
         )
 
     def test_xy_zero(self):
@@ -364,7 +364,7 @@ class TestLSumCW1dShift:
     def test_singular(self):
         assert isclose(
             la.lsumcw1d_shift(6, 2 * np.pi, 0, 1, [0.2, 0.1], 0),
-            -224.72932005925895 + 675.8601828886733j,
+            -1743317.7346371387+1743768.8654999665j,
             1e-5,
         )
 

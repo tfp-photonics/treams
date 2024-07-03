@@ -350,12 +350,15 @@ def _convert_to_k0(x, xtype, xunit, k0unit=r"nm^{-1}"):
     if xtype == "angular_frequency":
         xunit = FREQUENCIES[xunit]
         return x / c * (xunit / k0unit)
-    if xtype == "angular_vacuum_wavelength":
-        xunit = INVLENGTHS[xunit]
-        return x * (xunit / k0unit)
-    if xtype == "angular_vacuum_wavenumber":
+    if xtype == "vacuum_wavelength":
         xunit = LENGTHS[xunit]
         return 2 * np.pi / (x * xunit * k0unit)
+    if xtype == "vacuum_wavenumber":
+        xunit = INVLENGTHS[xunit]
+        return 2 * np.pi * x * (xunit / k0unit)
+    if xtype == "angular_vacuum_wavenumber":
+        xunit = INVLENGTHS[xunit]
+        return x * (xunit / k0unit)
     raise ValueError(f"unrecognized frequency/wavenumber/wavelength type: {xtype}")
 
 

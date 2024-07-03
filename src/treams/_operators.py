@@ -332,6 +332,8 @@ def translate(
         to_basis = basis
     poltype = config.POLTYPE if poltype is None else poltype
     material = Material(material)
+    if poltype == "parity" and material.ischiral:
+        raise ValueError("poltype 'parity' with chiral material")
 
     r = np.asanyarray(r)
     if r.shape[-1] != 3:
