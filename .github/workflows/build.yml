@@ -48,9 +48,11 @@ jobs:
   publish:
     name: Publish to PyPi
     runs-on: ubuntu-latest
-    env:
-      TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-      TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-    run: |
-      twine upload dist/*
-      twine upload ./wheelhouse/*.whl
+    steps:
+      - name: Use Twine to Publish
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          twine upload dist/*
+          twine upload ./wheelhouse/*.whl
