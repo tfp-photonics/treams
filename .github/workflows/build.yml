@@ -13,6 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+      fail-fast: false
     steps:
       - uses: actions/checkout@v3
         with:
@@ -49,6 +50,7 @@ jobs:
     name: Publish to PyPi
     runs-on: ubuntu-latest
     needs: build_wheels
+    if: success() || failure()
     steps:
       - name: Use Twine to Publish
         env:
