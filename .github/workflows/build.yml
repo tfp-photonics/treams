@@ -30,7 +30,6 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.5
       - uses: actions/upload-artifact@v4
-        name: wheelhouse_artifact
         with:
           path: ./wheelhouse/*.whl
 
@@ -61,4 +60,4 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
           pip install twine
-          twine upload ./wheelhouse_artifact/*.whl
+          twine upload ./artifact/*.whl
