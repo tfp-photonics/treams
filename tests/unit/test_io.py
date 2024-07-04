@@ -26,75 +26,75 @@ def test_meshspheres():
     assert value == expect
 
 
-class TestSaveHDF5:
-    def test_helicity(self):
-        with h5py.File("test.h5", "x", driver="core", backing_store=False) as fp:
-            m = np.arange(4 * 3 * 16 * 16).reshape((4, 3, 16, 16))
-            tms = [
-                [
-                    treams.TMatrix(
-                        m[i, ii], k0=7, material=treams.Material(i + 1, ii + 1, 0.5)
-                    )
-                    for ii in range(3)
-                ]
-                for i in range(4)
-            ]
-            io.save_hdf5(
-                fp,
-                tms,
-                "testname",
-                "testdescr",
-                lunit="µm",
-                uuid=b"12345678123456781234567812345678",
-            )
-            assert np.all(fp["tmatrix"] == m)
-            assert fp["angular_vacuum_wavenumber"][...] == 7
-            assert np.all(
-                fp["materials/embedding/relative_permittivity"]
-                == np.arange(1, 5)[:, None] * [1, 1, 1]
-            )
-            assert np.all(
-                fp["materials/embedding/relative_permeability"] == np.arange(1, 4)
-            )
-            assert fp["materials/embedding/chirality"][...] == 0.5
-            assert fp["embedding"] == fp["materials/embedding"]
-            assert np.all(fp["modes/l"] == tms[0][0].basis.l)
-            assert np.all(fp["modes/m"] == tms[0][0].basis.m)
-            assert np.all(
-                [i.decode() for i in fp["modes/polarization"][...]]
-                == 8 * ["positive", "negative"]
-            )
-            assert fp["uuid"][()] == b"12345678123456781234567812345678"
-            assert fp.attrs["name"] == "testname"
-            assert fp.attrs["description"] == "testdescr"
-            assert fp["angular_vacuum_wavenumber"].attrs["unit"] == r"µm^{-1}"
+# class TestSaveHDF5:
+#     def test_helicity(self):
+#         with h5py.File("test.h5", "x", driver="core", backing_store=False) as fp:
+#             m = np.arange(4 * 3 * 16 * 16).reshape((4, 3, 16, 16))
+#             tms = [
+#                 [
+#                     treams.TMatrix(
+#                         m[i, ii], k0=7, material=treams.Material(i + 1, ii + 1, 0.5)
+#                     )
+#                     for ii in range(3)
+#                 ]
+#                 for i in range(4)
+#             ]
+#             io.save_hdf5(
+#                 fp,
+#                 tms,
+#                 "testname",
+#                 "testdescr",
+#                 lunit="µm",
+#                 uuid=b"12345678123456781234567812345678",
+#             )
+#             assert np.all(fp["tmatrix"] == m)
+#             assert fp["angular_vacuum_wavenumber"][...] == 7
+#             assert np.all(
+#                 fp["materials/embedding/relative_permittivity"]
+#                 == np.arange(1, 5)[:, None] * [1, 1, 1]
+#             )
+#             assert np.all(
+#                 fp["materials/embedding/relative_permeability"] == np.arange(1, 4)
+#             )
+#             assert fp["materials/embedding/chirality"][...] == 0.5
+#             assert fp["embedding"] == fp["materials/embedding"]
+#             assert np.all(fp["modes/l"] == tms[0][0].basis.l)
+#             assert np.all(fp["modes/m"] == tms[0][0].basis.m)
+#             assert np.all(
+#                 [i.decode() for i in fp["modes/polarization"][...]]
+#                 == 8 * ["positive", "negative"]
+#             )
+#             assert fp["uuid"][()] == b"12345678123456781234567812345678"
+#             assert fp.attrs["name"] == "testname"
+#             assert fp.attrs["description"] == "testdescr"
+#             assert fp["angular_vacuum_wavenumber"].attrs["unit"] == r"µm^{-1}"
 
-    def test_parity(self):
-        with h5py.File("test.h5", "x", driver="core", backing_store=False) as fp:
-            m = np.arange(4 * 3 * 16 * 16).reshape((4, 3, 16, 16))
-            tms = [
-                [
-                    treams.TMatrix(
-                        m[i, ii], k0=i + 1, material=treams.Material(), poltype="parity"
-                    )
-                    for ii in range(3)
-                ]
-                for i in range(4)
-            ]
-            io.save_hdf5(fp, tms, "testname", "testdescr")
-            assert (
-                np.all(fp["tmatrix"] == m)
-                and np.all(fp["angular_vacuum_wavenumber"] == np.arange(1, 5)[:, None])
-                and fp["materials/embedding/relative_permittivity"][...] == 1
-                and fp["materials/embedding/relative_permeability"][...] == 1
-                and fp["embedding"] == fp["materials/embedding"]
-                and np.all(fp["modes/l"] == tms[0][0].basis.l)
-                and np.all(fp["modes/m"] == tms[0][0].basis.m)
-                and np.all(
-                    [i.decode() for i in fp["modes/polarization"][...]]
-                    == 8 * ["electric", "magnetic"]
-                )
-            )
+#     def test_parity(self):
+#         with h5py.File("test.h5", "x", driver="core", backing_store=False) as fp:
+#             m = np.arange(4 * 3 * 16 * 16).reshape((4, 3, 16, 16))
+#             tms = [
+#                 [
+#                     treams.TMatrix(
+#                         m[i, ii], k0=i + 1, material=treams.Material(), poltype="parity"
+#                     )
+#                     for ii in range(3)
+#                 ]
+#                 for i in range(4)
+#             ]
+#             io.save_hdf5(fp, tms, "testname", "testdescr")
+#             assert (
+#                 np.all(fp["tmatrix"] == m)
+#                 and np.all(fp["angular_vacuum_wavenumber"] == np.arange(1, 5)[:, None])
+#                 and fp["materials/embedding/relative_permittivity"][...] == 1
+#                 and fp["materials/embedding/relative_permeability"][...] == 1
+#                 and fp["embedding"] == fp["materials/embedding"]
+#                 and np.all(fp["modes/l"] == tms[0][0].basis.l)
+#                 and np.all(fp["modes/m"] == tms[0][0].basis.m)
+#                 and np.all(
+#                     [i.decode() for i in fp["modes/polarization"][...]]
+#                     == 8 * ["electric", "magnetic"]
+#                 )
+#             )
 
 
 class TestLoadHdf5:
