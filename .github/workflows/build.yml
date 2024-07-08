@@ -6,10 +6,6 @@ on:
     tags:
       - v*
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
@@ -33,7 +29,9 @@ jobs:
         run: echo "$env:RUNNER_TEMP\msys64\mingw64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - name: Add CC=gcc environment variable
         if: matrix.os == 'windows-latest'
-        run: echo "CC=gcc" | Out-File -FilePath $env:GITHUB_ENV -Append
+        run: |
+          echo "CC=gcc" | Out-File -FilePath $env:GITHUB_ENV -Append
+          echo "LDSHARED='gcc -shared'" | Out-File -FilePath $env:GITHUB_ENV -Append
       # - name: Setup tmate session
       #   uses: mxschmitt/action-tmate@v3
       #   if: ${{ github.event_name == 'workflow_dispatch' }}
