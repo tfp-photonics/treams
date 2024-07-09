@@ -49,10 +49,10 @@
          ~SMatrices.stack
          ~SMatrices.tr
       
-         ~SMatrices.__ge__
+         ~SMatrices.__le__
          ~SMatrices.__gt__
          ~SMatrices.__lt__
-         ~SMatrices.__le__
-         ~SMatrices.__ne__
          ~SMatrices.__str__
+         ~SMatrices.__ne__
+         ~SMatrices.__ge__
   
