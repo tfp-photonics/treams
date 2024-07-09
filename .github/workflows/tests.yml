@@ -8,6 +8,10 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 3
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
     permissions:
       pull-requests: write
       contents: write
@@ -17,7 +21,7 @@ jobs:
         fetch-depth: 0
     - uses: actions/setup-python@v4
       with:
-        python-version: '3.11'
+        python-version: ${{ matrix.python-version }}
     - name: Build treams with tracing
       run: CYTHON_COVERAGE=1 python -m pip install -e .
     - name: Run tests

@@ -18,6 +18,15 @@ class TestIncgamma:
     def test_zero_real(self):
         assert isclose(sc.incgamma(0, 1.5), 0.10001958240663263, rel_tol=EPSSQ)
 
+    ## Failing ##
+    def test_exp1(self):
+        assert isclose(
+            ssc.exp1(2 + 4j),
+            0.006575211740584215 + 0.0261438237000811j,
+            rel_tol=EPSSQ,
+        )
+
+    ## Failing ##
     def test_zero_complex(self):
         assert isclose(
             sc.incgamma(0, 2 + 4j),
@@ -102,6 +111,7 @@ class TestIncgamma:
     def test_neg_real(self):
         assert isclose(sc.incgamma(-10, 1.5), 0.0003324561166899859, rel_tol=EPSSQ)
 
+    ## Failing ##
     def test_neg_complex(self):
         assert isclose(
             sc.incgamma(-10, 2 + 4j),
