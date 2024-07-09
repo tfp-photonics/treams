@@ -1,6 +1,6 @@
 [build-system]
 requires = [
-    "setuptools", #<66 for windows to avoid problems where CC is not defined
+    "setuptools<=70.1.1",
     "wheel",
     "Cython",
     "numpy<2.0",
