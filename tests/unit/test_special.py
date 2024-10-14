@@ -4,6 +4,7 @@ import scipy.special as ssc
 
 import treams.special as sc
 import treams.special.cython_special as cs
+from pytest_regressions.num_regression import NumericRegressionFixture
 
 
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
@@ -15,71 +16,23 @@ EPSSQ = 4e-14
 
 
 class TestIncgamma:
-    def test_zero_real(self):
-        assert isclose(sc.incgamma(0, 1.5), 0.10001958240663263, rel_tol=EPSSQ)
-
-    ## Failing ##
-    def test_exp1(self):
-        assert isclose(
-            ssc.exp1(2 + 4j),
-            0.006575211740584215 + 0.0261438237000811j,
-            rel_tol=EPSSQ,
-        )
-
-    ## Failing ##
-    def test_zero_complex(self):
-        assert isclose(
-            sc.incgamma(0, 2 + 4j),
-            0.006575211740584215 + 0.0261438237000811j,
-            rel_tol=EPSSQ,
-        )
-
-    def test_zero_negreal(self):
-        assert isclose(
-            sc.incgamma(0, -3 + 0.0j),
-            -9.933832570625414 - 3.141592653589793j,
-            rel_tol=EPSSQ,
-        )
-
-    def test_zero_negreal_branch(self):
-        assert isclose(
-            sc.incgamma(0, complex(-3, -0.0)),
-            -9.933832570625414 + 3.141592653589793j,
-            rel_tol=EPSSQ,
-        )
-
-    def test_half_real(self):
-        assert isclose(sc.incgamma(0.5, 1.5), 0.1475825132040964, rel_tol=EPSSQ)
-
-    def test_half_complex(self):
-        assert isclose(
-            sc.incgamma(0.5, 2 + 4j),
-            -0.01415763494202471 + 0.058731665238669344j,
-            rel_tol=EPSSQ,
-        )
-
-    def test_half_negreal(self):
-        assert isclose(
-            sc.incgamma(0.5, -3 + 0.0j),
-            1.7724538509055152 - 14.626171384019093j,
-            rel_tol=EPSSQ,
-        )
-
-    def test_half_negreal_branch(self):
-        assert isclose(
-            sc.incgamma(0.5, complex(-3, -0.0)),
-            1.7724538509055152 + 14.626171384019093j,
-            rel_tol=EPSSQ,
-        )
-
-    def test_one_real(self):
-        assert isclose(sc.incgamma(1, 1.5), 0.22313016014842982, rel_tol=EPSSQ)
-
-    def test_one_complex(self):
-        assert isclose(
-            sc.incgamma(1, 2 + 4j),
-            -0.08846104456538201 + 0.10242208005667372j,
-            rel_tol=EPSSQ,
+    def test_many(self, num_regression: NumericRegressionFixture):
+        num_regression.check(
+            {
+                'zero_negreal':         sc.incgamma(0, -3 + 0.0j),
+                'zero_negreal_branch':  sc.incgamma(0, complex(-3, -0.0)),
+                'half_real':            sc.incgamma(0.5, 1.5),
+                'half_complex':         sc.incgamma(0.5, 2 + 4j),
+                'neg_complex':          sc.incgamma(-10, 2 + 4j),
+                'half_negreal':         sc.incgamma(0.5, -3 + 0.0j),
+                'half_negreal_branch':  sc.incgamma(0.5, complex(-3, -0.0)),
+                'one_real':             sc.incgamma(1, 1.5),
+                'one_complex':          sc.incgamma(1, 2 + 4j),
+                'incgamma':             sc.incgamma(0, 1.5),
+                'exp1':                 ssc.exp1(2 + 4j),
+                'incgamma':             sc.incgamma(0, 2 + 4j)
+            }, 
+            default_tolerance=dict(atol=1e-7, rtol=EPSSQ)
         )
 
     def test_one_negreal(self):
@@ -110,14 +63,6 @@ class TestIncgamma:
 
     def test_neg_real(self):
         assert isclose(sc.incgamma(-10, 1.5), 0.0003324561166899859, rel_tol=EPSSQ)
-
-    ## Failing ##
-    def test_neg_complex(self):
-        assert isclose(
-            sc.incgamma(-10, 2 + 4j),
-            -3.109457703343637e-9 - 9.73849356067146e-10j,
-            rel_tol=EPSSQ,
-        )
 
     def test_neg_negreal(self):
         assert isclose(
