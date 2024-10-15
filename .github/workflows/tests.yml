@@ -44,6 +44,7 @@ jobs:
         rm htmlcov/.gitignore
 
     - name: Deploy report
+      if: ${{ matrix.python-version == '3.11' }}
       uses: s0/git-publish-subdir-action@develop
       env:
         REPO: self
