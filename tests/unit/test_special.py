@@ -28,10 +28,14 @@ class TestIncgamma:
                 'half_negreal_branch':  sc.incgamma(0.5, complex(-3, -0.0)),
                 'one_real':             sc.incgamma(1, 1.5),
                 'one_complex':          sc.incgamma(1, 2 + 4j),
-                'incgamma':             sc.incgamma(0, 1.5),
+                'zero_real':            sc.incgamma(0, 1.5),
+                'zero_complex':         sc.incgamma(0, 2 + 4j),
                 'exp1':                 ssc.exp1(2 + 4j),
-                'incgamma':             sc.incgamma(0, 2 + 4j)
-            }, 
+            }, tolerances={
+                'neg_complex': dict(atol=1e-7, rtol=1e-11), #mild regressions in scipy
+                'zero_complex': dict(atol=1e-7, rtol=1e-11), 
+                'exp1': dict(atol=1e-7, rtol=1e-11),
+            },
             default_tolerance=dict(atol=1e-7, rtol=EPSSQ)
         )
 
