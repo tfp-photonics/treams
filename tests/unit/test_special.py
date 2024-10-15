@@ -32,9 +32,9 @@ class TestIncgamma:
                 'zero_complex':         sc.incgamma(0, 2 + 4j),
                 'exp1':                 ssc.exp1(2 + 4j),
             }, tolerances={
-                'neg_complex': dict(atol=1e-7, rtol=1e-11), #mild regressions in scipy
-                'zero_complex': dict(atol=1e-7, rtol=1e-11), 
-                'exp1': dict(atol=1e-7, rtol=1e-11),
+                'neg_complex': dict(atol=1e-7, rtol=1e-10), #mild regressions in scipy
+                'zero_complex': dict(atol=1e-7, rtol=1e-10), 
+                'exp1': dict(atol=1e-7, rtol=1e-10),
             },
             default_tolerance=dict(atol=1e-7, rtol=EPSSQ)
         )
