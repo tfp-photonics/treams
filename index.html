@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Coverage report</title>
-    <link rel="icon" sizes="32x32" href="favicon_32.png">
-    <link rel="stylesheet" href="style.css" type="text/css">
-    <script type="text/javascript" src="coverage_html.js" defer></script>
+    <link rel="icon" sizes="32x32" href="favicon_32_cb_58284776.png">
+    <link rel="stylesheet" href="style_cb_8e611ae1.css" type="text/css">
+    <script src="coverage_html_cb_6fb7b396.js" defer></script>
 </head>
 <body class="indexfile">
 <header>
@@ -16,13 +16,13 @@
         <aside id="help_panel_wrapper">
             <input id="help_panel_state" type="checkbox">
             <label for="help_panel_state">
-                <img id="keyboard_icon" src="keybd_closed.png" alt="Show/hide keyboard shortcuts" />
+                <img id="keyboard_icon" src="keybd_closed_cb_ce680311.png" alt="Show/hide keyboard shortcuts">
             </label>
             <div id="help_panel">
                 <p class="legend">Shortcuts on this page</p>
                 <div class="keyhelp">
                     <p>
-                        <kbd>n</kbd>
+                        <kbd>f</kbd>
                         <kbd>s</kbd>
                         <kbd>m</kbd>
                         <kbd>x</kbd>
@@ -41,11 +41,20 @@
             </div>
         </aside>
         <form id="filter_container">
-            <input id="filter" type="text" value="" placeholder="filter..." />
+            <input id="filter" type="text" value="" placeholder="filter...">
+            <div>
+                <input id="hide100" type="checkbox" >
+                <label for="hide100">hide covered</label>
+            </div>
         </form>
+        <h2>
+                <a class="button current">Files</a>
+                <a class="button" href="function_index.html">Functions</a>
+                <a class="button" href="class_index.html">Classes</a>
+        </h2>
         <p class="text">
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.3.2">coverage.py v7.3.2</a>,
-            created at 2023-10-23 16:18 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.3">coverage.py v7.6.3</a>,
+            created at 2024-10-15 15:31 +0000
         </p>
     </div>
 </header>
@@ -53,233 +62,233 @@
     <table class="index" data-sortable>
         <thead>
             <tr class="tablehead" title="Click to sort">
-                <th class="name left" aria-sort="none" data-shortcut="n">Module</th>
-                <th aria-sort="none" data-default-sort-order="descending" data-shortcut="s">statements</th>
-                <th aria-sort="none" data-default-sort-order="descending" data-shortcut="m">missing</th>
-                <th aria-sort="none" data-default-sort-order="descending" data-shortcut="x">excluded</th>
-                <th class="right" aria-sort="none" data-shortcut="c">coverage</th>
+                <th id="file" class="name left" aria-sort="none" data-shortcut="f">File<span class="arrows"></span></th>
+                <th id="statements" aria-sort="none" data-default-sort-order="descending" data-shortcut="s">statements<span class="arrows"></span></th>
+                <th id="missing" aria-sort="none" data-default-sort-order="descending" data-shortcut="m">missing<span class="arrows"></span></th>
+                <th id="excluded" aria-sort="none" data-default-sort-order="descending" data-shortcut="x">excluded<span class="arrows"></span></th>
+                <th id="coverage" class="right" aria-sort="none" data-shortcut="c">coverage<span class="arrows"></span></th>
             </tr>
         </thead>
         <tbody>
-            <tr class="file">
-                <td class="name left"><a href="d_95b6b11253f31d4f___init___py.html">src/treams/__init__.py</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_95b6b11253f31d4f___init___py.html">src/treams/__init__.py</a></td>
                 <td>6</td>
                 <td>0</td>
                 <td>0</td>
                 <td class="right" data-ratio="6 6">100%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_95b6b11253f31d4f__core_py.html">src/treams/_core.py</a></td>
-                <td>542</td>
+            <tr class="region">
+                <td class="name left"><a href="z_95b6b11253f31d4f__core_py.html">src/treams/_core.py</a></td>
+                <td>541</td>
                 <td>39</td>
-                <td>4</td>
-                <td class="right" data-ratio="503 542">93%</td>
+                <td>8</td>
+                <td class="right" data-ratio="502 541">93%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_95b6b11253f31d4f__lattice_py.html">src/treams/_lattice.py</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_95b6b11253f31d4f__lattice_py.html">src/treams/_lattice.py</a></td>
                 <td>257</td>
                 <td>37</td>
                 <td>0</td>
                 <td class="right" data-ratio="220 257">86%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_95b6b11253f31d4f__material_py.html">src/treams/_material.py</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_95b6b11253f31d4f__material_py.html">src/treams/_material.py</a></td>
                 <td>79</td>
                 <td>15</td>
                 <td>0</td>
                 <td class="right" data-ratio="64 79">81%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_95b6b11253f31d4f__operators_py.html">src/treams/_operators.py</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_95b6b11253f31d4f__operators_py.html">src/treams/_operators.py</a></td>
                 <td>978</td>
                 <td>336</td>
                 <td>0</td>
                 <td class="right" data-ratio="642 978">66%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_95b6b11253f31d4f__smatrix_py.html">src/treams/_smatrix.py</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_95b6b11253f31d4f__smatrix_py.html">src/treams/_smatrix.py</a></td>
                 <td>281</td>
                 <td>136</td>
                 <td>0</td>
                 <td class="right" data-ratio="145 281">52%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_95b6b11253f31d4f__tmatrix_py.html">src/treams/_tmatrix.py</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_95b6b11253f31d4f__tmatrix_py.html">src/treams/_tmatrix.py</a></td>
                 <td>416</td>
                 <td>140</td>
                 <td>0</td>
                 <td class="right" data-ratio="276 416">66%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_95b6b11253f31d4f_coeffs_pyx.html">src/treams/coeffs.pyx</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_95b6b11253f31d4f_coeffs_pyx.html">src/treams/coeffs.pyx</a></td>
                 <td>318</td>
                 <td>0</td>
                 <td>0</td>
                 <td class="right" data-ratio="318 318">100%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_95b6b11253f31d4f_config_pyx.html">src/treams/config.pyx</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_95b6b11253f31d4f_config_pyx.html">src/treams/config.pyx</a></td>
                 <td>2</td>
                 <td>0</td>
                 <td>0</td>
                 <td class="right" data-ratio="2 2">100%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_95b6b11253f31d4f_cw_pyx.html">src/treams/cw.pyx</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_95b6b11253f31d4f_cw_pyx.html">src/treams/cw.pyx</a></td>
                 <td>335</td>
                 <td>10</td>
                 <td>0</td>
                 <td class="right" data-ratio="325 335">97%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_95b6b11253f31d4f_io_py.html">src/treams/io.py</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_95b6b11253f31d4f_io_py.html">src/treams/io.py</a></td>
                 <td>197</td>
                 <td>47</td>
                 <td>0</td>
                 <td class="right" data-ratio="150 197">76%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_bf3c311e96228571___init___py.html">src/treams/lattice/__init__.py</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_bf3c311e96228571___init___py.html">src/treams/lattice/__init__.py</a></td>
                 <td>62</td>
                 <td>42</td>
                 <td>0</td>
                 <td class="right" data-ratio="20 62">32%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_bf3c311e96228571__dsum_pyx.html">src/treams/lattice/_dsum.pyx</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_bf3c311e96228571__dsum_pyx.html">src/treams/lattice/_dsum.pyx</a></td>
                 <td>145</td>
                 <td>0</td>
                 <td>0</td>
                 <td class="right" data-ratio="145 145">100%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_bf3c311e96228571__esum_pyx.html">src/treams/lattice/_esum.pyx</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_bf3c311e96228571__esum_pyx.html">src/treams/lattice/_esum.pyx</a></td>
                 <td>725</td>
                 <td>40</td>
                 <td>0</td>
                 <td class="right" data-ratio="685 725">94%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_bf3c311e96228571__gufuncs_pyx.html">src/treams/lattice/_gufuncs.pyx</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_bf3c311e96228571__gufuncs_pyx.html">src/treams/lattice/_gufuncs.pyx</a></td>
                 <td>1158</td>
                 <td>12</td>
                 <td>0</td>
                 <td class="right" data-ratio="1146 1158">99%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_bf3c311e96228571__misc_pyx.html">src/treams/lattice/_misc.pyx</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_bf3c311e96228571__misc_pyx.html">src/treams/lattice/_misc.pyx</a></td>
                 <td>149</td>
                 <td>12</td>
                 <td>0</td>
                 <td class="right" data-ratio="137 149">92%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_95b6b11253f31d4f_misc_py.html">src/treams/misc.py</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_95b6b11253f31d4f_misc_py.html">src/treams/misc.py</a></td>
                 <td>79</td>
                 <td>4</td>
                 <td>0</td>
                 <td class="right" data-ratio="75 79">95%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_95b6b11253f31d4f_pw_pyx.html">src/treams/pw.pyx</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_95b6b11253f31d4f_pw_pyx.html">src/treams/pw.pyx</a></td>
                 <td>306</td>
                 <td>17</td>
                 <td>0</td>
                 <td class="right" data-ratio="289 306">94%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_4f9324b2e0a22e28___init___py.html">src/treams/special/__init__.py</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_4f9324b2e0a22e28___init___py.html">src/treams/special/__init__.py</a></td>
                 <td>8</td>
                 <td>0</td>
                 <td>0</td>
                 <td class="right" data-ratio="8 8">100%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_4f9324b2e0a22e28__bessel_pyx.html">src/treams/special/_bessel.pyx</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_4f9324b2e0a22e28__bessel_pyx.html">src/treams/special/_bessel.pyx</a></td>
                 <td>29</td>
                 <td>0</td>
                 <td>0</td>
                 <td class="right" data-ratio="29 29">100%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_4f9324b2e0a22e28__coord_pyx.html">src/treams/special/_coord.pyx</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_4f9324b2e0a22e28__coord_pyx.html">src/treams/special/_coord.pyx</a></td>
                 <td>80</td>
                 <td>0</td>
                 <td>0</td>
                 <td class="right" data-ratio="80 80">100%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_4f9324b2e0a22e28__gufuncs_pyx.html">src/treams/special/_gufuncs.pyx</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_4f9324b2e0a22e28__gufuncs_pyx.html">src/treams/special/_gufuncs.pyx</a></td>
                 <td>757</td>
                 <td>0</td>
                 <td>0</td>
                 <td class="right" data-ratio="757 757">100%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_4f9324b2e0a22e28__integrals_pyx.html">src/treams/special/_integrals.pyx</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_4f9324b2e0a22e28__integrals_pyx.html">src/treams/special/_integrals.pyx</a></td>
                 <td>118</td>
                 <td>1</td>
                 <td>0</td>
                 <td class="right" data-ratio="117 118">99%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_4f9324b2e0a22e28__misc_pxd.html">src/treams/special/_misc.pxd</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_4f9324b2e0a22e28__misc_pxd.html">src/treams/special/_misc.pxd</a></td>
                 <td>4</td>
                 <td>2</td>
                 <td>0</td>
                 <td class="right" data-ratio="2 4">50%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_4f9324b2e0a22e28__misc_pyx.html">src/treams/special/_misc.pyx</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_4f9324b2e0a22e28__misc_pyx.html">src/treams/special/_misc.pyx</a></td>
                 <td>41</td>
                 <td>3</td>
                 <td>0</td>
                 <td class="right" data-ratio="38 41">93%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_4f9324b2e0a22e28__ufuncs_pyx.html">src/treams/special/_ufuncs.pyx</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_4f9324b2e0a22e28__ufuncs_pyx.html">src/treams/special/_ufuncs.pyx</a></td>
                 <td>644</td>
-                <td>17</td>
+                <td>19</td>
                 <td>0</td>
-                <td class="right" data-ratio="627 644">97%</td>
+                <td class="right" data-ratio="625 644">97%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_4f9324b2e0a22e28__waves_pyx.html">src/treams/special/_waves.pyx</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_4f9324b2e0a22e28__waves_pyx.html">src/treams/special/_waves.pyx</a></td>
                 <td>282</td>
                 <td>3</td>
                 <td>0</td>
                 <td class="right" data-ratio="279 282">99%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_4f9324b2e0a22e28__wigner3j_pyx.html">src/treams/special/_wigner3j.pyx</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_4f9324b2e0a22e28__wigner3j_pyx.html">src/treams/special/_wigner3j.pyx</a></td>
                 <td>77</td>
                 <td>1</td>
                 <td>0</td>
                 <td class="right" data-ratio="76 77">99%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_4f9324b2e0a22e28__wignerd_pyx.html">src/treams/special/_wignerd.pyx</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_4f9324b2e0a22e28__wignerd_pyx.html">src/treams/special/_wignerd.pyx</a></td>
                 <td>101</td>
                 <td>2</td>
                 <td>0</td>
                 <td class="right" data-ratio="99 101">98%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_4f9324b2e0a22e28_cython_special_pyx.html">src/treams/special/cython_special.pyx</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_4f9324b2e0a22e28_cython_special_pyx.html">src/treams/special/cython_special.pyx</a></td>
                 <td>117</td>
                 <td>33</td>
                 <td>0</td>
                 <td class="right" data-ratio="84 117">72%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_95b6b11253f31d4f_sw_pyx.html">src/treams/sw.pyx</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_95b6b11253f31d4f_sw_pyx.html">src/treams/sw.pyx</a></td>
                 <td>481</td>
-                <td>11</td>
+                <td>10</td>
                 <td>0</td>
-                <td class="right" data-ratio="470 481">98%</td>
+                <td class="right" data-ratio="471 481">98%</td>
             </tr>
-            <tr class="file">
-                <td class="name left"><a href="d_95b6b11253f31d4f_util_py.html">src/treams/util.py</a></td>
+            <tr class="region">
+                <td class="name left"><a href="z_95b6b11253f31d4f_util_py.html">src/treams/util.py</a></td>
                 <td>606</td>
                 <td>25</td>
                 <td>4</td>
@@ -289,10 +298,10 @@
         <tfoot>
             <tr class="total">
                 <td class="name left">Total</td>
-                <td>9380</td>
-                <td>985</td>
-                <td>8</td>
-                <td class="right" data-ratio="8395 9380">89%</td>
+                <td>9379</td>
+                <td>986</td>
+                <td>12</td>
+                <td class="right" data-ratio="8393 9379">89%</td>
             </tr>
         </tfoot>
     </table>
@@ -303,16 +312,16 @@
 <footer>
     <div class="content">
         <p>
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.3.2">coverage.py v7.3.2</a>,
-            created at 2023-10-23 16:18 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.6.3">coverage.py v7.6.3</a>,
+            created at 2024-10-15 15:31 +0000
         </p>
     </div>
     <aside class="hidden">
-        <a id="prevFileLink" class="nav" href="d_95b6b11253f31d4f_util_py.html"/>
-        <a id="nextFileLink" class="nav" href="d_95b6b11253f31d4f___init___py.html"/>
-        <button type="button" class="button_prev_file" data-shortcut="["/>
-        <button type="button" class="button_next_file" data-shortcut="]"/>
-        <button type="button" class="button_show_hide_help" data-shortcut="?"/>
+        <a id="prevFileLink" class="nav" href="z_95b6b11253f31d4f_util_py.html"></a>
+        <a id="nextFileLink" class="nav" href="z_95b6b11253f31d4f___init___py.html"></a>
+        <button type="button" class="button_prev_file" data-shortcut="["></button>
+        <button type="button" class="button_next_file" data-shortcut="]"></button>
+        <button type="button" class="button_show_hide_help" data-shortcut="?"></button>
     </aside>
 </footer>
 </body>
