@@ -4,7 +4,7 @@ import scipy.special as ssc
 
 import treams.special as sc
 import treams.special.cython_special as cs
-from pytest_regressions.num_regression import NumericRegressionFixture
+from pytest_regressions.ndarrays_regression import NDArraysRegressionFixture
 
 
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
@@ -16,25 +16,27 @@ EPSSQ = 4e-14
 
 
 class TestIncgamma:
-    def test_many(self, num_regression: NumericRegressionFixture):
-        num_regression.check(
+    def test_many(self, ndarrays_regression: NDArraysRegressionFixture):
+        relaxed_tolerance = dict(atol=1e-7, rtol=1e-10)
+        ndarrays_regression.check(
             {
                 'zero_negreal':         sc.incgamma(0, -3 + 0.0j),
                 'zero_negreal_branch':  sc.incgamma(0, complex(-3, -0.0)),
                 'half_real':            sc.incgamma(0.5, 1.5),
                 'half_complex':         sc.incgamma(0.5, 2 + 4j),
-                'neg_complex':          sc.incgamma(-10, 2 + 4j),
                 'half_negreal':         sc.incgamma(0.5, -3 + 0.0j),
                 'half_negreal_branch':  sc.incgamma(0.5, complex(-3, -0.0)),
                 'one_real':             sc.incgamma(1, 1.5),
                 'one_complex':          sc.incgamma(1, 2 + 4j),
                 'zero_real':            sc.incgamma(0, 1.5),
+                'neg_complex':          sc.incgamma(-10, 2 + 4j),
                 'zero_complex':         sc.incgamma(0, 2 + 4j),
                 'exp1':                 ssc.exp1(2 + 4j),
-            }, tolerances={
-                'neg_complex': dict(atol=1e-7, rtol=1e-10), #mild regressions in scipy
-                'zero_complex': dict(atol=1e-7, rtol=1e-10), 
-                'exp1': dict(atol=1e-7, rtol=1e-10),
+            }, 
+            tolerances={
+                'neg_complex': relaxed_tolerance,
+                'zero_complex': relaxed_tolerance,
+                'exp1': relaxed_tolerance,
             },
             default_tolerance=dict(atol=1e-7, rtol=EPSSQ)
         )
