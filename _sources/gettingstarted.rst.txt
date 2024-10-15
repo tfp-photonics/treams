@@ -21,7 +21,7 @@ Import *treams*, create T-matrices and start calculating.
 
    >>> import treams
    >>> tm = treams.TMatrix.sphere(1, .6, 1, [4, 1])
-   >>> tm.xs_ext_avg
-   0.3072497765576123
+   >>> f"{tm.xs_ext_avg:.4f}"
+   '0.3072'
 
 More detailed examples are given in :doc:`intro`.
