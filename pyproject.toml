@@ -4,7 +4,7 @@ requires = [
     "wheel",
     "Cython",
     "numpy",
-    "scipy>=1.6",
+    "scipy",
     "setuptools_scm>=6.2"
 ]
 build-backend = "setuptools.build_meta"
@@ -22,3 +22,6 @@ archs = ["auto64"]
 skip = ["pp*", "*musllinux*"]
 test-command = "python -m pytest {project}/tests/unit || cd ."
 test-extras = ["test", "io"]
+
+[tool.pytest.ini_options]
+datadir = "tests/datadir"

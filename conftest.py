@@ -4,7 +4,7 @@ It's needed here to add the option `--runslow`, which is mainly used in the latt
 subpackage.
 """
 import pytest
-
+import pathlib
 
 def pytest_addoption(parser):
     """Add option '--runslow' and '--rungmsh'."""
@@ -14,6 +14,8 @@ def pytest_addoption(parser):
     parser.addoption(
         "--rungmsh", action="store_true", default=False, help="run tests needing gmsh"
     )
+    parser.addini("datadir", "my own datadir for pytest-regressions")
+    parser.addini("original_datadir", "my own original_datadir for pytest-regressions")
 
 
 def pytest_configure(config):
@@ -36,3 +38,14 @@ def pytest_collection_modifyitems(config, items):
         for item in items:
             if "gmsh" in item.keywords:
                 item.add_marker(skip_slow)
+
+@pytest.fixture()
+def original_datadir(request) -> pathlib.Path:
+    config = request.config
+    return config.rootpath / config.getini('datadir')
+
+
+@pytest.fixture()
+def datadir(request) -> pathlib.Path:
+    config = request.config
+    return config.rootpath / config.getini('datadir')
