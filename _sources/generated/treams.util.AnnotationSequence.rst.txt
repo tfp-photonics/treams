@@ -39,10 +39,10 @@ treams.util.AnnotationSequence
          ~AnnotationSequence.match
          ~AnnotationSequence.update
       
-         ~AnnotationSequence.__str__
-         ~AnnotationSequence.__gt__
-         ~AnnotationSequence.__ne__
-         ~AnnotationSequence.__le__
          ~AnnotationSequence.__lt__
+         ~AnnotationSequence.__str__
+         ~AnnotationSequence.__le__
          ~AnnotationSequence.__ge__
+         ~AnnotationSequence.__ne__
+         ~AnnotationSequence.__gt__
   
