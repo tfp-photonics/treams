@@ -49,9 +49,9 @@
          ~SMatrices.stack
          ~SMatrices.tr
       
+         ~SMatrices.__le__
          ~SMatrices.__lt__
          ~SMatrices.__str__
-         ~SMatrices.__le__
          ~SMatrices.__ge__
          ~SMatrices.__ne__
          ~SMatrices.__gt__
