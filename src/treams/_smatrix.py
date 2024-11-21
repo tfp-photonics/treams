@@ -217,10 +217,10 @@ class SMatrices:
         if poltype == "helicity":
             return res
         res = res.changepoltype(poltype)
-        res[0, 0][~np.eye(len(res), dtype=bool)] = 0
-        res[0, 1][~np.eye(len(res), dtype=bool)] = 0
-        res[1, 0][~np.eye(len(res), dtype=bool)] = 0
-        res[1, 1][~np.eye(len(res), dtype=bool)] = 0
+        res[0, 0][~np.eye(len(res.basis), dtype=bool)] = 0
+        res[0, 1][~np.eye(len(res.basis), dtype=bool)] = 0
+        res[1, 0][~np.eye(len(res.basis), dtype=bool)] = 0
+        res[1, 1][~np.eye(len(res.basis), dtype=bool)] = 0
         return res
 
     @classmethod
