@@ -34,7 +34,7 @@ The documentation can be found at https://tfp-photonics.github.io/treams.
 
 When using this code please cite:
 
-[D. Beutel, I. Fernandez-Corbaton, and C. Rockstuhl, treams - A T-matrix scattering code for nanophotonic computations, arXiv (preprint), 2309.03182 (2023).](https://doi.org/10.48550/arXiv.2309.03182)
+[D. Beutel, I. Fernandez-Corbaton, and C. Rockstuhl, treams – a T-matrix-based scattering code for nanophotonics, Comp. Phys. Commun. 297, 109076 (2024).](https://doi.org/10.1016/j.cpc.2023.109076)
 
 Other relevant publications are
 * [D. Beutel, I. Fernandez-Corbaton, and C. Rockstuhl, Unified Lattice Sums Accommodating Multiple Sublattices for Solutions of the Helmholtz Equation in Two and Three Dimensions, Phys. Rev. A 107, 013508 (2023).](https://doi.org/10.1103/PhysRevA.107.013508)
