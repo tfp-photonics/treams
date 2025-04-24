@@ -45,7 +45,7 @@ ex[~valid] = np.nan
 
 fig, ax = plt.subplots(figsize=(10, 20))
 pcm = ax.pcolormesh(
-    grid[0, :, 2], grid[:, 0, 1], ex.T, shading="nearest", vmin=-1, vmax=1,
+    grid[:, 0, 1], grid[0, :, 2], ex.T, shading="nearest", vmin=-1, vmax=1,
 )
 cb = plt.colorbar(pcm)
 cb.set_label("$E_x$")
