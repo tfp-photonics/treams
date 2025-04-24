@@ -122,7 +122,7 @@ operator produces consistent results.
 
 .. literalinclude:: examples/cluster.py
    :language: python
-   :lines: 94-106
+   :lines: 83-95
 
 
 One-dimensional arrays (along z)
