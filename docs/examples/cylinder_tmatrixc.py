@@ -21,8 +21,15 @@ xw_ext_mmax0 = np.array([tm.xw_ext_avg for tm in cylinders_mmax0]) / (2 * radius
 tm = cylinders[-1]
 inc = treams.plane_wave([tm.k0, 0, 0], 1, k0=tm.k0, material=tm.material)
 sca = tm @ inc.expand(tm.basis)
-grid = np.mgrid[-100:100:101j, -100:100:101j, 0:1].squeeze().transpose((1, 2, 0))
-intensity = np.zeros_like(grid[..., 0])
+
+x = np.linspace(-100, 100, 101)
+y = np.linspace(-100, 100, 101)
+z = 0
+xx, yy = np.meshgrid(x, y, indexing="ij")
+zz = np.full_like(xx, z)
+grid = np.stack((xx, yy, zz), axis=-1)
+
+intensity = np.zeros_like(xx)
 valid = tm.valid_points(grid, [radius])
 intensity[~valid] = np.nan
 intensity[valid] = 0.5 * np.sum(
@@ -41,7 +48,7 @@ fig.show()
 
 fig, ax = plt.subplots()
 pcm = ax.pcolormesh(
-    grid[:, 0, 0], grid[0, :, 1], intensity.T, shading="nearest", vmin=0, vmax=1,
+    xx, yy, intensity, shading="nearest", vmin=0, vmax=1,
 )
 cb = plt.colorbar(pcm)
 cb.set_label("Intensity")

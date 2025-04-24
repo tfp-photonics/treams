@@ -59,7 +59,7 @@ we visualize the fields at the largest frequency.
 
 .. literalinclude:: examples/sphere.py
    :language: python
-   :lines: 20-29
+   :lines: 20-36
 
 We select the T-matrix and illuminate it with a plane wave. Next, we set up the grid
 and choose valid points, namely those that are outside of our spherical object. Then,
@@ -98,7 +98,7 @@ sphere we can obtain the fields outside of the sphere
 
 .. literalinclude:: examples/cluster.py
    :language: python
-   :lines: 26-32
+   :lines: 26-38
 
 Up to here, we did all calculations for the cluster in the local basis. By expanding
 the incident and scattered fields in a basis with a single origin we can describe the
@@ -108,7 +108,7 @@ basis can be more efficient in terms of matrix size.
 
 .. literalinclude:: examples/cluster.py
    :language: python
-   :lines: 57-68
+   :lines: 58-75
 
 A comparison of the calculated near-fields and the cross sections show good agreement
 between the results of both, local and global, T-matrices.
@@ -122,7 +122,7 @@ operator produces consistent results.
 
 .. literalinclude:: examples/cluster.py
    :language: python
-   :lines: 83-95
+   :lines: 95-113
 
 
 One-dimensional arrays (along z)
@@ -162,7 +162,7 @@ we want to probe.
 
 .. literalinclude:: examples/chain.py
    :language: python
-   :lines: 20-29
+   :lines: 20-35
 
 Here, we plot the z-component of the electric field. Note, that the values at the top
 and bottom side match exactly, as required due to the periodic boundary conditions.
@@ -178,7 +178,7 @@ x-y-plane.
 
 .. literalinclude:: examples/grid.py
    :language: python
-   :lines: 6-31
+   :lines: 6-37
 
 With few changes we get the fields in a square array of the same spheres as in the
 previous examples. Most importantly we changed the value of the variable :code:`lattice`

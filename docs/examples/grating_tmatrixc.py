@@ -31,8 +31,14 @@ inc = treams.plane_wave(
 )
 sca = cluster @ inc.expand(cluster.basis)
 
-grid = np.mgrid[0:1, -150:150:16j, -150:150:16j].squeeze().transpose((1, 2, 0))
-ex = np.zeros_like(grid[..., 0])
+x = 0
+y = np.linspace(-150, 150, 16)
+z = np.linspace(-150, 150, 16)
+yy, zz = np.meshgrid(y, z, indexing="ij")
+xx = np.full_like(yy, x)
+grid = np.stack((xx, yy, zz), axis=-1)
+
+ex = np.zeros_like(xx)
 valid = cluster.valid_points(grid, radii)
 vals = []
 for i, r in enumerate(grid[valid]):
@@ -42,10 +48,9 @@ for i, r in enumerate(grid[valid]):
 ex[valid] = vals
 ex[~valid] = np.nan
 
-
 fig, ax = plt.subplots(figsize=(10, 20))
 pcm = ax.pcolormesh(
-    grid[:, 0, 1], grid[0, :, 2], ex.T, shading="nearest", vmin=-1, vmax=1,
+    yy, zz, ex, shading="nearest", vmin=-1, vmax=1,
 )
 cb = plt.colorbar(pcm)
 cb.set_label("$E_x$")
