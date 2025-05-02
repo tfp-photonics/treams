@@ -606,5 +606,5 @@ different definitions of the Riemann-Silberstein vectors
     >>> spw.efield([[0, 0, 0], [1, 0, 0]])
     PhysicsArray(
         [[0.+0.j   , 0.+0.j   , 0.+0.163j],
-         [0.-0.j   , 0.-0.074j, 0.+0.132j]],
+         [0.+0.j   , 0.-0.074j, 0.+0.132j]],
     )
