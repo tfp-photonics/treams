@@ -46,7 +46,7 @@ by
 
 .. literalinclude:: examples/cylinder_tmatrixc.py
     :language: python
-    :lines: 13-15
+    :lines: 13-14
 
 Again, we can also select specific modes only, for example the modes with :math:`m = 0`.
 
@@ -59,7 +59,7 @@ equally simple.
 
 .. literalinclude:: examples/cylinder_tmatrixc.py
     :language: python
-    :lines: 16-19
+    :lines: 21-37
 
 .. plot:: examples/cylinder_tmatrixc.py
 
@@ -163,7 +163,7 @@ area
 
 .. literalinclude:: examples/grating_tmatrixc.py
     :language: python
-    :lines: 34-43
+    :lines: 34-49
 
 and plot the results.
 
