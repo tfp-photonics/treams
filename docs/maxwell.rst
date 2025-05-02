@@ -219,7 +219,7 @@ Cylindrical waves
 
 The cylindrical solutions can be constructed mostly analogously to the plane waves. The
 steering vector stays :math:`\boldsymbol{\hat z}`. The solutions in cylindrical
-coordinates are :math:`Z_m^{(n)}(k_\rho \rho) \mathrm e^{\mathrm i (m \varphi + k_z z}`
+coordinates are :math:`Z_m^{(n)}(k_\rho \rho) \mathrm e^{\mathrm i (m \varphi + k_z z)}`
 where :math:`k_z \in \mathbb R` and :math:`m \in \mathbb Z` are the parameters of the
 solution. The radial part of the wave vector is defined as :math:`k_\rho =
 \sqrt{k^2 - k_z^2}` with the imaginary part of the square root to be taken non-negative.
@@ -240,10 +240,10 @@ solutions are
     \\
     \boldsymbol N_{k_z, m}^{(n)} (k, \boldsymbol r)
     =
-    \left(\frac{\mathrm i k_z}{k} {Z_m^{(1)}}'(k_\rho \rho) \boldsymbol{\hat \rho}
-    - \frac{m k_z}{k k_\rho \rho} Z_m^{(1)}(k_\rho \rho) \boldsymbol{\hat \varphi}
-    + \frac{k_\rho}{k} Z_m^{(1)}(k_\rho \rho) \boldsymbol{\hat z}\right)
-    \mathrm e^{\mathrm i (k_z z + m \varphi)}
+    \left(\frac{\mathrm i k_z}{k} {Z_m^{(n)}}'(k_\rho \rho) \boldsymbol{\hat \rho}
+    - \frac{m k_z}{k k_\rho \rho} Z_m^{(n)}(k_\rho \rho) \boldsymbol{\hat \varphi}
+    + \frac{k_\rho}{k} Z_m^{(n)}(k_\rho \rho) \boldsymbol{\hat z}\right)
+    \mathrm e^{\mathrm i (m \varphi + k_z z)}
 
 where we, again, normalized the functions (:func:`treams.special.vcw_rM`,
 :func:`treams.special.vcw_M`, :func:`treams.special.vcw_rN`, and
