@@ -28,24 +28,30 @@ inc = treams.plane_wave(
 )
 sca = cluster @ inc.expand(cluster.basis)
 
-grid = (
-    np.mgrid[-300:300:61j, 0:1, -150:150:31j].squeeze().transpose((1, 2, 0))[:, :-1, :]
-)
-ez = np.zeros_like(grid[..., 0], complex)
+x = np.linspace(-300, 300, 61)
+y = 0
+z = np.linspace(-150, 150, 31)
+xx, zz = np.meshgrid(x, z, indexing="ij")
+yy = np.full_like(xx, y)
+grid = np.stack((xx, yy, zz), axis=-1)
+
+ez = np.zeros_like(xx, complex)
 valid = cluster.valid_points(grid, radii)
 ez[valid] = (inc.efield(grid[valid]) + sca.efield(grid[valid]))[..., 2]
 
 ez = np.concatenate(
     (
-        np.real(ez.T * np.exp(-1j * kz * lattice[...])),
-        ez.T.real,
-        np.real(ez.T * np.exp(1j * kz * lattice[...])),
-    )
+        np.real(ez * np.exp(-1j * kz * lattice[...])),
+        ez.real,
+        np.real(ez * np.exp(1j * kz * lattice[...])),
+    ),
+    axis=1,
 )
-zaxis = np.concatenate((grid[0, :, 2] - 300, grid[0, :, 2], grid[0, :, 2] + 300,))
+xx = np.tile(xx, (1, 3))
+zz = np.concatenate((zz - lattice[...], zz, zz + lattice[...]), axis=1)
 
 fig, ax = plt.subplots(figsize=(10, 20))
-pcm = ax.pcolormesh(grid[:, 0, 0], zaxis, ez, shading="nearest", vmin=-1, vmax=1,)
+pcm = ax.pcolormesh(xx, zz, ez, shading="nearest", vmin=-1, vmax=1,)
 cb = plt.colorbar(pcm)
 cb.set_label("$E_z$")
 ax.set_xlabel("x (nm)")

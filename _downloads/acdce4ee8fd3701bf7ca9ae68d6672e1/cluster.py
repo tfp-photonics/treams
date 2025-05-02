@@ -23,8 +23,14 @@ inc = treams.plane_wave([k0, 0, 0], 0, k0=tm.k0, material=tm.material)
 sca = tm @ inc.expand(tm.basis)
 xs = tm.xs(inc)
 
-grid = np.mgrid[-300:300:101j, 0:1, -300:300:101j].squeeze().transpose((1, 2, 0))
-intensity = np.zeros_like(grid[..., 0])
+x = np.linspace(-300, 300, 101)
+y = 0
+z = np.linspace(-300, 300, 101)
+xx, zz = np.meshgrid(x, z, indexing="ij")
+yy = np.full_like(xx, y)
+grid = np.stack((xx, yy, zz), axis=-1)
+
+intensity = np.zeros_like(xx)
 valid = tm.valid_points(grid, radii)
 intensity[~valid] = np.nan
 intensity[valid] = 0.5 * np.sum(
@@ -33,7 +39,7 @@ intensity[valid] = 0.5 * np.sum(
 
 fig, ax = plt.subplots()
 pcm = ax.pcolormesh(
-    grid[0, :, 2], grid[:, 0, 0], intensity.T, shading="nearest", vmin=0, vmax=2,
+    xx, zz, intensity, shading="nearest", vmin=0, vmax=2,
 )
 cb = plt.colorbar(pcm)
 cb.set_label("Intensity")
@@ -54,8 +60,14 @@ sca = tm_global @ inc.expand(tm_global.basis)
 
 xs = tm_global.xs(inc)
 
-grid = np.mgrid[-300:300:101j, 0:1, -300:300:101j].squeeze().transpose((1, 2, 0))
-intensity_global = np.zeros_like(grid[..., 0])
+x = np.linspace(-300, 300, 101)
+y = 0
+z = np.linspace(-300, 300, 101)
+xx, zz = np.meshgrid(x, z, indexing="ij")
+yy = np.full_like(xx, y)
+grid = np.stack((xx, yy, zz), axis=-1)
+
+intensity_global = np.zeros_like(xx)
 valid = tm_global.valid_points(grid, [260])
 intensity_global[~valid] = np.nan
 intensity_global[valid] = 0.5 * np.sum(
@@ -64,7 +76,7 @@ intensity_global[valid] = 0.5 * np.sum(
 
 fig, ax = plt.subplots()
 pcm = ax.pcolormesh(
-    grid[0, :, 2], grid[:, 0, 0], intensity_global.T, shading="nearest", vmin=0, vmax=2,
+    xx, zz, intensity_global, shading="nearest", vmin=0, vmax=2,
 )
 cb = plt.colorbar(pcm)
 cb.set_label("Intensity")
@@ -86,8 +98,14 @@ sca = tm_rotate @ inc.expand(tm_rotate.basis)
 
 xs = tm_rotate.xs(inc)
 
-grid = np.mgrid[-300:300:101j, 0:1, -300:300:101j].squeeze().transpose((1, 2, 0))
-intensity_global = np.zeros_like(grid[..., 0])
+x = np.linspace(-300, 300, 101)
+y = 0
+z = np.linspace(-300, 300, 101)
+xx, zz = np.meshgrid(x, z, indexing="ij")
+yy = np.full_like(xx, y)
+grid = np.stack((xx, yy, zz), axis=-1)
+
+intensity_global = np.zeros_like(xx)
 valid = tm_rotate.valid_points(grid, [260])
 intensity_global[~valid] = np.nan
 intensity_global[valid] = 0.5 * np.sum(
@@ -96,7 +114,7 @@ intensity_global[valid] = 0.5 * np.sum(
 
 fig, ax = plt.subplots()
 pcm = ax.pcolormesh(
-    grid[0, :, 2], grid[:, 0, 0], intensity_global.T, shading="nearest", vmin=0, vmax=2,
+    xx, zz, intensity_global, shading="nearest", vmin=0, vmax=2,
 )
 cb = plt.colorbar(pcm)
 cb.set_label("Intensity")
