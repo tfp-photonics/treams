@@ -5,12 +5,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Maxwell’s equations and chiral constitutive relations &#8212; treams 0.4.6.dev1+g4b06735b3 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4848ba22" />
+    <title>Maxwell’s equations and chiral constitutive relations &#8212; treams 0.4.6.dev4+g615382b30 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=0c472235" />
     <link rel="stylesheet" type="text/css" href="_static/pyramid.css?v=424f8d56" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=f4ec84db" />
-    <script src="_static/documentation_options.js?v=aa098df0"></script>
+    <script src="_static/documentation_options.js?v=a17dff49"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="theory.html" title="Theory"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.4.6.dev1+g4b06735b3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.4.6.dev4+g615382b30 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="theory.html" accesskey="U">Theory</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Maxwell’s equations and chiral constitutive relations</a></li> 
       </ul>
@@ -230,7 +230,7 @@ taken for the electric field. Similarly, the solutions
 <h3>Cylindrical waves<a class="headerlink" href="#cylindrical-waves" title="Link to this heading">¶</a></h3>
 <p>The cylindrical solutions can be constructed mostly analogously to the plane waves. The
 steering vector stays <span class="math notranslate nohighlight">\(\boldsymbol{\hat z}\)</span>. The solutions in cylindrical
-coordinates are <span class="math notranslate nohighlight">\(Z_m^{(n)}(k_\rho \rho) \mathrm e^{\mathrm i (m \varphi + k_z z}\)</span>
+coordinates are <span class="math notranslate nohighlight">\(Z_m^{(n)}(k_\rho \rho) \mathrm e^{\mathrm i (m \varphi + k_z z)}\)</span>
 where <span class="math notranslate nohighlight">\(k_z \in \mathbb R\)</span> and <span class="math notranslate nohighlight">\(m \in \mathbb Z\)</span> are the parameters of the
 solution. The radial part of the wave vector is defined as <span class="math notranslate nohighlight">\(k_\rho =
 \sqrt{k^2 - k_z^2}\)</span> with the imaginary part of the square root to be taken non-negative.
@@ -249,10 +249,10 @@ solutions are</p>
 \\
 \boldsymbol N_{k_z, m}^{(n)} (k, \boldsymbol r)
 =
-\left(\frac{\mathrm i k_z}{k} {Z_m^{(1)}}'(k_\rho \rho) \boldsymbol{\hat \rho}
-- \frac{m k_z}{k k_\rho \rho} Z_m^{(1)}(k_\rho \rho) \boldsymbol{\hat \varphi}
-+ \frac{k_\rho}{k} Z_m^{(1)}(k_\rho \rho) \boldsymbol{\hat z}\right)
-\mathrm e^{\mathrm i (k_z z + m \varphi)}\end{split}\]</div>
+\left(\frac{\mathrm i k_z}{k} {Z_m^{(n)}}'(k_\rho \rho) \boldsymbol{\hat \rho}
+- \frac{m k_z}{k k_\rho \rho} Z_m^{(n)}(k_\rho \rho) \boldsymbol{\hat \varphi}
++ \frac{k_\rho}{k} Z_m^{(n)}(k_\rho \rho) \boldsymbol{\hat z}\right)
+\mathrm e^{\mathrm i (m \varphi + k_z z)}\end{split}\]</div>
 <p>where we, again, normalized the functions (<a class="reference internal" href="generated/treams.special.vcw_rM.html#treams.special.vcw_rM" title="treams.special.vcw_rM"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_rM()</span></code></a>,
 <a class="reference internal" href="generated/treams.special.vcw_M.html#treams.special.vcw_M" title="treams.special.vcw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_M()</span></code></a>, <a class="reference internal" href="generated/treams.special.vcw_rN.html#treams.special.vcw_rN" title="treams.special.vcw_rN"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_rN()</span></code></a>, and
 <a class="reference internal" href="generated/treams.special.vcw_N.html#treams.special.vcw_N" title="treams.special.vcw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_N()</span></code></a>). Since the steering vector is in the direction of the
@@ -461,14 +461,14 @@ c \boldsymbol B(\boldsymbol r)
         <li class="right" >
           <a href="theory.html" title="Theory"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.4.6.dev1+g4b06735b3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.4.6.dev4+g615382b30 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="theory.html" >Theory</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Maxwell’s equations and chiral constitutive relations</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
     &#169; Copyright 2023, Dominik Beutel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
     </div>
   </body>
 </html>

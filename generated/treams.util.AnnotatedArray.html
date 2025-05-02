@@ -5,12 +5,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>treams.util.AnnotatedArray &#8212; treams 0.4.6.dev1+g4b06735b3 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=4848ba22" />
+    <title>treams.util.AnnotatedArray &#8212; treams 0.4.6.dev4+g615382b30 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=0c472235" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css?v=424f8d56" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=f4ec84db" />
-    <script src="../_static/documentation_options.js?v=aa098df0"></script>
+    <script src="../_static/documentation_options.js?v=a17dff49"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="author" title="About these documents" href="../about.html" />
@@ -41,7 +41,7 @@
         <li class="right" >
           <a href="treams.util.zeros_like.html" title="treams.util.zeros_like"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev1+g4b06735b3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev4+g615382b30 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.util.html" accesskey="U">treams.util</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.util.AnnotatedArray</a></li> 
@@ -57,7 +57,7 @@
 <h1>treams.util.AnnotatedArray<a class="headerlink" href="#treams-util-annotatedarray" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="treams.util.AnnotatedArray">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">treams.util.</span></span><span class="sig-name descname"><span class="pre">AnnotatedArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ann</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#treams.util.AnnotatedArray" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">treams.util.</span></span><span class="sig-name descname"><span class="pre">AnnotatedArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ann</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#treams.util.AnnotatedArray" title="Link to this definition">¶</a></dt>
 <dd><p>Array that keeps track of annotations for each dimension.</p>
 <p>This class acts mostly like numpy arrays, but it is enhanced by the following
 functionalities:</p>
@@ -65,11 +65,11 @@ functionalities:</p>
 <div><ul class="simple">
 <li><p>Annotations are added to each dimension</p></li>
 <li><p>Annotations are compared and preserved for numpy (generalized)
-<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ufunc</span></code></a> (like <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.add.html#numpy.add" title="(in NumPy v2.1)"><code class="xref py py-data docutils literal notranslate"><span class="pre">numpy.add</span></code></a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.exp.html#numpy.exp" title="(in NumPy v2.1)"><code class="xref py py-data docutils literal notranslate"><span class="pre">numpy.exp</span></code></a>,
-<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.matmul.html#numpy.matmul" title="(in NumPy v2.1)"><code class="xref py py-data docutils literal notranslate"><span class="pre">numpy.matmul</span></code></a> and many more “standard” mathematical functions)</p></li>
-<li><p>Special ufunc methods, like <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.reduce.html#numpy.ufunc.reduce" title="(in NumPy v2.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">numpy.ufunc.reduce()</span></code></a>, are supported</p></li>
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="(in NumPy v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ufunc</span></code></a> (like <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.add.html#numpy.add" title="(in NumPy v2.2)"><code class="xref py py-data docutils literal notranslate"><span class="pre">numpy.add</span></code></a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.exp.html#numpy.exp" title="(in NumPy v2.2)"><code class="xref py py-data docutils literal notranslate"><span class="pre">numpy.exp</span></code></a>,
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.matmul.html#numpy.matmul" title="(in NumPy v2.2)"><code class="xref py py-data docutils literal notranslate"><span class="pre">numpy.matmul</span></code></a> and many more “standard” mathematical functions)</p></li>
+<li><p>Special ufunc methods, like <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.reduce.html#numpy.ufunc.reduce" title="(in NumPy v2.2)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">numpy.ufunc.reduce()</span></code></a>, are supported</p></li>
 <li><p>A growing subset of other numpy functions are supported, like
-<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.solve.html#numpy.linalg.solve" title="(in NumPy v2.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.linalg.solve()</span></code></a></p></li>
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.linalg.solve.html#numpy.linalg.solve" title="(in NumPy v2.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.linalg.solve()</span></code></a></p></li>
 <li><p>Keywords can be specified as scale are also index into, when index the
 AnnotatedArray</p></li>
 <li><p>Annotations can also be exposed as properties</p></li>
@@ -85,7 +85,7 @@ AnnotatedArray</p></li>
 <span class="go">)</span>
 </pre></div>
 </div>
-<p>The interoperability with numpy is implemented using <a class="reference external" href="https://numpy.org/doc/stable/user/basics.dispatch.html#basics-dispatch" title="(in NumPy v2.1)"><span>Writing custom array containers</span></a>
+<p>The interoperability with numpy is implemented using <a class="reference external" href="https://numpy.org/doc/stable/user/basics.dispatch.html#basics-dispatch" title="(in NumPy v2.2)"><span>Writing custom array containers</span></a>
 by defining <a class="reference internal" href="treams.util.AnnotatedArray.__array__.html#treams.util.AnnotatedArray.__array__" title="treams.util.AnnotatedArray.__array__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__array__()</span></code></a>, <a class="reference internal" href="treams.util.AnnotatedArray.__array_ufunc__.html#treams.util.AnnotatedArray.__array_ufunc__" title="treams.util.AnnotatedArray.__array_ufunc__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__array_ufunc__()</span></code></a>, and
 <a class="reference internal" href="treams.util.AnnotatedArray.__array_function__.html#treams.util.AnnotatedArray.__array_function__" title="treams.util.AnnotatedArray.__array_function__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__array_function__()</span></code></a>.</p>
 <p class="rubric">Attributes</p>
@@ -264,74 +264,74 @@ by defining <a class="reference internal" href="treams.util.AnnotatedArray.__arr
 <tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.transpose.html#treams.util.AnnotatedArray.transpose" title="treams.util.AnnotatedArray.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>([axes])</p></td>
 <td><p>Transpose array dimensions.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__rshift__.html#treams.util.AnnotatedArray.__rshift__" title="treams.util.AnnotatedArray.__rshift__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__rshift__</span></code></a>(other)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__and__.html#treams.util.AnnotatedArray.__and__" title="treams.util.AnnotatedArray.__and__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__and__</span></code></a>(other)</p></td>
 <td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__neg__.html#treams.util.AnnotatedArray.__neg__" title="treams.util.AnnotatedArray.__neg__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__neg__</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__ge__.html#treams.util.AnnotatedArray.__ge__" title="treams.util.AnnotatedArray.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(other)</p></td>
-<td><p>Return self&gt;=value.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__add__.html#treams.util.AnnotatedArray.__add__" title="treams.util.AnnotatedArray.__add__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__add__</span></code></a>(other)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__or__.html#treams.util.AnnotatedArray.__or__" title="treams.util.AnnotatedArray.__or__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__or__</span></code></a>(other)</p></td>
-<td><p>Return self|value.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__invert__.html#treams.util.AnnotatedArray.__invert__" title="treams.util.AnnotatedArray.__invert__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__invert__</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__mul__.html#treams.util.AnnotatedArray.__mul__" title="treams.util.AnnotatedArray.__mul__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__mul__</span></code></a>(other)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__mod__.html#treams.util.AnnotatedArray.__mod__" title="treams.util.AnnotatedArray.__mod__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__mod__</span></code></a>(other)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__lshift__.html#treams.util.AnnotatedArray.__lshift__" title="treams.util.AnnotatedArray.__lshift__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lshift__</span></code></a>(other)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__divmod__.html#treams.util.AnnotatedArray.__divmod__" title="treams.util.AnnotatedArray.__divmod__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__divmod__</span></code></a>(other)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__abs__.html#treams.util.AnnotatedArray.__abs__" title="treams.util.AnnotatedArray.__abs__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__abs__</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__eq__.html#treams.util.AnnotatedArray.__eq__" title="treams.util.AnnotatedArray.__eq__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__eq__</span></code></a>(other)</p></td>
-<td><p>Return self==value.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__xor__.html#treams.util.AnnotatedArray.__xor__" title="treams.util.AnnotatedArray.__xor__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__xor__</span></code></a>(other)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__pos__.html#treams.util.AnnotatedArray.__pos__" title="treams.util.AnnotatedArray.__pos__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__pos__</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__gt__.html#treams.util.AnnotatedArray.__gt__" title="treams.util.AnnotatedArray.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(other)</p></td>
-<td><p>Return self&gt;value.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__ne__.html#treams.util.AnnotatedArray.__ne__" title="treams.util.AnnotatedArray.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(other)</p></td>
-<td><p>Return self!=value.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__floordiv__.html#treams.util.AnnotatedArray.__floordiv__" title="treams.util.AnnotatedArray.__floordiv__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__floordiv__</span></code></a>(other)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__divmod__.html#treams.util.AnnotatedArray.__divmod__" title="treams.util.AnnotatedArray.__divmod__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__divmod__</span></code></a>(other)</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__lt__.html#treams.util.AnnotatedArray.__lt__" title="treams.util.AnnotatedArray.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(other)</p></td>
 <td><p>Return self&lt;value.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__sub__.html#treams.util.AnnotatedArray.__sub__" title="treams.util.AnnotatedArray.__sub__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__sub__</span></code></a>(other)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__abs__.html#treams.util.AnnotatedArray.__abs__" title="treams.util.AnnotatedArray.__abs__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__abs__</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__le__.html#treams.util.AnnotatedArray.__le__" title="treams.util.AnnotatedArray.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(other)</p></td>
 <td><p>Return self&lt;=value.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__truediv__.html#treams.util.AnnotatedArray.__truediv__" title="treams.util.AnnotatedArray.__truediv__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__truediv__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__pos__.html#treams.util.AnnotatedArray.__pos__" title="treams.util.AnnotatedArray.__pos__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__pos__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__pow__.html#treams.util.AnnotatedArray.__pow__" title="treams.util.AnnotatedArray.__pow__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__pow__</span></code></a>(other)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__truediv__.html#treams.util.AnnotatedArray.__truediv__" title="treams.util.AnnotatedArray.__truediv__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__truediv__</span></code></a>(other)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__floordiv__.html#treams.util.AnnotatedArray.__floordiv__" title="treams.util.AnnotatedArray.__floordiv__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__floordiv__</span></code></a>(other)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__and__.html#treams.util.AnnotatedArray.__and__" title="treams.util.AnnotatedArray.__and__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__and__</span></code></a>(other)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__lshift__.html#treams.util.AnnotatedArray.__lshift__" title="treams.util.AnnotatedArray.__lshift__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lshift__</span></code></a>(other)</p></td>
 <td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__sub__.html#treams.util.AnnotatedArray.__sub__" title="treams.util.AnnotatedArray.__sub__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__sub__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__rshift__.html#treams.util.AnnotatedArray.__rshift__" title="treams.util.AnnotatedArray.__rshift__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__rshift__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__mul__.html#treams.util.AnnotatedArray.__mul__" title="treams.util.AnnotatedArray.__mul__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__mul__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__gt__.html#treams.util.AnnotatedArray.__gt__" title="treams.util.AnnotatedArray.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__mod__.html#treams.util.AnnotatedArray.__mod__" title="treams.util.AnnotatedArray.__mod__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__mod__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__or__.html#treams.util.AnnotatedArray.__or__" title="treams.util.AnnotatedArray.__or__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__or__</span></code></a>(other)</p></td>
+<td><p>Return self|value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__ne__.html#treams.util.AnnotatedArray.__ne__" title="treams.util.AnnotatedArray.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(other)</p></td>
+<td><p>Return self!=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__neg__.html#treams.util.AnnotatedArray.__neg__" title="treams.util.AnnotatedArray.__neg__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__neg__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__xor__.html#treams.util.AnnotatedArray.__xor__" title="treams.util.AnnotatedArray.__xor__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__xor__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__ge__.html#treams.util.AnnotatedArray.__ge__" title="treams.util.AnnotatedArray.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__invert__.html#treams.util.AnnotatedArray.__invert__" title="treams.util.AnnotatedArray.__invert__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__invert__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotatedArray.__eq__.html#treams.util.AnnotatedArray.__eq__" title="treams.util.AnnotatedArray.__eq__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__eq__</span></code></a>(other)</p></td>
+<td><p>Return self==value.</p></td>
 </tr>
 </tbody>
 </table>
@@ -402,7 +402,7 @@ by defining <a class="reference internal" href="treams.util.AnnotatedArray.__arr
         <li class="right" >
           <a href="treams.util.zeros_like.html" title="treams.util.zeros_like"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev1+g4b06735b3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev4+g615382b30 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.util.html" >treams.util</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.util.AnnotatedArray</a></li> 
@@ -410,7 +410,7 @@ by defining <a class="reference internal" href="treams.util.AnnotatedArray.__arr
     </div>
     <div class="footer" role="contentinfo">
     &#169; Copyright 2023, Dominik Beutel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
     </div>
   </body>
 </html>

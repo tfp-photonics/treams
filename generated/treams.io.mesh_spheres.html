@@ -5,12 +5,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>treams.io.mesh_spheres &#8212; treams 0.4.6.dev1+g4b06735b3 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=4848ba22" />
+    <title>treams.io.mesh_spheres &#8212; treams 0.4.6.dev4+g615382b30 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=0c472235" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css?v=424f8d56" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=f4ec84db" />
-    <script src="../_static/documentation_options.js?v=aa098df0"></script>
+    <script src="../_static/documentation_options.js?v=a17dff49"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="author" title="About these documents" href="../about.html" />
@@ -41,7 +41,7 @@
         <li class="right" >
           <a href="treams.io.load_hdf5.html" title="treams.io.load_hdf5"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev1+g4b06735b3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev4+g615382b30 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.io.html" accesskey="U">treams.io</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.io.mesh_spheres</a></li> 
@@ -62,14 +62,14 @@
 <p>This function facilitates generating a mesh for a cluster spheres using gmsh. It
 requires the package <cite>gmsh</cite> to be installed.</p>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gmsh</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">treams.io</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">gmsh</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">treams.io</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">gmsh</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;spheres&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">treams</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">mesh_spheres</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]],</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
 <span class="go">&lt;class &#39;gmsh.model&#39;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">gmsh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;spheres.msh&quot;</span><span class="p">)</span>  
-<span class="gp">&gt;&gt;&gt; </span><span class="n">gmsh</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gmsh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;spheres.msh&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gmsh</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -155,7 +155,7 @@ equal to the general mesh size.</p></li>
         <li class="right" >
           <a href="treams.io.load_hdf5.html" title="treams.io.load_hdf5"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev1+g4b06735b3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev4+g615382b30 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.io.html" >treams.io</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.io.mesh_spheres</a></li> 
@@ -163,7 +163,7 @@ equal to the general mesh size.</p></li>
     </div>
     <div class="footer" role="contentinfo">
     &#169; Copyright 2023, Dominik Beutel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
     </div>
   </body>
 </html>

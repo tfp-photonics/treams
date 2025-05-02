@@ -5,12 +5,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>treams.util.AnnotationSequence &#8212; treams 0.4.6.dev1+g4b06735b3 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=4848ba22" />
+    <title>treams.util.AnnotationSequence &#8212; treams 0.4.6.dev4+g615382b30 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=0c472235" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css?v=424f8d56" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=f4ec84db" />
-    <script src="../_static/documentation_options.js?v=aa098df0"></script>
+    <script src="../_static/documentation_options.js?v=a17dff49"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="author" title="About these documents" href="../about.html" />
@@ -41,7 +41,7 @@
         <li class="right" >
           <a href="treams.util.AnnotationDict.values.html" title="treams.util.AnnotationDict.values"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev1+g4b06735b3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev4+g615382b30 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.util.html" accesskey="U">treams.util</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.util.AnnotationSequence</a></li> 
@@ -57,7 +57,7 @@
 <h1>treams.util.AnnotationSequence<a class="headerlink" href="#treams-util-annotationsequence" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="treams.util.AnnotationSequence">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">treams.util.</span></span><span class="sig-name descname"><span class="pre">AnnotationSequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapping=&lt;class</span> <span class="pre">'treams.util.AnnotationDict'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#treams.util.AnnotationSequence" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">treams.util.</span></span><span class="sig-name descname"><span class="pre">AnnotationSequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapping=&lt;class</span> <span class="pre">'treams.util.AnnotationDict'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#treams.util.AnnotationSequence" title="Link to this definition">¶</a></dt>
 <dd><p>A Sequence of dictionaries.</p>
 <p>This class is intended to work together with <a class="reference internal" href="treams.util.AnnotationDict.html#treams.util.AnnotationDict" title="treams.util.AnnotationDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnnotationDict</span></code></a>. It provides
 convenience functions to interact with multiple of those dictionaries, which are
@@ -131,23 +131,23 @@ dictionary is mutable.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotationSequence.update.html#treams.util.AnnotationSequence.update" title="treams.util.AnnotationSequence.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(other)</p></td>
 <td><p>Update all mappings in the sequence at once.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotationSequence.__ge__.html#treams.util.AnnotationSequence.__ge__" title="treams.util.AnnotationSequence.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(value, /)</p></td>
-<td><p>Return self&gt;=value.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotationSequence.__lt__.html#treams.util.AnnotationSequence.__lt__" title="treams.util.AnnotationSequence.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(value, /)</p></td>
+<td><p>Return self&lt;value.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotationSequence.__gt__.html#treams.util.AnnotationSequence.__gt__" title="treams.util.AnnotationSequence.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(value, /)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotationSequence.__le__.html#treams.util.AnnotationSequence.__le__" title="treams.util.AnnotationSequence.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(value, /)</p></td>
+<td><p>Return self&lt;=value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotationSequence.__gt__.html#treams.util.AnnotationSequence.__gt__" title="treams.util.AnnotationSequence.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(value, /)</p></td>
 <td><p>Return self&gt;value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotationSequence.__str__.html#treams.util.AnnotationSequence.__str__" title="treams.util.AnnotationSequence.__str__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__str__</span></code></a>()</p></td>
+<td><p>Return str(self).</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotationSequence.__ne__.html#treams.util.AnnotationSequence.__ne__" title="treams.util.AnnotationSequence.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(value, /)</p></td>
 <td><p>Return self!=value.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotationSequence.__lt__.html#treams.util.AnnotationSequence.__lt__" title="treams.util.AnnotationSequence.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(value, /)</p></td>
-<td><p>Return self&lt;value.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.util.AnnotationSequence.__str__.html#treams.util.AnnotationSequence.__str__" title="treams.util.AnnotationSequence.__str__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__str__</span></code></a>()</p></td>
-<td><p>Return str(self).</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotationSequence.__le__.html#treams.util.AnnotationSequence.__le__" title="treams.util.AnnotationSequence.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(value, /)</p></td>
-<td><p>Return self&lt;=value.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.util.AnnotationSequence.__ge__.html#treams.util.AnnotationSequence.__ge__" title="treams.util.AnnotationSequence.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(value, /)</p></td>
+<td><p>Return self&gt;=value.</p></td>
 </tr>
 </tbody>
 </table>
@@ -218,7 +218,7 @@ dictionary is mutable.</p>
         <li class="right" >
           <a href="treams.util.AnnotationDict.values.html" title="treams.util.AnnotationDict.values"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev1+g4b06735b3 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev4+g615382b30 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.util.html" >treams.util</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.util.AnnotationSequence</a></li> 
@@ -226,7 +226,7 @@ dictionary is mutable.</p>
     </div>
     <div class="footer" role="contentinfo">
     &#169; Copyright 2023, Dominik Beutel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
     </div>
   </body>
 </html>
