@@ -272,9 +272,9 @@ solution is :math:`\boldsymbol r`. Then, the vector spherical waves are defined 
     \\
     \boldsymbol N_{lm}^{(n)} (k, \boldsymbol r)
     =
-    \left({h_l^{(1)}}'(kr) + \frac{h_l^{(1)}(kr)}{kr}\right)
+    \left({z_l^{(n)}}'(kr) + \frac{z_l^{(n)}(kr)}{kr}\right)
     \boldsymbol Y_{lm}(\theta, \varphi)
-    + \sqrt{l (l + 1)} \frac{h_l^{(1)}(kr)}{kr} \boldsymbol Z_{lm}(\theta, \varphi)
+    + \sqrt{l (l + 1)} \frac{z_l^{(n)}(kr)}{kr} \boldsymbol Z_{lm}(\theta, \varphi)
 
 (:func:`treams.special.vsw_rM`, :func:`treams.special.vsw_M`,
 :func:`treams.special.vsw_rN`, and :func:`treams.special.vsw_N`) where
