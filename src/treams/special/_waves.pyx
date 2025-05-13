@@ -1,12 +1,12 @@
 """Special mathematical functions related to waves"""
 
 cimport scipy.special.cython_special as cs
-from libc.math cimport INFINITY, M_2_SQRTPI, M_SQRT1_2
+from libc.math cimport INFINITY, NAN
+from libc.math cimport M_2_SQRTPI, M_SQRT1_2
 from libc.math cimport exp as expd
 from libc.math cimport fabs, lgamma, pi
 from libc.math cimport sqrt as sqrtd
 from libc.stdlib cimport labs
-from numpy.math cimport NAN
 
 from treams.special._bessel cimport (
     hankel1_d,

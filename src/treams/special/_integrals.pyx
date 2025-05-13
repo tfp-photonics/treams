@@ -4,8 +4,8 @@ cimport scipy.special.cython_special as cs
 from libc.math cimport M_SQRT1_2, NAN
 from libc.math cimport exp as expd
 from libc.math cimport isnan, lgamma
+from libc.math cimport INFINITY, NAN
 from libc.stdlib cimport free, labs, malloc
-from numpy.math cimport INFINITY, NAN
 
 from treams.special._misc cimport SQPI, double_complex, exp, pow, sqrt
 
