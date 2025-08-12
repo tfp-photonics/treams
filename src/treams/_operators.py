@@ -634,7 +634,8 @@ def _pw_pw_expand(basis, to_basis, k0, material, modetype, where):
         where
         & (kx[:, None] == kvecs[0])
         & (ky[:, None] == kvecs[1])
-        & (kz[:, None] == kvecs[2]),
+        & (kz[:, None] == kvecs[2])
+        & (to_basis.pol[:, None] == basis.pol),
         int,
     )
     return core.PhysicsArray(
