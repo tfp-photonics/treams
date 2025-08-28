@@ -256,7 +256,7 @@ Spherical waves
 Finally, we define the spherical solutions starting from the scalar solutions
 :math:`z_l^{(n)}(kr) Y_{lm}(\theta, \phi)` where :math:`z_l^{(n)}` are the spherical
 Bessel and Hankel functions (and we choose :math:`j_l = z_l^{(1)}` and
-:math:`h_l^{(1)} = z_l^{(n)}` in complete analogy to the cylindrical case) and
+:math:`h_l^{(1)} = z_l^{(3)}` in complete analogy to the cylindrical case) and
 :math:`Y_{lm}` are the spherical harmonics (:func:`treams.special.spherical_jn`,
 :func:`treams.special.spherical_hankel1`, and :func:`treams.special.sph_harm`). The
 value :math:`l \in \mathbb N` refers to the angular momentum. The value :math:`l = 0` is
