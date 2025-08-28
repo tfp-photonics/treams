@@ -284,8 +284,8 @@ class SMatrices:
 
         Args:
             r (float, (3,)-array): Translation vector.
-            k0 (float): Wave number in vacuum.
             basis (PlaneWaveBasis): Basis definition.
+            k0 (float): Wave number in vacuum.
             material (Material, optional): Material definition.
             poltype (str, optional): Polarization type (:ref:`params:Polarizations`).
 
