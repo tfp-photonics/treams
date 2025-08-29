@@ -5,12 +5,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Maxwell’s equations and chiral constitutive relations &#8212; treams 0.4.6.dev6+g9d797bc5b documentation</title>
+    <title>Maxwell’s equations and chiral constitutive relations &#8212; treams 0.4.6.dev7+gdb460d4eb documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=0c472235" />
     <link rel="stylesheet" type="text/css" href="_static/pyramid.css?v=424f8d56" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=f4ec84db" />
-    <script src="_static/documentation_options.js?v=741423b3"></script>
+    <script src="_static/documentation_options.js?v=02e9b640"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="theory.html" title="Theory"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.4.6.dev6+g9d797bc5b documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.4.6.dev7+gdb460d4eb documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="theory.html" accesskey="U">Theory</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Maxwell’s equations and chiral constitutive relations</a></li> 
       </ul>
@@ -263,7 +263,7 @@ z-axis, the solutions <span class="math notranslate nohighlight">\(\boldsymbol M
 <p>Finally, we define the spherical solutions starting from the scalar solutions
 <span class="math notranslate nohighlight">\(z_l^{(n)}(kr) Y_{lm}(\theta, \phi)\)</span> where <span class="math notranslate nohighlight">\(z_l^{(n)}\)</span> are the spherical
 Bessel and Hankel functions (and we choose <span class="math notranslate nohighlight">\(j_l = z_l^{(1)}\)</span> and
-<span class="math notranslate nohighlight">\(h_l^{(1)} = z_l^{(n)}\)</span> in complete analogy to the cylindrical case) and
+<span class="math notranslate nohighlight">\(h_l^{(1)} = z_l^{(3)}\)</span> in complete analogy to the cylindrical case) and
 <span class="math notranslate nohighlight">\(Y_{lm}\)</span> are the spherical harmonics (<code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.spherical_jn()</span></code>,
 <a class="reference internal" href="generated/treams.special.spherical_hankel1.html#treams.special.spherical_hankel1" title="treams.special.spherical_hankel1"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.spherical_hankel1()</span></code></a>, and <a class="reference internal" href="generated/treams.special.sph_harm.html#treams.special.sph_harm" title="treams.special.sph_harm"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.sph_harm()</span></code></a>). The
 value <span class="math notranslate nohighlight">\(l \in \mathbb N\)</span> refers to the angular momentum. The value <span class="math notranslate nohighlight">\(l = 0\)</span> is
@@ -277,9 +277,9 @@ solution is <span class="math notranslate nohighlight">\(\boldsymbol r\)</span>.
 \\
 \boldsymbol N_{lm}^{(n)} (k, \boldsymbol r)
 =
-\left({h_l^{(1)}}'(kr) + \frac{h_l^{(1)}(kr)}{kr}\right)
+\left({z_l^{(n)}}'(kr) + \frac{z_l^{(n)}(kr)}{kr}\right)
 \boldsymbol Y_{lm}(\theta, \varphi)
-+ \sqrt{l (l + 1)} \frac{h_l^{(1)}(kr)}{kr} \boldsymbol Z_{lm}(\theta, \varphi)\end{split}\]</div>
++ \sqrt{l (l + 1)} \frac{z_l^{(n)}(kr)}{kr} \boldsymbol Z_{lm}(\theta, \varphi)\end{split}\]</div>
 <p>(<a class="reference internal" href="generated/treams.special.vsw_rM.html#treams.special.vsw_rM" title="treams.special.vsw_rM"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_rM()</span></code></a>, <a class="reference internal" href="generated/treams.special.vsw_M.html#treams.special.vsw_M" title="treams.special.vsw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_M()</span></code></a>,
 <a class="reference internal" href="generated/treams.special.vsw_rN.html#treams.special.vsw_rN" title="treams.special.vsw_rN"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_rN()</span></code></a>, and <a class="reference internal" href="generated/treams.special.vsw_N.html#treams.special.vsw_N" title="treams.special.vsw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_N()</span></code></a>) where</p>
 <div class="math notranslate nohighlight">
@@ -461,7 +461,7 @@ c \boldsymbol B(\boldsymbol r)
         <li class="right" >
           <a href="theory.html" title="Theory"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.4.6.dev6+g9d797bc5b documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.4.6.dev7+gdb460d4eb documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="theory.html" >Theory</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Maxwell’s equations and chiral constitutive relations</a></li> 
       </ul>
