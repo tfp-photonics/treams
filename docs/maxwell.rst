@@ -256,7 +256,7 @@ Spherical waves
 Finally, we define the spherical solutions starting from the scalar solutions
 :math:`z_l^{(n)}(kr) Y_{lm}(\theta, \phi)` where :math:`z_l^{(n)}` are the spherical
 Bessel and Hankel functions (and we choose :math:`j_l = z_l^{(1)}` and
-:math:`h_l^{(1)} = z_l^{(n)}` in complete analogy to the cylindrical case) and
+:math:`h_l^{(1)} = z_l^{(3)}` in complete analogy to the cylindrical case) and
 :math:`Y_{lm}` are the spherical harmonics (:func:`treams.special.spherical_jn`,
 :func:`treams.special.spherical_hankel1`, and :func:`treams.special.sph_harm`). The
 value :math:`l \in \mathbb N` refers to the angular momentum. The value :math:`l = 0` is
@@ -272,9 +272,9 @@ solution is :math:`\boldsymbol r`. Then, the vector spherical waves are defined 
     \\
     \boldsymbol N_{lm}^{(n)} (k, \boldsymbol r)
     =
-    \left({h_l^{(1)}}'(kr) + \frac{h_l^{(1)}(kr)}{kr}\right)
+    \left({z_l^{(n)}}'(kr) + \frac{z_l^{(n)}(kr)}{kr}\right)
     \boldsymbol Y_{lm}(\theta, \varphi)
-    + \sqrt{l (l + 1)} \frac{h_l^{(1)}(kr)}{kr} \boldsymbol Z_{lm}(\theta, \varphi)
+    + \sqrt{l (l + 1)} \frac{z_l^{(n)}(kr)}{kr} \boldsymbol Z_{lm}(\theta, \varphi)
 
 (:func:`treams.special.vsw_rM`, :func:`treams.special.vsw_M`,
 :func:`treams.special.vsw_rN`, and :func:`treams.special.vsw_N`) where
