@@ -21,7 +21,7 @@ from libc.math cimport lgamma, pi
 from libc.math cimport sqrt as sqrtd
 
 cimport treams.special.cython_special as cs
-from treams.special._misc cimport double_complex, sqrt
+from treams.special._misc cimport double_complex, sqrt, abs
 
 
 cdef extern from "<complex.h>" nogil:
@@ -249,15 +249,32 @@ def to_sw(l, m, polsw, kx, ky, kz, polpw, poltype=None, *args, **kwargs):
     raise ValueError(f"invalid poltype '{poltype}'")
 
 
+cdef bint _are_vectors_same(bint same, double vec_1, double vec_2) nogil:
+    cdef double machine_precision_error = 1e-10 
+    cdef double difference = abs(vec_1 - vec_2)
+    if same == True:
+        if (difference <= machine_precision_error):
+            return True
+        else:
+            return False
+    else:
+        if (difference > machine_precision_error):
+            return True
+        else:
+            return False 
+        
+
 cdef double complex _cto_cw(double kzcw, long m, long polcw, double kx, number_t ky, double kzpw, long polpw) nogil:
+    with gil:
+        print("kzcw",kzcw,"    kzpw",kzpw,"    difference", kzcw-kzpw)
     cdef number_t krho = sqrt(kx * kx + ky * ky)
-    if (polcw == polpw == 0 or polcw == polpw == 1) and kzcw == kzpw:
+    if (polcw == polpw == 0 or polcw == polpw == 1) and _are_vectors_same(True, kzcw, kzpw):
         if m == 0:
             return 1
         if krho == 0:
             return cpow(1j, m)
         return cpow((1j * kx + ky) / krho, m)
-    elif (polpw == 1 and polcw == 0) or (polpw == 0 and polcw == 1) or kzcw != kzpw:
+    elif (polpw == 1 and polcw == 0) or (polpw == 0 and polcw == 1) or _are_vectors_same(False, kzcw, kzpw):
         return 0.0j
     raise ValueError("Polarization must be zero or one")
 
