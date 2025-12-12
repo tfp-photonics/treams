@@ -14,6 +14,7 @@
 from importlib.metadata import version
 
 import numpy as np
+np.set_printoptions(legacy="1.25")
 
 # sys.path.insert(0, os.path.abspath('..'))
 
