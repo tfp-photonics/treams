@@ -573,6 +573,9 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         This function returns the bare array without annotations. This function does not
         necessarily make a copy of the array.
 
+        Adopted according to 
+        https://numpy.org/devdocs/numpy_2_0_migration_guide.html#adapting-to-changes-in-the-copy-keyword
+        
         Args:
             dtype (optional): Type of the returned array.
         """
