@@ -51,8 +51,10 @@ Global configuration variables are stored in
 
 Some convenience classes for the implementation are defined in
 
+.. autosummary::
+   :toctree: generated/
 
-
+   ~treams.util
 
 Subpackages
 ===========
