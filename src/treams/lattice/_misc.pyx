@@ -216,7 +216,7 @@ def cube(long d, long n):
     cdef long r[3]
     cdef long[:] rview = r
     cdef long i = 0
-    cdef np.ndarray[long, ndim=2] res = np.empty((ncube(d, n), d), dtype=long)
+    cdef np.ndarray[long, ndim=2] res = np.empty((ncube(d, n), d), dtype=int)
     for i in range(3):
         r[i] = -n
     res[0, :] = rview[:d]
@@ -247,7 +247,7 @@ def cubeedge(long d, long n):
     cdef long r[3]
     cdef long[:] rview = r
     cdef long i = 0
-    cdef np.ndarray[long, ndim=2] res = np.empty((nedge(d, n), d), dtype=long)
+    cdef np.ndarray[long, ndim=2] res = np.empty((nedge(d, n), d), dtype=int)
     for i in range(3):
         r[i] = -n
     res[0, :] = rview[:d]
