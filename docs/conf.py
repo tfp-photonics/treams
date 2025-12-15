@@ -14,7 +14,6 @@
 from importlib.metadata import version
 
 import numpy as np
-np.set_printoptions(legacy="1.25")
 
 # sys.path.insert(0, os.path.abspath('..'))
 
@@ -56,7 +55,7 @@ doctest_global_setup = """
 import numpy as np
 from treams import *
 
-np.set_printoptions(precision=3, suppress=True)
+np.set_printoptions(precision=3, legacy="1.25", suppress=True)
 """
 intersphinx_mapping = {
     "scipy": ("https://docs.scipy.org/doc/scipy", None),
