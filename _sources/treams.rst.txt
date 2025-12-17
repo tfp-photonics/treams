@@ -56,7 +56,6 @@ Some convenience classes for the implementation are defined in
 
    ~treams.util
 
-
 Subpackages
 ===========
 

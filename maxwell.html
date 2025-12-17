@@ -5,15 +5,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Maxwell’s equations and chiral constitutive relations &#8212; treams 0.4.6.dev7+gdb460d4eb documentation</title>
+    <title>Maxwell’s equations and chiral constitutive relations &#8212; treams 0.4.6.dev10+gab57a132f documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=0c472235" />
     <link rel="stylesheet" type="text/css" href="_static/pyramid.css?v=424f8d56" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=f4ec84db" />
-    <script src="_static/documentation_options.js?v=02e9b640"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/documentation_options.js?v=4a8d0f77"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="theory.html" title="Theory"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.4.6.dev7+gdb460d4eb documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.4.6.dev10+gab57a132f documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="theory.html" accesskey="U">Theory</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Maxwell’s equations and chiral constitutive relations</a></li> 
       </ul>
@@ -219,7 +219,7 @@ vector is constant and conventionally chosen to be the unit vector along the z-a
 \mathrm e^{\mathrm i \boldsymbol k \boldsymbol r}
 = -\boldsymbol{\hat \theta}_{\boldsymbol k}
 \mathrm e^{\mathrm i \boldsymbol k \boldsymbol r}\end{split}\]</div>
-<p>are found (<a class="reference internal" href="generated/treams.special.vpw_M.html#treams.special.vpw_M" title="treams.special.vpw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vpw_M()</span></code></a> and <a class="reference internal" href="generated/treams.special.vpw_N.html#treams.special.vpw_N" title="treams.special.vpw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vpw_N()</span></code></a>). We normalized
+<p>are found (<code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vpw_M()</span></code> and <code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vpw_N()</span></code>). We normalized
 these solutions such that they have unit strength for real-valued wave vectors. The
 solution <span class="math notranslate nohighlight">\(\boldsymbol M_{\boldsymbol k}\)</span> is always perpendicular to the z-axis.
 Thus, with respect to the x-y-plane those solutions are often referred to as <cite>TE</cite>, when
@@ -253,9 +253,9 @@ solutions are</p>
 - \frac{m k_z}{k k_\rho \rho} Z_m^{(n)}(k_\rho \rho) \boldsymbol{\hat \varphi}
 + \frac{k_\rho}{k} Z_m^{(n)}(k_\rho \rho) \boldsymbol{\hat z}\right)
 \mathrm e^{\mathrm i (m \varphi + k_z z)}\end{split}\]</div>
-<p>where we, again, normalized the functions (<a class="reference internal" href="generated/treams.special.vcw_rM.html#treams.special.vcw_rM" title="treams.special.vcw_rM"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_rM()</span></code></a>,
-<a class="reference internal" href="generated/treams.special.vcw_M.html#treams.special.vcw_M" title="treams.special.vcw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_M()</span></code></a>, <a class="reference internal" href="generated/treams.special.vcw_rN.html#treams.special.vcw_rN" title="treams.special.vcw_rN"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_rN()</span></code></a>, and
-<a class="reference internal" href="generated/treams.special.vcw_N.html#treams.special.vcw_N" title="treams.special.vcw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_N()</span></code></a>). Since the steering vector is in the direction of the
+<p>where we, again, normalized the functions (<code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_rM()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_M()</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_rN()</span></code>, and
+<code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_N()</span></code>). Since the steering vector is in the direction of the
 z-axis, the solutions <span class="math notranslate nohighlight">\(\boldsymbol M_{k_z, m}^{(n)}\)</span> lie always in the x-y-plane.</p>
 </section>
 <section id="spherical-waves">
@@ -265,7 +265,7 @@ z-axis, the solutions <span class="math notranslate nohighlight">\(\boldsymbol M
 Bessel and Hankel functions (and we choose <span class="math notranslate nohighlight">\(j_l = z_l^{(1)}\)</span> and
 <span class="math notranslate nohighlight">\(h_l^{(1)} = z_l^{(3)}\)</span> in complete analogy to the cylindrical case) and
 <span class="math notranslate nohighlight">\(Y_{lm}\)</span> are the spherical harmonics (<code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.spherical_jn()</span></code>,
-<a class="reference internal" href="generated/treams.special.spherical_hankel1.html#treams.special.spherical_hankel1" title="treams.special.spherical_hankel1"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.spherical_hankel1()</span></code></a>, and <a class="reference internal" href="generated/treams.special.sph_harm.html#treams.special.sph_harm" title="treams.special.sph_harm"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.sph_harm()</span></code></a>). The
+<code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.spherical_hankel1()</span></code>, and <code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.sph_harm()</span></code>). The
 value <span class="math notranslate nohighlight">\(l \in \mathbb N\)</span> refers to the angular momentum. The value <span class="math notranslate nohighlight">\(l = 0\)</span> is
 only possible for longitudinal modes. So, for electromagnetic waves generally
 <span class="math notranslate nohighlight">\(l \geq 1\)</span>. The projection of the angular momentum onto the z-axis is <span class="math notranslate nohighlight">\(m \in
@@ -280,8 +280,8 @@ solution is <span class="math notranslate nohighlight">\(\boldsymbol r\)</span>.
 \left({z_l^{(n)}}'(kr) + \frac{z_l^{(n)}(kr)}{kr}\right)
 \boldsymbol Y_{lm}(\theta, \varphi)
 + \sqrt{l (l + 1)} \frac{z_l^{(n)}(kr)}{kr} \boldsymbol Z_{lm}(\theta, \varphi)\end{split}\]</div>
-<p>(<a class="reference internal" href="generated/treams.special.vsw_rM.html#treams.special.vsw_rM" title="treams.special.vsw_rM"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_rM()</span></code></a>, <a class="reference internal" href="generated/treams.special.vsw_M.html#treams.special.vsw_M" title="treams.special.vsw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_M()</span></code></a>,
-<a class="reference internal" href="generated/treams.special.vsw_rN.html#treams.special.vsw_rN" title="treams.special.vsw_rN"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_rN()</span></code></a>, and <a class="reference internal" href="generated/treams.special.vsw_N.html#treams.special.vsw_N" title="treams.special.vsw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_N()</span></code></a>) where</p>
+<p>(<code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_rM()</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_M()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_rN()</span></code>, and <code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_N()</span></code>) where</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\boldsymbol X_{lm} (\theta, \varphi)
 = \mathrm i \sqrt{\frac{2 l + 1}{4 \pi l (l + 1)} \frac{(l - m)!}{(l + m)!}}
@@ -297,12 +297,12 @@ solution is <span class="math notranslate nohighlight">\(\boldsymbol r\)</span>.
 \\
 \boldsymbol Z_{lm} (\theta, \varphi)
 = \mathrm i Y_{lm}(\theta, \varphi) \boldsymbol{\hat r}\end{split}\]</div>
-<p>are the vector spherical harmonics (<a class="reference internal" href="generated/treams.special.vsh_X.html#treams.special.vsh_X" title="treams.special.vsh_X"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsh_X()</span></code></a>,
-<a class="reference internal" href="generated/treams.special.vsh_Y.html#treams.special.vsh_Y" title="treams.special.vsh_Y"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsh_Y()</span></code></a>, and <a class="reference internal" href="generated/treams.special.vsh_Z.html#treams.special.vsh_Z" title="treams.special.vsh_Z"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsh_Z()</span></code></a>). These are themselves
+<p>are the vector spherical harmonics (<code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsh_X()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsh_Y()</span></code>, and <code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsh_Z()</span></code>). These are themselves
 defined by the functions <span class="math notranslate nohighlight">\(\pi_l^m(x) = \frac{m P_l^m(x)}{\sqrt{1 - x^2}}\)</span>,
 <span class="math notranslate nohighlight">\(\tau_l^m(x) = \frac{\mathrm d}{\mathrm d \theta}P_l^m(x = \cos\theta)\)</span>, and
-the associated Legendre polynomials <span class="math notranslate nohighlight">\(P_l^m\)</span> (<a class="reference internal" href="generated/treams.special.pi_fun.html#treams.special.pi_fun" title="treams.special.pi_fun"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.pi_fun()</span></code></a>,
-<a class="reference internal" href="generated/treams.special.tau_fun.html#treams.special.tau_fun" title="treams.special.tau_fun"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.tau_fun()</span></code></a>, and <a class="reference internal" href="generated/treams.special.lpmv.html#treams.special.lpmv" title="treams.special.lpmv"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.lpmv()</span></code></a>). The vector spherical
+the associated Legendre polynomials <span class="math notranslate nohighlight">\(P_l^m\)</span> (<code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.pi_fun()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.tau_fun()</span></code>, and <code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.lpmv()</span></code>). The vector spherical
 harmonics are orthogonal to each other and normalized to 1 upon integration over the
 solid angle.</p>
 <p>The solutions <span class="math notranslate nohighlight">\(\boldsymbol M_{lm}^{(n)}\)</span> are transverse to a sphere due to the
@@ -331,9 +331,9 @@ with the above definitions we find that <span class="math notranslate nohighligh
 (k, \boldsymbol r)\)</span>. So, the combinations <span class="math notranslate nohighlight">\(\sqrt{2} \boldsymbol A_{\pm,\nu}
 (k, \boldsymbol r) = \boldsymbol N_\nu (k, \boldsymbol r) \pm \boldsymbol M_\nu
 (k, \boldsymbol r)\)</span> are indeed solutions for the respective Riemann-Silberstein vectors
-(<a class="reference internal" href="generated/treams.special.vpw_A.html#treams.special.vpw_A" title="treams.special.vpw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vpw_A()</span></code></a>, <a class="reference internal" href="generated/treams.special.vcw_rA.html#treams.special.vcw_rA" title="treams.special.vcw_rA"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_rA()</span></code></a>,
-<a class="reference internal" href="generated/treams.special.vcw_A.html#treams.special.vcw_A" title="treams.special.vcw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_A()</span></code></a>, <a class="reference internal" href="generated/treams.special.vsw_rA.html#treams.special.vsw_rA" title="treams.special.vsw_rA"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_rA()</span></code></a>, and
-<a class="reference internal" href="generated/treams.special.vsw_A.html#treams.special.vsw_A" title="treams.special.vsw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_A()</span></code></a>). The solution for Maxwell’s equations are then</p>
+(<code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vpw_A()</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_rA()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vcw_A()</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_rA()</span></code>, and
+<code class="xref py py-func docutils literal notranslate"><span class="pre">treams.special.vsw_A()</span></code>). The solution for Maxwell’s equations are then</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\boldsymbol G_\pm(\boldsymbol r)
 = \sqrt{2} \sum_\nu a_{\pm,\nu} \boldsymbol A_{\pm,\nu} (k_\pm, \boldsymbol r)
@@ -461,14 +461,14 @@ c \boldsymbol B(\boldsymbol r)
         <li class="right" >
           <a href="theory.html" title="Theory"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">treams 0.4.6.dev7+gdb460d4eb documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">treams 0.4.6.dev10+gab57a132f documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="theory.html" >Theory</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Maxwell’s equations and chiral constitutive relations</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
     &#169; Copyright 2023, Dominik Beutel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
     </div>
   </body>
 </html>

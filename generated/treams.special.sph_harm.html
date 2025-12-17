@@ -5,15 +5,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>treams.special.sph_harm &#8212; treams 0.4.6.dev7+gdb460d4eb documentation</title>
+    <title>treams.special.sph_harm &#8212; treams 0.4.6.dev10+gab57a132f documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=0c472235" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css?v=424f8d56" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=f4ec84db" />
-    <script src="../_static/documentation_options.js?v=02e9b640"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/documentation_options.js?v=4a8d0f77"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -42,7 +41,7 @@
         <li class="right" >
           <a href="treams.special.spherical_yn_d.html" title="treams.special.spherical_yn_d"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev7+gdb460d4eb documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev10+gab57a132f documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.special.html" accesskey="U">treams.special</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.special.sph_harm</a></li> 
@@ -56,35 +55,6 @@
             
   <section id="treams-special-sph-harm">
 <h1>treams.special.sph_harm<a class="headerlink" href="#treams-special-sph-harm" title="Link to this heading">¶</a></h1>
-<dl class="py data">
-<dt class="sig sig-object py" id="treams.special.sph_harm">
-<span class="sig-prename descclassname"><span class="pre">treams.special.</span></span><span class="sig-name descname"><span class="pre">sph_harm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ufunc</span> <span class="pre">'sph_harm'&gt;</span></em><a class="headerlink" href="#treams.special.sph_harm" title="Link to this definition">¶</a></dt>
-<dd><p>Spherical harmonics of real and complex argument</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>In order to stay consistent with Scipy, the order of the arguments is kept the
-same. For most other functions, the postion of degree and order are swapped.</p>
-</div>
-<p>For complex argument the spherical harmonics are computed with</p>
-<div class="math notranslate nohighlight">
-\[Y_{lm}(\theta, \varphi) = \sqrt{\frac{2l + 1}{4\pi}\frac{(l - m)!}{(l + m)!}}
-P_l^m(\cos\theta) \mathrm e^{\mathrm i m \varphi}\]</div>
-<p>for real arguments <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.sph_harm.html#scipy.special.sph_harm" title="(in SciPy v1.16.1)"><code class="xref py py-data docutils literal notranslate"><span class="pre">scipy.special.sph_harm</span></code></a> is used.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>m</strong> (<em>integer</em><em>, </em><em>array_like</em>) – Order</p></li>
-<li><p><strong>l</strong> (<em>integer</em><em>, </em><em>array_like</em>) – Degree, non-negative</p></li>
-<li><p><strong>phi</strong> (<em>float</em><em> or </em><em>complex</em><em>, </em><em>array_like</em>) – Azimuthal angle</p></li>
-<li><p><strong>theta</strong> (<em>float</em><em> or </em><em>complex</em><em>, </em><em>array_like</em>) – Polar angle</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>complex</p>
-</dd>
-</dl>
-</dd></dl>
-
 </section>
 
 
@@ -150,7 +120,7 @@ P_l^m(\cos\theta) \mathrm e^{\mathrm i m \varphi}\]</div>
         <li class="right" >
           <a href="treams.special.spherical_yn_d.html" title="treams.special.spherical_yn_d"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev7+gdb460d4eb documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev10+gab57a132f documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="treams.special.html" >treams.special</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.special.sph_harm</a></li> 
@@ -158,7 +128,7 @@ P_l^m(\cos\theta) \mathrm e^{\mathrm i m \varphi}\]</div>
     </div>
     <div class="footer" role="contentinfo">
     &#169; Copyright 2023, Dominik Beutel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
     </div>
   </body>
 </html>

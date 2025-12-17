@@ -5,14 +5,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>treams.PlaneWaveBasisByComp &#8212; treams 0.4.6.dev7+gdb460d4eb documentation</title>
+    <title>treams.PlaneWaveBasisByComp &#8212; treams 0.4.6.dev10+gab57a132f documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=0c472235" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css?v=424f8d56" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=f4ec84db" />
-    <script src="../_static/documentation_options.js?v=02e9b640"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/documentation_options.js?v=4a8d0f77"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -41,7 +41,7 @@
         <li class="right" >
           <a href="treams.PlaneWaveBasisByUnitVector.permute.html" title="treams.PlaneWaveBasisByUnitVector.permute"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev7+gdb460d4eb documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev10+gab57a132f documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" accesskey="U">Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.PlaneWaveBasisByComp</a></li> 
       </ul>
@@ -56,7 +56,7 @@
 <h1>treams.PlaneWaveBasisByComp<a class="headerlink" href="#treams-planewavebasisbycomp" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="treams.PlaneWaveBasisByComp">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">treams.</span></span><span class="sig-name descname"><span class="pre">PlaneWaveBasisByComp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alignment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xy'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#treams.PlaneWaveBasisByComp" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">treams.</span></span><span class="sig-name descname"><span class="pre">PlaneWaveBasisByComp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alignment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xy'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#treams.PlaneWaveBasisByComp" title="Link to this definition">¶</a></dt>
 <dd><p>Partial plane wave basis.</p>
 <p>A partial plane wave basis is defined by two wave vector components out of all three
 Cartesian wave vector components <code class="docutils literal notranslate"><span class="pre">kx</span></code>, <code class="docutils literal notranslate"><span class="pre">ky</span></code>, and <code class="docutils literal notranslate"><span class="pre">kz</span></code> and the polarizations
@@ -65,8 +65,8 @@ basis is mostly used for stratified media that are periodic or uniform in the tw
 alignment directions, such that the given wave vector components correspond to the
 diffraction orders.</p>
 <p>For plane waves there exist multiple <a class="reference internal" href="../params.html#polarizations"><span class="std std-ref">Polarizations</span></a>, such that
-these modes can refer to either <a class="reference internal" href="treams.special.vpw_A.html#treams.special.vpw_A" title="treams.special.vpw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">vpw_A()</span></code></a> or
-<a class="reference internal" href="treams.special.vpw_M.html#treams.special.vpw_M" title="treams.special.vpw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">vpw_M()</span></code></a> and <a class="reference internal" href="treams.special.vpw_N.html#treams.special.vpw_N" title="treams.special.vpw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">vpw_N()</span></code></a>.</p>
+these modes can refer to either <code class="xref py py-func docutils literal notranslate"><span class="pre">vpw_A()</span></code> or
+<code class="xref py py-func docutils literal notranslate"><span class="pre">vpw_M()</span></code> and <code class="xref py py-func docutils literal notranslate"><span class="pre">vpw_N()</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -185,41 +185,41 @@ Defaults to “xy”, other possible values are “yz” and “zx”.</p></li>
 <tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.permute.html#treams.PlaneWaveBasisByComp.permute" title="treams.PlaneWaveBasisByComp.permute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">permute</span></code></a>([n])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.__gt__.html#treams.PlaneWaveBasisByComp.__gt__" title="treams.PlaneWaveBasisByComp.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(other)</p></td>
-<td><p>Return self&gt;value.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.__le__.html#treams.PlaneWaveBasisByComp.__le__" title="treams.PlaneWaveBasisByComp.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(other)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.__le__.html#treams.PlaneWaveBasisByComp.__le__" title="treams.PlaneWaveBasisByComp.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(other)</p></td>
 <td><p>Return self&lt;=value.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.__ne__.html#treams.PlaneWaveBasisByComp.__ne__" title="treams.PlaneWaveBasisByComp.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(value, /)</p></td>
-<td><p>Return self!=value.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.__ge__.html#treams.PlaneWaveBasisByComp.__ge__" title="treams.PlaneWaveBasisByComp.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;=value.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.__sub__.html#treams.PlaneWaveBasisByComp.__sub__" title="treams.PlaneWaveBasisByComp.__sub__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__sub__</span></code></a>(other)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.__sub__.html#treams.PlaneWaveBasisByComp.__sub__" title="treams.PlaneWaveBasisByComp.__sub__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__sub__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.__xor__.html#treams.PlaneWaveBasisByComp.__xor__" title="treams.PlaneWaveBasisByComp.__xor__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__xor__</span></code></a>(other)</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.__and__.html#treams.PlaneWaveBasisByComp.__and__" title="treams.PlaneWaveBasisByComp.__and__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__and__</span></code></a>(other)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.__repr__.html#treams.PlaneWaveBasisByComp.__repr__" title="treams.PlaneWaveBasisByComp.__repr__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__repr__</span></code></a>()</p></td>
-<td><p>String representation.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.__or__.html#treams.PlaneWaveBasisByComp.__or__" title="treams.PlaneWaveBasisByComp.__or__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__or__</span></code></a>(other)</p></td>
+<td><p>Return self|value.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.__len__.html#treams.PlaneWaveBasisByComp.__len__" title="treams.PlaneWaveBasisByComp.__len__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__len__</span></code></a>()</p></td>
 <td><p>Number of modes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.__or__.html#treams.PlaneWaveBasisByComp.__or__" title="treams.PlaneWaveBasisByComp.__or__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__or__</span></code></a>(other)</p></td>
-<td><p>Return self|value.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.__ne__.html#treams.PlaneWaveBasisByComp.__ne__" title="treams.PlaneWaveBasisByComp.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(value, /)</p></td>
+<td><p>Return self!=value.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.__ge__.html#treams.PlaneWaveBasisByComp.__ge__" title="treams.PlaneWaveBasisByComp.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(other)</p></td>
-<td><p>Return self&gt;=value.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.__str__.html#treams.PlaneWaveBasisByComp.__str__" title="treams.PlaneWaveBasisByComp.__str__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__str__</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.__str__.html#treams.PlaneWaveBasisByComp.__str__" title="treams.PlaneWaveBasisByComp.__str__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__str__</span></code></a>()</p></td>
 <td><p>Return str(self).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.__repr__.html#treams.PlaneWaveBasisByComp.__repr__" title="treams.PlaneWaveBasisByComp.__repr__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__repr__</span></code></a>()</p></td>
+<td><p>String representation.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.__lt__.html#treams.PlaneWaveBasisByComp.__lt__" title="treams.PlaneWaveBasisByComp.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(other)</p></td>
 <td><p>Return self&lt;value.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.__xor__.html#treams.PlaneWaveBasisByComp.__xor__" title="treams.PlaneWaveBasisByComp.__xor__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__xor__</span></code></a>(other)</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.PlaneWaveBasisByComp.__gt__.html#treams.PlaneWaveBasisByComp.__gt__" title="treams.PlaneWaveBasisByComp.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;value.</p></td>
 </tr>
 </tbody>
 </table>
@@ -290,14 +290,14 @@ Defaults to “xy”, other possible values are “yz” and “zx”.</p></li>
         <li class="right" >
           <a href="treams.PlaneWaveBasisByUnitVector.permute.html" title="treams.PlaneWaveBasisByUnitVector.permute"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev7+gdb460d4eb documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev10+gab57a132f documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.PlaneWaveBasisByComp</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
     &#169; Copyright 2023, Dominik Beutel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
     </div>
   </body>
 </html>

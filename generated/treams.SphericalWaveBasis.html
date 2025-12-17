@@ -5,15 +5,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>treams.SphericalWaveBasis &#8212; treams 0.4.6.dev7+gdb460d4eb documentation</title>
+    <title>treams.SphericalWaveBasis &#8212; treams 0.4.6.dev10+gab57a132f documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=0c472235" />
     <link rel="stylesheet" type="text/css" href="../_static/pyramid.css?v=424f8d56" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=f4ec84db" />
-    <script src="../_static/documentation_options.js?v=02e9b640"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/documentation_options.js?v=4a8d0f77"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="treams.PlaneWaveBasisByComp.permute.html" title="treams.PlaneWaveBasisByComp.permute"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev7+gdb460d4eb documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev10+gab57a132f documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" accesskey="U">Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.SphericalWaveBasis</a></li> 
       </ul>
@@ -57,7 +57,7 @@
 <h1>treams.SphericalWaveBasis<a class="headerlink" href="#treams-sphericalwavebasis" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="treams.SphericalWaveBasis">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">treams.</span></span><span class="sig-name descname"><span class="pre">SphericalWaveBasis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#treams.SphericalWaveBasis" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">treams.</span></span><span class="sig-name descname"><span class="pre">SphericalWaveBasis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#treams.SphericalWaveBasis" title="Link to this definition">¶</a></dt>
 <dd><p>Basis of spherical waves.</p>
 <p>Functions of the spherical wave basis are defined by their angular momentum <code class="docutils literal notranslate"><span class="pre">l</span></code>,
 its projection onto the z-axis <code class="docutils literal notranslate"><span class="pre">m</span></code>, and the polarization <code class="docutils literal notranslate"><span class="pre">pol</span></code>. If the basis
@@ -67,10 +67,10 @@ additional position index <code class="docutils literal notranslate"><span class
 specified <code class="docutils literal notranslate"><span class="pre">positions</span></code>.</p>
 <p>For spherical waves there exist multiple <a class="reference internal" href="../params.html#polarizations"><span class="std std-ref">Polarizations</span></a> and they
 can be separated into incident and scattered fields. Depending on these combinations
-the basis modes refer to one of the functions <a class="reference internal" href="treams.special.vsw_A.html#treams.special.vsw_A" title="treams.special.vsw_A"><code class="xref py py-func docutils literal notranslate"><span class="pre">vsw_A()</span></code></a>,
-<a class="reference internal" href="treams.special.vsw_rA.html#treams.special.vsw_rA" title="treams.special.vsw_rA"><code class="xref py py-func docutils literal notranslate"><span class="pre">vsw_rA()</span></code></a>, <a class="reference internal" href="treams.special.vsw_M.html#treams.special.vsw_M" title="treams.special.vsw_M"><code class="xref py py-func docutils literal notranslate"><span class="pre">vsw_M()</span></code></a>,
-<a class="reference internal" href="treams.special.vsw_rM.html#treams.special.vsw_rM" title="treams.special.vsw_rM"><code class="xref py py-func docutils literal notranslate"><span class="pre">vsw_rM()</span></code></a>, <a class="reference internal" href="treams.special.vsw_N.html#treams.special.vsw_N" title="treams.special.vsw_N"><code class="xref py py-func docutils literal notranslate"><span class="pre">vsw_N()</span></code></a>, or
-<a class="reference internal" href="treams.special.vsw_rN.html#treams.special.vsw_rN" title="treams.special.vsw_rN"><code class="xref py py-func docutils literal notranslate"><span class="pre">vsw_rN()</span></code></a>.</p>
+the basis modes refer to one of the functions <code class="xref py py-func docutils literal notranslate"><span class="pre">vsw_A()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">vsw_rA()</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">vsw_M()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">vsw_rM()</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">vsw_N()</span></code>, or
+<code class="xref py py-func docutils literal notranslate"><span class="pre">vsw_rN()</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -203,29 +203,29 @@ with <span class="math notranslate nohighlight">\(m \leq |l|\)</span></p>
 <tr class="row-odd"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.isdisjoint.html#treams.SphericalWaveBasis.isdisjoint" title="treams.SphericalWaveBasis.isdisjoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isdisjoint</span></code></a>(other)</p></td>
 <td><p>Return True if two sets have a null intersection.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__gt__.html#treams.SphericalWaveBasis.__gt__" title="treams.SphericalWaveBasis.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(other)</p></td>
-<td><p>Return self&gt;value.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__le__.html#treams.SphericalWaveBasis.__le__" title="treams.SphericalWaveBasis.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(other)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__le__.html#treams.SphericalWaveBasis.__le__" title="treams.SphericalWaveBasis.__le__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code></a>(other)</p></td>
 <td><p>Return self&lt;=value.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__ne__.html#treams.SphericalWaveBasis.__ne__" title="treams.SphericalWaveBasis.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(value, /)</p></td>
-<td><p>Return self!=value.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__ge__.html#treams.SphericalWaveBasis.__ge__" title="treams.SphericalWaveBasis.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;=value.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__sub__.html#treams.SphericalWaveBasis.__sub__" title="treams.SphericalWaveBasis.__sub__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__sub__</span></code></a>(other)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__sub__.html#treams.SphericalWaveBasis.__sub__" title="treams.SphericalWaveBasis.__sub__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__sub__</span></code></a>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__xor__.html#treams.SphericalWaveBasis.__xor__" title="treams.SphericalWaveBasis.__xor__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__xor__</span></code></a>(other)</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__and__.html#treams.SphericalWaveBasis.__and__" title="treams.SphericalWaveBasis.__and__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__and__</span></code></a>(other)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__len__.html#treams.SphericalWaveBasis.__len__" title="treams.SphericalWaveBasis.__len__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__len__</span></code></a>()</p></td>
-<td><p>Number of modes.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__or__.html#treams.SphericalWaveBasis.__or__" title="treams.SphericalWaveBasis.__or__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__or__</span></code></a>(other)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__or__.html#treams.SphericalWaveBasis.__or__" title="treams.SphericalWaveBasis.__or__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__or__</span></code></a>(other)</p></td>
 <td><p>Return self|value.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__ge__.html#treams.SphericalWaveBasis.__ge__" title="treams.SphericalWaveBasis.__ge__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code></a>(other)</p></td>
-<td><p>Return self&gt;=value.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__len__.html#treams.SphericalWaveBasis.__len__" title="treams.SphericalWaveBasis.__len__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__len__</span></code></a>()</p></td>
+<td><p>Number of modes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__ne__.html#treams.SphericalWaveBasis.__ne__" title="treams.SphericalWaveBasis.__ne__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code></a>(value, /)</p></td>
+<td><p>Return self!=value.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__str__.html#treams.SphericalWaveBasis.__str__" title="treams.SphericalWaveBasis.__str__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__str__</span></code></a>()</p></td>
 <td><p>Return str(self).</p></td>
@@ -233,8 +233,8 @@ with <span class="math notranslate nohighlight">\(m \leq |l|\)</span></p>
 <tr class="row-odd"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__lt__.html#treams.SphericalWaveBasis.__lt__" title="treams.SphericalWaveBasis.__lt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code></a>(other)</p></td>
 <td><p>Return self&lt;value.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__xor__.html#treams.SphericalWaveBasis.__xor__" title="treams.SphericalWaveBasis.__xor__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__xor__</span></code></a>(other)</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="treams.SphericalWaveBasis.__gt__.html#treams.SphericalWaveBasis.__gt__" title="treams.SphericalWaveBasis.__gt__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code></a>(other)</p></td>
+<td><p>Return self&gt;value.</p></td>
 </tr>
 </tbody>
 </table>
@@ -305,14 +305,14 @@ with <span class="math notranslate nohighlight">\(m \leq |l|\)</span></p>
         <li class="right" >
           <a href="treams.PlaneWaveBasisByComp.permute.html" title="treams.PlaneWaveBasisByComp.permute"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev7+gdb460d4eb documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">treams 0.4.6.dev10+gab57a132f documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../treams.html" >Reference</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">treams.SphericalWaveBasis</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
     &#169; Copyright 2023, Dominik Beutel.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
     </div>
   </body>
 </html>

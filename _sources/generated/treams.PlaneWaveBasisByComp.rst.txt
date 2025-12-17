@@ -49,16 +49,16 @@
          ~PlaneWaveBasisByComp.kvecs
          ~PlaneWaveBasisByComp.permute
       
-         ~PlaneWaveBasisByComp.__gt__
          ~PlaneWaveBasisByComp.__le__
-         ~PlaneWaveBasisByComp.__ne__
-         ~PlaneWaveBasisByComp.__sub__
-         ~PlaneWaveBasisByComp.__and__
-         ~PlaneWaveBasisByComp.__repr__
-         ~PlaneWaveBasisByComp.__len__
-         ~PlaneWaveBasisByComp.__or__
          ~PlaneWaveBasisByComp.__ge__
-         ~PlaneWaveBasisByComp.__str__
-         ~PlaneWaveBasisByComp.__lt__
+         ~PlaneWaveBasisByComp.__sub__
          ~PlaneWaveBasisByComp.__xor__
+         ~PlaneWaveBasisByComp.__and__
+         ~PlaneWaveBasisByComp.__or__
+         ~PlaneWaveBasisByComp.__len__
+         ~PlaneWaveBasisByComp.__ne__
+         ~PlaneWaveBasisByComp.__str__
+         ~PlaneWaveBasisByComp.__repr__
+         ~PlaneWaveBasisByComp.__lt__
+         ~PlaneWaveBasisByComp.__gt__
   
