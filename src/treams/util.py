@@ -1104,6 +1104,10 @@ class AnnotatedArray(np.lib.mixins.NDArrayOperatorsMixin):
         axes = [opp.get(i, i) for i in range(self.ndim)]
         return self.relax(self._array.swapaxes(axis1, axis2), self.ann[axes])
 
+    @implements(np.allclose)
+    def allclose(self, other, **kwargs):
+        return np.allclose(self._array, np.array(other), **kwargs)
+
     def __matmul__(self, other):
         if isinstance(other, _op.Operator):
             return NotImplemented

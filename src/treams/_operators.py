@@ -367,19 +367,24 @@ class Translate(Operator):
             kwargs["basis"] = kwargs["basis"][::-1]
         return self.FUNC(np.negative(self._args[0]), **kwargs)
 
+def _coeffs_poltype_change(poltype, basis, to_basis, where):
+    res = np.zeros_like(where, float)
+    if poltype[0] == poltype[1]:
+        res[where & (to_basis.pol[:, None] == basis.pol)] = 1.0
+    else:
+        res[where] = np.sqrt(0.5)
+        res[where & (to_basis.pol[:, None] == basis.pol) & (basis.pol == 0)] = -np.sqrt(0.5)
+    return core.PhysicsArray(res, basis=(to_basis, basis), poltype=poltype)
 
 def _sw_changepoltype(basis, to_basis, poltype, where):
-    """Change the polarization type of spherical waves."""
+    """Change or keep the polarization type of spherical waves."""
     where = (
         (to_basis.l[:, None] == basis.l)
         & (to_basis.m[:, None] == basis.m)
         & (to_basis.pidx[:, None] == basis.pidx)
         & where
     )
-    res = np.zeros_like(where, float)
-    res[where] = np.sqrt(0.5)
-    res[where & (to_basis.pol[:, None] == basis.pol) & (basis.pol == 0)] = -np.sqrt(0.5)
-    return core.PhysicsArray(res, basis=(to_basis, basis), poltype=poltype)
+    return _coeffs_poltype_change(poltype, basis, to_basis, where)
 
 
 def _cw_changepoltype(basis, to_basis, poltype, where):
@@ -390,10 +395,7 @@ def _cw_changepoltype(basis, to_basis, poltype, where):
         & (to_basis.pidx[:, None] == basis.pidx)
         & where
     )
-    res = np.zeros_like(where, float)
-    res[where] = np.sqrt(0.5)
-    res[where & (to_basis.pol[:, None] == basis.pol) & (basis.pol == 0)] = -np.sqrt(0.5)
-    return core.PhysicsArray(res, basis=(to_basis, basis), poltype=poltype)
+    return _coeffs_poltype_change(poltype, basis, to_basis, where)
 
 
 def _pwa_changepoltype(basis, to_basis, poltype, where):
@@ -404,10 +406,7 @@ def _pwa_changepoltype(basis, to_basis, poltype, where):
         & (to_basis.qz[:, None] == basis.qz)
         & where
     )
-    res = np.zeros_like(where, float)
-    res[where] = np.sqrt(0.5)
-    res[where & (to_basis.pol[:, None] == basis.pol) & (basis.pol == 0)] = -np.sqrt(0.5)
-    return core.PhysicsArray(res, basis=(to_basis, basis), poltype=poltype)
+    return _coeffs_poltype_change(poltype, basis, to_basis, where)
 
 
 def _pwp_changepoltype(basis, to_basis, poltype, where):
@@ -422,6 +421,7 @@ def _pwp_changepoltype(basis, to_basis, poltype, where):
     res[where & (to_basis.pol[:, None] == basis.pol) & (basis.pol == 0)] = -np.sqrt(0.5)
     return core.PhysicsArray(res, basis=(to_basis, basis), poltype=poltype)
 
+opposite_poltype = {"parity": "helicity", "helicity": "parity"}
 
 def changepoltype(poltype=None, *, basis, where=True):
     """Matrix to change polarization types.
@@ -442,11 +442,16 @@ def changepoltype(poltype=None, *, basis, where=True):
     else:
         to_basis = basis
     poltype = config.POLTYPE if poltype is None else poltype
-    if poltype == "helicity":
-        poltype = ("helicity", "parity")
-    elif poltype == "parity":
-        poltype = ("parity", "helicity")
-    if poltype not in (("helicity", "parity"), ("parity", "helicity")):
+
+    if not isinstance(poltype, tuple):
+        poltype = (poltype, opposite_poltype[poltype])
+
+    # if poltype == "helicity":
+    #     poltype = ("helicity", "parity")
+    # elif poltype == "parity":
+    #     poltype = ("parity", "helicity")
+
+    if np.any([pt not in ("helicity", "parity") for pt in poltype]):
         raise ValueError(f"invalid poltype '{poltype}'")
     if isinstance(basis, core.SphericalWaveBasis):
         return _sw_changepoltype(basis, to_basis, poltype, where)
@@ -474,14 +479,16 @@ class ChangePoltype(Operator):
 
     def get_kwargs(self, obj, dim=-1):
         kwargs = super().get_kwargs(obj, dim)
+        from_poltype = getattr(obj, "poltype", config.POLTYPE)
+        if isinstance(from_poltype, tuple):
+            from_poltype = from_poltype[dim]
+
+        to_poltype = opposite_poltype[from_poltype]
         if self._args:
-            return kwargs
-        val = getattr(obj, "poltype", None)
-        if isinstance(val, tuple):
-            val = val[dim]
-        opp = {"parity": "helicity", "helicity": "parity"}
-        if val is not None:
-            kwargs["poltype"] = opp[val]
+            to_poltype = self._args[0]
+            self._args=[]
+        
+        kwargs["poltype"] = (to_poltype, from_poltype)
         return kwargs
 
     def _call_inv(self, **kwargs):
