@@ -199,6 +199,9 @@ class SequenceAsDict(collections.abc.MutableMapping):
         return len({key for dct in self._obj for key in dct})
 
     def __repr__(self):
+        if getattr(self, '_obj', None) is None:
+            return f"{self.__class__.__name__}()"
+        
         return f"{self.__class__.__name__}({dict(i for i in self.items())})"
 
 
