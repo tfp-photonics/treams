@@ -21,9 +21,9 @@ higher-level classes and functions.
    :toctree: generated/
    :template: bare-module
 
-   ~treams.sw
-   ~treams.cw
-   ~treams.pw
+   ~sw
+   ~cw
+   ~pw
 
 This module is for loading and storing data in HDF5 files and also for creating meshes
 of sphere ensembles.
@@ -31,7 +31,7 @@ of sphere ensembles.
 .. autosummary::
    :toctree: generated/
 
-   ~treams.io
+   ~io
 
 Finally, two modules for calculating scattering coefficients and doing miscellaneous
 tasks.
@@ -39,22 +39,22 @@ tasks.
 .. autosummary::
    :toctree: generated/
 
-   ~treams.coeffs
-   ~treams.misc
+   ~coeffs
+   ~misc
 
 Global configuration variables are stored in
 
 .. autosummary::
    :toctree: generated/
 
-   ~treams.config
+   ~config
 
 Some convenience classes for the implementation are defined in
 
 .. autosummary::
    :toctree: generated/
 
-   ~treams.util
+   ~util
 
 Subpackages
 ===========
@@ -66,5 +66,5 @@ mathematical functions
    :toctree: generated/
    :template: bare-module
 
-   ~treams.lattice
-   ~treams.special
+   ~lattice
+   ~special
