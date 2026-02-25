@@ -598,7 +598,7 @@ different definitions of the Riemann-Silberstein vectors
 :math:`\sqrt{2} \boldsymbol G_\pm = \boldsymbol E \pm \mathrm i Z_0 Z \boldsymbol H` and
 :math:`\sqrt{2} \boldsymbol F_\pm = \frac{1}{\epsilon_0 \epsilon} \boldsymbol D \pm
 \mathrm i \frac{c}{n} \boldsymbol B = \frac{n \pm \kappa}{n} G_\pm` (see also 
-:doc:`maxwell`).
+:doc:`theory`).
 
 .. doctest::
 

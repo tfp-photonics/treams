@@ -18,7 +18,7 @@ the lattice definitions and the phase shift between lattice sites.
 Basis sets
 ==========
 
-As described in :doc:`maxwell` it is possible to solve Maxwells equations in different
+As described in :doc:`theory` it is possible to solve Maxwells equations in different
 coordinate systems. While being in principle equivalent, for different scenarios it is
 beneficial to use suitable solution sets that represent the waves with sufficient
 precision when truncated to a finite number of modes. The chosen finite number of

@@ -1,0 +1,20 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: index
+parts:
+  - caption: Theory and Usage
+    chapters:
+      - file: gettingstarted
+      - file: intro
+      - file: notebooks
+        sections:
+           - glob: notebooks/*
+      - file: theory
+  - caption: Technical Details
+    chapters:
+      - file: treams
+      - file: dev
+      - file: about
+      

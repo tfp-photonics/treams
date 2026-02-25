@@ -19,11 +19,10 @@ higher-level classes and functions.
 
 .. autosummary::
    :toctree: generated/
-   :template: bare-module
 
-   ~sw
-   ~cw
-   ~pw
+   sw
+   cw
+   pw
 
 This module is for loading and storing data in HDF5 files and also for creating meshes
 of sphere ensembles.
@@ -31,7 +30,7 @@ of sphere ensembles.
 .. autosummary::
    :toctree: generated/
 
-   ~io
+   io
 
 Finally, two modules for calculating scattering coefficients and doing miscellaneous
 tasks.
@@ -39,22 +38,22 @@ tasks.
 .. autosummary::
    :toctree: generated/
 
-   ~coeffs
-   ~misc
+   coeffs
+   misc
 
 Global configuration variables are stored in
 
 .. autosummary::
    :toctree: generated/
 
-   ~config
+   config
 
 Some convenience classes for the implementation are defined in
 
 .. autosummary::
    :toctree: generated/
 
-   ~util
+   util
 
 Subpackages
 ===========
@@ -64,7 +63,6 @@ mathematical functions
 
 .. autosummary::
    :toctree: generated/
-   :template: bare-module
 
-   ~lattice
-   ~special
+   lattice
+   special

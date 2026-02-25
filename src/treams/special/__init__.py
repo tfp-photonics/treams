@@ -187,7 +187,6 @@ Cython module
 
 .. autosummary::
    :toctree:
-   :template: cython-module
 
    cython_special
 """
