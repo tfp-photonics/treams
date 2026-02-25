@@ -1,0 +1,7 @@
+name: binder
+channels:
+  - conda-forge
+dependencies:
+  - matplotlib
+  - pip:
+    - treams
