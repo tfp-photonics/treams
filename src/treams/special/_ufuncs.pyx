@@ -1233,7 +1233,7 @@ where :math:`P^l_m` is the associated Legendre polynomial.
 Args:
     l (integer, array_like): degree :math:`l \geq 0`
     m (integer, array_like): order :math:`|m| \leq l`
-    x (float or complex, array_like): argument
+    x (float or complex, array_like): argument (typically :math:`\cos\theta`)
 
 Returns:
     float or complex
@@ -1282,7 +1282,7 @@ where :math:`P^l_m` is the associated Legendre polynomial.
 Args:
     l (integer, array_like): degree :math:`l \geq 0`
     m (integer, array_like): order :math:`|m| \leq l`
-    x (float or complex, array_like): argument
+    x (float or complex, array_like): (typically :math:`\cos\theta`)
 
 Returns:
     float or complex

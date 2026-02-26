@@ -66,3 +66,14 @@ mathematical functions
 
    lattice
    special
+
+Internal
+===========
+
+These modules contain internal functions and classes that are not intended for the enduser. Nonetheless, they are documented here for the sake of completeness and to allow for an easier understanding and further development of the code.
+
+.. autosummary::
+   :toctree: generated/
+
+   _core
+   _operators

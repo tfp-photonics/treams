@@ -31,7 +31,7 @@ Spheres
 =======
 
 It's possible to calculate the T-matrix of a single (multi-layered) sphere with the
-method :meth:`~treams.TMatrix.sphere`. We start by defining the relevant parameters for
+method :meth:`treams.TMatrix.sphere`. We start by defining the relevant parameters for
 our calculation and creating the T-matrices themselves.
 
 .. literalinclude:: examples/sphere.py
@@ -182,7 +182,7 @@ x-y-plane.
 
 With few changes we get the fields in a square array of the same spheres as in the
 previous examples. Most importantly we changed the value of the variable :code:`lattice`
-to an instance of a two-dimensional :class:`~treams.Lattice` and set :code:`kpar`
+to an instance of a two-dimensional :class:`treams.Lattice` and set :code:`kpar`
 accordingly. Most other changes are just resulting from the change of the coordinate
 system.
 

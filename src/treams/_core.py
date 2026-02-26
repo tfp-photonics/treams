@@ -1,4 +1,29 @@
-"""Basis sets and core array functionalities."""
+"""Basis sets and core array functionalities.
+
+We use some concepts throughout the high-level functions and classes of :mod:`treams`. Here we collect the scaffolding for these concepts. 
+:doc:`/params` introduces basis sets and fundamental parameters attached to many classes in :mod:`treams`. :doc:`/physicsarray` introduces 
+augmented numpy-arrays, which cary these annotations. They form the main data structure for matrices and arrays in :mod:`treams`. 
+
+Basis Sets
+==========
+.. autosummary::
+    :toctree:
+
+    BasisSet
+    SphericalWaveBasis
+    CylindricalWaveBasis
+    PlaneWaveBasis
+    PlaneWaveBasisByUnitVector
+    PlaneWaveBasisByComp
+
+Abstract Classes
+================
+.. autosummary::
+    :toctree:
+
+    PhysicsArray
+    PhysicsDict
+"""
 
 import abc
 from collections import namedtuple
@@ -60,10 +85,10 @@ class SphericalWaveBasis(BasisSet):
 
     For spherical waves there exist multiple :ref:`params:Polarizations` and they
     can be separated into incident and scattered fields. Depending on these combinations
-    the basis modes refer to one of the functions :func:`~treams.special.vsw_A`,
-    :func:`~treams.special.vsw_rA`, :func:`~treams.special.vsw_M`,
-    :func:`~treams.special.vsw_rM`, :func:`~treams.special.vsw_N`, or
-    :func:`~treams.special.vsw_rN`.
+    the basis modes refer to one of the functions :func:`treams.special.vsw_A`,
+    :func:`treams.special.vsw_rA`, :func:`treams.special.vsw_M`,
+    :func:`treams.special.vsw_rM`, :func:`treams.special.vsw_N`, or
+    :func:`treams.special.vsw_rN`.
 
     Args:
         modes (array-like): A tuple containing a list for each of ``l``, ``m``, and
@@ -346,9 +371,9 @@ class CylindricalWaveBasis(BasisSet):
     For cylindrical waves there exist multiple :ref:`params:Polarizations` and
     they can be separated into incident and scattered fields. Depending on these
     combinations the basis modes refer to one of the functions
-    :func:`~treams.special.vcw_A`, :func:`~treams.special.vcw_rA`,
-    :func:`~treams.special.vcw_M`, :func:`~treams.special.vcw_rM`,
-    :func:`~treams.special.vcw_N`, or :func:`~treams.special.vcw_rN`.
+    :func:`treams.special.vcw_A`, :func:`treams.special.vcw_rA`,
+    :func:`treams.special.vcw_M`, :func:`treams.special.vcw_rM`,
+    :func:`treams.special.vcw_N`, or :func:`treams.special.vcw_rN`.
 
     Args:
         modes (array-like): A tuple containing a list for each of ``kz``, ``m``, and
@@ -634,8 +659,8 @@ class PlaneWaveBasisByUnitVector(PlaneWaveBasis):
     :math:`q_x^2 + q_y^2 + q_z^2 = 1` and the polarizations ``pol``.
 
     For plane waves there exist multiple :ref:`params:Polarizations`, such that
-    these modes can refer to either :func:`~treams.special.vpw_A` or
-    :func:`~treams.special.vpw_M` and :func:`~treams.special.vpw_N`.
+    these modes can refer to either :func:`treams.special.vpw_A` or
+    :func:`treams.special.vpw_M` and :func:`treams.special.vpw_N`.
 
     Args:
         modes (array-like): A tuple containing a list for each of ``qx``, ``qy``,
@@ -780,7 +805,7 @@ class PlaneWaveBasisByUnitVector(PlaneWaveBasis):
                 "zx".
             k0 (float, optional): Wave number. If given, it is checked that the current
                 basis fulfils the dispersion relation.
-            material (:class:`~treams.Material` or tuple): Material definition. Defaults
+            material (:class:`treams.Material` or tuple): Material definition. Defaults
                 to vacuum/air.
         """
         ks = material.ks(k0)[self.pol]
@@ -798,7 +823,7 @@ class PlaneWaveBasisByUnitVector(PlaneWaveBasis):
 
         Args:
             k0 (float): Wave number.
-            material (:class:`~treams.Material` or tuple, optional): Material
+            material (:class:`treams.Material` or tuple, optional): Material
                 definition. Defaults to vacuum/air.
             modetype (optional): Currently unused for this class.
         """
@@ -830,8 +855,8 @@ class PlaneWaveBasisByComp(PlaneWaveBasis):
     diffraction orders.
 
     For plane waves there exist multiple :ref:`params:Polarizations`, such that
-    these modes can refer to either :func:`~treams.special.vpw_A` or
-    :func:`~treams.special.vpw_M` and :func:`~treams.special.vpw_N`.
+    these modes can refer to either :func:`treams.special.vpw_A` or
+    :func:`treams.special.vpw_M` and :func:`treams.special.vpw_N`.
 
     Args:
         modes (array-like): A tuple containing a list for each of ``k1``, ``k2``, and
@@ -1056,7 +1081,7 @@ class PlaneWaveBasisByComp(PlaneWaveBasis):
 
         Args:
             k0 (float): Wave number.
-            material (:class:`~treams.Material` or tuple, optional): Material
+            material (:class:`treams.Material` or tuple, optional): Material
                 definition. Defaults to vacuum/air.
             modetype (str, optional): Propagation direction. Defaults to "up".
         """
@@ -1080,7 +1105,7 @@ class PlaneWaveBasisByComp(PlaneWaveBasis):
 
         Args:
             k0 (float): Wave number.
-            material (:class:`~treams.Material` or tuple, optional): Material
+            material (:class:`treams.Material` or tuple, optional): Material
                 definition. Defaults to vacuum/air.
             modetype (str, optional): Propagation direction. Defaults to "up".
         """
@@ -1113,8 +1138,8 @@ class PhysicsDict(util.AnnotationDict):
         kpar (list): Parallel wave vector components. Usually, this is a list of length
             3 with its items corresponding to the Cartesian axes. Unspecified items are
             set to `nan`.
-        lattice (:class:`~treams.Lattice`): Lattice definition.
-        material (:class:`~treams.Material`): Material definition.
+        lattice (:class:`treams.Lattice`): Lattice definition.
+        material (:class:`treams.Material`): Material definition.
         modetype (str): Mode type, for spherical and cylindrical waves this can be
             "incident" and "scattered", for partial plane waves it can be "up" or
             "down".
@@ -1123,7 +1148,7 @@ class PhysicsDict(util.AnnotationDict):
 
     properties = {
         "basis": (
-            ":class:`~treams.BasisSet`.",
+            ":class:`treams.BasisSet`.",
             lambda x: isinstance(x, BasisSet),
             _raise_basis_error,
         ),
@@ -1134,12 +1159,12 @@ class PhysicsDict(util.AnnotationDict):
             WaveVector,
         ),
         "lattice": (
-            ":class:`~treams.Lattice`.",
+            ":class:`treams.Lattice`.",
             lambda x: isinstance(x, Lattice),
             Lattice,
         ),
         "material": (
-            ":class:`~treams.Material`.",
+            ":class:`treams.Material`.",
             lambda x: isinstance(x, Material),
             Material,
         ),
@@ -1173,7 +1198,7 @@ class PhysicsDict(util.AnnotationDict):
 class PhysicsArray(util.AnnotatedArray):
     """Physics-aware array.
 
-    A physics aware array is a special type of :class`~treams.util.AnnotatedArray`.
+    A physics aware array is a special type of :class`treams.util.AnnotatedArray`.
     Additionally to keeping track of the annotations, it is enhanced by the ability to
     create suiting linear operators to perform tasks like rotations, translations, or
     expansions into different basis sets and by applying special rules for the

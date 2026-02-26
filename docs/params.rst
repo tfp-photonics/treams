@@ -22,9 +22,9 @@ As described in :doc:`theory` it is possible to solve Maxwells equations in diff
 coordinate systems. While being in principle equivalent, for different scenarios it is
 beneficial to use suitable solution sets that represent the waves with sufficient
 precision when truncated to a finite number of modes. The chosen finite number of
-modes is given in the classes :class:`~treams.SphericalWaveBasis`,
-:class:`~treams.CylindricalWaveBasis`, and :class:`~treams._core.PlaneWaveBasis`, which
-are all children of the base call :class:`~treams._core.BasisSet`.
+modes is given in the classes :class:`treams.SphericalWaveBasis`,
+:class:`treams.CylindricalWaveBasis`, and :class:`treams._core.PlaneWaveBasis`, which
+are all children of the base call :class:`treams._core.BasisSet`.
 
 The modes of the spherical basis can are defined by their degree ``l``, the order ``m``,
 and an index for the polarization ``pol``. The basis is then simply the collection of
@@ -145,8 +145,8 @@ where ``bmax`` defines a distance in reciprocal space.
 
 The plane wave basis behaves a little bit different. First, it is currently only defined
 with respect to a single origin so the ``pidx`` and ``positions`` is not defined. Also,
-the basis can be defined in two ways: :class:`PlaneWaveBasisByUnitVector` and
-:class:`PlaneWaveBasisByComp`. In the first case, the definition is given by the unit
+the basis can be defined in two ways: :class:`treams.PlaneWaveBasisByUnitVector` and
+:class:`treams.PlaneWaveBasisByComp`. In the first case, the definition is given by the unit
 vector which, multiplied by the wave number in the medium, gives the full wave vector.
 In the second case, two components of the wave vector are given and the remaining third
 Cartesian component is defined such that it fulfils the dispersion relation.
@@ -238,7 +238,7 @@ regular modes are finite in the whole space. Thus, they are suitable for describ
 incident modes or to expand a plane wave. The singular modes fulfil the radiation
 condition and as such are used for the scattered fields.
 
-For the plane wave basis of type (:class:`~treams.PlaneWaveBasisByComp`) only two
+For the plane wave basis of type (:class:`treams.PlaneWaveBasisByComp`) only two
 components of the wave vector are given and the third component is only implicitly
 defined by the wave number and the material parameters. The application for this basis
 is mostly within stratified media that are uniform or periodic in the two other
@@ -267,7 +267,7 @@ unit of (inverse) length.
 Materials
 =========
 
-For materials there exists the class :class:`~treams.Material`, which holds the values
+For materials there exists the class :class:`treams.Material`, which holds the values
 of the relative permittivity, relative permeability, and the chirality parameter. The
 default material is air and can be initialized without any parameters. For other cases,
 the parameters can be given in the order above.
@@ -293,7 +293,7 @@ Lattices
 ========
 
 The periodicity of arrangements is given by defining an instance of the class
-:class:`~treams.Lattice`. A lattice can be one-, two-, or three-dimensional.
+:class:`treams.Lattice`. A lattice can be one-, two-, or three-dimensional.
 
 .. doctest::
 

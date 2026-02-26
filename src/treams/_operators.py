@@ -1,4 +1,62 @@
-"""Operators for common transformations including different types of waves."""
+"""Operators for common transformations including different types of waves.
+
+:mod:`treams` relies heavily on the concept of discretized operators, that can be applied to coefficient vectors expressing fields in certain truncated basis.
+Conceptually these operators are introduced in the tutorial on :doc:`/operators`. Here, you'll find the implementation details.
+
+
+Abstract Classes 
+=================
+providing the scaffold for the implementation of various operators.
+
+.. autosummary::
+    :toctree:
+
+    Operator
+    OperatorAttribute
+    FieldOperator
+
+Rotations + Translations 
+========================
+.. autosummary::
+    :toctree:
+
+    rotate
+    Rotate
+    translate
+    Translate
+
+Change of Basis
+===============
+ .. autosummary::
+    :toctree:
+
+    changepoltype
+    ChangePoltype
+    expand
+    Expand
+    expandlattice
+    ExpandLattice
+    permute
+    Permute
+
+Field Evaluations
+=================
+.. autosummary::
+    :toctree:
+
+    efield
+    EField
+    hfield
+    HField
+    dfield
+    DField
+    bfield
+    BField
+    ffield
+    FField
+    gfield
+    GField
+"""
 
 import inspect
 
@@ -77,6 +135,12 @@ class Operator:
 
 
 class OperatorAttribute:
+    """Attach an operator to an object as attribute.
+    
+    When called as attribute of an object it returns a suitable matrix to transform it. 
+    It pulls the necessary parameters (like the :class:`treams._core.BasisSet`) from the object it is attached to.
+    See also :class:`Operator` and the corresponding functions.
+    """
     def __init__(self, op):
         self._op = op
         self._obj = self._objtype = None
@@ -184,14 +248,14 @@ def _pwp_rotate(phi, basis, where):
 def rotate(phi, theta=0, psi=0, *, basis, where=True):
     """Rotation matrix.
 
-    For the given Euler angles apply a rotation for the given basis. In some basis sets
+    For the given Euler angles (in `z-y-z`-convention) apply a rotation for the given basis. In some basis sets
     only rotations around the z-axis are permitted.
 
     Args:
         phi (float): First Euler angle (rotation about z)
         theta (float, optional): Second Euler angle (rotation about y)
         psi (float, optional): Third Euler angle (rotation about z)
-        basis (:class:`~treams.BasisSet` or tuple): Basis set, if it is a tuple of two
+        basis (:class:`treams.BasisSet` or tuple): Basis set, if it is a tuple of two
             basis sets the output and input modes are taken accordingly, else both sets
             of modes are the same.
         where (array-like, bool, optional): Only evaluate parts of the rotation matrix,
@@ -219,6 +283,12 @@ def rotate(phi, theta=0, psi=0, *, basis, where=True):
 
 
 class Rotate(Operator):
+    """Rotation matrix.
+
+    When called as attribute of an object it returns a suitable rotation matrix to
+    rotate it. See also :func:`rotate`.
+    """
+
     _FUNC = staticmethod(rotate)
 
     def __init__(self, phi, theta=0, psi=0, *, isinv=False):
@@ -314,13 +384,13 @@ def translate(
 
     Args:
         r (array-like): Translation vector
-        basis (:class:`~treams.BasisSet` or tuple): Basis set, if it is a tuple of two
+        basis (:class:`treams.BasisSet` or tuple): Basis set, if it is a tuple of two
             basis sets the output and input modes are taken accordingly, else both sets
             of modes are the same.
         k0 (float, optional): Wave number.
-        material (:class:`~treams.Material` or tuple, optional): Material parameters.
+        material (:class:`treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode, only used for
-            :class:`~treams.PlaneWaveBasisByComp`.
+            :class:`treams.PlaneWaveBasisByComp`.
         poltype (str, optional): Polarization, see also
             :ref:`params:Polarizations`.
         where (array-like, bool, optional): Only evaluate parts of the translation
@@ -431,7 +501,7 @@ def changepoltype(poltype=None, *, basis, where=True):
     Args:
         poltype (str, optional): Polarization, see also
             :ref:`params:Polarizations`.
-        basis (:class:`~treams.BasisSet` or tuple): Basis set, if it is a tuple of two
+        basis (:class:`treams.BasisSet` or tuple): Basis set, if it is a tuple of two
             basis sets the output and input modes are taken accordingly, else both sets
             of modes are the same.
         where (array-like, bool, optional): Only evaluate parts of the matrix, the given
@@ -655,13 +725,13 @@ def expand(
     plane waves.
 
     Args:
-        basis (:class:`~treams.BasisSet` or tuple): Basis set, if it is a tuple of two
+        basis (:class:`treams.BasisSet` or tuple): Basis set, if it is a tuple of two
             basis sets the output and input modes are taken accordingly, else both sets
             of modes are the same.
         modetype (str, optional): Wave mode, used for
-            :class:`~treams.SphericalWaveBasis` and :class:`CylindricalWaveBasis`.
+            :class:`treams.SphericalWaveBasis` and :class:`CylindricalWaveBasis`.
         k0 (float, optional): Wave number.
-        material (:class:`~treams.Material` or tuple, optional): Material parameters.
+        material (:class:`treams.Material` or tuple, optional): Material parameters.
         poltype (str, optional): Polarization, see also
             :ref:`params:Polarizations`.
         where (array-like, bool, optional): Only evaluate parts of the expansion matrix,
@@ -986,22 +1056,22 @@ def expandlattice(
     a lattice into another basis set.
 
     Args:
-        lattice (:class:`~treams.Lattice` or array-like, optional): Lattice definition.
+        lattice (:class:`treams.Lattice` or array-like, optional): Lattice definition.
             In some cases this argument can be omitted, when the lattice can be inferred
             from the basis.
         kpar (sequence, optional): The components of the wave vector tangential to the
             lattice. In some cases this argument can be omitted, when the lattice can be
             inferred from the basis.
-        basis (:class:`~treams.BasisSet` or tuple): Basis set, if it is a tuple of two
+        basis (:class:`treams.BasisSet` or tuple): Basis set, if it is a tuple of two
             basis sets the output and input modes are taken accordingly, else both sets
             of modes are the same.
         k0 (float, optional): Wave number.
         eta (float or complex, optional): Split parameter used when the Ewald summation
             is applied for the lattice sums. By setting it to 0 the split is set
             automatically.
-        material (:class:`~treams.Material` or tuple, optional): Material parameters.
+        material (:class:`treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode, used for
-            :class:`~treams.PlaneWaveBasisByComp`.
+            :class:`treams.PlaneWaveBasisByComp`.
         poltype (str, optional): Polarization, see also
             :ref:`params:Polarizations`.
         where (array-like, bool, optional): Only evaluate parts of the expansion matrix,
@@ -1186,11 +1256,11 @@ def permute(n=1, *, basis, k0=None, material=None, modetype=None, poltype=None):
 
     Args:
         n (int, optional): Number of permutations, defaults to 1.
-        basis (:class:`~treams.BasisSet` or tuple): Basis set, if it is a tuple of two
+        basis (:class:`treams.BasisSet` or tuple): Basis set, if it is a tuple of two
             basis sets the output and input modes are taken accordingly, else both sets
             of modes are the same.
         k0 (float, optional): Wave number.
-        material (:class:`~treams.Material` or tuple, optional): Material parameters.
+        material (:class:`treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode.
         poltype (str, optional): Polarization, see also
             :ref:`params:Polarizations`.
@@ -1392,9 +1462,9 @@ def efield(r, *, basis, k0, material=Material(), modetype=None, poltype=None):
 
     Args:
         r (array-like): Evaluation points
-        basis (:class:`~treams.BasisSet`): Basis set.
+        basis (:class:`treams.BasisSet`): Basis set.
         k0 (float): Wave number.
-        material (:class:`~treams.Material` or tuple, optional): Material parameters.
+        material (:class:`treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode.
         poltype (str, optional): Polarization, see also
             :ref:`params:Polarizations`.
@@ -1417,6 +1487,12 @@ def efield(r, *, basis, k0, material=Material(), modetype=None, poltype=None):
 
 
 class FieldOperator(Operator):
+    """Field evaluation operator.
+    
+    The field evaluation operator returns a suitable transformation matrix to evaluate the corresponding field at the requested positions from a given set of coefficients.
+    This is in general not invertible, as the field in any one point could result from a superposition of different modes. For sufficiently many points the evaluation could
+    in principle be invertible, but this is not guaranteed and depends on the choice of points and modes. Thus, we do not provide an inverse transformation for field evaluation operators.
+    """
     def __init__(self, r):
         super().__init__(r)
 
@@ -1609,9 +1685,9 @@ def hfield(r, *, basis, k0, material=Material(), modetype=None, poltype=None):
 
     Args:
         r (array-like): Evaluation points
-        basis (:class:`~treams.BasisSet`): Basis set.
+        basis (:class:`treams.BasisSet`): Basis set.
         k0 (float): Wave number.
-        material (:class:`~treams.Material` or tuple, optional): Material parameters.
+        material (:class:`treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode.
         poltype (str, optional): Polarization, see also
             :ref:`params:Polarizations`.
@@ -1683,9 +1759,9 @@ def dfield(r, *, basis, k0, material=Material(), modetype=None, poltype=None):
 
     Args:
         r (array-like): Evaluation points
-        basis (:class:`~treams.BasisSet`): Basis set.
+        basis (:class:`treams.BasisSet`): Basis set.
         k0 (float): Wave number.
-        material (:class:`~treams.Material` or tuple, optional): Material parameters.
+        material (:class:`treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode.
         poltype (str, optional): Polarization, see also
             :ref:`params:Polarizations`.
@@ -1758,9 +1834,9 @@ def bfield(r, *, basis, k0=None, material=Material(), modetype=None, poltype=Non
 
     Args:
         r (array-like): Evaluation points
-        basis (:class:`~treams.BasisSet`): Basis set.
+        basis (:class:`treams.BasisSet`): Basis set.
         k0 (float, optional): Wave number.
-        material (:class:`~treams.Material` or tuple, optional): Material parameters.
+        material (:class:`treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode.
         poltype (str, optional): Polarization, see also
             :ref:`params:Polarizations`.
@@ -1961,9 +2037,9 @@ def gfield(pol, r, *, basis, k0, material=Material(), modetype=None, poltype=Non
         pol (int): Type of the Riemann-Silberstein field, must be 1 or -1. In analogy to
             to polarizations for helicity mode, 0 is also treated as -1.
         r (array-like): Evaluation points
-        basis (:class:`~treams.BasisSet`): Basis set.
+        basis (:class:`treams.BasisSet`): Basis set.
         k0 (float): Wave number.
-        material (:class:`~treams.Material` or tuple, optional): Material parameters.
+        material (:class:`treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode.
         poltype (str, optional): Polarization, see also
             :ref:`params:Polarizations`.
@@ -2039,9 +2115,9 @@ def ffield(pol, r, *, basis, k0, material=Material(), modetype=None, poltype=Non
         pol (int): Type of the Riemann-Silberstein field, must be 1 or -1. In analogy to
             to polarizations for helicity mode, 0 is also treated as -1.
         r (array-like): Evaluation points
-        basis (:class:`~treams.BasisSet`): Basis set.
+        basis (:class:`treams.BasisSet`): Basis set.
         k0 (float): Wave number.
-        material (:class:`~treams.Material` or tuple, optional): Material parameters.
+        material (:class:`treams.Material` or tuple, optional): Material parameters.
         modetype (str, optional): Wave mode.
         poltype (str, optional): Polarization, see also
             :ref:`params:Polarizations`.

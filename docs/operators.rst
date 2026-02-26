@@ -50,7 +50,7 @@ As already mentioned a common transformation are rotations. The representation o
 rotation operator depends on which basis we use. For example, for the T-matrix using the
 spherical wave basis, such a rotation is represented by the Wigner D-matrix elements,
 but for plane waves this would look different. In *treams* we can create such an
-abstract rotation operator by using :class:`~treams.Rotate`
+abstract rotation operator by using :class:`treams.Rotate`
 
 .. doctest::
 
@@ -91,7 +91,7 @@ automatically take that attribute.
     )
 
 Here, we also use the property `inv` to get the inverse rotation. Moreover, we for
-instances of :class:`~treams.PhysicsArray` we can get the same result by calling the
+instances of :class:`treams.PhysicsArray` we can get the same result by calling the
 correspondingly named attribute
 
     >>> phi = 1
@@ -174,7 +174,7 @@ is basically just a matching of the wave vectors and polarizations.
     )
 
 For example, here we change from the expansion in
-:class:`~treams.PlaneWaveBasisByUnitVector` to the expansion by x- and y- components.
+:class:`treams.PlaneWaveBasisByUnitVector` to the expansion by x- and y- components.
 For such a basis change, it is necessary that the material and the wave number is
 specified.
 
