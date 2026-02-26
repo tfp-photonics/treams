@@ -55,6 +55,7 @@ sphinx:
     - "sphinx.ext.intersphinx"
   local_extensions:
     sphinx_extensions.signature_override: "."
+    sphinx_extensions.numpy_printoptions: "."
   config:
     nb_execution_show_tb: True
     nb_execution_raise_on_error: True
@@ -72,6 +73,7 @@ sphinx:
         scipy: ["https://docs.scipy.org/doc/scipy", null]
         numpy: ["https://numpy.org/doc/stable", null]
     autosectionlabel_prefix_document: True
+    doctest_global_setup: "import numpy as np; from treams import *"
 
 parse:
   myst_enable_extensions:  # default extensions to enable in the myst parser. See https://myst-parser.readthedocs.io/en/latest/using/syntax-optional.html

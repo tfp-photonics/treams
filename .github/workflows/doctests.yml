@@ -24,4 +24,4 @@ jobs:
         sudo apt-get -y install libglu1 libxcursor-dev libxft2 libxinerama1 libfltk1.3-dev libfreetype6-dev libgl1-mesa-dev
     - name: Run doctests
       run: |
-        TZ=UTC sphinx-build -b doctest docs docs/_build/doctest
+        TZ=UTC jb build --builder custom --custom-builder doctest docs
