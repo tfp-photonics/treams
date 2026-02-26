@@ -1,34 +1,60 @@
 name: docs
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
+    # If your git repository has the Jupyter Book within some-subfolder next to
+    # unrelated files, you can make this run only if a file within that specific
+    # folder has been modified.
+    #
+    # paths:
+    # - some-subfolder/**
 
+# This job installs dependencies, builds the book, and pushes it to `gh-pages`
 jobs:
-  docs:
+  deploy-book:
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-    - uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-    - name: Build treams
-      run: python -m pip install -e .[docs]
-    - name: Build html
-      run: |
-        jb build docs
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: html-docs
-        path: docs/_build/html/
-    - name: Deploy docs
-      uses: peaceiris/actions-gh-pages@v4
-      if: github.ref == 'refs/heads/main'
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: docs/_build/html
+      - uses: actions/checkout@v5
+
+      # Install dependencies
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: pip # Implicitly uses requirements.txt for cache key
+
+      - name: Build treams
+        run: pip install -e .[docs]
+
+      # (optional) Cache your executed notebooks between runs
+      # if you have config:
+      # execute:
+      #   execute_notebooks: cache
+      - name: cache executed notebooks
+        uses: actions/cache@v4
+        with:
+          path: docs/_build/.jupyter_cache
+          key: jupyter-book-cache-${{ hashFiles('src') }}
+
+      # Build the book
+      - name: Build the book
+        run: |
+          jupyter-book build docs
+
+      # https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-with-a-custom-github-actions-workflow
+
+      # Upload the book's HTML as an artifact
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: docs/_build/html
+
+      # Deploy the book's HTML to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
