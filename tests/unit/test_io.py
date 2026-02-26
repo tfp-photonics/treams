@@ -50,14 +50,13 @@ class TestSaveHDF5:
             assert np.all(fp["tmatrix"] == m)
             assert fp["angular_vacuum_wavenumber"][...] == 7
             assert np.all(
-                fp["materials/embedding/relative_permittivity"]
+                fp["embedding/relative_permittivity"]
                 == np.arange(1, 5)[:, None] * [1, 1, 1]
             )
             assert np.all(
-                fp["materials/embedding/relative_permeability"] == np.arange(1, 4)
+                fp["embedding/relative_permeability"] == np.arange(1, 4)
             )
-            assert fp["materials/embedding/chirality"][...] == 0.5
-            assert fp["embedding"] == fp["materials/embedding"]
+            assert fp["embedding/chirality"][...] == 0.5
             assert np.all(fp["modes/l"] == tms[0][0].basis.l)
             assert np.all(fp["modes/m"] == tms[0][0].basis.m)
             assert np.all(
@@ -85,9 +84,8 @@ class TestSaveHDF5:
             assert (
                 np.all(fp["tmatrix"] == m)
                 and np.all(fp["angular_vacuum_wavenumber"] == np.arange(1, 5)[:, None])
-                and fp["materials/embedding/relative_permittivity"][...] == 1
-                and fp["materials/embedding/relative_permeability"][...] == 1
-                and fp["embedding"] == fp["materials/embedding"]
+                and fp["embedding/relative_permittivity"][...] == 1
+                and fp["embedding/relative_permeability"][...] == 1
                 and np.all(fp["modes/l"] == tms[0][0].basis.l)
                 and np.all(fp["modes/m"] == tms[0][0].basis.m)
                 and np.all(
@@ -105,8 +103,7 @@ class TestLoadHdf5:
             )
             fp.create_dataset("frequency", data=np.arange(1, 5)[:, None])
             fp["frequency"].attrs["unit"] = "THz"
-            fp.create_dataset("materials/foo/refractive_index", data=4)
-            fp["embedding"] = h5py.SoftLink("/materials/foo")
+            fp.create_dataset("embedding/refractive_index", data=4)
             fp.create_dataset("modes/positions", data=[[0, 0, 0]])
             fp.create_dataset("modes/l_incident", data=[1, 1, 2, 2])
             fp.create_dataset("modes/l_scattered", data=6 * [1])

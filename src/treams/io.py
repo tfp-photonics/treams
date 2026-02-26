@@ -2,11 +2,11 @@
 
 Most functions rely on at least one of the external packages `h5py` or `gmsh`.
 """
-
+import os
 import sys
 import uuid as _uuid
 from importlib.metadata import version
-
+import warnings
 import numpy as np
 
 import treams
@@ -230,6 +230,143 @@ def _collapse_dims(arr):
             arr = test
     return arr.reshape(_remove_leading_ones(arr.shape))
 
+def _save_mesh(comp_group, mesh, lunit="nm", encoding="utf-8"):
+    """
+    Store one shared mesh under /computation.
+
+    mesh can be:
+      - dict: {"mesh.xyz": "<text>", ...}  
+      - str path to a text file: "---.xyz" -> stored as "mesh.xyz"
+    """
+    root = comp_group.file
+    # dict -> /computation/mesh/<key>
+    if isinstance(mesh, dict):
+        mg = comp_group.require_group("mesh")
+        mg.attrs["unit"] = lunit
+        for name, text in mesh.items():
+            if name in mg:
+                del mg[name]
+            mg[name] = text   
+        target_path = mg.name       
+     
+    # path -> /computation/mesh.xyz
+    elif isinstance(mesh, str) and os.path.exists(mesh):
+        ext = os.path.splitext(mesh)[1] 
+        dset_name = "mesh" + ext
+        with open(mesh, "r", encoding=encoding) as f:
+            text = f.read()
+        if dset_name in comp_group:
+            del comp_group[dset_name]
+        comp_group[dset_name] = text
+        comp_group[dset_name].attrs["unit"] = lunit
+        target_path = comp_group[dset_name].name
+
+    else:
+        raise ValueError(f"invalid mesh type: {type(mesh)}")        
+    existing = root.get("mesh", getlink=True)
+    if existing is None:
+        root["mesh"] = h5py.SoftLink(target_path)
+    elif isinstance(existing, h5py.SoftLink):
+        del root["mesh"]
+        root["mesh"] = h5py.SoftLink(target_path)
+
+
+def _save_scatterers_hdf5(h5file, scatterers, lunit):
+    if isinstance(scatterers, dict):
+        scatterers = [scatterers]
+
+    for i, sc in enumerate(scatterers):
+        gname = "scatterer" if len(scatterers) == 1 else f"scatterer_{i}"
+        sg = h5file.require_group(gname)
+        _name_descr_kw(
+            sg,
+            sc.get("name", ""),
+            sc.get("description", ""),
+            sc.get("keywords", ""),
+        )
+
+        # material
+        mat = sg.require_group("material")
+        m = sc.get("material", {})
+        _name_descr_kw(
+            mat,
+            m.get("name", ""),
+            m.get("description", ""),
+            m.get("keywords", ""),
+        )
+        for key in ("relative_permittivity", "relative_permeability", "chirality"):
+            if key in m:
+                mat[key] = m[key]
+
+        # geometry
+        geo = sg.require_group("geometry")
+        g = sc.get("geometry", {})
+        _name_descr_kw(
+            geo,
+            g.get("name", ""),
+            g.get("description", ""),
+            g.get("keywords", ""),
+        )
+        if "shape" in g:
+            geo.attrs["shape"] = g["shape"]
+        geo.attrs["unit"] = g.get("unit", lunit)
+
+        for k, v in g.items():
+            if k in ("shape", "unit", "name", "description", "keywords"):
+                continue
+            geo[k] = v
+            if hasattr(geo[k], "attrs"):
+                geo[k].attrs["unit"] = geo.attrs["unit"]
+                
+        if "position" in sc:
+            geo["position"] = sc["position"]
+            geo["position"].attrs["unit"] = geo.attrs["unit"]
+
+def _save_computation_hdf5(h5file, computation, lunit):
+    comp = h5file.require_group("computation")
+    _name_descr_kw(
+        comp,
+        computation.get("name", ""),
+        computation.get("description", ""),
+        computation.get("keywords", ""),
+    )
+    if "method" in computation:
+        comp.attrs["method"] = computation["method"]
+
+    software = computation.get("software", "")
+    if software == "":
+        software = (
+            f"python={sys.version.split()[0]}, "
+            f"h5py={version('h5py')}, "
+            f"treams={version('treams')}, "
+            f"numpy={version('numpy')}"
+        )
+    comp.attrs["software"] = software
+
+    mesh = computation.get("mesh", None)
+    if mesh is not None:
+        _save_mesh(comp, mesh, lunit)
+    else:
+        kw = str(comp.attrs.get("keywords", ""))
+        if "semi-analytical" not in kw:
+            issues.append(
+                "Computation keywords do not include 'semi-analytical' but no mesh was stored. "
+                "This is against tmat.h5 v1 and will not be accepted by the T-matrix database."
+            )
+
+    # reproducibility files
+    files = computation.get("files", None)
+    if files:
+        fg = comp.require_group("files")
+        for item in files:
+            if isinstance(item, str):
+                path = item
+                name = os.path.basename(path)
+            else:
+                path = item["path"]
+                name = item.get("name", os.path.basename(path))
+            with open(path, "r", encoding="utf-8") as f:
+                fg[name] = f.read()
 
 def save_hdf5(
     h5file,
@@ -243,29 +380,54 @@ def save_hdf5(
     embedding_keywords="",
     uuid=None,
     uuid_version=4,
-    lunit="nm",
+    scatterers=None, 
+    computation=None,
+    lunit="nm"
 ):
     """Save a set of T-matrices in a HDF5 file.
 
-    With an open and writeable datafile, this function stores the main parts of as
-    T-matrix in the file. It is left open for the user to add additional metadata.
+    With an open and writeable datafile, this function writes the main datasets 
+    needed to store T-matrix data in the tmat.h5 v1 layout.
+    Additional metadata can be added by the user after calling this function. 
 
     Args:
-        h5file (h5py.Group): A HDF5 file opened with h5py.
-        tms (TMatrix, array_like): Array of T-matrix instances.
-        name (str): Name to add to the file as attribute.
-        description (str): Description to add to file as attribute.
-        keywords (str): Keywords to add to file as attribute.
-        embedding_group (h5py.Group, optional): Group object for the embedding material,
-            defaults to "/materials/embedding/".
-        embedding_name (string, optional): Name of the embedding material.
-        embedding_description (string, optional): Description of the embedding material.
-        embedding_keywords (string, optional): Keywords for the embedding material.
-        uuid (bytes, optional): UUID of the file, a new one is created if omitted.
-        uuid_version (int, optional): UUID version.
-        lunit (string, optional): Length unit used for the positions and (as
-            inverse) for the wave number.
+    h5file (h5py.Group): A HDF5 file opened with h5py.
+    tms (TMatrix, array_like): Array of T-matrix instances.
+    name (str): Name to add to the file as attribute.
+    description (str): Description to add to file as attribute.
+    keywords (str): Keywords to add to file as attribute, e.g.,
+        "mirrorxyz, czinfinity, passive, reciprocal".
+
+    embedding_group (h5py.Group, optional): Target group to store embedding data.
+        For legacy/compatibility only. The tmat.h5 v1 standard requires the
+        embedding to be stored under ``/embedding``.
+
+    embedding_name (str, optional): Name of the embedding material. To match
+        existing entries in the T-matrix database, use the same naming style as
+        already used there (comma-separated identifier and common name), e.g.
+        "Air, Vacuum", "H2O, Water", "C2H5OH, Ethanol", or "Custom". Same for the
+        material of the scatterers.
+    embedding_description (str, optional): Description of the embedding material.
+    embedding_keywords (str, optional): Keywords for the embedding material.
+
+    uuid (bytes, optional): UUID of the file (legacy compatibility, not required
+        by the standard).
+    uuid_version (int, optional): UUID version.
+
+    scatterers (dict or list[dict], optional): Scatterer metadata to be written
+        to ``/scatterer`` or ``/scatterer_<i>`` groups. Provide multiple scatterers
+        only if a single T-matrix describes an arrangement of objects. This information is required by
+        the v1 standard, but kept optional here for legacy compatibility.
+        Do not combine unrelated single-object T-matrices (e.g. from a geometry parameter sweep)
+        in one file.
+
+    computation (dict, optional): Computation metadata to be written to the
+        ``/computation`` group (recommended to include '/computation/files'). This information is required by
+    the v1 standard, but kept optional here for legacy compatibility.
+    lunit (str, optional): Length unit used for the positions and (as inverse)
+        for the wave number.
     """
+    issues = []
     tms_arr = np.array(tms)
     if tms_arr.dtype == object:
         raise ValueError("can only save T-matrices of the same size")
@@ -293,13 +455,9 @@ def save_hdf5(
             kappa.flat[i] = tm.material.kappa
 
     h5file["tmatrix"] = tms_arr
-    if uuid is None:
-        h5file["uuid"] = np.void(_uuid.uuid4().bytes)
-        h5file["uuid"].attrs["version"] = 4
-    else:
+    if uuid is not None:
         h5file["uuid"] = uuid
         h5file["uuid"].attrs["version"] = uuid_version
-
     _name_descr_kw(h5file, name, description, keywords)
     h5file["angular_vacuum_wavenumber"] = _collapse_dims(k0s)
     h5file["angular_vacuum_wavenumber"].attrs["unit"] = lunit + r"^{-1}"
@@ -307,12 +465,20 @@ def save_hdf5(
     h5file["modes/m"] = basis.m
     h5file["modes/polarization"] = _translate_polarizations(basis.pol, poltype)
     if any(basis.pidx != 0):
-        h5file["modes/pidx"] = basis.pidx
+        h5file["modes/index"] = basis.pidx
     if not np.array_equiv(basis.positions, [[0, 0, 0]]):
         h5file["modes/positions"] = basis.positions
         h5file["modes/positions"].attrs["unit"] = lunit
-    if embedding_group is None:
-        embedding_group = h5file.create_group("materials/embedding")
+
+
+    embedding_group = h5file.require_group("embedding") if embedding_group is None else h5file.require_group(embedding_group.lstrip("/"))
+
+    if embedding_group.name != "/embedding":
+        issues.append(
+            f"Embedding group path is '{embedding_group.name}', expected /embedding. "
+            "File is not compliant with tmat.h5 v1 standard and will not be accepted by the T-matrix database."
+        )
+
     embedding_group["relative_permittivity"] = _collapse_dims(epsilon)
     embedding_group["relative_permeability"] = _collapse_dims(mu)
     if poltype == "helicity":
@@ -320,16 +486,24 @@ def save_hdf5(
     _name_descr_kw(
         embedding_group, embedding_name, embedding_description, embedding_keywords
     )
-    h5file["embedding"] = h5py.SoftLink(embedding_group.name)
 
-    h5file.attrs["created_with"] = (
-        f"python={sys.version.split()[0]},"
-        f"h5py={version('h5py')},"
-        f"treams={version('treams')}"
-    )
-    h5file.attrs["storage_format_version"] = "0.0.1-4-g1266244"
+    if computation is not None:
+        _save_computation_hdf5(h5file, computation, lunit)
+    else:
+        issues.append(
+            "Missing /computation group metadata (method/software). File is not compliant with tmat.h5 v1 standard."
+        )
 
-
+    if scatterers is not None:
+        _save_scatterers_hdf5(h5file, scatterers, lunit)
+    else:
+        issues.append(
+            "Missing /scatterer or /scatterer_* groups. File is not compliant with tmat.h5 v1 standard."
+        )
+        
+    if not issues:
+        h5file.attrs["storage_format_version"] = "v1"
+        
 def _name_descr_kw(fobj, name, description="", keywords=""):
     for key, val in [
         ("name", name),
