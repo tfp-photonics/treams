@@ -1169,8 +1169,8 @@ which can be expressed as
 
     \boldsymbol X_{lm}(\theta, \varphi)
     = \mathrm i \sqrt{\frac{2 l + 1}{4 \pi l (l + 1)} \frac{(l - m)!}{(l + m)!}}
-    \left(\mathrm i \pi_{lm}(\theta, \varphi) \boldsymbol{\hat\theta}
-    - \tau_{lm}(\theta, \varphi) \boldsymbol{\hat\varphi}\right)
+    \left(\mathrm i \pi_{lm}(\cos(\theta)) \boldsymbol{\hat\theta}
+    - \tau_{lm}(\cos(\theta)) \boldsymbol{\hat\varphi}\right) e^{\mathrm i m \varphi}
 
 with the angular functions :func:`treams.special.pi_fun` and
 :func:`treams.special.tau_fun`.
@@ -1230,8 +1230,8 @@ it can can be expressed as
 
     \boldsymbol Y_{lm}(\theta, \varphi)
     = \mathrm i \sqrt{\frac{2 l + 1}{4 \pi l (l + 1)} \frac{(l - m)!}{(l + m)!}}
-    \left(\tau_{lm}(\theta, \varphi) \boldsymbol{\hat\theta}
-    + \mathrm i \pi_{lm}(\theta, \varphi) \boldsymbol{\hat\varphi}\right)
+    \left(\tau_{lm}(\cos(\theta)) \boldsymbol{\hat\theta}
+    + \mathrm i \pi_{lm}(cos(\theta)) \boldsymbol{\hat\varphi}\right) e^{\mathrm i m \varphi}
 
 with the angular functions :func:`treams.special.pi_fun` and
 :func:`treams.special.tau_fun`.
