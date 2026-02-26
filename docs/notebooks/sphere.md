@@ -1,0 +1,92 @@
+---
+jupytext:
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.19.1
+  formats: md:myst
+kernelspec:
+  name: python3
+  language: python
+  display_name: Python 3 (ipykernel)
+---
+
+# Single Sphere
+
+```{code-cell}
+import matplotlib.pyplot as plt
+import numpy as np
+```
+
+```{code-cell}
+import treams
+```
+
+```{code-cell}
+k0s = 2 * np.pi * np.linspace(1 / 700, 1 / 300, 200)
+materials = [treams.Material(16 + 0.5j), treams.Material()]
+lmax = 4
+radius = 75
+spheres = [treams.TMatrix.sphere(lmax, k0, radius, materials) for k0 in k0s]
+```
+
+```{code-cell}
+xs_sca = np.array([tm.xs_sca_avg for tm in spheres]) / (np.pi * radius ** 2)
+xs_ext = np.array([tm.xs_ext_avg for tm in spheres]) / (np.pi * radius ** 2)
+```
+
+```{code-cell}
+swb_lmax1 = treams.SphericalWaveBasis.default(1)
+spheres_lmax1 = [tm[swb_lmax1] for tm in spheres]
+xs_sca_lmax1 = np.array([tm.xs_sca_avg for tm in spheres_lmax1]) / (np.pi * radius ** 2)
+xs_ext_lmax1 = np.array([tm.xs_ext_avg for tm in spheres_lmax1]) / (np.pi * radius ** 2)
+```
+
+```{code-cell}
+tm = spheres[-1]
+inc = treams.plane_wave([0, 0, tm.k0], 1, k0=tm.k0, material=tm.material)
+sca = tm @ inc.expand(tm.basis)
+```
+
+```{code-cell}
+x = np.linspace(-100, 100, 101)
+y = 0
+z = np.linspace(-100, 100, 101)
+xx, zz = np.meshgrid(x, z, indexing="ij")
+yy = np.full_like(xx, y)
+grid = np.stack((xx, yy, zz), axis=-1)
+```
+
+```{code-cell}
+intensity = np.zeros_like(xx)
+valid = tm.valid_points(grid, [radius])
+intensity[~valid] = np.nan
+intensity[valid] = 0.5 * np.sum(
+    np.abs(inc.efield(grid[valid]) + sca.efield(grid[valid])) ** 2, -1
+)
+```
+
+```{code-cell}
+fig, ax = plt.subplots()
+ax.plot(k0s * 299792.458 / (2 * np.pi), xs_ext)
+ax.plot(k0s * 299792.458 / (2 * np.pi), xs_sca)
+ax.plot(k0s * 299792.458 / (2 * np.pi), xs_ext_lmax1, color="C0", linestyle=":")
+ax.plot(k0s * 299792.458 / (2 * np.pi), xs_sca_lmax1, color="C1", linestyle=":")
+ax.set_xlabel("Frequency (THz)")
+ax.set_ylabel("Efficiency")
+ax.legend(["Extinction", "Scattering", "Extinction $l=1$", "Scattering $l=1$"])
+fig.show()
+```
+
+```{code-cell}
+fig, ax = plt.subplots()
+pcm = ax.pcolormesh(
+    xx, zz, intensity, shading="nearest", vmin=0, vmax=1,
+)
+cb = plt.colorbar(pcm)
+cb.set_label("Intensity")
+ax.set_xlabel("x (nm)")
+ax.set_ylabel("z (nm)")
+fig.show()
+```

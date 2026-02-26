@@ -1,5 +1,5 @@
 ========
-Examples
+Gallery
 ========
 
 *treams* is a program that covers various aspects of T-matrix calculations and

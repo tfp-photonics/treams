@@ -607,7 +607,8 @@ cyl2sph = np.PyUFunc_FromFuncAndDataAndSignature(
 Convert cylindrical to spherical coordinates
 
 The cylindrical coordinates :math:`(\rho, \varphi, z)` are converted to
-:math:`(r, \theta, \varphi)` with :math:`\rho = r \sin \theta` and
+:math:`(r, \theta, \varphi)` with 
+:math:`\rho = r \sin \theta` and
 :math:`z = \rho \cos \theta`.
 
 Args:
@@ -644,8 +645,10 @@ sph2car = np.PyUFunc_FromFuncAndDataAndSignature(
 Convert spherical to cartesian coordinates
 
 The spherical coordinates :math:`(r, \theta, \varphi)` are converted to
-:math:`(x, y, z)` with :math:`x = r \sin \theta \cos \varphi`,
-:math:`y = r \sin \theta \sin \varphi`, and :math:`z = r \cos \theta`.
+:math:`(x, y, z)` with 
+:math:`x = r \sin \theta \cos \varphi`,
+:math:`y = r \sin \theta \sin \varphi`, and 
+:math:`z = r \cos \theta`.
 
 Args:
     r (float, 3-array): Spherical coordinates in 3-dimensional space
@@ -1169,8 +1172,9 @@ which can be expressed as
 
     \boldsymbol X_{lm}(\theta, \varphi)
     = \mathrm i \sqrt{\frac{2 l + 1}{4 \pi l (l + 1)} \frac{(l - m)!}{(l + m)!}}
-    \left(\mathrm i \pi_{lm}(\theta, \varphi) \boldsymbol{\hat\theta}
-    - \tau_{lm}(\theta, \varphi) \boldsymbol{\hat\varphi}\right)
+    \left(\mathrm i \pi_l^m(\cos\theta) \boldsymbol{\hat\theta}
+    - \tau_l^m (\cos\theta) \boldsymbol{\hat\varphi}\right)
+    \mathrm e^{\mathrm i m \varphi}
 
 with the angular functions :func:`treams.special.pi_fun` and
 :func:`treams.special.tau_fun`.
@@ -1230,8 +1234,9 @@ it can can be expressed as
 
     \boldsymbol Y_{lm}(\theta, \varphi)
     = \mathrm i \sqrt{\frac{2 l + 1}{4 \pi l (l + 1)} \frac{(l - m)!}{(l + m)!}}
-    \left(\tau_{lm}(\theta, \varphi) \boldsymbol{\hat\theta}
-    + \mathrm i \pi_{lm}(\theta, \varphi) \boldsymbol{\hat\varphi}\right)
+    \left(\tau_l^m (\cos\theta) \boldsymbol{\hat\theta}
+    + \mathrm i \pi_l^m (\cos\theta) \boldsymbol{\hat\varphi}\right)
+    \mathrm e^{\mathrm i m \varphi}
 
 with the angular functions :func:`treams.special.pi_fun` and
 :func:`treams.special.tau_fun`.

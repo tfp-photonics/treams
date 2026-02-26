@@ -2,16 +2,6 @@
 Welcome to treams' documentation!
 =================================
 
-.. toctree::
-   :maxdepth: 1
-
-   gettingstarted
-   intro
-   theory
-   treams
-   dev
-   about
-
 The package **treams** provides a framework to simplify computations of the
 electromagnetic scattering of waves at finite and periodically infinite arrangements of
 particles. All methods are suitable for the use of chiral materials. The periodic
@@ -25,7 +15,7 @@ waves, and spherical waves. For each of those solution sets, the typical manipul
 e.g. translations and rotations, are implemented, as well as transformations between
 them.
 
-The package contains two subpackages: :mod:`lattice` and :mod:`special`. The former
+The package contains two subpackages: :mod:`treams.lattice` and :mod:`treams.special`. The former
 contains mainly the functions for computing the lattice series. The latter can be seen
 as an addition to the special functions implemented in :py:mod:`scipy.special`. It
 contains the mathematical functions that are typically necessary in T-Matrix method

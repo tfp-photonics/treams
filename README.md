@@ -23,6 +23,7 @@ To install the package with pip, use
 pip install treams
 ```
 
+This will make sure to also install all required dependencies (i.e. `numpy` and `scipy`). Please ignore the `requirements.txt`, as they only serve to instruct binder which packages to install to run the documentation notebooks interactively.
 If you're using the system wide installed version of python, you might consider the
 ``--user`` option.
 

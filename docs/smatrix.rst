@@ -17,7 +17,7 @@ z-direction, and the reflection of those fields.
 Slabs
 =====
 
-The main object for plane wave computations is the class :class:`~treams.SMatrices`
+The main object for plane wave computations is the class :class:`treams.SMatrices`
 which exactly collects those four individual S-matrices. For simple interfaces and the
 propagation in a homogeneous medium these S-matrices can be obtained analytically.
 Combining these two objects then allows the description of simple slabs.
