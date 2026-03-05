@@ -16,3 +16,5 @@ or `parity`.
 """
 
 POLTYPE = "helicity"
+
+MACHINE_EPSILON = 2e-15

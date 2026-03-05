@@ -62,6 +62,21 @@ class TestSphere:
             and tm.basis == treams.SphericalWaveBasis.default(2)
         )
 
+    def test_chiral_materials(self):
+        tm_p = TMatrix.sphere(k0=1,
+                              lmax=1, 
+                              radii=[1], 
+                              materials=[treams.Material(5,1,1), 1], 
+                              poltype='parity')
+
+        tm_h = TMatrix.sphere(k0=1,
+                              lmax=1, 
+                              radii=[1], 
+                              materials=[treams.Material(5,1,1), 1], 
+                              poltype='helicity')
+
+        assert np.array_equal(np.array(tm_p), np.array(tm_h.changepoltype("parity")))
+
 
 class TestProperties:
     def test_xs_ext_avg(self):

@@ -155,7 +155,7 @@ class TMatrix(PhysicsArray):
         if poltype == "helicity":
             return res
         res = res.changepoltype(poltype)
-        res[~np.eye(len(res), dtype=bool)] = 0
+        res[np.where(abs(np.array(res))<=config.MACHINE_EPSILON)] = 0
         return res
 
     @classmethod
