@@ -13,6 +13,7 @@ build-backend = "setuptools.build_meta"
 profile = "black"
 
 [tool.setuptools_scm]
+local_scheme = "no-local-version" 
 
 [tool.pylint.messages_control]
 extension-pkg-whitelist = "treams"
