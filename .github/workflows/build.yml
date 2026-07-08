@@ -71,4 +71,4 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
           pip install twine
-          twine upload ./artifact/*.whl
+          twine upload ./artifact/*.whl --verbose
