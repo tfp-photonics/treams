@@ -162,7 +162,7 @@ is basically just a matching of the wave vectors and polarizations.
     >>> plw = plane_wave([0, 3, 4], [.5, .5], k0=5, material=1)
     >>> Expand(PlaneWaveBasisByComp.default([[0, 3]])) @ plw
     PhysicsArray(
-        [1., 1.],
+        [0.5, 0.5],
         basis=PlaneWaveBasisByComp(
         kx=[0. 0.],
         ky=[3. 3.],
