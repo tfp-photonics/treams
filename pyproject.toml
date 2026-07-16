@@ -13,7 +13,6 @@ build-backend = "setuptools.build_meta"
 profile = "black"
 
 [tool.setuptools_scm]
-version = "v0.4.6" 
 local_scheme = "no-local-version" 
 
 [tool.pylint.messages_control]
