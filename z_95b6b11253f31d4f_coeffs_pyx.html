@@ -64,8 +64,8 @@
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a id="nextFileLink" class="nav" href="z_95b6b11253f31d4f_config_pyx.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.15.2">coverage.py v7.15.2</a>,
-            created at 2026-07-16 11:17 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.15.4">coverage.py v7.15.4</a>,
+            created at 2026-08-21 14:18 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -80,7 +80,7 @@
     </div>
 </header>
 <main id="source">
-    <p class="run"><span class="n"><a id="t1" href="#t1">1</a></span><span class="t"><span class="txt">"""Scattering coefficients for high-symmetry cases.</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t1" href="#t1">1</a></span><span class="t"><span class="txt">&quot;&quot;&quot;Scattering coefficients for high-symmetry cases.</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t2" href="#t2">2</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t3" href="#t3">3</a></span><span class="t"><span class="txt">Calculate the scattering coefficients for cases where they can be obtained analytically</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t4" href="#t4">4</a></span><span class="t"><span class="txt">easily. This is a (multilayered) sphere using spherical waves (Mie coefficients), a</span>&nbsp;</span><span class="r"></span></p>
@@ -98,7 +98,7 @@
     <p class="pln"><span class="n"><a id="t16" href="#t16">16</a></span><span class="t"><span class="txt">   mie_cyl</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t17" href="#t17">17</a></span><span class="t"><span class="txt">   fresnel</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t18" href="#t18">18</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t19" href="#t19">19</a></span><span class="t"><span class="txt">"""</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t19" href="#t19">19</a></span><span class="t"><span class="txt">&quot;&quot;&quot;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t20" href="#t20">20</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t21" href="#t21">21</a></span><span class="t"><span class="txt">cimport numpy as np</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t22" href="#t22">22</a></span><span class="t"><span class="txt">cimport scipy.special.cython_special as sc</span>&nbsp;</span><span class="r"></span></p>
@@ -110,11 +110,11 @@
     <p class="pln"><span class="n"><a id="t28" href="#t28">28</a></span><span class="t"><span class="txt">from treams.special._misc cimport double_complex, sqrt</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t29" href="#t29">29</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t30" href="#t30">30</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t31" href="#t31">31</a></span><span class="t"><span class="txt">cdef extern from "&lt;complex.h>" nogil:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t31" href="#t31">31</a></span><span class="t"><span class="txt">cdef extern from &quot;&lt;complex.h&gt;&quot; nogil:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t32" href="#t32">32</a></span><span class="t"><span class="txt">    double complex csqrt(double complex z)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t33" href="#t33">33</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t34" href="#t34">34</a></span><span class="t"><span class="txt">cdef void _interface(long l, number_t x[2][2], number_t *z, double complex m[4][4]) nogil:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t35" href="#t35">35</a></span><span class="t"><span class="txt">    """Fill a matrix for the relation at a spherical interface.</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t35" href="#t35">35</a></span><span class="t"><span class="txt">    &quot;&quot;&quot;Fill a matrix for the relation at a spherical interface.</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t36" href="#t36">36</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t37" href="#t37">37</a></span><span class="t"><span class="txt">    Note:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t38" href="#t38">38</a></span><span class="t"><span class="txt">        The result is stored in column major order, because it is later processed with</span>&nbsp;</span><span class="r"></span></p>
@@ -127,7 +127,7 @@
     <p class="pln"><span class="n"><a id="t45" href="#t45">45</a></span><span class="t"><span class="txt">        z: Impedances</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t46" href="#t46">46</a></span><span class="t"><span class="txt">        m: Return array, indexing regular and scattered modes and both helicities</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t47" href="#t47">47</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t48" href="#t48">48</a></span><span class="t"><span class="txt">    """</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t48" href="#t48">48</a></span><span class="t"><span class="txt">    &quot;&quot;&quot;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t49" href="#t49">49</a></span><span class="t"><span class="txt">    cdef number_t sb[2][2]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t50" href="#t50">50</a></span><span class="t"><span class="txt">    cdef double complex sh[2][2]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t51" href="#t51">51</a></span><span class="t"><span class="txt">    cdef number_t psi[2][2]</span>&nbsp;</span><span class="r"></span></p>
@@ -164,7 +164,7 @@
     <p class="pln"><span class="n"><a id="t82" href="#t82">82</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t83" href="#t83">83</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t84" href="#t84">84</a></span><span class="t"><span class="txt">cdef void _innermost_interface(long l, number_t x[2][2], number_t *z, double complex m[2][4]) nogil:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t85" href="#t85">85</a></span><span class="t"><span class="txt">    """Fill a matrix for the relation at the innermost spherical interface.</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t85" href="#t85">85</a></span><span class="t"><span class="txt">    &quot;&quot;&quot;Fill a matrix for the relation at the innermost spherical interface.</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t86" href="#t86">86</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t87" href="#t87">87</a></span><span class="t"><span class="txt">    This function is essentially the same as `_interface` but neglecting the singular</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t88" href="#t88">88</a></span><span class="t"><span class="txt">    modes on the inner side, because they must vanish.</span>&nbsp;</span><span class="r"></span></p>
@@ -180,7 +180,7 @@
     <p class="pln"><span class="n"><a id="t98" href="#t98">98</a></span><span class="t"><span class="txt">        z: Impedances</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t99" href="#t99">99</a></span><span class="t"><span class="txt">        m: Return array, indexing regular and scattered modes and both helicities</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t100" href="#t100">100</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t101" href="#t101">101</a></span><span class="t"><span class="txt">    """</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t101" href="#t101">101</a></span><span class="t"><span class="txt">    &quot;&quot;&quot;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t102" href="#t102">102</a></span><span class="t"><span class="txt">    cdef number_t sb[2][2]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t103" href="#t103">103</a></span><span class="t"><span class="txt">    cdef double complex sh[2][2]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t104" href="#t104">104</a></span><span class="t"><span class="txt">    cdef number_t psi[2][2]</span>&nbsp;</span><span class="r"></span></p>
@@ -209,14 +209,14 @@
     <p class="pln"><span class="n"><a id="t127" href="#t127">127</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t128" href="#t128">128</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t129" href="#t129">129</a></span><span class="t"><span class="txt">cdef void _mie(long l, double *x, number_t *epsilon, number_t *mu, number_t *kappa, long n, double complex res[2][2]) nogil:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t130" href="#t130">130</a></span><span class="t"><span class="txt">    """Calculate the mie coefficients for degree l."""</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t130" href="#t130">130</a></span><span class="t"><span class="txt">    &quot;&quot;&quot;Calculate the mie coefficients for degree l.&quot;&quot;&quot;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t131" href="#t131">131</a></span><span class="t"><span class="txt">    cdef double complex mfull[4][4]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t132" href="#t132">132</a></span><span class="t"><span class="txt">    cdef double complex mtmp[2][4]  # Column major</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t133" href="#t133">133</a></span><span class="t"><span class="txt">    cdef double complex m[2][4]  # Column major</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t134" href="#t134">134</a></span><span class="t"><span class="txt">    cdef number_t xn[2][2]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t135" href="#t135">135</a></span><span class="t"><span class="txt">    cdef number_t z[2]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t136" href="#t136">136</a></span><span class="t"><span class="txt">    cdef number_t nr[2]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t137" href="#t137">137</a></span><span class="t"><span class="txt">    cdef char c = b'N'  # Since the matrices are filled accordingly</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t137" href="#t137">137</a></span><span class="t"><span class="txt">    cdef char c = b&#x27;N&#x27;  # Since the matrices are filled accordingly</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t138" href="#t138">138</a></span><span class="t"><span class="txt">    cdef int two = 2, four = 4</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t139" href="#t139">139</a></span><span class="t"><span class="txt">    cdef double complex zone = 1, zzero = 0</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t140" href="#t140">140</a></span><span class="t"><span class="txt">    nr[1] = sqrt(epsilon[0] * mu[0])</span>&nbsp;</span><span class="r"></span></p>
@@ -251,7 +251,7 @@
     <p class="pln"><span class="n"><a id="t169" href="#t169">169</a></span><span class="t"><span class="txt">    cdef double mu[20]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t170" href="#t170">170</a></span><span class="t"><span class="txt">    cdef double kappa[20]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t171" href="#t171">171</a></span><span class="t"><span class="txt">    cdef double x[19]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t172" href="#t172">172</a></span><span class="t"><span class="txt">    cdef void *func = &lt;void*>data</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t172" href="#t172">172</a></span><span class="t"><span class="txt">    cdef void *func = &lt;void*&gt;data</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t173" href="#t173">173</a></span><span class="t"><span class="txt">    cdef char *ip0 = args[0]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t174" href="#t174">174</a></span><span class="t"><span class="txt">    cdef char *ip1 = args[1]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t175" href="#t175">175</a></span><span class="t"><span class="txt">    cdef char *ip2 = args[2]</span>&nbsp;</span><span class="r"></span></p>
@@ -260,17 +260,17 @@
     <p class="run"><span class="n"><a id="t178" href="#t178">178</a></span><span class="t"><span class="txt">    cdef char *op0 = args[5]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t179" href="#t179">179</a></span><span class="t"><span class="txt">    for i in range(n):</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t180" href="#t180">180</a></span><span class="t"><span class="txt">        for j in range(dims[1]):</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t181" href="#t181">181</a></span><span class="t"><span class="txt">            x[j] = (&lt;double*>(ip1 + j * steps[6]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t182" href="#t182">182</a></span><span class="t"><span class="txt">            epsilon[j] = (&lt;double*>(ip2 + j * steps[7]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t183" href="#t183">183</a></span><span class="t"><span class="txt">            mu[j] = (&lt;double*>(ip3 + j * steps[8]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t184" href="#t184">184</a></span><span class="t"><span class="txt">            kappa[j] = (&lt;double*>(ip4 + j * steps[9]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t185" href="#t185">185</a></span><span class="t"><span class="txt">        epsilon[dims[1]] = (&lt;double*>(ip2 + dims[1] * steps[7]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t186" href="#t186">186</a></span><span class="t"><span class="txt">        mu[dims[1]] = (&lt;double*>(ip3 + dims[1] * steps[8]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t187" href="#t187">187</a></span><span class="t"><span class="txt">        kappa[dims[1]] = (&lt;double*>(ip4 + dims[1] * steps[9]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t188" href="#t188">188</a></span><span class="t"><span class="txt">        (&lt;void (*)(long, double*, double*, double*, double*, long, double complex[2][2]) nogil>func)(&lt;long>(&lt;long*>ip0)[0], x, epsilon, mu, kappa, dims[1], res)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t181" href="#t181">181</a></span><span class="t"><span class="txt">            x[j] = (&lt;double*&gt;(ip1 + j * steps[6]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t182" href="#t182">182</a></span><span class="t"><span class="txt">            epsilon[j] = (&lt;double*&gt;(ip2 + j * steps[7]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t183" href="#t183">183</a></span><span class="t"><span class="txt">            mu[j] = (&lt;double*&gt;(ip3 + j * steps[8]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t184" href="#t184">184</a></span><span class="t"><span class="txt">            kappa[j] = (&lt;double*&gt;(ip4 + j * steps[9]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t185" href="#t185">185</a></span><span class="t"><span class="txt">        epsilon[dims[1]] = (&lt;double*&gt;(ip2 + dims[1] * steps[7]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t186" href="#t186">186</a></span><span class="t"><span class="txt">        mu[dims[1]] = (&lt;double*&gt;(ip3 + dims[1] * steps[8]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t187" href="#t187">187</a></span><span class="t"><span class="txt">        kappa[dims[1]] = (&lt;double*&gt;(ip4 + dims[1] * steps[9]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t188" href="#t188">188</a></span><span class="t"><span class="txt">        (&lt;void (*)(long, double*, double*, double*, double*, long, double complex[2][2]) nogil&gt;func)(&lt;long&gt;(&lt;long*&gt;ip0)[0], x, epsilon, mu, kappa, dims[1], res)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t189" href="#t189">189</a></span><span class="t"><span class="txt">        for j in range(2):</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t190" href="#t190">190</a></span><span class="t"><span class="txt">            (&lt;double complex*>(op0 + j * steps[10]))[0] = res[j][0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t191" href="#t191">191</a></span><span class="t"><span class="txt">            (&lt;double complex*>(op0 + j * steps[10] + steps[11]))[0] = res[j][1]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t190" href="#t190">190</a></span><span class="t"><span class="txt">            (&lt;double complex*&gt;(op0 + j * steps[10]))[0] = res[j][0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t191" href="#t191">191</a></span><span class="t"><span class="txt">            (&lt;double complex*&gt;(op0 + j * steps[10] + steps[11]))[0] = res[j][1]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t192" href="#t192">192</a></span><span class="t"><span class="txt">        ip0 += steps[0]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t193" href="#t193">193</a></span><span class="t"><span class="txt">        ip1 += steps[1]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t194" href="#t194">194</a></span><span class="t"><span class="txt">        ip2 += steps[2]</span>&nbsp;</span><span class="r"></span></p>
@@ -285,7 +285,7 @@
     <p class="pln"><span class="n"><a id="t203" href="#t203">203</a></span><span class="t"><span class="txt">    cdef double complex mu[20]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t204" href="#t204">204</a></span><span class="t"><span class="txt">    cdef double complex kappa[20]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t205" href="#t205">205</a></span><span class="t"><span class="txt">    cdef double x[19]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t206" href="#t206">206</a></span><span class="t"><span class="txt">    cdef void *func = &lt;void*>data</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t206" href="#t206">206</a></span><span class="t"><span class="txt">    cdef void *func = &lt;void*&gt;data</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t207" href="#t207">207</a></span><span class="t"><span class="txt">    cdef char *ip0 = args[0]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t208" href="#t208">208</a></span><span class="t"><span class="txt">    cdef char *ip1 = args[1]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t209" href="#t209">209</a></span><span class="t"><span class="txt">    cdef char *ip2 = args[2]</span>&nbsp;</span><span class="r"></span></p>
@@ -294,17 +294,17 @@
     <p class="run"><span class="n"><a id="t212" href="#t212">212</a></span><span class="t"><span class="txt">    cdef char *op0 = args[5]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t213" href="#t213">213</a></span><span class="t"><span class="txt">    for i in range(n):</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t214" href="#t214">214</a></span><span class="t"><span class="txt">        for j in range(dims[1]):</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t215" href="#t215">215</a></span><span class="t"><span class="txt">            x[j] = (&lt;double*>(ip1 + j * steps[6]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t216" href="#t216">216</a></span><span class="t"><span class="txt">            epsilon[j] = (&lt;double complex*>(ip2 + j * steps[7]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t217" href="#t217">217</a></span><span class="t"><span class="txt">            mu[j] = (&lt;double complex*>(ip3 + j * steps[8]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t218" href="#t218">218</a></span><span class="t"><span class="txt">            kappa[j] = (&lt;double complex*>(ip4 + j * steps[9]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t219" href="#t219">219</a></span><span class="t"><span class="txt">        epsilon[dims[1]] = (&lt;double complex*>(ip2 + dims[1] * steps[7]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t220" href="#t220">220</a></span><span class="t"><span class="txt">        mu[dims[1]] = (&lt;double complex*>(ip3 + dims[1] * steps[8]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t221" href="#t221">221</a></span><span class="t"><span class="txt">        kappa[dims[1]] = (&lt;double complex*>(ip4 + dims[1] * steps[9]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t222" href="#t222">222</a></span><span class="t"><span class="txt">        (&lt;void (*)(long, double*, double complex*, double complex*, double complex*, long, double complex[2][2]) nogil>func)(&lt;long>(&lt;long*>ip0)[0], x, epsilon, mu, kappa, dims[1], res)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t215" href="#t215">215</a></span><span class="t"><span class="txt">            x[j] = (&lt;double*&gt;(ip1 + j * steps[6]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t216" href="#t216">216</a></span><span class="t"><span class="txt">            epsilon[j] = (&lt;double complex*&gt;(ip2 + j * steps[7]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t217" href="#t217">217</a></span><span class="t"><span class="txt">            mu[j] = (&lt;double complex*&gt;(ip3 + j * steps[8]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t218" href="#t218">218</a></span><span class="t"><span class="txt">            kappa[j] = (&lt;double complex*&gt;(ip4 + j * steps[9]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t219" href="#t219">219</a></span><span class="t"><span class="txt">        epsilon[dims[1]] = (&lt;double complex*&gt;(ip2 + dims[1] * steps[7]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t220" href="#t220">220</a></span><span class="t"><span class="txt">        mu[dims[1]] = (&lt;double complex*&gt;(ip3 + dims[1] * steps[8]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t221" href="#t221">221</a></span><span class="t"><span class="txt">        kappa[dims[1]] = (&lt;double complex*&gt;(ip4 + dims[1] * steps[9]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t222" href="#t222">222</a></span><span class="t"><span class="txt">        (&lt;void (*)(long, double*, double complex*, double complex*, double complex*, long, double complex[2][2]) nogil&gt;func)(&lt;long&gt;(&lt;long*&gt;ip0)[0], x, epsilon, mu, kappa, dims[1], res)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t223" href="#t223">223</a></span><span class="t"><span class="txt">        for j in range(2):</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t224" href="#t224">224</a></span><span class="t"><span class="txt">            (&lt;double complex*>(op0 + j * steps[10]))[0] = res[j][0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t225" href="#t225">225</a></span><span class="t"><span class="txt">            (&lt;double complex*>(op0 + j * steps[10] + steps[11]))[0] = res[j][1]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t224" href="#t224">224</a></span><span class="t"><span class="txt">            (&lt;double complex*&gt;(op0 + j * steps[10]))[0] = res[j][0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t225" href="#t225">225</a></span><span class="t"><span class="txt">            (&lt;double complex*&gt;(op0 + j * steps[10] + steps[11]))[0] = res[j][1]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t226" href="#t226">226</a></span><span class="t"><span class="txt">        ip0 += steps[0]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t227" href="#t227">227</a></span><span class="t"><span class="txt">        ip1 += steps[1]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t228" href="#t228">228</a></span><span class="t"><span class="txt">        ip2 += steps[2]</span>&nbsp;</span><span class="r"></span></p>
@@ -319,22 +319,22 @@
     <p class="pln"><span class="n"><a id="t237" href="#t237">237</a></span><span class="t"><span class="txt">cdef void *gufunc_mie_data[2]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t238" href="#t238">238</a></span><span class="t"><span class="txt">cdef char gufunc_mie_types[2*6]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t239" href="#t239">239</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t240" href="#t240">240</a></span><span class="t"><span class="txt">gufunc_mie_loops[0] = &lt;np.PyUFuncGenericFunction>loop_mie_d</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t241" href="#t241">241</a></span><span class="t"><span class="txt">gufunc_mie_loops[1] = &lt;np.PyUFuncGenericFunction>loop_mie_D</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t242" href="#t242">242</a></span><span class="t"><span class="txt">gufunc_mie_types[0] = &lt;char>np.NPY_LONG</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t243" href="#t243">243</a></span><span class="t"><span class="txt">gufunc_mie_types[1] = &lt;char>np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t244" href="#t244">244</a></span><span class="t"><span class="txt">gufunc_mie_types[2] = &lt;char>np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t245" href="#t245">245</a></span><span class="t"><span class="txt">gufunc_mie_types[3] = &lt;char>np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t246" href="#t246">246</a></span><span class="t"><span class="txt">gufunc_mie_types[4] = &lt;char>np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t247" href="#t247">247</a></span><span class="t"><span class="txt">gufunc_mie_types[5] = &lt;char>np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t248" href="#t248">248</a></span><span class="t"><span class="txt">gufunc_mie_types[6] = &lt;char>np.NPY_LONG</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t249" href="#t249">249</a></span><span class="t"><span class="txt">gufunc_mie_types[7] = &lt;char>np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t250" href="#t250">250</a></span><span class="t"><span class="txt">gufunc_mie_types[8] = &lt;char>np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t251" href="#t251">251</a></span><span class="t"><span class="txt">gufunc_mie_types[9] = &lt;char>np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t252" href="#t252">252</a></span><span class="t"><span class="txt">gufunc_mie_types[10] = &lt;char>np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t253" href="#t253">253</a></span><span class="t"><span class="txt">gufunc_mie_types[11] = &lt;char>np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t254" href="#t254">254</a></span><span class="t"><span class="txt">gufunc_mie_data[0] = &lt;void*>_mie[double]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t255" href="#t255">255</a></span><span class="t"><span class="txt">gufunc_mie_data[1] = &lt;void*>_mie[double_complex]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t240" href="#t240">240</a></span><span class="t"><span class="txt">gufunc_mie_loops[0] = &lt;np.PyUFuncGenericFunction&gt;loop_mie_d</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t241" href="#t241">241</a></span><span class="t"><span class="txt">gufunc_mie_loops[1] = &lt;np.PyUFuncGenericFunction&gt;loop_mie_D</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t242" href="#t242">242</a></span><span class="t"><span class="txt">gufunc_mie_types[0] = &lt;char&gt;np.NPY_LONG</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t243" href="#t243">243</a></span><span class="t"><span class="txt">gufunc_mie_types[1] = &lt;char&gt;np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t244" href="#t244">244</a></span><span class="t"><span class="txt">gufunc_mie_types[2] = &lt;char&gt;np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t245" href="#t245">245</a></span><span class="t"><span class="txt">gufunc_mie_types[3] = &lt;char&gt;np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t246" href="#t246">246</a></span><span class="t"><span class="txt">gufunc_mie_types[4] = &lt;char&gt;np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t247" href="#t247">247</a></span><span class="t"><span class="txt">gufunc_mie_types[5] = &lt;char&gt;np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t248" href="#t248">248</a></span><span class="t"><span class="txt">gufunc_mie_types[6] = &lt;char&gt;np.NPY_LONG</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t249" href="#t249">249</a></span><span class="t"><span class="txt">gufunc_mie_types[7] = &lt;char&gt;np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t250" href="#t250">250</a></span><span class="t"><span class="txt">gufunc_mie_types[8] = &lt;char&gt;np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t251" href="#t251">251</a></span><span class="t"><span class="txt">gufunc_mie_types[9] = &lt;char&gt;np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t252" href="#t252">252</a></span><span class="t"><span class="txt">gufunc_mie_types[10] = &lt;char&gt;np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t253" href="#t253">253</a></span><span class="t"><span class="txt">gufunc_mie_types[11] = &lt;char&gt;np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t254" href="#t254">254</a></span><span class="t"><span class="txt">gufunc_mie_data[0] = &lt;void*&gt;_mie[double]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t255" href="#t255">255</a></span><span class="t"><span class="txt">gufunc_mie_data[1] = &lt;void*&gt;_mie[double_complex]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t256" href="#t256">256</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t257" href="#t257">257</a></span><span class="t"><span class="txt">mie = np.PyUFunc_FromFuncAndDataAndSignature(</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t258" href="#t258">258</a></span><span class="t"><span class="txt">    gufunc_mie_loops,</span>&nbsp;</span><span class="r"></span></p>
@@ -344,8 +344,8 @@
     <p class="pln"><span class="n"><a id="t262" href="#t262">262</a></span><span class="t"><span class="txt">    5,  # number of input args</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t263" href="#t263">263</a></span><span class="t"><span class="txt">    1,  # number of output args</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t264" href="#t264">264</a></span><span class="t"><span class="txt">    0,  # `identity` element, never mind this</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t265" href="#t265">265</a></span><span class="t"><span class="txt">    "mie",  # function name</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t266" href="#t266">266</a></span><span class="t"><span class="txt">    r"""mie(l, x, epsilon, mu, kappa)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t265" href="#t265">265</a></span><span class="t"><span class="txt">    &quot;mie&quot;,  # function name</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t266" href="#t266">266</a></span><span class="t"><span class="txt">    r&quot;&quot;&quot;mie(l, x, epsilon, mu, kappa)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t267" href="#t267">267</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t268" href="#t268">268</a></span><span class="t"><span class="txt">Mie coefficient of degree l in helicity basis.</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t269" href="#t269">269</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
@@ -370,9 +370,9 @@
     <p class="pln"><span class="n"><a id="t288" href="#t288">288</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t289" href="#t289">289</a></span><span class="t"><span class="txt">Returns:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t290" href="#t290">290</a></span><span class="t"><span class="txt">    complex (2, 2)-array</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t291" href="#t291">291</a></span><span class="t"><span class="txt">""",  # docstring</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t291" href="#t291">291</a></span><span class="t"><span class="txt">&quot;&quot;&quot;,  # docstring</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t292" href="#t292">292</a></span><span class="t"><span class="txt">    0,  # unused</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t293" href="#t293">293</a></span><span class="t"><span class="txt">    "(),(a),(b),(b),(b)->(2,2)"  # signature</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t293" href="#t293">293</a></span><span class="t"><span class="txt">    &quot;(),(a),(b),(b),(b)-&gt;(2,2)&quot;  # signature</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t294" href="#t294">294</a></span><span class="t"><span class="txt">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t295" href="#t295">295</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t296" href="#t296">296</a></span><span class="t"><span class="txt">cdef void _fresnel(number_t ks[2][2], number_t kzs[2][2], number_t zs[2], number_t res[2][2][2][2]) nogil:</span>&nbsp;</span><span class="r"></span></p>
@@ -428,7 +428,7 @@
     <p class="pln"><span class="n"><a id="t346" href="#t346">346</a></span><span class="t"><span class="txt">    cdef double ks[2][2]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t347" href="#t347">347</a></span><span class="t"><span class="txt">    cdef double kzs[2][2]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t348" href="#t348">348</a></span><span class="t"><span class="txt">    cdef double zs[2]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t349" href="#t349">349</a></span><span class="t"><span class="txt">    cdef void *func = &lt;void*>data</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t349" href="#t349">349</a></span><span class="t"><span class="txt">    cdef void *func = &lt;void*&gt;data</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t350" href="#t350">350</a></span><span class="t"><span class="txt">    cdef char *ip0 = args[0]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t351" href="#t351">351</a></span><span class="t"><span class="txt">    cdef char *ip1 = args[1]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t352" href="#t352">352</a></span><span class="t"><span class="txt">    cdef char *ip2 = args[2]</span>&nbsp;</span><span class="r"></span></p>
@@ -436,16 +436,16 @@
     <p class="run"><span class="n"><a id="t354" href="#t354">354</a></span><span class="t"><span class="txt">    for i in range(n):</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t355" href="#t355">355</a></span><span class="t"><span class="txt">        for j in range(2):</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t356" href="#t356">356</a></span><span class="t"><span class="txt">            for k in range(2):</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t357" href="#t357">357</a></span><span class="t"><span class="txt">                ks[j][k] = (&lt;double*>(ip0 + j * steps[4] + k * steps[5]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t358" href="#t358">358</a></span><span class="t"><span class="txt">                kzs[j][k] = (&lt;double*>(ip1 + j * steps[6] + k * steps[7]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t359" href="#t359">359</a></span><span class="t"><span class="txt">            zs[j] = (&lt;double*>(ip2 + j * steps[8]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t360" href="#t360">360</a></span><span class="t"><span class="txt">        (&lt;void (*)(double[2][2], double[2][2], double[2], double[2][2][2][2]) nogil>func)(ks, kzs, zs, res)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t357" href="#t357">357</a></span><span class="t"><span class="txt">                ks[j][k] = (&lt;double*&gt;(ip0 + j * steps[4] + k * steps[5]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t358" href="#t358">358</a></span><span class="t"><span class="txt">                kzs[j][k] = (&lt;double*&gt;(ip1 + j * steps[6] + k * steps[7]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t359" href="#t359">359</a></span><span class="t"><span class="txt">            zs[j] = (&lt;double*&gt;(ip2 + j * steps[8]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t360" href="#t360">360</a></span><span class="t"><span class="txt">        (&lt;void (*)(double[2][2], double[2][2], double[2], double[2][2][2][2]) nogil&gt;func)(ks, kzs, zs, res)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t361" href="#t361">361</a></span><span class="t"><span class="txt">        for j in range(2):</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t362" href="#t362">362</a></span><span class="t"><span class="txt">            for k in range(2):</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t363" href="#t363">363</a></span><span class="t"><span class="txt">                (&lt;double*>(op0 + j * steps[9] + k * steps[10]))[0] = res[j][k][0][0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t364" href="#t364">364</a></span><span class="t"><span class="txt">                (&lt;double*>(op0 + j * steps[9] + k * steps[10] + steps[12]))[0] = res[j][k][0][1]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t365" href="#t365">365</a></span><span class="t"><span class="txt">                (&lt;double*>(op0 + j * steps[9] + k * steps[10] + steps[11]))[0] = res[j][k][1][0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t366" href="#t366">366</a></span><span class="t"><span class="txt">                (&lt;double*>(op0 + j * steps[9] + k * steps[10] + steps[11] + steps[12]))[0] = res[j][k][1][1]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t363" href="#t363">363</a></span><span class="t"><span class="txt">                (&lt;double*&gt;(op0 + j * steps[9] + k * steps[10]))[0] = res[j][k][0][0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t364" href="#t364">364</a></span><span class="t"><span class="txt">                (&lt;double*&gt;(op0 + j * steps[9] + k * steps[10] + steps[12]))[0] = res[j][k][0][1]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t365" href="#t365">365</a></span><span class="t"><span class="txt">                (&lt;double*&gt;(op0 + j * steps[9] + k * steps[10] + steps[11]))[0] = res[j][k][1][0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t366" href="#t366">366</a></span><span class="t"><span class="txt">                (&lt;double*&gt;(op0 + j * steps[9] + k * steps[10] + steps[11] + steps[12]))[0] = res[j][k][1][1]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t367" href="#t367">367</a></span><span class="t"><span class="txt">        ip0 += steps[0]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t368" href="#t368">368</a></span><span class="t"><span class="txt">        ip1 += steps[1]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t369" href="#t369">369</a></span><span class="t"><span class="txt">        ip2 += steps[2]</span>&nbsp;</span><span class="r"></span></p>
@@ -457,7 +457,7 @@
     <p class="pln"><span class="n"><a id="t375" href="#t375">375</a></span><span class="t"><span class="txt">    cdef double complex ks[2][2]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t376" href="#t376">376</a></span><span class="t"><span class="txt">    cdef double complex kzs[2][2]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t377" href="#t377">377</a></span><span class="t"><span class="txt">    cdef double complex zs[2]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t378" href="#t378">378</a></span><span class="t"><span class="txt">    cdef void *func = &lt;void*>data</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t378" href="#t378">378</a></span><span class="t"><span class="txt">    cdef void *func = &lt;void*&gt;data</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t379" href="#t379">379</a></span><span class="t"><span class="txt">    cdef char *ip0 = args[0]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t380" href="#t380">380</a></span><span class="t"><span class="txt">    cdef char *ip1 = args[1]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t381" href="#t381">381</a></span><span class="t"><span class="txt">    cdef char *ip2 = args[2]</span>&nbsp;</span><span class="r"></span></p>
@@ -465,16 +465,16 @@
     <p class="run"><span class="n"><a id="t383" href="#t383">383</a></span><span class="t"><span class="txt">    for i in range(n):</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t384" href="#t384">384</a></span><span class="t"><span class="txt">        for j in range(2):</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t385" href="#t385">385</a></span><span class="t"><span class="txt">            for k in range(2):</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t386" href="#t386">386</a></span><span class="t"><span class="txt">                ks[j][k] = (&lt;double complex*>(ip0 + j * steps[4] + k * steps[5]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t387" href="#t387">387</a></span><span class="t"><span class="txt">                kzs[j][k] = (&lt;double complex*>(ip1 + j * steps[6] + k * steps[7]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t388" href="#t388">388</a></span><span class="t"><span class="txt">            zs[j] = (&lt;double complex*>(ip2 + j * steps[8]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t389" href="#t389">389</a></span><span class="t"><span class="txt">        (&lt;void (*)(double complex[2][2], double complex[2][2], double complex[2], double complex[2][2][2][2]) nogil>func)(ks, kzs, zs, res)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t386" href="#t386">386</a></span><span class="t"><span class="txt">                ks[j][k] = (&lt;double complex*&gt;(ip0 + j * steps[4] + k * steps[5]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t387" href="#t387">387</a></span><span class="t"><span class="txt">                kzs[j][k] = (&lt;double complex*&gt;(ip1 + j * steps[6] + k * steps[7]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t388" href="#t388">388</a></span><span class="t"><span class="txt">            zs[j] = (&lt;double complex*&gt;(ip2 + j * steps[8]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t389" href="#t389">389</a></span><span class="t"><span class="txt">        (&lt;void (*)(double complex[2][2], double complex[2][2], double complex[2], double complex[2][2][2][2]) nogil&gt;func)(ks, kzs, zs, res)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t390" href="#t390">390</a></span><span class="t"><span class="txt">        for j in range(2):</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t391" href="#t391">391</a></span><span class="t"><span class="txt">            for k in range(2):</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t392" href="#t392">392</a></span><span class="t"><span class="txt">                (&lt;double complex*>(op0 + j * steps[9] + k * steps[10]))[0] = res[j][k][0][0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t393" href="#t393">393</a></span><span class="t"><span class="txt">                (&lt;double complex*>(op0 + j * steps[9] + k * steps[10] + steps[12]))[0] = res[j][k][0][1]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t394" href="#t394">394</a></span><span class="t"><span class="txt">                (&lt;double complex*>(op0 + j * steps[9] + k * steps[10] + steps[11]))[0] = res[j][k][1][0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t395" href="#t395">395</a></span><span class="t"><span class="txt">                (&lt;double complex*>(op0 + j * steps[9] + k * steps[10] + steps[11] + steps[12]))[0] = res[j][k][1][1]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t392" href="#t392">392</a></span><span class="t"><span class="txt">                (&lt;double complex*&gt;(op0 + j * steps[9] + k * steps[10]))[0] = res[j][k][0][0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t393" href="#t393">393</a></span><span class="t"><span class="txt">                (&lt;double complex*&gt;(op0 + j * steps[9] + k * steps[10] + steps[12]))[0] = res[j][k][0][1]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t394" href="#t394">394</a></span><span class="t"><span class="txt">                (&lt;double complex*&gt;(op0 + j * steps[9] + k * steps[10] + steps[11]))[0] = res[j][k][1][0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t395" href="#t395">395</a></span><span class="t"><span class="txt">                (&lt;double complex*&gt;(op0 + j * steps[9] + k * steps[10] + steps[11] + steps[12]))[0] = res[j][k][1][1]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t396" href="#t396">396</a></span><span class="t"><span class="txt">        ip0 += steps[0]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t397" href="#t397">397</a></span><span class="t"><span class="txt">        ip1 += steps[1]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t398" href="#t398">398</a></span><span class="t"><span class="txt">        ip2 += steps[2]</span>&nbsp;</span><span class="r"></span></p>
@@ -484,18 +484,18 @@
     <p class="pln"><span class="n"><a id="t402" href="#t402">402</a></span><span class="t"><span class="txt">cdef void *gufunc_fresnel_data[2]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t403" href="#t403">403</a></span><span class="t"><span class="txt">cdef char gufunc_fresnel_types[2*4]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t404" href="#t404">404</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t405" href="#t405">405</a></span><span class="t"><span class="txt">gufunc_fresnel_loops[0] = &lt;np.PyUFuncGenericFunction>loop_fresnel_d</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t406" href="#t406">406</a></span><span class="t"><span class="txt">gufunc_fresnel_loops[1] = &lt;np.PyUFuncGenericFunction>loop_fresnel_D</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t407" href="#t407">407</a></span><span class="t"><span class="txt">gufunc_fresnel_types[0] = &lt;char>np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t408" href="#t408">408</a></span><span class="t"><span class="txt">gufunc_fresnel_types[1] = &lt;char>np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t409" href="#t409">409</a></span><span class="t"><span class="txt">gufunc_fresnel_types[2] = &lt;char>np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t410" href="#t410">410</a></span><span class="t"><span class="txt">gufunc_fresnel_types[3] = &lt;char>np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t411" href="#t411">411</a></span><span class="t"><span class="txt">gufunc_fresnel_types[4] = &lt;char>np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t412" href="#t412">412</a></span><span class="t"><span class="txt">gufunc_fresnel_types[5] = &lt;char>np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t413" href="#t413">413</a></span><span class="t"><span class="txt">gufunc_fresnel_types[6] = &lt;char>np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t414" href="#t414">414</a></span><span class="t"><span class="txt">gufunc_fresnel_types[7] = &lt;char>np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t415" href="#t415">415</a></span><span class="t"><span class="txt">gufunc_fresnel_data[0] = &lt;void*>_fresnel[double]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t416" href="#t416">416</a></span><span class="t"><span class="txt">gufunc_fresnel_data[1] = &lt;void*>_fresnel[double_complex]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t405" href="#t405">405</a></span><span class="t"><span class="txt">gufunc_fresnel_loops[0] = &lt;np.PyUFuncGenericFunction&gt;loop_fresnel_d</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t406" href="#t406">406</a></span><span class="t"><span class="txt">gufunc_fresnel_loops[1] = &lt;np.PyUFuncGenericFunction&gt;loop_fresnel_D</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t407" href="#t407">407</a></span><span class="t"><span class="txt">gufunc_fresnel_types[0] = &lt;char&gt;np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t408" href="#t408">408</a></span><span class="t"><span class="txt">gufunc_fresnel_types[1] = &lt;char&gt;np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t409" href="#t409">409</a></span><span class="t"><span class="txt">gufunc_fresnel_types[2] = &lt;char&gt;np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t410" href="#t410">410</a></span><span class="t"><span class="txt">gufunc_fresnel_types[3] = &lt;char&gt;np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t411" href="#t411">411</a></span><span class="t"><span class="txt">gufunc_fresnel_types[4] = &lt;char&gt;np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t412" href="#t412">412</a></span><span class="t"><span class="txt">gufunc_fresnel_types[5] = &lt;char&gt;np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t413" href="#t413">413</a></span><span class="t"><span class="txt">gufunc_fresnel_types[6] = &lt;char&gt;np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t414" href="#t414">414</a></span><span class="t"><span class="txt">gufunc_fresnel_types[7] = &lt;char&gt;np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t415" href="#t415">415</a></span><span class="t"><span class="txt">gufunc_fresnel_data[0] = &lt;void*&gt;_fresnel[double]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t416" href="#t416">416</a></span><span class="t"><span class="txt">gufunc_fresnel_data[1] = &lt;void*&gt;_fresnel[double_complex]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t417" href="#t417">417</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t418" href="#t418">418</a></span><span class="t"><span class="txt">fresnel = np.PyUFunc_FromFuncAndDataAndSignature(</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t419" href="#t419">419</a></span><span class="t"><span class="txt">    gufunc_fresnel_loops,</span>&nbsp;</span><span class="r"></span></p>
@@ -505,8 +505,8 @@
     <p class="pln"><span class="n"><a id="t423" href="#t423">423</a></span><span class="t"><span class="txt">    3,  # number of input args</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t424" href="#t424">424</a></span><span class="t"><span class="txt">    1,  # number of output args</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t425" href="#t425">425</a></span><span class="t"><span class="txt">    0,  # `identity` element, never mind this</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t426" href="#t426">426</a></span><span class="t"><span class="txt">    "fresnel",  # function name</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t427" href="#t427">427</a></span><span class="t"><span class="txt">    r"""fresnel(ks, kzs, zs)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t426" href="#t426">426</a></span><span class="t"><span class="txt">    &quot;fresnel&quot;,  # function name</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t427" href="#t427">427</a></span><span class="t"><span class="txt">    r&quot;&quot;&quot;fresnel(ks, kzs, zs)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t428" href="#t428">428</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t429" href="#t429">429</a></span><span class="t"><span class="txt">Fresnel coefficient for a planar interface.</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t430" href="#t430">430</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
@@ -525,9 +525,9 @@
     <p class="pln"><span class="n"><a id="t443" href="#t443">443</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t444" href="#t444">444</a></span><span class="t"><span class="txt">Returns:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t445" href="#t445">445</a></span><span class="t"><span class="txt">    complex (2, 2, 2, 2)-array</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t446" href="#t446">446</a></span><span class="t"><span class="txt">""",  # docstring</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t446" href="#t446">446</a></span><span class="t"><span class="txt">&quot;&quot;&quot;,  # docstring</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t447" href="#t447">447</a></span><span class="t"><span class="txt">    0,  # unused</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t448" href="#t448">448</a></span><span class="t"><span class="txt">    "(2,2),(2,2),(2)->(2,2,2,2)",  # signature</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t448" href="#t448">448</a></span><span class="t"><span class="txt">    &quot;(2,2),(2,2),(2)-&gt;(2,2,2,2)&quot;,  # signature</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t449" href="#t449">449</a></span><span class="t"><span class="txt">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t450" href="#t450">450</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t451" href="#t451">451</a></span><span class="t"><span class="txt">cdef void _fill_cyl(long m, double complex kz, double complex ks[2], double rho, double complex z, double complex res[4][4]) nogil:</span>&nbsp;</span><span class="r"></span></p>
@@ -583,7 +583,7 @@
     <p class="run"><span class="n"><a id="t501" href="#t501">501</a></span><span class="t"><span class="txt">    cdef double complex z, zone = 1, zzero = 0</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t502" href="#t502">502</a></span><span class="t"><span class="txt">    cdef int two = 2, four = 4, info</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t503" href="#t503">503</a></span><span class="t"><span class="txt">    cdef int ipiv[4]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t504" href="#t504">504</a></span><span class="t"><span class="txt">    cdef char c = b'N'</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t504" href="#t504">504</a></span><span class="t"><span class="txt">    cdef char c = b&#x27;N&#x27;</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t505" href="#t505">505</a></span><span class="t"><span class="txt">    for i in range(n):</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t506" href="#t506">506</a></span><span class="t"><span class="txt">        if i:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t507" href="#t507">507</a></span><span class="t"><span class="txt">            _fill_cyl(m, kz, ks, radii[i], z, mfull)</span>&nbsp;</span><span class="r"></span></p>
@@ -613,7 +613,7 @@
     <p class="pln"><span class="n"><a id="t531" href="#t531">531</a></span><span class="t"><span class="txt">    cdef double complex mu[20]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t532" href="#t532">532</a></span><span class="t"><span class="txt">    cdef double complex kappa[20]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t533" href="#t533">533</a></span><span class="t"><span class="txt">    cdef double radii[19]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t534" href="#t534">534</a></span><span class="t"><span class="txt">    cdef void *func = &lt;void*>data</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t534" href="#t534">534</a></span><span class="t"><span class="txt">    cdef void *func = &lt;void*&gt;data</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t535" href="#t535">535</a></span><span class="t"><span class="txt">    cdef char *ip0 = args[0]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t536" href="#t536">536</a></span><span class="t"><span class="txt">    cdef char *ip1 = args[1]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t537" href="#t537">537</a></span><span class="t"><span class="txt">    cdef char *ip2 = args[2]</span>&nbsp;</span><span class="r"></span></p>
@@ -624,17 +624,17 @@
     <p class="run"><span class="n"><a id="t542" href="#t542">542</a></span><span class="t"><span class="txt">    cdef char *op0 = args[7]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t543" href="#t543">543</a></span><span class="t"><span class="txt">    for i in range(n):</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t544" href="#t544">544</a></span><span class="t"><span class="txt">        for j in range(dims[1]):</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t545" href="#t545">545</a></span><span class="t"><span class="txt">            radii[j] = (&lt;double*>(ip3 + j * steps[8]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t546" href="#t546">546</a></span><span class="t"><span class="txt">            epsilon[j] = (&lt;double complex*>(ip4 + j * steps[9]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t547" href="#t547">547</a></span><span class="t"><span class="txt">            mu[j] = (&lt;double complex*>(ip5 + j * steps[10]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t548" href="#t548">548</a></span><span class="t"><span class="txt">            kappa[j] = (&lt;double complex*>(ip6 + j * steps[11]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t549" href="#t549">549</a></span><span class="t"><span class="txt">        epsilon[dims[1]] = (&lt;double complex*>(ip4 + dims[1] * steps[9]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t550" href="#t550">550</a></span><span class="t"><span class="txt">        mu[dims[1]] = (&lt;double complex*>(ip5 + dims[1] * steps[10]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t551" href="#t551">551</a></span><span class="t"><span class="txt">        kappa[dims[1]] = (&lt;double complex*>(ip6 + dims[1] * steps[11]))[0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t552" href="#t552">552</a></span><span class="t"><span class="txt">        (&lt;void (*)(double, long, double, double*, double complex*, double complex*, double complex*, long, double complex[2][2]) nogil>func)(&lt;double>(&lt;double*>ip0)[0], &lt;long>(&lt;long*>ip1)[0], &lt;double>(&lt;double*>ip2)[0], radii, epsilon, mu, kappa, dims[1], res)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t545" href="#t545">545</a></span><span class="t"><span class="txt">            radii[j] = (&lt;double*&gt;(ip3 + j * steps[8]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t546" href="#t546">546</a></span><span class="t"><span class="txt">            epsilon[j] = (&lt;double complex*&gt;(ip4 + j * steps[9]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t547" href="#t547">547</a></span><span class="t"><span class="txt">            mu[j] = (&lt;double complex*&gt;(ip5 + j * steps[10]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t548" href="#t548">548</a></span><span class="t"><span class="txt">            kappa[j] = (&lt;double complex*&gt;(ip6 + j * steps[11]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t549" href="#t549">549</a></span><span class="t"><span class="txt">        epsilon[dims[1]] = (&lt;double complex*&gt;(ip4 + dims[1] * steps[9]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t550" href="#t550">550</a></span><span class="t"><span class="txt">        mu[dims[1]] = (&lt;double complex*&gt;(ip5 + dims[1] * steps[10]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t551" href="#t551">551</a></span><span class="t"><span class="txt">        kappa[dims[1]] = (&lt;double complex*&gt;(ip6 + dims[1] * steps[11]))[0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t552" href="#t552">552</a></span><span class="t"><span class="txt">        (&lt;void (*)(double, long, double, double*, double complex*, double complex*, double complex*, long, double complex[2][2]) nogil&gt;func)(&lt;double&gt;(&lt;double*&gt;ip0)[0], &lt;long&gt;(&lt;long*&gt;ip1)[0], &lt;double&gt;(&lt;double*&gt;ip2)[0], radii, epsilon, mu, kappa, dims[1], res)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t553" href="#t553">553</a></span><span class="t"><span class="txt">        for j in range(2):</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t554" href="#t554">554</a></span><span class="t"><span class="txt">            (&lt;double complex*>(op0 + j * steps[12]))[0] = res[j][0]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t555" href="#t555">555</a></span><span class="t"><span class="txt">            (&lt;double complex*>(op0 + j * steps[12] + steps[13]))[0] = res[j][1]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t554" href="#t554">554</a></span><span class="t"><span class="txt">            (&lt;double complex*&gt;(op0 + j * steps[12]))[0] = res[j][0]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t555" href="#t555">555</a></span><span class="t"><span class="txt">            (&lt;double complex*&gt;(op0 + j * steps[12] + steps[13]))[0] = res[j][1]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t556" href="#t556">556</a></span><span class="t"><span class="txt">        ip0 += steps[0]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t557" href="#t557">557</a></span><span class="t"><span class="txt">        ip1 += steps[1]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t558" href="#t558">558</a></span><span class="t"><span class="txt">        ip2 += steps[2]</span>&nbsp;</span><span class="r"></span></p>
@@ -648,16 +648,16 @@
     <p class="pln"><span class="n"><a id="t566" href="#t566">566</a></span><span class="t"><span class="txt">cdef void *gufunc_mie_cyl_data[1]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t567" href="#t567">567</a></span><span class="t"><span class="txt">cdef char gufunc_mie_cyl_types[8]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t568" href="#t568">568</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t569" href="#t569">569</a></span><span class="t"><span class="txt">gufunc_mie_cyl_loops[0] = &lt;np.PyUFuncGenericFunction>loop_mie_cyl_D</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t570" href="#t570">570</a></span><span class="t"><span class="txt">gufunc_mie_cyl_types[0] = &lt;char>np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t571" href="#t571">571</a></span><span class="t"><span class="txt">gufunc_mie_cyl_types[1] = &lt;char>np.NPY_LONG</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t572" href="#t572">572</a></span><span class="t"><span class="txt">gufunc_mie_cyl_types[2] = &lt;char>np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t573" href="#t573">573</a></span><span class="t"><span class="txt">gufunc_mie_cyl_types[3] = &lt;char>np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t574" href="#t574">574</a></span><span class="t"><span class="txt">gufunc_mie_cyl_types[4] = &lt;char>np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t575" href="#t575">575</a></span><span class="t"><span class="txt">gufunc_mie_cyl_types[5] = &lt;char>np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t576" href="#t576">576</a></span><span class="t"><span class="txt">gufunc_mie_cyl_types[6] = &lt;char>np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t577" href="#t577">577</a></span><span class="t"><span class="txt">gufunc_mie_cyl_types[7] = &lt;char>np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t578" href="#t578">578</a></span><span class="t"><span class="txt">gufunc_mie_cyl_data[0] = &lt;void*>_mie_cyl</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t569" href="#t569">569</a></span><span class="t"><span class="txt">gufunc_mie_cyl_loops[0] = &lt;np.PyUFuncGenericFunction&gt;loop_mie_cyl_D</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t570" href="#t570">570</a></span><span class="t"><span class="txt">gufunc_mie_cyl_types[0] = &lt;char&gt;np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t571" href="#t571">571</a></span><span class="t"><span class="txt">gufunc_mie_cyl_types[1] = &lt;char&gt;np.NPY_LONG</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t572" href="#t572">572</a></span><span class="t"><span class="txt">gufunc_mie_cyl_types[2] = &lt;char&gt;np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t573" href="#t573">573</a></span><span class="t"><span class="txt">gufunc_mie_cyl_types[3] = &lt;char&gt;np.NPY_DOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t574" href="#t574">574</a></span><span class="t"><span class="txt">gufunc_mie_cyl_types[4] = &lt;char&gt;np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t575" href="#t575">575</a></span><span class="t"><span class="txt">gufunc_mie_cyl_types[5] = &lt;char&gt;np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t576" href="#t576">576</a></span><span class="t"><span class="txt">gufunc_mie_cyl_types[6] = &lt;char&gt;np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t577" href="#t577">577</a></span><span class="t"><span class="txt">gufunc_mie_cyl_types[7] = &lt;char&gt;np.NPY_CDOUBLE</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t578" href="#t578">578</a></span><span class="t"><span class="txt">gufunc_mie_cyl_data[0] = &lt;void*&gt;_mie_cyl</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t579" href="#t579">579</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t580" href="#t580">580</a></span><span class="t"><span class="txt">mie_cyl = np.PyUFunc_FromFuncAndDataAndSignature(</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t581" href="#t581">581</a></span><span class="t"><span class="txt">    gufunc_mie_cyl_loops,</span>&nbsp;</span><span class="r"></span></p>
@@ -667,8 +667,8 @@
     <p class="pln"><span class="n"><a id="t585" href="#t585">585</a></span><span class="t"><span class="txt">    7,  # number of input args</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t586" href="#t586">586</a></span><span class="t"><span class="txt">    1,  # number of output args</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t587" href="#t587">587</a></span><span class="t"><span class="txt">    0,  # `identity` element, never mind this</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t588" href="#t588">588</a></span><span class="t"><span class="txt">    "mie_cyl",  # function name</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t589" href="#t589">589</a></span><span class="t"><span class="txt">    r"""mie_cyl(kz, m, k0, radii, epsilon, mu, kappa)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t588" href="#t588">588</a></span><span class="t"><span class="txt">    &quot;mie_cyl&quot;,  # function name</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t589" href="#t589">589</a></span><span class="t"><span class="txt">    r&quot;&quot;&quot;mie_cyl(kz, m, k0, radii, epsilon, mu, kappa)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t590" href="#t590">590</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t591" href="#t591">591</a></span><span class="t"><span class="txt">Coefficient for scattering at an infinite cylinder in helicity basis.</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t592" href="#t592">592</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
@@ -693,9 +693,9 @@
     <p class="pln"><span class="n"><a id="t611" href="#t611">611</a></span><span class="t"><span class="txt">&nbsp;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t612" href="#t612">612</a></span><span class="t"><span class="txt">Returns:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t613" href="#t613">613</a></span><span class="t"><span class="txt">    complex (2, 2)-array</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t614" href="#t614">614</a></span><span class="t"><span class="txt">""",  # docstring</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t614" href="#t614">614</a></span><span class="t"><span class="txt">&quot;&quot;&quot;,  # docstring</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t615" href="#t615">615</a></span><span class="t"><span class="txt">    0,  # unused</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t616" href="#t616">616</a></span><span class="t"><span class="txt">    "(),(),(),(a),(b),(b),(b)->(2,2)",  # signature</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t616" href="#t616">616</a></span><span class="t"><span class="txt">    &quot;(),(),(),(a),(b),(b),(b)-&gt;(2,2)&quot;,  # signature</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t617" href="#t617">617</a></span><span class="t"><span class="txt">)</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
@@ -705,8 +705,8 @@
             <a class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a class="nav" href="z_95b6b11253f31d4f_config_pyx.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.15.2">coverage.py v7.15.2</a>,
-            created at 2026-07-16 11:17 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.15.4">coverage.py v7.15.4</a>,
+            created at 2026-08-21 14:18 +0000
         </p>
     </div>
 </footer>
