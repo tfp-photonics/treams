@@ -27,7 +27,7 @@ import treams
 k0s = 2 * np.pi * np.linspace(1 / 600, 1 / 350, 100)
 material_slab = 3
 thickness = 10
-material_sphere = (4, 1, 0.05)
+material_sphere = treams.Material(4, 1, 0.05)
 pitch = 500
 lattice = treams.Lattice.square(pitch)
 radius = 100
