@@ -322,7 +322,7 @@ def _save_scatterers_hdf5(h5file, scatterers, lunit):
             geo["position"] = sc["position"]
             geo["position"].attrs["unit"] = geo.attrs["unit"]
 
-def _save_computation_hdf5(h5file, computation, lunit):
+def _save_computation_hdf5(h5file, computation, lunit, issues):
     comp = h5file.require_group("computation")
     _name_descr_kw(
         comp,
@@ -488,7 +488,7 @@ def save_hdf5(
     )
 
     if computation is not None:
-        _save_computation_hdf5(h5file, computation, lunit)
+        _save_computation_hdf5(h5file, computation, lunit, issues)
     else:
         issues.append(
             "Missing /computation group metadata (method/software). File is not compliant with tmat.h5 v1 standard."
