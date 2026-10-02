@@ -56,6 +56,13 @@ class TestDSumSW1d:
             la.dsumsw1d(7, 2, -0.2, 1, 0.5, 0), 30486.115441831644 + 3058.814396120404j
         )
 
+    def test_edge_negative(self):
+        # The sum at -r is (-1)**l times the sum at r with -kpar
+        for i in range(3):
+            assert isclose(
+                la.dsumsw1d(7, 2, -0.2, 1, -0.5, i), -la.dsumsw1d(7, 2, 0.2, 1, 0.5, i)
+            )
+
 
 class TestLSumCW1d:
     def test(self):
@@ -102,6 +109,13 @@ class TestDSumCW1d:
         assert isclose(
             la.dsumcw1d(-7, 2, -0.2, 1, 0.5, 0), -6077.087627234397 - 609.742594614585j
         )
+
+    def test_edge_negative(self):
+        # The sum at -r is (-1)**l times the sum at r with -kpar
+        for i in range(3):
+            assert isclose(
+                la.dsumcw1d(-7, 2, -0.2, 1, -0.5, i), -la.dsumcw1d(-7, 2, 0.2, 1, 0.5, i)
+            )
 
 
 class TestLSumSW2d:
