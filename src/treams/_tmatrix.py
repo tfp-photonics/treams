@@ -752,10 +752,13 @@ class TMatrixC(PhysicsArray):
         if not isinstance(illu_basis, CWB):
             illu = illu.expand(self.basis)
         p = self @ illu
-        p_invk = p / self.ks[self.basis.pol]
+        ks = self.ks[self.basis.pol]
+        p_invk = p / ks
+        # Evanescent modes do not contribute to the scattered power
+        prop = self.basis.kz * self.basis.kz <= ks * ks
         del illu.modetype
         return (
-            2 * np.real(p.conjugate().T @ p_invk.expand(p.basis)) / flux,
+            2 * np.real(p[prop].conjugate().T @ p_invk.expand(p.basis)[prop]) / flux,
             -2 * np.real(illu.conjugate().T @ p_invk) / flux,
         )
 

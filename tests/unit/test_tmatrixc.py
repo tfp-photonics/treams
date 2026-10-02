@@ -129,3 +129,19 @@ class TestProperties:
             and np.all(pol == [int((i + 1) % 2) for i in range(12)])
             and np.all(pidx == 12 * [0])
         )
+
+
+def test_xw_evanescent():
+    # Chain of lossy spheres, the basis includes evanescent modes with kz > k0
+    k0 = 0.0152
+    materials = [treams.Material(16 + 0.5j), treams.Material()]
+    lattice = treams.Lattice(120)
+    sphere = treams.TMatrix.sphere(2, k0, 50, materials, poltype="parity")
+    chain = sphere.latticeinteraction.solve(lattice, 0)
+    bmax = 2.1 * lattice.reciprocal
+    basis = treams.CylindricalWaveBasis.diffr_orders(0, 2, lattice, bmax)
+    tmc = TMatrixC.from_array(chain, basis)
+    assert np.any(tmc.basis.kz**2 > tmc.k0**2)
+    inc = treams.plane_wave([k0, 0, 0], [1, 0], k0=k0, poltype="parity")
+    sca, ext = tmc.xw(inc.expand(tmc.basis))
+    assert 0 < sca < ext
