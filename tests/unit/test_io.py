@@ -95,6 +95,20 @@ class TestSaveHDF5:
             )
 
 
+    def test_computation_without_mesh_no_nameerror(self):
+        """#37: missing mesh must append compliance issue, not NameError."""
+        with h5py.File("test.h5", "x", driver="core", backing_store=False) as fp:
+            m = np.arange(16 * 16).reshape((16, 16))
+            tm = treams.TMatrix(m, k0=7, material=treams.Material())
+            # Repro from #37: computation without mesh and without
+            # "semi-analytical" previously raised NameError on issues.append.
+            io.save_hdf5(fp, [tm], computation={"method": "Mie"})
+            assert fp["computation"].attrs["method"] == "Mie"
+            # Non-compliant (no mesh / no scatterers) → no v1 stamp.
+            assert "storage_format_version" not in fp.attrs
+
+
+
 class TestLoadHdf5:
     def test(self):
         with h5py.File("test.h5", "x", driver="core", backing_store=False) as fp:
