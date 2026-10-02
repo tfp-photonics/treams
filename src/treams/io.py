@@ -148,16 +148,15 @@ def mesh_spheres(radii, positions, model, meshsize=None, meshsize_boundary=None)
         meshsize_boundary = meshsize
 
     spheres = []
-    for i, (radius, position) in enumerate(zip(radii, positions)):
-        tag = i + 1
-        model.occ.addSphere(*position, radius, tag)
-        spheres.append((3, tag))
+    for radius, position in zip(radii, positions):
+        spheres.append((3, model.occ.addSphere(*position, radius)))
 
     model.occ.synchronize()
-    for _, tag in spheres:
-        model.addPhysicalGroup(3, [tag], tag)
+    for i, (_, tag) in enumerate(spheres):
+        model.addPhysicalGroup(3, [tag], i + 1)
         # Add surfaces for other mesh formats like stl, ...
-        model.addPhysicalGroup(2, [tag], tag)
+        surfaces = [s for _, s in model.getBoundary([(3, tag)], oriented=False)]
+        model.addPhysicalGroup(2, surfaces, i + 1)
 
     model.mesh.setSize(model.getEntities(0), meshsize)
     model.mesh.setSize(
