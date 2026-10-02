@@ -608,9 +608,11 @@ def _load_hdf5(h5file, lunit=None):
     if poltype_sca != poltype:
         raise ValueError("different modetypes")
 
-    pidx_inc = h5file.get("modes/position_index", np.zeros_like(l_inc))[()]
-    pidx_inc = h5file.get("modes/positions_index_scattered", pidx_inc)[()]
-    pidx_sca = h5file.get("modes/position_index", np.zeros_like(l_sca))[()]
+    pidx_inc = h5file.get("modes/index", np.zeros_like(l_inc))[()]
+    pidx_inc = h5file.get("modes/position_index", pidx_inc)[()]
+    pidx_inc = h5file.get("modes/positions_index_incident", pidx_inc)[()]
+    pidx_sca = h5file.get("modes/index", np.zeros_like(l_sca))[()]
+    pidx_sca = h5file.get("modes/position_index", pidx_sca)[()]
     pidx_sca = h5file.get("modes/positions_index_scattered", pidx_sca)[()]
 
     shape = tms.shape[:-2]

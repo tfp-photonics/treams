@@ -169,6 +169,10 @@ class TestSWB:
         b = treams.SphericalWaveBasis.default(2)
         assert a & b == a
 
+    def test_from_iterable_positions(self):
+        a = treams.SphericalWaveBasis.default(1, positions=[[0.7, 0.2, 0.1]])
+        assert (a | a).positions.tolist() == [[0.7, 0.2, 0.1]]
+
     def test_neq(self):
         b = treams.SphericalWaveBasis.default(1)
         assert not b == []
@@ -306,6 +310,11 @@ class TestCWB:
         a = treams.CylindricalWaveBasis.default(0, 1)
         b = treams.CylindricalWaveBasis.default(0, 2)
         assert a & b == a
+
+    def test_getitem_lattice(self):
+        b = treams.CylindricalWaveBasis.diffr_orders(0.1, 1, treams.Lattice(2), 4)
+        assert b[:2].lattice == b.lattice and b[:2].kpar == b.kpar
+        assert (b | b).lattice == b.lattice
 
     def test_neq(self):
         b = treams.CylindricalWaveBasis.default(0, 1)
@@ -466,6 +475,16 @@ class TestPWBC:
         a = treams.PlaneWaveBasisByComp.default([0, 0])
         b = treams.PlaneWaveBasisByComp.default([[0, 0], [0, 1]])
         assert a & b == a
+
+    def test_getitem_alignment(self):
+        b = treams.PlaneWaveBasisByComp.default([[0.2, 0.3]], alignment="yz")
+        assert b[:2].alignment == b[[0, 1]].alignment == (b | b).alignment == "yz"
+
+    def test_getitem_lattice(self):
+        lattice = treams.Lattice([[1, 0], [0, 1]])
+        b = treams.PlaneWaveBasisByComp.diffr_orders([0.1, 0], lattice, 7)
+        assert b[:2].lattice == b.lattice and b[:2].kpar == b.kpar
+        assert (b | b).lattice == b.lattice
 
     def test_getitem_int(self):
         b = treams.PlaneWaveBasisByComp([[1, 0, 0], [1, 0, 1]])

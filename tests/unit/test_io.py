@@ -149,3 +149,22 @@ class TestLoadHdf5:
                 [284, 285, 286, 287, 0, 0, 0, 0],
             ]
         )
+
+    def test_positions(self):
+        sphere = treams.TMatrix.sphere(1, 1.3, 0.2, [3, 1])
+        basis = treams.SphericalWaveBasis.default(1, positions=[[0.7, 0.2, 0.1]])
+        tm = treams.TMatrix(np.asarray(sphere), k0=1.3, basis=basis)
+        with h5py.File("test.h5", "x", driver="core", backing_store=False) as fp:
+            io.save_hdf5(fp, [tm])
+            assert io.load_hdf5(fp)[0].basis == basis
+
+    def test_cluster(self):
+        sphere = treams.TMatrix.sphere(1, 1.3, 0.2, [3, 1])
+        cluster = treams.TMatrix.cluster(
+            [sphere, sphere], [[0, 0, -0.3], [0, 0, 0.3]]
+        ).interaction.solve()
+        with h5py.File("test.h5", "x", driver="core", backing_store=False) as fp:
+            io.save_hdf5(fp, [cluster])
+            loaded = io.load_hdf5(fp)[0]
+        assert loaded.basis == cluster.basis
+        assert np.allclose(np.asarray(loaded), np.asarray(cluster))
