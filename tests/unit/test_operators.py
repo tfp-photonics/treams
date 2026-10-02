@@ -745,3 +745,12 @@ class TestEField:
             [0, 0], [3, 4], [-4, -3], r[..., None, 0], r[..., None, 1], r[..., None, 2]
         ).swapaxes(-1, -2)
         assert np.all(y == x)
+
+
+@pytest.mark.parametrize("name", ["gfield", "ffield"])
+def test_rs_field_attribute(name):
+    inc = treams.plane_wave([0, 0, 1.3], [0, 1], k0=1.3, poltype="helicity")
+    r = [0.1, 0.2, 0.3]
+    func = getattr(treams, name)
+    expect = func(1, r, basis=inc.basis, k0=1.3, poltype="helicity") @ inc
+    assert np.allclose(np.asarray(getattr(inc, name)(1, r)), np.asarray(expect))
