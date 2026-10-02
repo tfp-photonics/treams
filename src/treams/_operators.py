@@ -2080,6 +2080,9 @@ class GField(FieldOperator):
 
     _FUNC = staticmethod(gfield)
 
+    def __init__(self, pol, r):
+        Operator.__init__(self, pol, r)
+
 
 def _sw_ffield(pol, r, basis, k0, material, modetype, poltype):
     """Riemann-Silberstein field F of spherical waves."""
@@ -2157,3 +2160,6 @@ class FField(FieldOperator):
     """
 
     _FUNC = staticmethod(ffield)
+
+    def __init__(self, pol, r):
+        Operator.__init__(self, pol, r)
