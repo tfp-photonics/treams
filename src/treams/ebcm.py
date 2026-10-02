@@ -9,7 +9,8 @@ import treams.special as sc
 def _j_real(l0, l1, m, r, dr, pol0, pol1, ks, k, zs, z):
     def fun(theta):
         return np.real(
-            np.sin(theta)
+            r(theta)
+            * np.sin(theta)
             * ((2 * pol0 - 1) * z + (2 * pol1 - 1) * zs)
             * np.dot(
                 [r(theta), -dr(theta), 0],
@@ -26,7 +27,8 @@ def _j_real(l0, l1, m, r, dr, pol0, pol1, ks, k, zs, z):
 def _j_imag(l0, l1, m, r, dr, pol0, pol1, ks, k, zs, z):
     def fun(theta):
         return np.imag(
-            np.sin(theta)
+            r(theta)
+            * np.sin(theta)
             * ((2 * pol0 - 1) * z + (2 * pol1 - 1) * zs)
             * np.dot(
                 [r(theta), -dr(theta), 0],
@@ -43,7 +45,8 @@ def _j_imag(l0, l1, m, r, dr, pol0, pol1, ks, k, zs, z):
 def _rj_real(l0, l1, m, r, dr, pol0, pol1, ks, k, zs, z):
     def fun(theta):
         return np.real(
-            np.sin(theta)
+            r(theta)
+            * np.sin(theta)
             * ((2 * pol0 - 1) * z + (2 * pol1 - 1) * zs)
             * np.dot(
                 [r(theta), -dr(theta), 0],
@@ -60,7 +63,8 @@ def _rj_real(l0, l1, m, r, dr, pol0, pol1, ks, k, zs, z):
 def _rj_imag(l0, l1, m, r, dr, pol0, pol1, ks, k, zs, z):
     def fun(theta):
         return np.imag(
-            np.sin(theta)
+            r(theta)
+            * np.sin(theta)
             * ((2 * pol0 - 1) * z + (2 * pol1 - 1) * zs)
             * np.dot(
                 [r(theta), -dr(theta), 0],
