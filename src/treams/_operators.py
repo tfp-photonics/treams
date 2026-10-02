@@ -58,6 +58,7 @@ Field Evaluations
     GField
 """
 
+import copy
 import inspect
 
 import numpy as np
@@ -170,9 +171,10 @@ class OperatorAttribute:
         return op(**self._merge_kwargs(kwargs, op.get_kwargs(self._obj)))
 
     def __get__(self, obj, objtype=None):
-        self._obj = obj
-        self._objtype = type(obj) if objtype is None else objtype
-        return self
+        bound = copy.copy(self)
+        bound._obj = obj
+        bound._objtype = type(obj) if objtype is None else objtype
+        return bound
 
     def __call__(self, *args, **kwargs):
         if np.ndim(self._obj) == 1:
