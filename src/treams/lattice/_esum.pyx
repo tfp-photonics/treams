@@ -4,7 +4,6 @@ from libc.math cimport fabs, hypot, lgamma, log, pi, tgamma
 from libc.math cimport sqrt as sqrtd
 from libc.stdlib cimport labs
 from libc.string cimport memcpy
-from numpy.math cimport EULER
 from scipy.linalg.cython_blas cimport daxpy, ddot, dgemv, dscal
 
 cimport treams.special.cython_special as sc
@@ -21,6 +20,8 @@ from treams.special._misc cimport (
     sqrt,
 )
 
+cdef extern from "numpy/npy_math.h" nogil:
+    long double EULER "NPY_EULER"       # Euler constant (gamma, 0.57721)
 
 # The preprocessor directives correct the missing macro in mingw-w64 by
 # substituting it with a corresponding function that is defined by cython anyway
