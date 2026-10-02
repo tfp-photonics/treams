@@ -40,9 +40,10 @@ class OperatorAttributeSMatrices:
         self._obj = self._objtype = None
 
     def __get__(self, obj, objtype=None):
-        self._obj = obj
-        self._objtype = type(obj) if objtype is None else objtype
-        return self
+        bound = copy.copy(self)
+        bound._obj = obj
+        bound._objtype = type(obj) if objtype is None else objtype
+        return bound
 
     def __call__(self, *args, **kwargs):
         res = [

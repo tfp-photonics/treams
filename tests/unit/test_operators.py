@@ -9,6 +9,26 @@ def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
     return abs(a - b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
 
 
+class TestOperatorAttribute:
+    def test_bound(self):
+        a = treams.TMatrix.sphere(1, 1.3, 0.2, [3, 1])
+        b = treams.TMatrix.sphere(2, 1.3, 0.2, [3, 1])
+        rotate_a = a.rotate
+        b.rotate
+        assert rotate_a(0.4).shape == (6, 6)
+
+    def test_bound_smatrices(self):
+        basis = treams.PlaneWaveBasisByComp.default([[0.2, 0.3]])
+        a = treams.SMatrices.interface(basis, 1.3, [1, 2.5])
+        b = treams.SMatrices.interface(basis, 1.3, [1, 4])
+        translate_a = a.translate
+        b.translate
+        assert np.array_equal(
+            np.asarray(translate_a([0, 0, 0.1])[0][0]),
+            np.asarray(a[0][0].translate([0, 0, 0.1])),
+        )
+
+
 class TestRotate:
     def test_sw_invalid(self):
         a = treams.SphericalWaveBasis([[1, 0, 0]])
