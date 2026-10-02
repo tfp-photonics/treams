@@ -1093,7 +1093,7 @@ class PlaneWaveBasisByComp(PlaneWaveBasis):
         kz = material.kzs(k0, kx, ky, self.pol) * (2 * (modetype == "up") - 1)
         if self.alignment == "yz":
             kx, ky, kz = kz, kx, ky
-        elif self.alignment == "zy":
+        elif self.alignment == "zx":
             kx, ky, kz = ky, kz, kx
         obj = PlaneWaveBasisByUnitVector(zip(kx, ky, kz, self.pol))
         obj.lattice = self.lattice
