@@ -349,13 +349,9 @@ class SphericalWaveBasis(BasisSet):
             raise ValueError("maximal order must be positive")
         return 2 * lmax * (lmax + 2) * nmax
 
-    @classmethod
-    def _from_iterable(cls, it, positions=None):
-        if isinstance(cls, SphericalWaveBasis):
-            positions = cls.positions if positions is None else positions
-            cls = type(cls)
-        obj = cls(it, positions=positions)
-        return obj
+    def _from_iterable(self, it, positions=None):
+        positions = self.positions if positions is None else positions
+        return type(self)(it, positions=positions)
 
 
 class CylindricalWaveBasis(BasisSet):
@@ -485,7 +481,7 @@ class CylindricalWaveBasis(BasisSet):
         res = self.pidx[idx], self.kz[idx], self.m[idx], self.pol[idx]
         if isinstance(idx, (int, np.integer)) or (isinstance(idx, tuple) and idx == ()):
             return res
-        return type(self)(zip(*res), self.positions)
+        return self._from_iterable(zip(*res))
 
     def __eq__(self, other):
         """Compare basis sets.
@@ -584,18 +580,11 @@ class CylindricalWaveBasis(BasisSet):
         res.kpar = WaveVector(kz)
         return res
 
-    @classmethod
-    def _from_iterable(cls, it, positions=None):
-        if isinstance(cls, CylindricalWaveBasis):
-            positions = cls.positions if positions is None else positions
-            lattice = cls.lattice
-            kpar = cls.kpar
-            cls = type(cls)
-        else:
-            lattice = kpar = None
-        obj = cls(it, positions=positions)
-        obj.lattice = lattice
-        obj.kpar = kpar
+    def _from_iterable(self, it, positions=None):
+        positions = self.positions if positions is None else positions
+        obj = type(self)(it, positions=positions)
+        obj.lattice = self.lattice
+        obj.kpar = self.kpar
         return obj
 
     @staticmethod
@@ -734,7 +723,7 @@ class PlaneWaveBasisByUnitVector(PlaneWaveBasis):
         res = self.qx[idx], self.qy[idx], self.qz[idx], self.pol[idx]
         if isinstance(idx, (int, np.integer)) or (isinstance(idx, tuple) and idx == ()):
             return res
-        return type(self)(zip(*res))
+        return self._from_iterable(zip(*res))
 
     @classmethod
     def default(cls, kvecs):
@@ -762,17 +751,10 @@ class PlaneWaveBasisByUnitVector(PlaneWaveBasis):
         modes[1::2, 3] = 0
         return cls(modes)
 
-    @classmethod
-    def _from_iterable(cls, it):
-        if isinstance(cls, PlaneWaveBasisByUnitVector):
-            lattice = cls.lattice
-            kpar = cls.kpar
-            cls = type(cls)
-        else:
-            lattice = kpar = None
-        obj = cls(it)
-        obj.lattice = lattice
-        obj.kpar = kpar
+    def _from_iterable(self, it):
+        obj = type(self)(it)
+        obj.lattice = self.lattice
+        obj.kpar = self.kpar
         return obj
 
     def __eq__(self, other):
@@ -975,7 +957,7 @@ class PlaneWaveBasisByComp(PlaneWaveBasis):
         res = self._kx[idx], self._ky[idx], self.pol[idx]
         if isinstance(idx, (int, np.integer)) or (isinstance(idx, tuple) and idx == ()):
             return res
-        return type(self)(zip(*res))
+        return self._from_iterable(zip(*res))
 
     @classmethod
     def default(cls, kpars, alignment="xy"):
@@ -1037,18 +1019,11 @@ class PlaneWaveBasisByComp(PlaneWaveBasis):
         obj.kpar = WaveVector(kpar, alignment=lattice.alignment)
         return obj
 
-    @classmethod
-    def _from_iterable(cls, it, alignment="xy"):
-        if isinstance(cls, PlaneWaveBasisByComp):
-            alignment = cls.alignment if alignment is None else alignment
-            lattice = cls.lattice
-            kpar = cls.kpar
-            cls = type(cls)
-        else:
-            lattice = kpar = None
-        obj = cls(it, alignment)
-        obj.lattice = lattice
-        obj.kpar = kpar
+    def _from_iterable(self, it, alignment=None):
+        alignment = self.alignment if alignment is None else alignment
+        obj = type(self)(it, alignment)
+        obj.lattice = self.lattice
+        obj.kpar = self.kpar
         return obj
 
     def __eq__(self, other):
