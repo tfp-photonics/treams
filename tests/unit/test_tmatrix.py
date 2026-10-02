@@ -63,6 +63,12 @@ class TestSphere:
         )
 
 
+    def test_chiral_parity(self):
+        materials = [treams.Material(5, 1, 1), treams.Material()]
+        hel = TMatrix.sphere(1, 1, [1], materials, poltype="helicity")
+        par = TMatrix.sphere(1, 1, [1], materials, poltype="parity")
+        assert np.allclose(np.asarray(par.changepoltype("helicity")), np.asarray(hel))
+
 class TestProperties:
     def test_xs_ext_avg(self):
         tm = TMatrix.sphere(2, 3, [4], [(2 + 1j, 1, 1), (9, 1, 2)])

@@ -155,7 +155,12 @@ class TMatrix(PhysicsArray):
         if poltype == "helicity":
             return res
         res = res.changepoltype(poltype)
-        res[~np.eye(len(res), dtype=bool)] = 0
+        if all(m.kappa == 0 for m in materials):
+            res[~np.eye(len(res), dtype=bool)] = 0
+        else:
+            # Chiral materials couple both polarizations of the same mode
+            l, m = res.basis.l, res.basis.m
+            res[(l[:, None] != l) | (m[:, None] != m)] = 0
         return res
 
     @classmethod
