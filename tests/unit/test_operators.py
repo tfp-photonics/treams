@@ -489,6 +489,32 @@ class TestChangePoltype:
         )
         assert np.all(np.abs(x - y) < 1e-14) and x.ann == y.ann
 
+
+    def test_idempotence(self):
+        tmat_par = treams.TMatrix.sphere(2, 1, [1], [2,1], poltype="parity")
+        tmat_hel = treams.TMatrix.sphere(2, 1, [1], [2,1], poltype="helicity")
+
+        assert np.allclose(tmat_hel, tmat_hel.changepoltype('helicity'))
+        assert np.allclose(tmat_par, tmat_par.changepoltype('parity'))
+
+        assert tmat_hel.changepoltype('helicity').poltype == 'helicity'
+        assert tmat_par.changepoltype('parity').poltype == 'parity'
+
+    def test_consistency(self):
+        tmat_par = treams.TMatrix.sphere(2, 1, [1], [2,1], poltype="parity")
+        tmat_hel = treams.TMatrix.sphere(2, 1, [1], [2,1], poltype="helicity")
+
+        assert np.allclose(tmat_par, tmat_hel.changepoltype())
+        assert np.allclose(tmat_par, tmat_hel.changepoltype('parity'))
+        assert np.allclose(tmat_hel, tmat_par.changepoltype())
+        assert np.allclose(tmat_hel, tmat_par.changepoltype('helicity'))
+
+        assert tmat_hel.changepoltype('parity').poltype == 'parity'
+        assert tmat_hel.changepoltype().poltype == 'parity'
+        assert tmat_par.changepoltype('helicity').poltype == 'helicity'
+        assert tmat_par.changepoltype().poltype == 'helicity'
+
+
     def test_cw(self):
         a = treams.SphericalWaveBasis([[2, 0, 0], [1, 0, 1]])
         b = treams.SphericalWaveBasis([[2, 0, 0], [1, 0, 1]])
