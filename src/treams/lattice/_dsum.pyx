@@ -120,7 +120,9 @@ cdef double complex dsumsw1d(long l, number_t k, double kpar, double a, double r
     if (r == 0 and i == 0):
         return 0
     if fabs(a * 0.5) == fabs(r):
-        return _fsw1d(l, k, kpar, fabs(a) * i, fabs(r)) + _fsw1d(l, k, kpar, -fabs(a) * (i + 1), fabs(r))
+        if r > 0:
+            return _fsw1d(l, k, kpar, fabs(a) * i, r) + _fsw1d(l, k, kpar, -fabs(a) * (i + 1), r)
+        return _fsw1d(l, k, kpar, -fabs(a) * i, r) + _fsw1d(l, k, kpar, fabs(a) * (i + 1), r)
     if i == 0:
         return _fsw1d(l, k, kpar, 0, r)
     return _fsw1d(l, k, kpar, a * i, r) + _fsw1d(l, k, kpar, -a * i, r)
@@ -131,7 +133,9 @@ cdef double complex dsumcw1d(long l, number_t k, double kpar, double a, double r
     if (r == 0 and i == 0):
         return 0
     if fabs(a * 0.5) == fabs(r):
-        return _fcw1d(l, k, kpar, fabs(a) * i, fabs(r)) + _fcw1d(l, k, kpar, -fabs(a) * (i + 1), fabs(r))
+        if r > 0:
+            return _fcw1d(l, k, kpar, fabs(a) * i, r) + _fcw1d(l, k, kpar, -fabs(a) * (i + 1), r)
+        return _fcw1d(l, k, kpar, -fabs(a) * i, r) + _fcw1d(l, k, kpar, fabs(a) * (i + 1), r)
     if i == 0:
         return _fcw1d(l, k, kpar, 0, r)
     return _fcw1d(l, k, kpar, a * i, r) + _fcw1d(l, k, kpar, -a * i, r)
