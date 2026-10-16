@@ -26,6 +26,22 @@ def test_meshspheres():
     assert value == expect
 
 
+
+@pytest.mark.gmsh
+def test_meshspheres_existing_model():
+    import gmsh
+
+    gmsh.initialize()
+    gmsh.model.add("spheres")
+    gmsh.model.occ.addSphere(10, 0, 0, 1, 1)
+    io.mesh_spheres([1, 1], [[0, 0, 2], [0, 0, -2]], gmsh.model)
+    for _, tag in gmsh.model.getPhysicalGroups(3):
+        (volume,) = gmsh.model.getEntitiesForPhysicalGroup(3, tag)
+        surfaces = gmsh.model.getEntitiesForPhysicalGroup(2, tag)
+        boundary = gmsh.model.getBoundary([(3, volume)], oriented=False)
+        assert list(surfaces) == [s for _, s in boundary]
+    gmsh.finalize()
+
 class TestSaveHDF5:
     def test_helicity(self):
         with h5py.File("test.h5", "x", driver="core", backing_store=False) as fp:
