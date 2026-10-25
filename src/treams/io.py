@@ -432,7 +432,10 @@ def save_hdf5(
     if tms_arr.dtype == object:
         raise ValueError("can only save T-matrices of the same size")
     tms_obj = np.empty(tms_arr.shape[:-2], object)
-    tms_obj[:] = tms
+    if tms_obj.ndim == 0:
+        tms_obj[()] = tms
+    else:
+        tms_obj[:] = tms
     tm = tms_obj.flat[0]
     basis = tm.basis
     poltype = tm.poltype
