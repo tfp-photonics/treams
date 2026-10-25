@@ -582,7 +582,8 @@ def _load_hdf5(h5file, lunit=None):
     epsilon = 1 if epsilon is None else epsilon
     mu = 1 if mu is None else mu
 
-    kappa = z = h5file.get("embedding/chirality_parameter", np.array(0))[...]
+    kappa = h5file.get("embedding/chirality_parameter", np.array(0))[...]
+    kappa = h5file.get("embedding/chirality", kappa)[...]
 
     positions = h5file.get("modes/positions", np.zeros((1, 3)))[...]
 
