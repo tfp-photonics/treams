@@ -188,10 +188,10 @@ cdef double complex dsumsw2d_shift(long l, long m, number_t k, double *kpar, dou
 
 cdef double complex dsumsw1d_shift(long l, long m, number_t k, double kpar, double a, double *r, long i) nogil:
     """See the documentation of :func:`treams.lattice.dsumsw1d_shift`"""
-    if r[1] == 0 and r[2] == 0:
+    if r[0] == 0 and r[1] == 0:
         if m != 0:
             return 0
-        return dsumsw1d(l, k, kpar, a, r[0], i)
+        return dsumsw1d(l, k, kpar, a, r[2], i)
     cdef double complex res
     cdef double vec[3]
     vec[0] = 0

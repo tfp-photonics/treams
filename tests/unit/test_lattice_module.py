@@ -338,7 +338,7 @@ class TestDSumSW1dShift:
 
     def test_dispatch(self):
         assert isclose(
-            la.dsumsw1d_shift(7, 0, 2j, -0.2, 1.1, [0.5, 0, 0], 0), 142089.72088031314j
+            la.dsumsw1d_shift(7, 0, 2j, -0.2, 1.1, [0, 0, 0.5], 0), 142089.72088031314j
         )
 
     def test_i0(self):
