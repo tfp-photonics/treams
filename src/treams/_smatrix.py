@@ -430,6 +430,7 @@ class SMatrices:
         Returns:
             tuple
         """
+        hermitian_part = lambda M: .5 * (M.conjugate().transpose() + M)
         modetype = getattr(illu, "modetype", "up")
         if isinstance(modetype, tuple):
             modetype = modetype[max(-2, -len(tuple))]
@@ -442,9 +443,9 @@ class SMatrices:
             trans, refl = refl, trans
             paz.reverse()
         illu = np.asarray(illu)
-        s_t = np.real(trans.conjugate().T @ paz[0][0] @ trans)
-        s_r = np.real(refl.conjugate().T @ paz[1][0] @ refl)
-        s_i = np.real(np.conjugate(illu).T @ paz[1][0] @ illu)
+        s_t = np.real(trans.conjugate().T @ hermitian_part(paz[0][0]) @ trans)
+        s_r = np.real(refl.conjugate().T @ hermitian_part(paz[1][0]) @ refl)
+        s_i = np.real(np.conjugate(illu).T @ hermitian_part(paz[1][0]) @ illu)
         s_ir = np.real(
             refl.conjugate().T @ paz[1][1] @ illu
             - np.conjugate(illu).T @ paz[1][1] @ refl
